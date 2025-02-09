@@ -1,16 +1,23 @@
-# smoth_movie_app
+# Movie 4 Free
 
-A new Flutter project.
+A Free Movie Application Project using Bloc And Clean Architecture
 
 ## Getting Started
 
 This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+This project using API from https://phim.nguonc.com/ for Vietnamese movies and will not public for commercial purposes.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+PROJECT FEATURES:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- SPLASH PAGE
+- HOME PAGE
+- HOME MAIN PAGE
+- HOME SEARCH PAGE
+- HOME PROFILE PAGE ( DEVERLOPING )
+- MOVIE DETAIL PAGE
+- VIDEO-PLAYER LIBRARY
+- CHEWIE
+- GET-IT ( Dependency injection )
+- CAROUSEL-SLIDER
+
