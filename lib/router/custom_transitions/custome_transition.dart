@@ -36,6 +36,6 @@ class CustomTransition extends PageRouteBuilder {
               child: child,
             );
           },
-          transitionDuration: const Duration(milliseconds: 900),
+          transitionDuration: const Duration(milliseconds: 1000),
         );
 }
