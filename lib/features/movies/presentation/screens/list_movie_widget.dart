@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/features/home/presentation/widgets/row_title_and_more.dart';
@@ -55,7 +56,7 @@ class ListMovieWidget extends StatelessWidget {
                       );
                     } else {
                       return const Center(
-                        child: CircularProgressIndicator(),
+                        child: CupertinoActivityIndicator(),
                       );
                     }
                   },
@@ -97,7 +98,7 @@ class ListMovieWidget extends StatelessWidget {
                       );
                     } else {
                       return const Center(
-                        child: CircularProgressIndicator(),
+                        child: CupertinoActivityIndicator(),
                       );
                     }
                   },
@@ -138,7 +139,7 @@ class ListMovieWidget extends StatelessWidget {
                       );
                     } else {
                       return const Center(
-                        child: CircularProgressIndicator(),
+                        child: CupertinoActivityIndicator(),
                       );
                     }
                   },
@@ -180,7 +181,7 @@ class ListMovieWidget extends StatelessWidget {
                       );
                     } else {
                       return const Center(
-                        child: CircularProgressIndicator(),
+                        child: CupertinoActivityIndicator(),
                       );
                     }
                   },

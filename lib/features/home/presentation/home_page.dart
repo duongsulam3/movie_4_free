@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smoth_movie_app/common/widgets/custom_appbar_widget.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
-import 'package:smoth_movie_app/features/home/presentation/bloc/bottom_nav_bloc/bottom_nav_bloc.dart';
+import 'package:smoth_movie_app/features/home/presentation/bloc/bottom_nav/bottom_nav_bloc.dart';
 import 'package:smoth_movie_app/features/home/home_main/page.dart';
 import 'package:smoth_movie_app/features/home/home_profile/page.dart';
 import 'package:smoth_movie_app/features/home/home_search/presentation/bloc/search_bloc.dart';
@@ -22,7 +23,7 @@ class HomePage extends StatelessWidget {
           create: (context) => serviceLocator<ListMovieItemBloc>(),
           child: const HomeMain(),
         ),
-        "appBar": true,
+        "appBar": false,
       },
       {
         "page": BlocProvider(
@@ -37,50 +38,56 @@ class HomePage extends StatelessWidget {
       },
     ];
     //
-    // final sHeight = MediaQuery.of(context).size.height;
+    final sHeight = MediaQuery.of(context).size.height;
     // final sWidth = MediaQuery.of(context).size.width;
     return BlocProvider(
       create: (context) => BottomNavBloc(),
       child: BlocBuilder<BottomNavBloc, BottomNavState>(
         builder: (context, state) {
           if (state is HomeInitialBottomNav) {
-            return Scaffold(
-              bottomNavigationBar: BottomNavigationBar(
-                currentIndex: state.currentPage,
-                onTap: (int i) {
-                  context
-                      .read<BottomNavBloc>()
-                      .add(HomeChangeBottomNavStateEvent(index: i));
-                },
-                items: const [
-                  BottomNavigationBarItem(
-                    icon: Icon(CupertinoIcons.house),
-                    activeIcon: Icon(CupertinoIcons.house_fill),
-                    label: "Trang chủ",
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(CupertinoIcons.search_circle),
-                    activeIcon: Icon(CupertinoIcons.search_circle_fill),
-                    label: "Tìm kiếm",
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(CupertinoIcons.person_2),
-                    activeIcon: Icon(CupertinoIcons.person_2_fill),
-                    label: "Người dùng",
-                  ),
-                ],
+            return SafeArea(
+              bottom: false,
+              right: false,
+              left: false,
+              child: Scaffold(
+                extendBodyBehindAppBar: true,
+                appBar: pages[state.currentPage]["appBar"] == true
+                    ? CustomAppbarWidget(
+                        appBarHeight: sHeight / (sHeight / 50),
+                        backgroundColor: Colors.transparent,
+                        titleWidget: const ResponsiveText(
+                          text: "Smoth Movie App",
+                          fontSize: 24,
+                        ),
+                      )
+                    : null,
+                bottomNavigationBar: BottomNavigationBar(
+                  currentIndex: state.currentPage,
+                  onTap: (int i) {
+                    context
+                        .read<BottomNavBloc>()
+                        .add(HomeChangeBottomNavStateEvent(index: i));
+                  },
+                  items: const [
+                    BottomNavigationBarItem(
+                      icon: Icon(CupertinoIcons.house),
+                      activeIcon: Icon(CupertinoIcons.house_fill),
+                      label: "Trang chủ",
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(CupertinoIcons.search_circle),
+                      activeIcon: Icon(CupertinoIcons.search_circle_fill),
+                      label: "Tìm kiếm",
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(CupertinoIcons.person_2),
+                      activeIcon: Icon(CupertinoIcons.person_2_fill),
+                      label: "Người dùng",
+                    ),
+                  ],
+                ),
+                body: pages[state.currentPage]["page"],
               ),
-              appBar: pages[state.currentPage]['appBar']
-                  ? AppBar(
-                      centerTitle: true,
-                      backgroundColor: Colors.transparent,
-                      title: const ResponsiveText(
-                        text: "Vua Lì Đòn",
-                        fontSize: 30,
-                      ),
-                    )
-                  : null,
-              body: pages[state.currentPage]["page"],
             );
           } else {
             return const SizedBox.shrink();

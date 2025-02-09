@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/core/error/error_page.dart';
@@ -29,7 +30,7 @@ class MovieDetailPage extends StatelessWidget {
           );
         } else if (state is MovieLoadingState) {
           return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
+            body: Center(child: CupertinoActivityIndicator()),
           );
         } else {
           return const ErrorPage();
