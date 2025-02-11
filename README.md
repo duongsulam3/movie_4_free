@@ -21,3 +21,5 @@ PROJECT FEATURES:
 - GET-IT ( Dependency injection )
 - CAROUSEL-SLIDER
 
+##TODO 
+Add more server for avoiding error load on movie player!
