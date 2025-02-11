@@ -3,13 +3,15 @@ import 'package:smoth_movie_app/features/movies/presentation/screens/list_movie_
 import 'package:smoth_movie_app/features/movies/presentation/screens/list_recently_update_movie_widget.dart';
 
 class HomeMain extends StatelessWidget {
-  const HomeMain({super.key});
+  final ScrollController? scrollController;
+  const HomeMain({super.key, this.scrollController});
 
   @override
   Widget build(BuildContext context) {
     final sHeight = MediaQuery.of(context).size.height;
     // final sWidth = MediaQuery.of(context).size.width;
     return SingleChildScrollView(
+      controller: scrollController,
       scrollDirection: Axis.vertical,
       child: Column(
         children: [

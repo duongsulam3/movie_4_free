@@ -11,19 +11,25 @@ import 'package:smoth_movie_app/features/home/home_search/presentation/page.dart
 import 'package:smoth_movie_app/features/movies/presentation/bloc/list_movie_item_bloc/list_movie_item_bloc.dart';
 import 'package:smoth_movie_app/init_dependencies.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    //
-    List<Map<String, dynamic>> pages = [
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  List<Map<String, dynamic>> pages = [];
+  final scrollController = ScrollController();
+  @override
+  void initState() {
+    pages = [
       {
         "page": BlocProvider(
           create: (context) => serviceLocator<ListMovieItemBloc>(),
-          child: const HomeMain(),
+          child: HomeMain(scrollController: scrollController),
         ),
-        "appBar": false,
+        "appBar": true,
       },
       {
         "page": BlocProvider(
@@ -37,7 +43,11 @@ class HomePage extends StatelessWidget {
         "appBar": true,
       },
     ];
-    //
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final sHeight = MediaQuery.of(context).size.height;
     // final sWidth = MediaQuery.of(context).size.width;
     return BlocProvider(
@@ -53,8 +63,9 @@ class HomePage extends StatelessWidget {
                 extendBodyBehindAppBar: true,
                 appBar: pages[state.currentPage]["appBar"] == true
                     ? CustomAppbarWidget(
+                        scrollController: scrollController,
                         appBarHeight: sHeight / (sHeight / 50),
-                        backgroundColor: Colors.transparent,
+                        backgroundColor: Colors.black,
                         titleWidget: const ResponsiveText(
                           text: "Smoth Movie App",
                           fontSize: 24,
