@@ -29,6 +29,12 @@ class ResponsiveText extends StatelessWidget {
         fontWeight: fontWeight,
         overflow: textOverflow,
         color: textColor,
+        shadows: [
+          const Shadow(
+            color: Colors.black,
+            offset: Offset(1, 1),
+          ),
+        ],
       ),
     );
   }

@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smoth_movie_app/common/widgets/error_image_widget.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/movie_detail.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/blocs/detail_page_bloc/detail_page_bloc.dart';
+import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/carousel_slider_item.dart';
 
 class TabBarListOfEpisode extends StatelessWidget {
   const TabBarListOfEpisode({
@@ -42,21 +42,7 @@ class TabBarListOfEpisode extends StatelessWidget {
             SizedBox(
               height: sHeight / (sHeight / 120),
               width: sWidth / (sWidth / 200),
-              child: Image.network(
-                movie.movieInfo.thumbUrl,
-                fit: BoxFit.cover,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return const Center(child: CupertinoActivityIndicator());
-                },
-                errorBuilder: (
-                  context,
-                  error,
-                  stackTrace,
-                ) {
-                  return const ErrorImage();
-                },
-              ),
+              child: CachedNetworkImageWidget(url: movie.movieInfo.thumbUrl),
             ),
             Expanded(
               child: Padding(

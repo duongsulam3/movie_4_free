@@ -18,25 +18,12 @@ class MovieDetailContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sHeight = MediaQuery.of(context).size.height;
-    final sWidth = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
-        body: Stack(
-          fit: StackFit.expand,
-          children: [
-            MovieDetailTabBar(
-              initEpisode: initEpisode,
-              movie: movie,
-              episodes: episodes,
-            ),
-            //* Back button
-            Positioned(
-              top: sHeight / (sHeight / 20),
-              left: sWidth / (sWidth / 10),
-              child: const IconBackButton(),
-            ),
-          ],
+        body: MovieDetailTabBar(
+          initEpisode: initEpisode,
+          movie: movie,
+          episodes: episodes,
         ),
       ),
     );

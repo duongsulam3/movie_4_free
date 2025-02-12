@@ -4,6 +4,7 @@ import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/movie_detail.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/server_data.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/blocs/detail_page_bloc/detail_page_bloc.dart';
+import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/icon_back_button.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/movie_description.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/movie_player_widget.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/tabbar_view_content.dart';
@@ -23,49 +24,74 @@ class MovieDetailTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final sHeight = MediaQuery.of(context).size.height;
+    final sWidth = MediaQuery.of(context).size.width;
+
     return BlocBuilder<DetailPageBloc, DetailPageState>(
       buildWhen: (previous, current) => current is DetailPageStateSuccess,
       builder: (context, state) {
         return DefaultTabController(
           length: 2,
           animationDuration: const Duration(milliseconds: 500),
-          child: Column(
+          child: Stack(
             children: [
-              SizedBox(
-                height: sHeight / (sHeight / 260),
-                child: MoviePlayerWidget(
-                  m3u8Url: initEpisode,
-                  posterUrl: movie.movieInfo.posterUrl,
-                  newVideoUrl: state.newUrl,
+              Positioned(
+                top: sHeight / (sHeight / 260),
+                left: 0,
+                bottom: 0,
+                right: 0,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      MovieDescription(
+                        movie: movie,
+                        passingEpisode: state.newEpisode,
+                      ),
+                      const TabBar(
+                        tabs: [
+                          Tab(
+                            child: Center(
+                              child: ResponsiveText(
+                                text: "Tập tiếp theo",
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                          Tab(
+                            child: Center(
+                              child: ResponsiveText(
+                                text: "Phim tương tự",
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      ExpandedTabBarViewContent(
+                        episodes: episodes,
+                        movie: movie,
+                      )
+                    ],
+                  ),
                 ),
               ),
-              MovieDescription(
-                movie: movie,
-                passingEpisode: state.newEpisode,
-              ),
-              const TabBar(
-                tabs: [
-                  Tab(
-                    child: Center(
-                      child: ResponsiveText(
-                        text: "Tập tiếp theo",
-                        fontSize: 16,
-                      ),
-                    ),
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: SizedBox(
+                  height: sHeight / (sHeight / 260),
+                  child: MoviePlayerWidget(
+                    m3u8Url: initEpisode,
+                    posterUrl: movie.movieInfo.posterUrl,
+                    newVideoUrl: state.newUrl,
                   ),
-                  Tab(
-                    child: Center(
-                      child: ResponsiveText(
-                        text: "Phim tương tự",
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
-              ExpandedTabBarViewContent(
-                episodes: episodes,
-                movie: movie,
+              //* Back button
+              Positioned(
+                top: sHeight / (sHeight / 10),
+                left: sWidth / (sWidth / 10),
+                child: const IconBackButton(),
               ),
             ],
           ),

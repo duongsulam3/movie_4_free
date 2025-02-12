@@ -31,7 +31,7 @@ class CustomAppbarWidget extends StatelessWidget
             leading: leadingWidget,
             centerTitle: isCenterTitle,
             actions: actions,
-            backgroundColor: backgroundColor,
+            backgroundColor: Colors.red,
             title: titleWidget,
           )
         : AnimatedBuilder(
@@ -42,7 +42,7 @@ class CustomAppbarWidget extends StatelessWidget
                   duration: const Duration(milliseconds: 500),
                   curve: Curves.easeInOut,
                   color: scrollController!.offset > 0
-                      ? Colors.black
+                      ? backgroundColor
                       : Colors.transparent,
                   child: AppBar(
                     scrolledUnderElevation: 0,
@@ -61,7 +61,7 @@ class CustomAppbarWidget extends StatelessWidget
                 leading: leadingWidget,
                 centerTitle: isCenterTitle,
                 actions: actions,
-                backgroundColor: backgroundColor,
+                backgroundColor: Colors.transparent,
                 title: titleWidget,
               );
             });

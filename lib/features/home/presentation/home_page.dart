@@ -66,11 +66,20 @@ class _HomePageState extends State<HomePage> {
                         scrollController: scrollController,
                         appBarHeight: sHeight / (sHeight / 50),
                         backgroundColor: Colors.black,
-                        titleWidget: const ResponsiveText(
-                          text: "Smoth Movie App",
-                          fontSize: 24,
-                        ),
-                      )
+                        titleWidget: Row(
+                          children: [
+                            Image.asset(
+                              'assets/images/logo_dark.png',
+                              width: 50,
+                              height: 50,
+                            ),
+                            SizedBox(width: sHeight / (sHeight / 10)),
+                            const ResponsiveText(
+                              text: "Movie 4 Free",
+                              fontSize: 24,
+                            ),
+                          ],
+                        ))
                     : null,
                 bottomNavigationBar: BottomNavigationBar(
                   currentIndex: state.currentPage,
