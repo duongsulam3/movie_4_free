@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/movie_detail.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/server_data.dart';
-import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/icon_back_button.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/movie_detail_tabbar.dart';
 
 class MovieDetailContent extends StatelessWidget {
