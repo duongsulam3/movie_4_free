@@ -1,5 +1,7 @@
 part of 'list_movie_item_bloc.dart';
 
+enum MovieStatus { initial, success, failure }
+
 @immutable
 sealed class ListMovieItemBlocState {
   const ListMovieItemBlocState();
