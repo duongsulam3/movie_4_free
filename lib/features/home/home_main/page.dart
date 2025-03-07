@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smoth_movie_app/features/movies/presentation/screens/list_movie_widget.dart';
+import 'package:smoth_movie_app/features/home/home_main/widgets/title_and_gridview_list.dart';
 import 'package:smoth_movie_app/features/movies/presentation/screens/list_recently_update_movie_widget.dart';
 
 class HomeMain extends StatelessWidget {
@@ -16,14 +16,30 @@ class HomeMain extends StatelessWidget {
       child: Column(
         children: [
           const CarouselSliderWidget(),
-          SizedBox(height: sHeight / (sHeight / 20)),
-          const ListMovieWidget(title: "Hoạt hình"),
-          SizedBox(height: sHeight / (sHeight / 20)),
-          const ListMovieWidget(title: "Phim lẻ"),
-          SizedBox(height: sHeight / (sHeight / 20)),
-          const ListMovieWidget(title: "Phim bộ"),
-          SizedBox(height: sHeight / (sHeight / 20)),
-          const ListMovieWidget(title: "TV Shows"),
+          SizedBox(height: sHeight / (sHeight / 30)),
+          TitleAndGridViewList(
+            sHeight: sHeight,
+            title: "Anime",
+            path: "hoat-hinh",
+          ),
+          SizedBox(height: sHeight / (sHeight / 30)),
+          TitleAndGridViewList(
+            sHeight: sHeight,
+            title: "Phim lẻ",
+            path: "phim-le",
+          ),
+          SizedBox(height: sHeight / (sHeight / 30)),
+          TitleAndGridViewList(
+            sHeight: sHeight,
+            title: "Phim bộ",
+            path: "phim-bo",
+          ),
+          SizedBox(height: sHeight / (sHeight / 30)),
+          TitleAndGridViewList(
+            sHeight: sHeight,
+            title: "Chương trình truyền hình",
+            path: "tv-shows",
+          ),
         ],
       ),
     );

@@ -2,9 +2,11 @@ class AppSecret {
   static const baseUrl = "https://phimapi.com";
   static const apiv1Url = "/v1/api";
   static const imageUrl = "https://phimimg.com/";
+  static const kkPhimUrl = "https://phimapi.com/v1/api";
 }
 
 class ApiEndPoint {
+  static const categoryEndPoint = "/danh-sach/";
   static const recentlyUpdateEndPoint = "/danh-sach/phim-moi-cap-nhat?page=";
   static const animeMoviesEndpoint = "/danh-sach/hoat-hinh";
   static const singleMoviesEndpoint = "/danh-sach/phim-le";

@@ -1,51 +1,47 @@
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart' as http;
-import 'package:smoth_movie_app/core/error/exception.dart';
-import 'package:smoth_movie_app/features/movies/data/model/single_movies/single_movie_item.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_item.dart';
+import 'package:smoth_movie_app/features/movies/domain/usecase/get_movies.dart';
 
-part 'movies_bloc_event.dart';
-part 'movies_bloc_state.dart';
+part 'movies_bloc.freezed.dart';
+part 'movies_event.dart';
+part 'movies_state.dart';
 
-class MoviesBlocBloc extends Bloc<MoviesBlocEvent, MoviesBlocState> {
-  final http.Client httpClient;
-  MoviesBlocBloc({required this.httpClient}) : super(const MoviesBlocState()) {
-    on<MovieBlocEventFetch>((event, emit) async {
-      if (state.hasReachedMax) return;
+enum MoviesStateStatus { init, success, error }
+
+class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
+  final GetMovies getMovies;
+  MoviesBloc({required this.getMovies}) : super(const MoviesState()) {
+    List<MovieItemEntity> movies = const <MovieItemEntity>[];
+    on<GetListMovies>((event, emit) async {
       try {
-        final movies = await _fetchMovies(startPage: state.page);
-        if (movies.isEmpty) {
-          return emit(state.copyWith(hasReachedMax: true));
-        }
-        emit(
-          state.copyWith(
-            status: MovieStatus.success,
-            page: state.page + event.page,
-            movies: [...state.movies, ...movies],
+        if (state.isEnd) return;
+        final res = await getMovies.call(
+          GetMoviesParams(
+            page: state.page,
+            cateName: event.path,
+            limit: event.limit,
           ),
         );
+        res.fold(
+          (err) => emit(state.copyWith(status: MoviesStateStatus.error)),
+          (data) {
+            if (data.isNotEmpty) {
+              movies = data;
+              emit(state.copyWith(
+                status: MoviesStateStatus.success,
+                movies: [...state.movies, ...movies],
+                isEnd: event.isRefresh == false ? true : false,
+                page: state.page + 1,
+              ));
+            } else {
+              emit(state.copyWith(isEnd: true));
+            }
+          },
+        );
       } catch (e) {
-        emit(state.copyWith(status: MovieStatus.failure));
+        emit(state.copyWith(status: MoviesStateStatus.error));
       }
     });
-  }
-
-  Future<List<MovieItemEntity>> _fetchMovies({required int startPage}) async {
-    List<MovieItemEntity> data = [];
-    var uri = Uri.parse(
-        "https://phimapi.com/v1/api/danh-sach/hoat-hinh?page=$startPage");
-    final res = await httpClient.get(uri);
-    if (res.statusCode == 200) {
-      var jsonResponse = jsonDecode(res.body)["data"]["items"];
-      for (var item in jsonResponse) {
-        data.add(MovieItemModel.fromJson(item));
-      }
-      return data;
-    } else {
-      throw const ServerException("Lỗi khi lấy dữ liệu phim hoạt hình");
-    }
   }
 }

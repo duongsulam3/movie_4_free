@@ -13,23 +13,23 @@ class RowTitleAndMore extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        ResponsiveText(
-          text: title,
-          fontSize: 24,
-          fontWeight: FontWeight.w600,
-        ),
-        GestureDetector(
-          onTap: onTap,
-          child: const Icon(
+    return GestureDetector(
+      onTap: onTap,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          ResponsiveText(
+            text: title,
+            fontSize: 24,
+            fontWeight: FontWeight.w600,
+          ),
+          const Icon(
             CupertinoIcons.ellipsis,
             size: 16,
             color: Colors.grey,
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

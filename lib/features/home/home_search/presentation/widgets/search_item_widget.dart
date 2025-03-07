@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:smoth_movie_app/common/model/movie_detail_param_model.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
+import 'package:smoth_movie_app/core/secret/app_secret.dart';
 import 'package:smoth_movie_app/features/home/home_search/domain/entities/search_movie_entity.dart';
-import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/carousel_slider_item.dart';
+import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/cached_network_image.dart';
 
 class SearchItemWidget extends StatelessWidget {
   const SearchItemWidget({
@@ -56,7 +57,9 @@ class SearchItemWidget extends StatelessWidget {
                   left: Radius.circular(10),
                 ),
               ),
-              child: CachedNetworkImageWidget(url: movie.posterUrl),
+              child: CachedNetworkImageWidget(
+                url: AppSecret.imageUrl + movie.posterUrl,
+              ),
             ),
             SizedBox(width: screenWidth / (screenWidth / 10)),
             Flexible(

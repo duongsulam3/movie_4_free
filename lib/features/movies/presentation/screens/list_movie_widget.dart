@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smoth_movie_app/common/widgets/responsive_sized_box.dart';
 import 'package:smoth_movie_app/features/home/presentation/widgets/row_title_and_more.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/list_movie_item_bloc/list_movie_item_bloc.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/list_movie_item_widget.dart';
 import 'package:smoth_movie_app/features/movies/presentation/screens/infinite_movie_page.dart';
+// import 'package:smoth_movie_app/features/movies/presentation/screens/infinite_movie_page.dart';
 
 class ListMovieWidget extends StatelessWidget {
   final String title;
@@ -30,9 +33,10 @@ class ListMovieWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: sHeight / (sHeight / 20)),
-              SizedBox(
-                height: sHeight / (sHeight / 200),
+              // SizedBox(height: sHeight / (sHeight / 20)),
+              const ResponsiveSizedBox(height: 20),
+              ResponsiveSizedBox(
+                height: 200,
                 //!TV SHOWS
                 child: BlocBuilder<ListMovieItemBloc, ListMovieItemBlocState>(
                   bloc: context.read<ListMovieItemBloc>()
@@ -72,9 +76,9 @@ class ListMovieWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               RowTitleAndMore(title: title),
-              SizedBox(height: sHeight / (sHeight / 20)),
-              SizedBox(
-                height: sHeight / (sHeight / 200),
+              const ResponsiveSizedBox(height: 20),
+              ResponsiveSizedBox(
+                height: 200,
                 //!ANIME
                 child: BlocBuilder<ListMovieItemBloc, ListMovieItemBlocState>(
                   bloc: context.read<ListMovieItemBloc>()

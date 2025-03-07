@@ -4,12 +4,10 @@ import 'package:smoth_movie_app/common/model/movie_detail_param_model.dart';
 import 'package:smoth_movie_app/core/error/error_page.dart';
 import 'package:smoth_movie_app/features/home/home_main/page.dart';
 import 'package:smoth_movie_app/features/home/home_profile/page.dart';
-import 'package:smoth_movie_app/features/home/home_search/presentation/bloc/search_bloc.dart';
 import 'package:smoth_movie_app/features/home/home_search/presentation/page.dart';
 import 'package:smoth_movie_app/features/home/presentation/home_page.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/blocs/detail_movie_bloc/detail_movie_bloc.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/detail_page.dart';
-import 'package:smoth_movie_app/features/movies/presentation/bloc/list_movie_item_bloc/list_movie_item_bloc.dart';
 import 'package:smoth_movie_app/features/splash/bloc/splash_bloc.dart';
 import 'package:smoth_movie_app/features/splash/presentation/splash_page.dart';
 import 'package:smoth_movie_app/init_dependencies.dart';
@@ -39,23 +37,11 @@ class AppRouter {
           dy: 0.0,
         );
       case 'home_main':
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => serviceLocator<ListMovieItemBloc>(),
-            child: const HomeMain(),
-          ),
-        );
+        return MaterialPageRoute(builder: (_) => const HomeMain());
       case 'home_search':
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => serviceLocator<SearchBloc>(),
-            child: const SearchPage(),
-          ),
-        );
+        return MaterialPageRoute(builder: (_) => const SearchPage());
       case 'home_profile':
-        return MaterialPageRoute(
-          builder: (_) => const ProfilePage(),
-        );
+        return MaterialPageRoute(builder: (_) => const ProfilePage());
       case 'movie_detail':
         final params = settings.arguments as MovieDetailParamModel;
         return CustomTransition(
@@ -70,9 +56,7 @@ class AppRouter {
           dy: 1.0,
         );
       default:
-        return MaterialPageRoute(
-          builder: (_) => const ErrorPage(),
-        );
+        return MaterialPageRoute(builder: (_) => const ErrorPage());
     }
   }
 }

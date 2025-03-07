@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smoth_movie_app/common/model/movie_detail_param_model.dart';
 import 'package:smoth_movie_app/core/secret/app_secret.dart';
 import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_item.dart';
+import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/container_with_cached_network_image_provider.dart';
 
 class ListMovieItemWidget extends StatelessWidget {
   final MovieItemEntity movie;
@@ -10,23 +11,14 @@ class ListMovieItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final sHeight = MediaQuery.of(context).size.height;
-    final sWidth = MediaQuery.of(context).size.width;
+    // final sWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () => Navigator.of(context).pushNamed(
         "movie_detail",
         arguments: MovieDetailParamModel(slug: movie.slug),
       ),
-      child: Container(
-        // height: sHeight / (sHeight / 300),
-        width: sWidth / (sWidth / 150),
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(
-              AppSecret.imageUrl + movie.posterUrl,
-            ),
-            fit: BoxFit.fill,
-          ),
-        ),
+      child: ContainerWithCachedNetworkImageProvider(
+        path: AppSecret.imageUrl + movie.posterUrl,
       ),
     );
   }

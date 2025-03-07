@@ -1,8 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
-import 'package:http/http.dart' as http;
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies_bloc/movies_bloc.dart';
+import 'package:smoth_movie_app/init_dependencies.dart';
 
 class InfiniteMoviePage extends StatelessWidget {
   final String title;
@@ -15,8 +17,8 @@ class InfiniteMoviePage extends StatelessWidget {
         title: ResponsiveText(text: title, fontSize: 24),
       ),
       body: BlocProvider(
-        create: (context) => MoviesBlocBloc(httpClient: http.Client())
-          ..add(const MovieBlocEventFetch(page: 1)),
+        create: (context) => serviceLocator<MoviesBloc>()
+          ..add(const GetListMovies(path: 'hoat-hinh')),
         child: const MoviesList(),
       ),
     );
@@ -47,7 +49,7 @@ class _MoviesListState extends State<MoviesList> {
 
   void _onClose() {
     if (_isBottom) {
-      context.read<MoviesBlocBloc>().add(const MovieBlocEventFetch(page: 1));
+      context.read<MoviesBloc>().add(const GetListMovies(path: "hoat-hinh"));
     }
   }
 
@@ -60,35 +62,40 @@ class _MoviesListState extends State<MoviesList> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MoviesBlocBloc, MoviesBlocState>(builder: (_, state) {
-      switch (state.status) {
-        case MovieStatus.initial:
-          return const Center(child: CircularProgressIndicator());
-        case MovieStatus.failure:
-          return const Center(
-            child: Text('Failed to fetch posts'),
-          );
-        case MovieStatus.success:
-          if (state.movies.isEmpty) {
+    return BlocBuilder<MoviesBloc, MoviesState>(
+      builder: (_, state) {
+        switch (state.status) {
+          case MoviesStateStatus.init:
+            return const Center(child: CircularProgressIndicator());
+          case MoviesStateStatus.error:
             return const Center(
-              child: Text('No posts'),
+              child: Text('Failed to fetch posts'),
             );
-          }
-          return ListView.builder(
-            itemBuilder: (_, i) {
-              return i >= state.movies.length
-                  ? const Center(child: CircularProgressIndicator())
-                  : ListTile(
-                      title: Text(state.movies[i].name),
-                      subtitle: Text(state.movies[i].originName),
-                    );
-            },
-            itemCount: state.hasReachedMax
-                ? state.movies.length
-                : state.movies.length + 1,
-            controller: _scrollController,
-          );
-      }
-    });
+          case MoviesStateStatus.success:
+            log(state.page.toString());
+            if (state.movies.isEmpty) {
+              return const Center(
+                child: Text('No more movies'),
+              );
+            }
+            return ListView.builder(
+              itemBuilder: (_, i) {
+                return i >= state.movies.length
+                    ? const Center(child: CircularProgressIndicator())
+                    : ListTile(
+                        title: Text(
+                          state.movies[i].name,
+                          style: const TextStyle(fontSize: 30),
+                        ),
+                        subtitle: Text(state.movies[i].originName),
+                      );
+              },
+              itemCount:
+                  state.isEnd ? state.movies.length : state.movies.length + 1,
+              controller: _scrollController,
+            );
+        }
+      },
+    );
   }
 }

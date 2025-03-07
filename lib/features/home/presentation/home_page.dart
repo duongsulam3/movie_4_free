@@ -25,8 +25,12 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     pages = [
       {
-        "page": BlocProvider(
-          create: (context) => serviceLocator<ListMovieItemBloc>(),
+        "page": MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => serviceLocator<ListMovieItemBloc>(),
+            ),
+          ],
           child: HomeMain(scrollController: scrollController),
         ),
         "appBar": true,
