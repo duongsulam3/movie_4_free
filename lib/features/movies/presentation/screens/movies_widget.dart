@@ -3,16 +3,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/list_movie_item_widget.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies_bloc/movies_bloc.dart';
 
-class GridViewMoviesWidget extends StatelessWidget {
+class GridViewMoviesWidget extends StatefulWidget {
   const GridViewMoviesWidget({super.key, required this.path});
   final String path;
 
   @override
+  State<GridViewMoviesWidget> createState() => _GridViewMoviesWidgetState();
+}
+
+class _GridViewMoviesWidgetState extends State<GridViewMoviesWidget>
+    with AutomaticKeepAliveClientMixin {
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return BlocBuilder<MoviesBloc, MoviesState>(
       bloc: context.read<MoviesBloc>()
         ..add(GetListMovies(
-          path: path,
+          path: widget.path,
           limit: 9,
           isRefresh: false,
         )),
@@ -25,6 +32,7 @@ class GridViewMoviesWidget extends StatelessWidget {
           case MoviesStateStatus.success:
             final items = state.movies;
             return GridView.builder(
+              padding: EdgeInsets.zero,
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -42,4 +50,7 @@ class GridViewMoviesWidget extends StatelessWidget {
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

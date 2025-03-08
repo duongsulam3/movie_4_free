@@ -6,7 +6,10 @@ part 'detail_page_state.dart';
 
 class DetailPageBloc extends Bloc<DetailPageEvent, DetailPageState> {
   DetailPageBloc()
-      : super(const DetailPageInitial(newUrl: '', newEpisode: '')) {
+      : super(const DetailPageInitial(
+          newUrl: '',
+          newEpisode: '',
+        )) {
     on<SetNewVideoPlayer>(
       (event, emit) => emit(
         DetailPageStateSuccess(

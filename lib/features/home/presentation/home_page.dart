@@ -8,6 +8,7 @@ import 'package:smoth_movie_app/features/home/home_main/page.dart';
 import 'package:smoth_movie_app/features/home/home_profile/page.dart';
 import 'package:smoth_movie_app/features/home/home_search/presentation/bloc/search_bloc.dart';
 import 'package:smoth_movie_app/features/home/home_search/presentation/page.dart';
+import 'package:smoth_movie_app/features/home/presentation/widgets/logo_and_widget.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/list_movie_item_bloc/list_movie_item_bloc.dart';
 import 'package:smoth_movie_app/init_dependencies.dart';
 
@@ -19,18 +20,25 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final bottomNavBloc = BottomNavBloc();
   List<Map<String, dynamic>> pages = [];
+  List<Map<String, dynamic>> tabs = [];
+  List<Map<String, dynamic>> navs = [];
   final scrollController = ScrollController();
+
   @override
   void initState() {
+    tabs = [
+      {"title": "Trang chủ"},
+      {"title": "Anime"},
+      {"title": "Phim lẻ"},
+      {"title": "Phim bộ"},
+      {"title": "Phim truyền hình"},
+    ];
     pages = [
       {
-        "page": MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (context) => serviceLocator<ListMovieItemBloc>(),
-            ),
-          ],
+        "page": BlocProvider(
+          create: (context) => serviceLocator<ListMovieItemBloc>(),
           child: HomeMain(scrollController: scrollController),
         ),
         "appBar": true,
@@ -44,7 +52,24 @@ class _HomePageState extends State<HomePage> {
       },
       {
         "page": const ProfilePage(),
-        "appBar": true,
+        "appBar": false,
+      },
+    ];
+    navs = [
+      {
+        "icon": const Icon(CupertinoIcons.house),
+        "active_icon": const Icon(CupertinoIcons.house_fill),
+        "title": "Trang chủ",
+      },
+      {
+        "icon": const Icon(CupertinoIcons.search),
+        "active_icon": const Icon(CupertinoIcons.search),
+        "title": "Tìm kiếm",
+      },
+      {
+        "icon": const Icon(CupertinoIcons.person),
+        "active_icon": const Icon(CupertinoIcons.person_fill),
+        "title": "Tài khoản",
       },
     ];
     super.initState();
@@ -63,54 +88,53 @@ class _HomePageState extends State<HomePage> {
               bottom: false,
               right: false,
               left: false,
-              child: Scaffold(
-                extendBodyBehindAppBar: true,
-                appBar: pages[state.currentPage]["appBar"] == true
-                    ? CustomAppbarWidget(
-                        scrollController: scrollController,
-                        appBarHeight: sHeight / (sHeight / 50),
-                        backgroundColor: Colors.black,
-                        titleWidget: Row(
-                          children: [
-                            Image.asset(
-                              'assets/images/logo_dark.png',
-                              width: 50,
-                              height: 50,
+              child: DefaultTabController(
+                length: tabs.length,
+                child: Scaffold(
+                  extendBodyBehindAppBar: true,
+                  appBar: pages[state.currentPage]["appBar"] == true
+                      ? CustomAppbarWidget(
+                          scrollController: scrollController,
+                          appBarHeight: sHeight / (sHeight / 80),
+                          backgroundColor: Colors.black,
+                          titleWidget: LogoAndWidget(sHeight: sHeight),
+                          appBarBottomWidget: PreferredSize(
+                            preferredSize: Size.fromHeight(
+                              sHeight / (sHeight / 30),
                             ),
-                            SizedBox(width: sHeight / (sHeight / 10)),
-                            const ResponsiveText(
-                              text: "Movie 4 Free",
-                              fontSize: 24,
+                            child: TabBar(
+                              isScrollable: true,
+                              tabAlignment: TabAlignment.start,
+                              indicatorColor: Colors.transparent,
+                              dividerColor: Colors.transparent,
+                              tabs: List.generate(
+                                tabs.length,
+                                (i) => Tab(
+                                  child: ResponsiveText(
+                                    text: tabs[i]["title"],
+                                  ),
+                                ),
+                              ),
                             ),
-                          ],
-                        ))
-                    : null,
-                bottomNavigationBar: BottomNavigationBar(
-                  currentIndex: state.currentPage,
-                  onTap: (int i) {
-                    context
+                          ),
+                        )
+                      : null,
+                  bottomNavigationBar: BottomNavigationBar(
+                    currentIndex: state.currentPage,
+                    onTap: (int i) => context
                         .read<BottomNavBloc>()
-                        .add(HomeChangeBottomNavStateEvent(index: i));
-                  },
-                  items: const [
-                    BottomNavigationBarItem(
-                      icon: Icon(CupertinoIcons.house),
-                      activeIcon: Icon(CupertinoIcons.house_fill),
-                      label: "Trang chủ",
+                        .add(HomeChangeBottomNavStateEvent(index: i)),
+                    items: List.generate(
+                      navs.length,
+                      (i) => BottomNavigationBarItem(
+                        icon: navs[i]["icon"],
+                        activeIcon: navs[i]["active_icon"],
+                        label: navs[i]["title"],
+                      ),
                     ),
-                    BottomNavigationBarItem(
-                      icon: Icon(CupertinoIcons.search_circle),
-                      activeIcon: Icon(CupertinoIcons.search_circle_fill),
-                      label: "Tìm kiếm",
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(CupertinoIcons.person_2),
-                      activeIcon: Icon(CupertinoIcons.person_2_fill),
-                      label: "Người dùng",
-                    ),
-                  ],
+                  ),
+                  body: pages[state.currentPage]["page"],
                 ),
-                body: pages[state.currentPage]["page"],
               ),
             );
           } else {

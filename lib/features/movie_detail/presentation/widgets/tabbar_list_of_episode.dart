@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/movie_detail.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/blocs/detail_page_bloc/detail_page_bloc.dart';
-import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/cached_network_image.dart';
+import 'package:smoth_movie_app/common/widgets/cached_network_image.dart';
 
 class TabBarListOfEpisode extends StatelessWidget {
   const TabBarListOfEpisode({

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:smoth_movie_app/features/home/home_main/widgets/title_and_gridview_list.dart';
-import 'package:smoth_movie_app/features/movies/presentation/screens/list_recently_update_movie_widget.dart';
+import 'package:smoth_movie_app/features/home/home_main/tabs/anime_tab.dart';
+import 'package:smoth_movie_app/features/home/home_main/tabs/home_main_content.dart';
+import 'package:smoth_movie_app/features/home/home_main/tabs/phim_bo_tab.dart';
+import 'package:smoth_movie_app/features/home/home_main/tabs/phim_le_tab.dart';
+import 'package:smoth_movie_app/features/home/home_main/tabs/phim_truyen_hinh_tab.dart';
 
 class HomeMain extends StatelessWidget {
   final ScrollController? scrollController;
@@ -10,38 +13,14 @@ class HomeMain extends StatelessWidget {
   Widget build(BuildContext context) {
     final sHeight = MediaQuery.of(context).size.height;
     // final sWidth = MediaQuery.of(context).size.width;
-    return SingleChildScrollView(
-      controller: scrollController,
-      scrollDirection: Axis.vertical,
-      child: Column(
-        children: [
-          const CarouselSliderWidget(),
-          SizedBox(height: sHeight / (sHeight / 30)),
-          TitleAndGridViewList(
-            sHeight: sHeight,
-            title: "Anime",
-            path: "hoat-hinh",
-          ),
-          SizedBox(height: sHeight / (sHeight / 30)),
-          TitleAndGridViewList(
-            sHeight: sHeight,
-            title: "Phim lẻ",
-            path: "phim-le",
-          ),
-          SizedBox(height: sHeight / (sHeight / 30)),
-          TitleAndGridViewList(
-            sHeight: sHeight,
-            title: "Phim bộ",
-            path: "phim-bo",
-          ),
-          SizedBox(height: sHeight / (sHeight / 30)),
-          TitleAndGridViewList(
-            sHeight: sHeight,
-            title: "Chương trình truyền hình",
-            path: "tv-shows",
-          ),
-        ],
-      ),
+    return TabBarView(
+      children: [
+        HomeMainContent(scrollController: scrollController, sHeight: sHeight),
+        const AnimeTab(),
+        const PhimLeTab(),
+        const PhimBoTab(),
+        const PhimTruyenHinhTab(),
+      ],
     );
   }
 }

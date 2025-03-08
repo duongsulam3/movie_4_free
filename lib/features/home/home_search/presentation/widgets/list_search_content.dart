@@ -16,7 +16,7 @@ class ListSearchContent extends StatelessWidget {
     return BlocBuilder<SearchBloc, SearchState>(
       builder: (context, state) {
         if (state is SearchLoadingState) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator.adaptive());
         } else if (state is SearchSuccessState) {
           return ListView.separated(
             shrinkWrap: true,

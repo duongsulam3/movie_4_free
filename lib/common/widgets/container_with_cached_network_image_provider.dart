@@ -20,6 +20,7 @@ class ContainerWithCachedNetworkImageProvider extends StatelessWidget {
       height: height == null ? null : sHeight / (sHeight / height!),
       width: width == null ? null : sWidth / (sWidth / width!),
       decoration: BoxDecoration(
+        color: Colors.blueGrey,
         image: DecorationImage(
           image: CachedNetworkImageProvider(
             path,

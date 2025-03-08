@@ -66,7 +66,7 @@ class _MoviesListState extends State<MoviesList> {
       builder: (_, state) {
         switch (state.status) {
           case MoviesStateStatus.init:
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator.adaptive());
           case MoviesStateStatus.error:
             return const Center(
               child: Text('Failed to fetch posts'),
@@ -81,7 +81,7 @@ class _MoviesListState extends State<MoviesList> {
             return ListView.builder(
               itemBuilder: (_, i) {
                 return i >= state.movies.length
-                    ? const Center(child: CircularProgressIndicator())
+                    ? const Center(child: CircularProgressIndicator.adaptive())
                     : ListTile(
                         title: Text(
                           state.movies[i].name,

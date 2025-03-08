@@ -4,7 +4,7 @@ class ResponsiveText extends StatelessWidget {
   const ResponsiveText({
     super.key,
     required this.text,
-    required this.fontSize,
+    this.fontSize = 16,
     this.fontWeight = FontWeight.w600,
     this.textOverflow,
     this.maxLines = 1,

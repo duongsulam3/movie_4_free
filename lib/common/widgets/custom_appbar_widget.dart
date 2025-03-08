@@ -10,6 +10,7 @@ class CustomAppbarWidget extends StatelessWidget
   final bool isCenterTitle;
   final Color backgroundColor;
   final ScrollController? scrollController;
+  final PreferredSizeWidget? appBarBottomWidget;
   const CustomAppbarWidget({
     super.key,
     required this.appBarHeight,
@@ -20,6 +21,7 @@ class CustomAppbarWidget extends StatelessWidget
     this.backgroundColor = Colors.transparent,
     this.actions,
     this.scrollController,
+    this.appBarBottomWidget,
   });
 
   @override
@@ -33,6 +35,7 @@ class CustomAppbarWidget extends StatelessWidget
             actions: actions,
             backgroundColor: Colors.red,
             title: titleWidget,
+            bottom: appBarBottomWidget,
           )
         : AnimatedBuilder(
             animation: scrollController!,
@@ -52,6 +55,7 @@ class CustomAppbarWidget extends StatelessWidget
                     actions: actions,
                     backgroundColor: Colors.transparent,
                     title: titleWidget,
+                    bottom: appBarBottomWidget,
                   ),
                 );
               }
@@ -63,8 +67,10 @@ class CustomAppbarWidget extends StatelessWidget
                 actions: actions,
                 backgroundColor: Colors.transparent,
                 title: titleWidget,
+                bottom: appBarBottomWidget,
               );
-            });
+            },
+          );
   }
 
   @override
