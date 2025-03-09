@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:smoth_movie_app/common/widgets/error_image_widget.dart';
 
 class ContainerWithCachedNetworkImageProvider extends StatelessWidget {
   const ContainerWithCachedNetworkImageProvider({
@@ -24,7 +25,9 @@ class ContainerWithCachedNetworkImageProvider extends StatelessWidget {
         image: DecorationImage(
           image: CachedNetworkImageProvider(
             path,
-            errorListener: (p0) => const Icon(Icons.error),
+            errorListener: (p0) => const Center(
+              child: ErrorImage(),
+            ),
           ),
           fit: BoxFit.fill,
         ),

@@ -2,9 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
 
 class ErrorImage extends StatelessWidget {
-  const ErrorImage({
-    super.key,
-  });
+  const ErrorImage({super.key});
 
   @override
   Widget build(BuildContext context) {
