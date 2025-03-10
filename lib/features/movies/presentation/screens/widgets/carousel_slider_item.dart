@@ -5,10 +5,7 @@ import 'package:smoth_movie_app/features/movies/domain/entities/currently_update
 import 'package:smoth_movie_app/common/widgets/cached_network/cached_network_image.dart';
 
 class CarouselSliderItem extends StatelessWidget {
-  const CarouselSliderItem({
-    super.key,
-    required this.item,
-  });
+  const CarouselSliderItem({super.key, required this.item});
 
   final RecentlyUpdateListItemEntity item;
 
@@ -24,7 +21,10 @@ class CarouselSliderItem extends StatelessWidget {
       ),
       child: Stack(
         children: [
-          CachedNetworkImageWidget(url: item.posterUrl),
+          CachedNetworkImageWidget(
+            url: item.posterUrl,
+            width: double.infinity,
+          ),
           Positioned(
             bottom: 0,
             left: 10,

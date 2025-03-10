@@ -4,16 +4,28 @@ import 'package:smoth_movie_app/common/widgets/error_image_widget.dart';
 
 class CachedNetworkImageWidget extends StatelessWidget {
   final String url;
+  final double? height;
+  final double? width;
+  final int? memCacheHeight;
+  final int? memCacheWidth;
+
   const CachedNetworkImageWidget({
     super.key,
     required this.url,
+    this.height,
+    this.width,
+    this.memCacheHeight,
+    this.memCacheWidth,
   });
 
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
       imageUrl: url,
-      width: double.maxFinite,
+      height: height,
+      width: width,
+      memCacheHeight: memCacheHeight,
+      memCacheWidth: memCacheWidth,
       fit: BoxFit.fill,
       errorWidget: (context, url, error) => const Center(
         child: ErrorImage(),
