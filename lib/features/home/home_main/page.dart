@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:smoth_movie_app/features/home/home_main/tabs/anime_tab.dart';
 import 'package:smoth_movie_app/features/home/home_main/tabs/home_main_content.dart';
@@ -11,6 +13,7 @@ class HomeMain extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log("Rebuilding");
     final sHeight = MediaQuery.of(context).size.height;
     // final sWidth = MediaQuery.of(context).size.width;
     return TabBarView(

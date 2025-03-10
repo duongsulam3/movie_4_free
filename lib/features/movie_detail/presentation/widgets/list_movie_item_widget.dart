@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smoth_movie_app/common/model/movie_detail_param_model.dart';
 import 'package:smoth_movie_app/core/secret/app_secret.dart';
 import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_item.dart';
-import 'package:smoth_movie_app/common/widgets/container_with_cached_network_image_provider.dart';
+import 'package:smoth_movie_app/common/widgets/cached_network/container_with_cached_network_image_provider.dart';
 
 class ListMovieItemWidget extends StatelessWidget {
   final MovieItemEntity movie;

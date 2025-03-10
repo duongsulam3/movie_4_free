@@ -84,6 +84,13 @@ class _HomePageState extends State<HomePage> {
       child: BlocBuilder<BottomNavBloc, BottomNavState>(
         builder: (context, state) {
           if (state is HomeInitialBottomNav) {
+            /* Change Page On Tap Function */
+            void onTap(int index) {
+              context
+                  .read<BottomNavBloc>()
+                  .add(HomeChangeBottomNavStateEvent(index: index));
+            }
+
             return SafeArea(
               bottom: false,
               right: false,
@@ -121,9 +128,7 @@ class _HomePageState extends State<HomePage> {
                       : null,
                   bottomNavigationBar: BottomNavigationBar(
                     currentIndex: state.currentPage,
-                    onTap: (int i) => context
-                        .read<BottomNavBloc>()
-                        .add(HomeChangeBottomNavStateEvent(index: i)),
+                    onTap: (int i) => onTap(i),
                     items: List.generate(
                       navs.length,
                       (i) => BottomNavigationBarItem(
