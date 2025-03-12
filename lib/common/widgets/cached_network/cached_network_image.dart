@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:smoth_movie_app/common/widgets/error_image_widget.dart';
@@ -27,9 +29,10 @@ class CachedNetworkImageWidget extends StatelessWidget {
       memCacheHeight: memCacheHeight,
       memCacheWidth: memCacheWidth,
       fit: BoxFit.fill,
-      errorWidget: (context, url, error) => const Center(
-        child: ErrorImage(),
-      ),
+      errorWidget: (context, url, error) {
+        log("Ảnh bị lỗi: $url");
+        return const Center(child: ErrorImage());
+      },
       progressIndicatorBuilder: (context, url, progress) => const Center(
         child: CircularProgressIndicator.adaptive(),
       ),

@@ -1,13 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:smoth_movie_app/core/bloc/movies_state_status.dart';
 import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_item.dart';
 import 'package:smoth_movie_app/features/movies/domain/usecase/get_movies.dart';
 
 part 'movies_bloc.freezed.dart';
 part 'movies_event.dart';
 part 'movies_state.dart';
-
-enum MoviesStateStatus { init, success, error }
 
 class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   final GetMovies getMovies;

@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/widgets/custom_appbar_widget.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
+import 'package:smoth_movie_app/features/home/home_main/tabs/anime_tab.dart';
+import 'package:smoth_movie_app/features/home/home_main/tabs/home_main_content.dart';
+import 'package:smoth_movie_app/features/home/home_main/tabs/phim_bo_tab.dart';
+import 'package:smoth_movie_app/features/home/home_main/tabs/phim_le_tab.dart';
+import 'package:smoth_movie_app/features/home/home_main/tabs/phim_truyen_hinh_tab.dart';
 import 'package:smoth_movie_app/features/home/presentation/bloc/bottom_nav/bottom_nav_bloc.dart';
 import 'package:smoth_movie_app/features/home/home_main/page.dart';
 import 'package:smoth_movie_app/features/home/home_profile/page.dart';
-import 'package:smoth_movie_app/features/home/home_search/presentation/bloc/search_bloc.dart';
-import 'package:smoth_movie_app/features/home/home_search/presentation/page.dart';
 import 'package:smoth_movie_app/features/home/presentation/widgets/logo_and_widget.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/list_movie_item_bloc/list_movie_item_bloc.dart';
 import 'package:smoth_movie_app/init_dependencies.dart';
@@ -29,27 +32,42 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     tabs = [
-      {"title": "Trang chủ"},
-      {"title": "Anime"},
-      {"title": "Phim lẻ"},
-      {"title": "Phim bộ"},
-      {"title": "Phim truyền hình"},
+      {
+        "title": "Trang chủ",
+        "widget": HomeMainContent(scrollController: scrollController),
+      },
+      {
+        "title": "Anime",
+        "widget": const AnimeTab(),
+      },
+      {
+        "title": "Phim lẻ",
+        "widget": const PhimLeTab(),
+      },
+      {
+        "title": "Phim bộ",
+        "widget": const PhimBoTab(),
+      },
+      {
+        "title": "Phim truyền hình",
+        "widget": const PhimTruyenHinhTab(),
+      },
     ];
     pages = [
       {
         "page": BlocProvider(
           create: (context) => serviceLocator<ListMovieItemBloc>(),
-          child: HomeMain(scrollController: scrollController),
+          child: HomeMain(tabs: tabs),
         ),
         "appBar": true,
       },
-      {
-        "page": BlocProvider(
-          create: (context) => serviceLocator<SearchBloc>(),
-          child: const SearchPage(),
-        ),
-        "appBar": false,
-      },
+      // {
+      //   "page": BlocProvider(
+      //     create: (context) => serviceLocator<SearchBloc>(),
+      //     child: const SearchPage(),
+      //   ),
+      //   "appBar": false,
+      // },
       {
         "page": const ProfilePage(),
         "appBar": false,
@@ -61,11 +79,11 @@ class _HomePageState extends State<HomePage> {
         "active_icon": const Icon(CupertinoIcons.house_fill),
         "title": "Trang chủ",
       },
-      {
-        "icon": const Icon(CupertinoIcons.search),
-        "active_icon": const Icon(CupertinoIcons.search),
-        "title": "Tìm kiếm",
-      },
+      // {
+      //   "icon": const Icon(CupertinoIcons.search),
+      //   "active_icon": const Icon(CupertinoIcons.search),
+      //   "title": "Tìm kiếm",
+      // },
       {
         "icon": const Icon(CupertinoIcons.person),
         "active_icon": const Icon(CupertinoIcons.person_fill),
@@ -84,7 +102,7 @@ class _HomePageState extends State<HomePage> {
       child: BlocBuilder<BottomNavBloc, BottomNavState>(
         builder: (context, state) {
           if (state is HomeInitialBottomNav) {
-            /* Change Page On Tap Function */
+            //* Change Page On Tap Function */
             void onTap(int index) {
               context
                   .read<BottomNavBloc>()
@@ -102,9 +120,9 @@ class _HomePageState extends State<HomePage> {
                   appBar: pages[state.currentPage]["appBar"] == true
                       ? CustomAppbarWidget(
                           scrollController: scrollController,
-                          appBarHeight: sHeight / (sHeight / 80),
+                          appBarHeight: sHeight / (sHeight / 90),
                           backgroundColor: Colors.black,
-                          titleWidget: LogoAndWidget(sHeight: sHeight),
+                          titleWidget: const LogoAndWidget(),
                           appBarBottomWidget: PreferredSize(
                             preferredSize: Size.fromHeight(
                               sHeight / (sHeight / 30),

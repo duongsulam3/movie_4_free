@@ -6,14 +6,15 @@ class HomeMainContent extends StatelessWidget {
   const HomeMainContent({
     super.key,
     required this.scrollController,
-    required this.sHeight,
+  
   });
 
   final ScrollController? scrollController;
-  final double sHeight;
+
 
   @override
   Widget build(BuildContext context) {
+    final sHeight = MediaQuery.of(context).size.height;
     return SingleChildScrollView(
       controller: scrollController,
       scrollDirection: Axis.vertical,

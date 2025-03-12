@@ -1,17 +1,14 @@
 import 'package:flutter/cupertino.dart';
 
-class CustomTransition extends PageRouteBuilder {
+class FadeInTransition extends PageRouteBuilder {
   final Widget page;
   final String? routeName;
-  final double dx;
-  final double dy;
-  CustomTransition({
+  FadeInTransition({
     required this.page,
-    required this.dx,
-    required this.dy,
     this.routeName,
   }) : super(
           settings: RouteSettings(name: routeName),
+          transitionDuration: const Duration(milliseconds: 300),
           pageBuilder: (
             BuildContext context,
             Animation<double> animation,
@@ -25,17 +22,11 @@ class CustomTransition extends PageRouteBuilder {
             Animation<double> secondaryAnimation,
             Widget child,
           ) {
-            final begin = Offset(dx, dy);
-            const end = Offset.zero;
-            const curve = Curves.ease;
-            var tween = Tween(begin: begin, end: end).chain(
-              CurveTween(curve: curve),
-            );
-            return SlideTransition(
-              position: animation.drive(tween),
+            final tween = Tween(begin: 0.0, end: 1.0);
+            return FadeTransition(
+              opacity: animation.drive(tween),
               child: child,
             );
           },
-          transitionDuration: const Duration(milliseconds: 1000),
         );
 }

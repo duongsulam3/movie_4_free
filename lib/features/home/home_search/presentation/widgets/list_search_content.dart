@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
+import 'package:smoth_movie_app/common/widgets/responsive_sized_box.dart';
+import 'package:smoth_movie_app/core/bloc/movies_state_status.dart';
+import 'package:smoth_movie_app/core/error/error_page.dart';
 import 'package:smoth_movie_app/features/home/home_search/presentation/bloc/search_bloc.dart';
+import 'package:smoth_movie_app/features/home/home_search/presentation/widgets/search_init_widget.dart';
 import 'package:smoth_movie_app/features/home/home_search/presentation/widgets/search_item_widget.dart';
 
 class ListSearchContent extends StatelessWidget {
@@ -15,61 +17,33 @@ class ListSearchContent extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     return BlocBuilder<SearchBloc, SearchState>(
       builder: (context, state) {
-        if (state is SearchLoadingState) {
-          return const Center(child: CircularProgressIndicator.adaptive());
-        } else if (state is SearchSuccessState) {
-          return ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (BuildContext context, int index) {
-              return SearchItemWidget(
-                movie: state.movies[index],
-                screenWidth: screenWidth,
-                screenHeight: screenHeight,
-              );
-            },
-            separatorBuilder: (BuildContext context, int index) {
-              return SizedBox(
-                height: screenHeight / (screenHeight / 20),
-              );
-            },
-            itemCount: state.movies.length,
-          );
-        } else {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const ResponsiveText(
-                text: "Tìm kiếm nhiều nhất",
-                fontSize: 24,
-              ),
-              SizedBox(height: screenHeight / (screenHeight / 20)),
-              ListView.separated(
-                shrinkWrap: true,
-                itemBuilder: (context, i) {
-                  return Row(
-                    children: [
-                      const Icon(
-                        CupertinoIcons.bolt_horizontal_circle,
-                        size: 16,
-                      ),
-                      SizedBox(width: screenWidth / (screenWidth / 10)),
-                      ResponsiveText(
-                        text: topSearchList[i],
-                        fontSize: 16,
-                      ),
-                    ],
-                  );
-                },
-                separatorBuilder: (context, i) {
-                  return SizedBox(height: screenHeight / (screenHeight / 10));
-                },
-                itemCount: topSearchList.length,
-              ),
-            ],
-          );
+        switch (state.status) {
+          case MoviesStateStatus.init:
+            return SearchInitWidget(
+              screenHeight: screenHeight,
+              screenWidth: screenWidth,
+              topSearchList: topSearchList,
+            );
+          case MoviesStateStatus.error:
+            return const ErrorPage();
+          case MoviesStateStatus.success:
+            return ListView.separated(
+              shrinkWrap: true,
+              itemCount: state.movies.length,
+              itemBuilder: (BuildContext context, int index) {
+                return SearchItemWidget(
+                  movie: state.movies[index],
+                  screenWidth: screenWidth,
+                  screenHeight: screenHeight,
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return const ResponsiveSizedBox(height: 20);
+              },
+            );
         }
       },
     );
   }
 }
+

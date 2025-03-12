@@ -3,6 +3,7 @@ import 'package:smoth_movie_app/common/model/movie_detail_param_model.dart';
 import 'package:smoth_movie_app/common/widgets/cached_network/cached_network_image.dart';
 import 'package:smoth_movie_app/core/secret/app_secret.dart';
 import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_item.dart';
+import 'package:smoth_movie_app/router/app_router.dart';
 
 class ListMovieItemWidget extends StatelessWidget {
   final MovieItemEntity movie;
@@ -21,7 +22,7 @@ class ListMovieItemWidget extends StatelessWidget {
     //******************************************/
     return GestureDetector(
       onTap: () => Navigator.of(context).pushNamed(
-        "movie_detail",
+        AppRouter.movieDetail,
         arguments: MovieDetailParamModel(slug: movie.slug),
       ),
       child: CachedNetworkImageWidget(

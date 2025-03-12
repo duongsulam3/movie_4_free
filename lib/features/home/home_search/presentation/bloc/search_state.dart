@@ -1,22 +1,12 @@
 part of 'search_bloc.dart';
 
-@immutable
-sealed class SearchState {
-  const SearchState();
-}
-
-final class SearchInitial extends SearchState {
-  final List<SearchMovieEntity> movies;
-  const SearchInitial({required this.movies});
-}
-
-final class SearchLoadingState extends SearchState {}
-
-final class SearchErrorState extends SearchState {
-  final String message;
-  const SearchErrorState({required this.message});
-}
-
-final class SearchSuccessState extends SearchInitial {
-  const SearchSuccessState({required super.movies});
+@freezed
+abstract class SearchState with _$SearchState {
+  const SearchState._();
+  const factory SearchState([
+    @Default(MoviesStateStatus.init) MoviesStateStatus status,
+    @Default(1) int page,
+    @Default([]) List<MovieItemEntity> movies,
+    @Default(false) bool isEnd,
+  ]) = _SearchState;
 }

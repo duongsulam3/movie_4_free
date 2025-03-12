@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smoth_movie_app/common/widgets/custom_appbar_widget.dart';
+import 'package:smoth_movie_app/common/widgets/search_textfield_widget.dart';
 import 'package:smoth_movie_app/features/home/home_search/presentation/bloc/search_bloc.dart';
 import 'package:smoth_movie_app/features/home/home_search/presentation/widgets/list_search_content.dart';
-import 'package:smoth_movie_app/features/home/home_search/presentation/widgets/search_text_field_custom.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -13,7 +14,8 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   //TextController
-  final _searchController = TextEditingController();
+  final searchController = TextEditingController();
+  final searchFocusNode = FocusNode();
   //List Top Search
   List<String> listTopSearch = [
     "Avatar: The Way of Water",
@@ -23,49 +25,46 @@ class _SearchPageState extends State<SearchPage> {
   ];
 
   @override
+  void initState() {
+    searchFocusNode.requestFocus();
+    super.initState();
+  }
+
+  @override
   void dispose() {
-    _searchController.dispose();
+    searchFocusNode.unfocus();
+    searchController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
+    final sHeight = MediaQuery.of(context).size.height;
     // final screenWidth = MediaQuery.of(context).size.width;
     //
-    return SafeArea(
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomTextField(
-                      onSubmitted: (value) {
-                        if (value.isEmpty) return;
-                        context
-                            .read<SearchBloc>()
-                            .add(GetSearchMoviesEvent(value));
-                      },
-                      //! Handle OnChange when Submit is too long
-                      // onChanged: (value) {
-                      //   Future.delayed(const Duration(milliseconds: 1500), () {
-                      //     _seach(value);
-                      //   });
-                      // },
-                      hint: 'Nhập tên phim bạn muốn tìm',
-                      controller: _searchController,
-                    ),
-                  ),
-                ],
+    return Scaffold(
+      appBar: CustomAppbarWidget(
+        appBarHeight: sHeight / (sHeight / 50),
+        backgroundColor: Colors.black,
+        titleWidget: Row(
+          children: [
+            Expanded(
+              child: SearchTextField(
+                focusNode: searchFocusNode,
+                hintText: "Jujutsu Kaisen",
+                controller: searchController,
+                onSubmitted: (value) {
+                  if (value.isEmpty) return;
+                  context.read<SearchBloc>().add(GetSearchMoviesEvent(value));
+                },
               ),
-              SizedBox(height: screenHeight / (screenHeight / 20)),
-              ListSearchContent(topSearchList: listTopSearch),
-            ],
-          ),
+            ),
+          ],
         ),
+      ),
+      body: Container(
+        padding: const EdgeInsets.all(10),
+        child: ListSearchContent(topSearchList: listTopSearch),
       ),
     );
   }

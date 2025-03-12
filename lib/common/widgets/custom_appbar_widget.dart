@@ -33,7 +33,7 @@ class CustomAppbarWidget extends StatelessWidget
             leading: leadingWidget,
             centerTitle: isCenterTitle,
             actions: actions,
-            backgroundColor: Colors.red,
+            backgroundColor: backgroundColor,
             title: titleWidget,
             bottom: appBarBottomWidget,
           )
