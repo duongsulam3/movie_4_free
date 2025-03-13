@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/widgets/custom_appbar_widget.dart';
 import 'package:smoth_movie_app/common/widgets/search_textfield_widget.dart';
-import 'package:smoth_movie_app/features/home/home_search/presentation/bloc/search_bloc.dart';
 import 'package:smoth_movie_app/features/home/home_search/presentation/widgets/list_search_content.dart';
+import 'package:smoth_movie_app/helper/helper.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -53,10 +52,7 @@ class _SearchPageState extends State<SearchPage> {
                 focusNode: searchFocusNode,
                 hintText: "Jujutsu Kaisen",
                 controller: searchController,
-                onSubmitted: (value) {
-                  if (value.isEmpty) return;
-                  context.read<SearchBloc>().add(GetSearchMoviesEvent(value));
-                },
+                onSubmitted: (value) => Helper.onSubmitSearch(context, value),
               ),
             ),
           ],

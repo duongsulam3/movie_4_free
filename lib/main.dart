@@ -2,13 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:smoth_movie_app/common/theme/theme.dart';
-import 'package:smoth_movie_app/helper/http_override.dart';
+import 'package:smoth_movie_app/helper/helper.dart';
 import 'package:smoth_movie_app/init_dependencies.dart';
 import 'package:smoth_movie_app/router/app_router.dart';
 
 Future<void> main() async {
   await initDependencies();
-  HttpOverrides.global = MyHttpOverrides();
+  HttpOverrides.global = Helper.myHttpOverrides;
   runApp(const MyApp());
 }
 

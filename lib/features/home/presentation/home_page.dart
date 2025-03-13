@@ -13,6 +13,7 @@ import 'package:smoth_movie_app/features/home/home_main/page.dart';
 import 'package:smoth_movie_app/features/home/home_profile/page.dart';
 import 'package:smoth_movie_app/features/home/presentation/widgets/logo_and_widget.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/list_movie_item_bloc/list_movie_item_bloc.dart';
+import 'package:smoth_movie_app/helper/helper.dart';
 import 'package:smoth_movie_app/init_dependencies.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,11 +24,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final bottomNavBloc = BottomNavBloc();
+  // final bottomNavBloc = BottomNavBloc();
   List<Map<String, dynamic>> pages = [];
   List<Map<String, dynamic>> tabs = [];
   List<Map<String, dynamic>> navs = [];
+  //** SCROLL CONTROLLERS */
   final scrollController = ScrollController();
+  final animeTabController = ScrollController();
 
   @override
   void initState() {
@@ -61,13 +64,6 @@ class _HomePageState extends State<HomePage> {
         ),
         "appBar": true,
       },
-      // {
-      //   "page": BlocProvider(
-      //     create: (context) => serviceLocator<SearchBloc>(),
-      //     child: const SearchPage(),
-      //   ),
-      //   "appBar": false,
-      // },
       {
         "page": const ProfilePage(),
         "appBar": false,
@@ -79,11 +75,6 @@ class _HomePageState extends State<HomePage> {
         "active_icon": const Icon(CupertinoIcons.house_fill),
         "title": "Trang chủ",
       },
-      // {
-      //   "icon": const Icon(CupertinoIcons.search),
-      //   "active_icon": const Icon(CupertinoIcons.search),
-      //   "title": "Tìm kiếm",
-      // },
       {
         "icon": const Icon(CupertinoIcons.person),
         "active_icon": const Icon(CupertinoIcons.person_fill),
@@ -102,13 +93,6 @@ class _HomePageState extends State<HomePage> {
       child: BlocBuilder<BottomNavBloc, BottomNavState>(
         builder: (context, state) {
           if (state is HomeInitialBottomNav) {
-            //* Change Page On Tap Function */
-            void onTap(int index) {
-              context
-                  .read<BottomNavBloc>()
-                  .add(HomeChangeBottomNavStateEvent(index: index));
-            }
-
             return SafeArea(
               bottom: false,
               right: false,
@@ -146,7 +130,7 @@ class _HomePageState extends State<HomePage> {
                       : null,
                   bottomNavigationBar: BottomNavigationBar(
                     currentIndex: state.currentPage,
-                    onTap: (int i) => onTap(i),
+                    onTap: (int i) => Helper.changeBottomNavIndex(context, i),
                     items: List.generate(
                       navs.length,
                       (i) => BottomNavigationBarItem(
