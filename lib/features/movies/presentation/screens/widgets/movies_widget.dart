@@ -5,6 +5,7 @@ import 'package:smoth_movie_app/core/error/error_page.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/list_movie_item_widget.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies_bloc/movies_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/load_more_container.dart';
+import 'package:smoth_movie_app/helper/helper.dart';
 
 class MoviesList extends StatefulWidget {
   final String path;
@@ -16,12 +17,6 @@ class MoviesList extends StatefulWidget {
 
 class _MoviesListState extends State<MoviesList>
     with AutomaticKeepAliveClientMixin {
-  //
-  void loadMoreMovies() {
-    final moviesBloc = context.read<MoviesBloc>();
-    moviesBloc.add(GetListMovies(path: widget.path, limit: 18));
-  }
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -54,7 +49,10 @@ class _MoviesListState extends State<MoviesList>
                   delegate: SliverChildListDelegate(
                     [
                       GestureDetector(
-                        onTap: () => loadMoreMovies(),
+                        onTap: () => Helper.loadMoreInfiniteMovies(
+                          context,
+                          widget.path,
+                        ),
                         child: const LoadMoreContainer(),
                       ),
                     ],

@@ -16,12 +16,6 @@ class _SearchPageState extends State<SearchPage> {
   final searchController = TextEditingController();
   final searchFocusNode = FocusNode();
   //List Top Search
-  List<String> listTopSearch = [
-    "Avatar: The Way of Water",
-    "Đấu phá thương khung",
-    "The Flash",
-    "The Batman",
-  ];
 
   @override
   void initState() {
@@ -44,7 +38,7 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       appBar: CustomAppbarWidget(
         appBarHeight: sHeight / (sHeight / 50),
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.transparent,
         titleWidget: Row(
           children: [
             Expanded(
@@ -60,7 +54,7 @@ class _SearchPageState extends State<SearchPage> {
       ),
       body: Container(
         padding: const EdgeInsets.all(10),
-        child: ListSearchContent(topSearchList: listTopSearch),
+        child: const ListSearchContent(),
       ),
     );
   }

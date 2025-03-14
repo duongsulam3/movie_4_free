@@ -22,10 +22,12 @@ class CachedNetworkImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final sHeight = MediaQuery.of(context).size.height;
+    final sWidth = MediaQuery.of(context).size.width;
     return CachedNetworkImage(
       imageUrl: url,
-      height: height,
-      width: width,
+      height: height == null ? null : sHeight / (sHeight / height!),
+      width: width == null ? null : sWidth / (sWidth / width!),
       memCacheHeight: memCacheHeight,
       memCacheWidth: memCacheWidth,
       fit: BoxFit.fill,

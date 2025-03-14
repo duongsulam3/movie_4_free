@@ -13,6 +13,5 @@ class ApiEndPoint {
   static const tvShowEndpoint = "/danh-sach/tv-shows";
   static const seriesMovieEndpoint = "/danh-sach/phim-bo";
   static const detailMovieEndpoint = "/phim/";
-  static const searchMoviesEndpoint = "/tim-kiem?keyword=";
-  static const limitSearchBy12 = "&limit=12";
+  static const searchMoviesEndpoint = "/tim-kiem?";
 }

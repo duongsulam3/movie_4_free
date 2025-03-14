@@ -17,6 +17,7 @@ T _$identity<T>(T value) => value;
 mixin _$SearchState {
   MoviesStateStatus get status;
   int get page;
+  String get query;
   List<MovieItemEntity> get movies;
   bool get isEnd;
 
@@ -34,17 +35,18 @@ mixin _$SearchState {
             other is SearchState &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.page, page) || other.page == page) &&
+            (identical(other.query, query) || other.query == query) &&
             const DeepCollectionEquality().equals(other.movies, movies) &&
             (identical(other.isEnd, isEnd) || other.isEnd == isEnd));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, status, page,
+  int get hashCode => Object.hash(runtimeType, status, page, query,
       const DeepCollectionEquality().hash(movies), isEnd);
 
   @override
   String toString() {
-    return 'SearchState(status: $status, page: $page, movies: $movies, isEnd: $isEnd)';
+    return 'SearchState(status: $status, page: $page, query: $query, movies: $movies, isEnd: $isEnd)';
   }
 }
 
@@ -57,6 +59,7 @@ abstract mixin class $SearchStateCopyWith<$Res> {
   $Res call(
       {MoviesStateStatus status,
       int page,
+      String query,
       List<MovieItemEntity> movies,
       bool isEnd});
 }
@@ -75,6 +78,7 @@ class _$SearchStateCopyWithImpl<$Res> implements $SearchStateCopyWith<$Res> {
   $Res call({
     Object? status = null,
     Object? page = null,
+    Object? query = null,
     Object? movies = null,
     Object? isEnd = null,
   }) {
@@ -87,6 +91,10 @@ class _$SearchStateCopyWithImpl<$Res> implements $SearchStateCopyWith<$Res> {
           ? _self.page
           : page // ignore: cast_nullable_to_non_nullable
               as int,
+      query: null == query
+          ? _self.query
+          : query // ignore: cast_nullable_to_non_nullable
+              as String,
       movies: null == movies
           ? _self.movies
           : movies // ignore: cast_nullable_to_non_nullable
@@ -105,6 +113,7 @@ class _SearchState extends SearchState {
   const _SearchState(
       [this.status = MoviesStateStatus.init,
       this.page = 1,
+      this.query = "",
       final List<MovieItemEntity> movies = const [],
       this.isEnd = false])
       : _movies = movies,
@@ -116,6 +125,9 @@ class _SearchState extends SearchState {
   @override
   @JsonKey()
   final int page;
+  @override
+  @JsonKey()
+  final String query;
   final List<MovieItemEntity> _movies;
   @override
   @JsonKey()
@@ -144,17 +156,18 @@ class _SearchState extends SearchState {
             other is _SearchState &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.page, page) || other.page == page) &&
+            (identical(other.query, query) || other.query == query) &&
             const DeepCollectionEquality().equals(other._movies, _movies) &&
             (identical(other.isEnd, isEnd) || other.isEnd == isEnd));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, status, page,
+  int get hashCode => Object.hash(runtimeType, status, page, query,
       const DeepCollectionEquality().hash(_movies), isEnd);
 
   @override
   String toString() {
-    return 'SearchState(status: $status, page: $page, movies: $movies, isEnd: $isEnd)';
+    return 'SearchState(status: $status, page: $page, query: $query, movies: $movies, isEnd: $isEnd)';
   }
 }
 
@@ -169,6 +182,7 @@ abstract mixin class _$SearchStateCopyWith<$Res>
   $Res call(
       {MoviesStateStatus status,
       int page,
+      String query,
       List<MovieItemEntity> movies,
       bool isEnd});
 }
@@ -187,6 +201,7 @@ class __$SearchStateCopyWithImpl<$Res> implements _$SearchStateCopyWith<$Res> {
   $Res call({
     Object? status = null,
     Object? page = null,
+    Object? query = null,
     Object? movies = null,
     Object? isEnd = null,
   }) {
@@ -199,6 +214,10 @@ class __$SearchStateCopyWithImpl<$Res> implements _$SearchStateCopyWith<$Res> {
           ? _self.page
           : page // ignore: cast_nullable_to_non_nullable
               as int,
+      null == query
+          ? _self.query
+          : query // ignore: cast_nullable_to_non_nullable
+              as String,
       null == movies
           ? _self._movies
           : movies // ignore: cast_nullable_to_non_nullable

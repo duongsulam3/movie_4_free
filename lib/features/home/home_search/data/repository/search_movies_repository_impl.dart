@@ -9,11 +9,17 @@ class SearchMoviesRepositoryImpl implements SearchMoviesRepository {
   final SearchMovieRemoteDataSource remoteDatasource;
   const SearchMoviesRepositoryImpl({required this.remoteDatasource});
   @override
-  Future<Either<Failure, List<MovieItemEntity>>> getSearchMovies(
-    String query,
-  ) async {
+  Future<Either<Failure, List<MovieItemEntity>>> getSearchMovies({
+    required String query,
+    required int page,
+    required int limit,
+  }) async {
     try {
-      final result = await remoteDatasource.getSearchMovies(query);
+      final result = await remoteDatasource.getSearchMovies(
+        query: query,
+        page: page,
+        limit: limit,
+      );
       return Right(result);
     } on ServerException catch (e) {
       return Left(Failure(e.message));

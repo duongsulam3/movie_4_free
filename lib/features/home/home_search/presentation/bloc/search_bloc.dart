@@ -17,7 +17,12 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       try {
         List<MovieItemEntity> movies = const [];
         if (state.isEnd) return;
-        final res = await getSearchMovies.call(event.query);
+        if (state.query != event.query) {
+          emit(state.copyWith(page: 1));
+        }
+        final res = await getSearchMovies.call(
+          SearchParams(query: event.query, page: state.page, limit: 20),
+        );
         res.fold(
           (err) => emit(state.copyWith(status: MoviesStateStatus.error)),
           (data) {
@@ -27,7 +32,10 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
               movies = data;
               emit(state.copyWith(
                 status: MoviesStateStatus.success,
-                movies: [...state.movies, ...movies],
+                movies: state.query == event.query
+                    ? [...state.movies, ...movies]
+                    : movies,
+                query: event.query,
                 page: state.page + 1,
               ));
             }
