@@ -12,7 +12,7 @@ import 'package:smoth_movie_app/features/home/presentation/bloc/bottom_nav/botto
 import 'package:smoth_movie_app/features/home/home_main/page.dart';
 import 'package:smoth_movie_app/features/home/home_profile/page.dart';
 import 'package:smoth_movie_app/features/home/presentation/widgets/logo_and_widget.dart';
-import 'package:smoth_movie_app/features/movies/presentation/bloc/list_movie_item_bloc/list_movie_item_bloc.dart';
+import 'package:smoth_movie_app/features/movies/presentation/bloc/recently_update_movies/recently_update_movies_bloc.dart';
 import 'package:smoth_movie_app/helper/helper.dart';
 import 'package:smoth_movie_app/init_dependencies.dart';
 
@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
     pages = [
       {
         "page": BlocProvider(
-          create: (context) => serviceLocator<ListMovieItemBloc>(),
+          create: (context) => serviceLocator<RecentlyUpdateMoviesBloc>(),
           child: HomeMain(tabs: tabs),
         ),
         "appBar": true,

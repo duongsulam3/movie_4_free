@@ -1,8 +1,14 @@
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/category.dart';
-import 'package:smoth_movie_app/features/movies/domain/entities/currently_update_movies/recently_update_list_item.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/country.dart';
 
-class MovieItemEntity extends RecentlyUpdateListItemEntity {
+class MovieItemEntity {
+  final String sId;
+  final String name;
+  final String slug;
+  final String originName;
+  final String posterUrl;
+  final String thumbUrl;
+  final int year;
   final String type;
   final String time;
   final String episodeCurrent;
@@ -10,14 +16,14 @@ class MovieItemEntity extends RecentlyUpdateListItemEntity {
   final String lang;
   final List<CategoryEntity> categories;
   final List<CountryEnity> countries;
-  MovieItemEntity({
-    required super.sId,
-    required super.name,
-    required super.slug,
-    required super.originName,
-    required super.posterUrl,
-    required super.thumbUrl,
-    required super.year,
+  const MovieItemEntity({
+    required this.sId,
+    required this.name,
+    required this.slug,
+    required this.originName,
+    required this.posterUrl,
+    required this.thumbUrl,
+    required this.year,
     required this.time,
     required this.episodeCurrent,
     required this.quality,

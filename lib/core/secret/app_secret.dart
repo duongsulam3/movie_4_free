@@ -7,7 +7,7 @@ class AppSecret {
 
 class ApiEndPoint {
   static const categoryEndPoint = "/danh-sach/";
-  static const recentlyUpdateEndPoint = "/danh-sach/phim-moi-cap-nhat?page=";
+  static const recentlyUpdateEndPoint = "/danh-sach/phim-moi-cap-nhat-v3?page=";
   static const animeMoviesEndpoint = "/danh-sach/hoat-hinh";
   static const singleMoviesEndpoint = "/danh-sach/phim-le";
   static const tvShowEndpoint = "/danh-sach/tv-shows";

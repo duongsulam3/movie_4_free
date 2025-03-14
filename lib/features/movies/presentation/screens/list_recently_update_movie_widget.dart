@@ -1,6 +1,9 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smoth_movie_app/features/movies/presentation/bloc/list_movie_item_bloc/list_movie_item_bloc.dart';
+import 'package:smoth_movie_app/common/widgets/responsive_sized_box.dart';
+import 'package:smoth_movie_app/core/bloc/movies_state_status.dart';
+import 'package:smoth_movie_app/core/error/error_page.dart';
+import 'package:smoth_movie_app/features/movies/presentation/bloc/recently_update_movies/recently_update_movies_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/custom_carousel_slider.dart';
 
 class CarouselSliderWidget extends StatelessWidget {
@@ -10,26 +13,26 @@ class CarouselSliderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final sHeight = MediaQuery.of(context).size.height;
     final sWidth = MediaQuery.of(context).size.width;
-    return BlocBuilder<ListMovieItemBloc, ListMovieItemBlocState>(
-      bloc: context.read<ListMovieItemBloc>()
-        ..add(GetRecentlyUpdateMovieList()),
-      buildWhen: (previous, current) =>
-          current is GetListRecentlyUpdateMovieStateSuccess,
+    return BlocBuilder<RecentlyUpdateMoviesBloc, RecentlyUpdateMoviesState>(
+      bloc: context.read<RecentlyUpdateMoviesBloc>()
+        ..add(GetRecentlyUpdateMovies()),
       builder: (context, state) {
-        if (state is GetListRecentlyUpdateMovieStateSuccess) {
-          final items = state.movies;
-          return CustomCarouselSliderWidget(
-            sHeight: sHeight,
-            items: items,
-            sWidth: sWidth,
-          );
-        } else {
-          return SizedBox(
-            height: sHeight / (sHeight / 350),
-            child: const Center(
-              child: CupertinoActivityIndicator(),
-            ),
-          );
+        switch (state.status) {
+          case MoviesStateStatus.init:
+            return const ResponsiveSizedBox(
+              height: 400,
+              child: Center(
+                child: CircularProgressIndicator.adaptive(),
+              ),
+            );
+          case MoviesStateStatus.error:
+            return const ErrorPage();
+          case MoviesStateStatus.success:
+            return CustomCarouselSliderWidget(
+              sHeight: sHeight,
+              items: state.movies,
+              sWidth: sWidth,
+            );
         }
       },
     );

@@ -17,11 +17,8 @@ class MovieDescription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Convert string to list
-    final listCate = movie.movieInfo.category.map((e) => e.name).toList();
-    listCate.join(", ");
-    final listActor = movie.movieInfo.actor.map((e) => e).toList();
-    listActor.join(", ");
-    // Get current episode
+    final listCate = movie.movieInfo.categories.map((e) => e.name).toList();
+    //** Get current episode */
     String currentEpisode = movie.episodes[0].serverData[0].name;
     if (passingEpisode != "" && passingEpisode != currentEpisode) {
       currentEpisode = passingEpisode;
@@ -85,7 +82,7 @@ class MovieDescription extends StatelessWidget {
           SizedBox(height: sHeight / (sHeight / 10)),
           IconAndTextWidget(
             screenWidth: sWidth,
-            text: "$listCate",
+            text: listCate.join(", "),
             icon: CupertinoIcons.tags,
             fontSize: 12,
           ),
@@ -93,7 +90,7 @@ class MovieDescription extends StatelessWidget {
           // Text("Diễn viên: $listActor"),
           IconAndTextWidget(
             screenWidth: sWidth,
-            text: "$listActor",
+            text: movie.movieInfo.actor.join(", "),
             icon: CupertinoIcons.rectangle_stack_person_crop,
             fontSize: 12,
           ),
@@ -101,14 +98,14 @@ class MovieDescription extends StatelessWidget {
           // Text("Đạo diễn: ${movie.movieInfo.director}"),
           IconAndTextWidget(
             screenWidth: sWidth,
-            text: "${movie.movieInfo.director}",
+            text: movie.movieInfo.director.join(", "),
             icon: CupertinoIcons.person_crop_rectangle,
             fontSize: 12,
           ),
           SizedBox(height: sHeight / (sHeight / 10)),
           IconAndTextWidget(
             screenWidth: sWidth,
-            text: movie.movieInfo.country[0].name,
+            text: movie.movieInfo.countries[0].name,
             icon: CupertinoIcons.globe,
             fontSize: 12,
           ),

@@ -1,9 +1,9 @@
+import 'package:smoth_movie_app/features/search/domain/entities/search_movie_entity.dart';
 import 'package:smoth_movie_app/features/movie_detail/data/model/category.dart';
 import 'package:smoth_movie_app/features/movie_detail/data/model/country.dart';
-import 'package:smoth_movie_app/features/movies/domain/entities/currently_update_movies/recently_update_list_item.dart';
 
-class RecentlyUpdateListItemModel extends RecentlyUpdateListItemEntity {
-  RecentlyUpdateListItemModel({
+class SearchMovieModel extends SearchMovieEntity {
+  SearchMovieModel({
     required super.sId,
     required super.name,
     required super.slug,
@@ -20,8 +20,8 @@ class RecentlyUpdateListItemModel extends RecentlyUpdateListItemEntity {
     required super.countries,
   });
 
-  factory RecentlyUpdateListItemModel.fromJson(Map<String, dynamic> json) {
-    return RecentlyUpdateListItemModel(
+  factory SearchMovieModel.fromJson(Map<String, dynamic> json) {
+    return SearchMovieModel(
       sId: json["_id"],
       name: json["name"],
       slug: json["slug"],

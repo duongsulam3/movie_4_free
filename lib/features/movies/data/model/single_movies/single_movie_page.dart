@@ -1,4 +1,4 @@
-import 'package:smoth_movie_app/features/movies/data/model/single_movies/single_movie_item.dart';
+import 'package:smoth_movie_app/features/movies/data/model/single_movies/movie_item_model.dart';
 import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_page.dart';
 
 class SingleMoviePageModel extends SingleMoviePageEntity {

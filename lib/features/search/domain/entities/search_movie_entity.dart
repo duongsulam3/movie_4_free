@@ -1,9 +1,7 @@
 import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_item.dart';
 
-class RecentlyUpdateListItemEntity extends MovieItemEntity {
-  // Modified? modified;
-
-  RecentlyUpdateListItemEntity({
+class SearchMovieEntity extends MovieItemEntity {
+  SearchMovieEntity({
     required super.sId,
     required super.name,
     required super.slug,
