@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 class CustomAppbarWidget extends StatelessWidget
@@ -41,6 +43,7 @@ class CustomAppbarWidget extends StatelessWidget
             animation: scrollController!,
             builder: (_, child) {
               if (scrollController!.hasClients) {
+                log("AppBar scroll offset: ${scrollController!.offset}");
                 return AnimatedContainer(
                   duration: const Duration(milliseconds: 500),
                   curve: Curves.easeInOut,

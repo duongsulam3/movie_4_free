@@ -24,20 +24,20 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // final bottomNavBloc = BottomNavBloc();
   List<Map<String, dynamic>> pages = [];
   List<Map<String, dynamic>> tabs = [];
   List<Map<String, dynamic>> navs = [];
   //** SCROLL CONTROLLERS */
-  final scrollController = ScrollController();
-  final animeTabController = ScrollController();
+  late ScrollController appbarScrollController;
+  final scrollControllerMain = ScrollController();
 
   @override
   void initState() {
+    appbarScrollController = scrollControllerMain;
     tabs = [
       {
         "title": "Trang chủ",
-        "widget": HomeMainContent(scrollController: scrollController),
+        "widget": HomeMainContent(scrollController: scrollControllerMain),
       },
       {
         "title": "Anime",
@@ -85,6 +85,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void dispose() {
+    appbarScrollController.dispose();
+    scrollControllerMain.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final sHeight = MediaQuery.of(context).size.height;
     // final sWidth = MediaQuery.of(context).size.width;
@@ -103,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                   extendBodyBehindAppBar: true,
                   appBar: pages[state.currentPage]["appBar"] == true
                       ? CustomAppbarWidget(
-                          scrollController: scrollController,
+                          scrollController: appbarScrollController,
                           appBarHeight: sHeight / (sHeight / 90),
                           backgroundColor: Colors.black,
                           titleWidget: const LogoAndWidget(),
@@ -114,14 +121,14 @@ class _HomePageState extends State<HomePage> {
                             child: TabBar(
                               isScrollable: true,
                               tabAlignment: TabAlignment.start,
-                              indicatorColor: Colors.transparent,
                               dividerColor: Colors.transparent,
+                              indicator: const BoxDecoration(
+                                color: Colors.transparent,
+                              ),
                               tabs: List.generate(
                                 tabs.length,
                                 (i) => Tab(
-                                  child: ResponsiveText(
-                                    text: tabs[i]["title"],
-                                  ),
+                                  child: ResponsiveText(text: tabs[i]["title"]),
                                 ),
                               ),
                             ),

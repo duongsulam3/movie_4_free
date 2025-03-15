@@ -3,14 +3,9 @@ import 'package:smoth_movie_app/features/home/home_main/widgets/title_and_gridvi
 import 'package:smoth_movie_app/features/movies/presentation/screens/list_recently_update_movie_widget.dart';
 
 class HomeMainContent extends StatelessWidget {
-  const HomeMainContent({
-    super.key,
-    required this.scrollController,
-  
-  });
+  const HomeMainContent({super.key, required this.scrollController});
 
   final ScrollController? scrollController;
-
 
   @override
   Widget build(BuildContext context) {

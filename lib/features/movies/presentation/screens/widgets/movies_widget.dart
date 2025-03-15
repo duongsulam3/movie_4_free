@@ -17,6 +17,11 @@ class MoviesList extends StatefulWidget {
 
 class _MoviesListState extends State<MoviesList>
     with AutomaticKeepAliveClientMixin {
+  //** MARKED NOT WILL NOT RELOAD WHEN CHANGE TAB */
+  @override
+  bool get wantKeepAlive => true;
+  //** MARKED NOT WILL NOT RELOAD WHEN CHANGE TAB */
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -64,7 +69,4 @@ class _MoviesListState extends State<MoviesList>
       },
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }
