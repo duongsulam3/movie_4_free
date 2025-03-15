@@ -13,38 +13,52 @@ part 'search_state.dart';
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
   final GetSearchMovies getSearchMovies;
   SearchBloc({required this.getSearchMovies}) : super(const SearchState()) {
-    on<GetSearchMoviesEvent>((event, emit) async {
-      try {
-        List<MovieItemEntity> movies = const [];
-        if (state.isEnd) return;
-        if (state.query != event.query) {
-          emit(state.copyWith(page: 1));
-        }
-        final res = await getSearchMovies.call(
-          SearchParams(query: event.query, page: state.page, limit: 20),
-        );
-        res.fold(
-          (err) => emit(state.copyWith(status: MoviesStateStatus.error)),
-          (data) {
-            if (data.isEmpty) {
-              emit(state.copyWith(isEnd: true));
-            } else {
-              movies = data;
-              emit(state.copyWith(
-                status: MoviesStateStatus.success,
-                movies: state.query == event.query
-                    ? [...state.movies, ...movies]
-                    : movies,
-                query: event.query,
-                page: state.page + 1,
-              ));
-            }
-          },
-        );
-      } catch (e) {
-        log(e.toString());
-        emit(state.copyWith(status: MoviesStateStatus.error));
+    on<GetSearchMoviesEvent>(fetchSearchMovies);
+  }
+
+  Future<void> fetchSearchMovies(
+    GetSearchMoviesEvent event,
+    Emitter<SearchState> emit,
+  ) async {
+    try {
+      //** HANDLE SEARCH STATES */
+      List<MovieItemEntity> movies = const [];
+      if (state.isEnd) {
+        emit(state.copyWith(status: MoviesStateStatus.success, isEnd: false));
       }
-    });
+      if (state.query != event.query) {
+        emit(state.copyWith(page: 1));
+      }
+      final res = await getSearchMovies.call(
+        SearchParams(query: event.query, page: state.page, limit: 20),
+      );
+      //** HANDLE SEARCH STATES */
+      res.fold(
+        (err) => emit(state.copyWith(status: MoviesStateStatus.error)),
+        (data) {
+          if (data.isEmpty && data.length < 20) {
+            movies = data;
+            emit(state.copyWith(
+              status: MoviesStateStatus.success,
+              isEnd: true,
+              movies: [...state.movies, ...movies],
+            ));
+          } else {
+            movies = data;
+            emit(state.copyWith(
+              status: MoviesStateStatus.success,
+              movies: state.query == event.query
+                  ? [...state.movies, ...movies]
+                  : movies,
+              query: event.query,
+              page: state.page + 1,
+            ));
+          }
+        },
+      );
+    } catch (e) {
+      log(e.toString());
+      emit(state.copyWith(status: MoviesStateStatus.error));
+    }
   }
 }
