@@ -24,7 +24,7 @@ class MoviesRemoteDataSourceImpl implements MoviesRemoteDataSource {
     try {
       List<MovieItemModel> data = [];
       var url =
-          "${AppSecret.kkPhimUrl}${ApiEndPoint.categoryEndPoint}$cateName?page=$page&limit=$limit";
+          "${AppSecret.kkPhimUrl}/danh-sach/$cateName?page=$page&limit=$limit";
       var uri = Uri.parse(url);
       final res = await client.get(uri);
       if (res.statusCode == 200) {

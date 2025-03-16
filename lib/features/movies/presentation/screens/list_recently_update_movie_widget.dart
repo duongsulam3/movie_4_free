@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smoth_movie_app/common/widgets/progress_indicator.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_sized_box.dart';
 import 'package:smoth_movie_app/core/bloc/movies_state_status.dart';
 import 'package:smoth_movie_app/core/error/error_page.dart';
@@ -21,9 +22,7 @@ class CarouselSliderWidget extends StatelessWidget {
           case MoviesStateStatus.init:
             return const ResponsiveSizedBox(
               height: 400,
-              child: Center(
-                child: CircularProgressIndicator.adaptive(),
-              ),
+              child: Center(child: ProgressIndicatorCustom()),
             );
           case MoviesStateStatus.error:
             return const ErrorPage();

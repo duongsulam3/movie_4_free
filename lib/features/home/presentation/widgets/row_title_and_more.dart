@@ -5,11 +5,7 @@ import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
 class RowTitleAndMore extends StatelessWidget {
   final String title;
   final Function()? onTap;
-  const RowTitleAndMore({
-    super.key,
-    required this.title,
-    this.onTap,
-  });
+  const RowTitleAndMore({super.key, required this.title, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +18,6 @@ class RowTitleAndMore extends StatelessWidget {
             text: title,
             fontSize: 24,
             fontWeight: FontWeight.w600,
-          ),
-          const Icon(
-            CupertinoIcons.ellipsis,
-            size: 16,
-            color: Colors.grey,
           ),
         ],
       ),

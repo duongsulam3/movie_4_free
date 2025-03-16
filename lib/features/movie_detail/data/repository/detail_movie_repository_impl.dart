@@ -19,9 +19,7 @@ class DetailMovieRepositoryImpl implements DetailMovieRepository {
       );
       return Right(result);
     } on ServerException catch (e) {
-      return Left(
-        Failure(e.message),
-      );
+      return Left(Failure(e.message));
     }
   }
 }

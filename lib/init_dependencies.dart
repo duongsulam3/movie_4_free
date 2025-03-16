@@ -1,5 +1,10 @@
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:smoth_movie_app/features/kho_phim/data/repository/categories_repository_impl.dart';
+import 'package:smoth_movie_app/features/kho_phim/data/source/remote/categories_remote_data_source.dart';
+import 'package:smoth_movie_app/features/kho_phim/domain/repository/categories_repository.dart';
+import 'package:smoth_movie_app/features/kho_phim/domain/usecase/get_categories.dart';
+import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/category_list_bloc.dart';
 import 'package:smoth_movie_app/features/search/data/repository/search_movies_repository_impl.dart';
 import 'package:smoth_movie_app/features/search/data/source/remote/search_movie_remote_datasource.dart';
 import 'package:smoth_movie_app/features/search/domain/repository/search_movies_repository.dart';
@@ -28,6 +33,7 @@ Future<void> initDependencies() async {
   _initListMovies();
   _initDetailMovie();
   _initSearch();
+  _initCategoryList();
 }
 
 void _initListMovies() {
@@ -49,7 +55,7 @@ void _initListMovies() {
   );
   //** Movies */
 
-  //** Recently Update Movies */ 
+  //** Recently Update Movies */
   serviceLocator.registerFactory<RecentlyUpdateMoviesRemoteDataSource>(
     () => RecentlyUpdateMoviesRemoteDataSourceImpl(
       client: serviceLocator(),
@@ -70,7 +76,7 @@ void _initListMovies() {
   serviceLocator.registerFactory(
     () => RecentlyUpdateMoviesBloc(serviceLocator<GetRecentlyMovies>()),
   );
-  //** Recently Update Movies */ 
+  //** Recently Update Movies */
 }
 
 void _initDetailMovie() {
@@ -122,5 +128,23 @@ void _initSearch() {
     () => SearchBloc(
       getSearchMovies: serviceLocator<GetSearchMovies>(),
     ),
+  );
+}
+
+void _initCategoryList() {
+  serviceLocator.registerFactory<CategoriesRemoteDataSource>(
+    () => CategoriesRemoteDataSourceImpl(client: serviceLocator()),
+  );
+
+  serviceLocator.registerFactory<CategoriesRepository>(
+    () => CategoriesRepositoryImpl(serviceLocator()),
+  );
+
+  serviceLocator.registerFactory(
+    () => GetCategories(serviceLocator()),
+  );
+
+  serviceLocator.registerFactory(
+    () => CategoryListBloc(serviceLocator<GetCategories>()),
   );
 }

@@ -1,0 +1,1 @@
+enum CategoriesStateStatus { init, loading,  error, success } 

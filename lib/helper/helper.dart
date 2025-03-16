@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/category_list_bloc.dart';
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
 import 'package:smoth_movie_app/features/home/presentation/bloc/bottom_nav/bottom_nav_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies_bloc/movies_bloc.dart';
@@ -31,6 +32,12 @@ class Helper {
   static void loadMoreInfiniteMovies(BuildContext context, String path) {
     final moviesBloc = context.read<MoviesBloc>();
     moviesBloc.add(GetListMovies(path: path, limit: 18));
+  }
+
+  //! CATEGORIES BLOC
+  static void loadAllCategories(BuildContext context) {
+    final cateBloc = context.read<CategoryListBloc>();
+    cateBloc.add(GetAllCategories());
   }
   //** BLOC FUNCTIONS */
 

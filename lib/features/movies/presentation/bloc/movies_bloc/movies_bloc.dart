@@ -18,34 +18,30 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     GetListMovies event,
     Emitter<MoviesState> emit,
   ) async {
-    try {
-      List<MovieItemEntity> movies = const <MovieItemEntity>[];
-      if (state.isEnd) return;
-      final res = await getMovies.call(
-        GetMoviesParams(
-          page: state.page,
-          cateName: event.path,
-          limit: event.limit,
-        ),
-      );
-      res.fold(
-        (err) => emit(state.copyWith(status: MoviesStateStatus.error)),
-        (data) {
-          if (data.isNotEmpty) {
-            movies = data;
-            emit(state.copyWith(
-              status: MoviesStateStatus.success,
-              movies: [...state.movies, ...movies],
-              isEnd: event.isRefresh == false ? true : false,
-              page: state.page + 1,
-            ));
-          } else {
-            emit(state.copyWith(isEnd: true));
-          }
-        },
-      );
-    } catch (e) {
-      emit(state.copyWith(status: MoviesStateStatus.error));
-    }
+    List<MovieItemEntity> movies = const <MovieItemEntity>[];
+    if (state.isEnd) return;
+    final res = await getMovies.call(
+      GetMoviesParams(
+        page: state.page,
+        cateName: event.path,
+        limit: event.limit,
+      ),
+    );
+    res.fold(
+      (err) => emit(state.copyWith(status: MoviesStateStatus.error)),
+      (data) {
+        if (data.isNotEmpty) {
+          movies = data;
+          emit(state.copyWith(
+            status: MoviesStateStatus.success,
+            movies: [...state.movies, ...movies],
+            isEnd: event.isRefresh == false ? true : false,
+            page: state.page + 1,
+          ));
+        } else {
+          emit(state.copyWith(isEnd: true));
+        }
+      },
+    );
   }
 }

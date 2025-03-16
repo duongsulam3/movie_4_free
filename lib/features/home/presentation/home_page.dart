@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/widgets/custom_appbar_widget.dart';
-import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
 import 'package:smoth_movie_app/features/home/home_main/tabs/anime_tab.dart';
 import 'package:smoth_movie_app/features/home/home_main/tabs/home_main_content.dart';
 import 'package:smoth_movie_app/features/home/home_main/tabs/phim_bo_tab.dart';
@@ -11,7 +10,10 @@ import 'package:smoth_movie_app/features/home/home_main/tabs/phim_truyen_hinh_ta
 import 'package:smoth_movie_app/features/home/presentation/bloc/bottom_nav/bottom_nav_bloc.dart';
 import 'package:smoth_movie_app/features/home/home_main/page.dart';
 import 'package:smoth_movie_app/features/home/home_profile/page.dart';
+import 'package:smoth_movie_app/features/home/presentation/widgets/home_tab_bar.dart';
 import 'package:smoth_movie_app/features/home/presentation/widgets/logo_and_widget.dart';
+import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/category_list_bloc.dart';
+import 'package:smoth_movie_app/features/kho_phim/presentation/page.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/recently_update_movies/recently_update_movies_bloc.dart';
 import 'package:smoth_movie_app/helper/helper.dart';
 import 'package:smoth_movie_app/init_dependencies.dart';
@@ -65,6 +67,13 @@ class _HomePageState extends State<HomePage> {
         "appBar": true,
       },
       {
+        "page": BlocProvider(
+          create: (context) => serviceLocator<CategoryListBloc>(),
+          child: const KhoPhimPage(),
+        ),
+        "appBar": false,
+      },
+      {
         "page": const ProfilePage(),
         "appBar": false,
       },
@@ -74,6 +83,13 @@ class _HomePageState extends State<HomePage> {
         "icon": const Icon(CupertinoIcons.house),
         "active_icon": const Icon(CupertinoIcons.house_fill),
         "title": "Trang chủ",
+      },
+      {
+        "icon": const Icon(CupertinoIcons.arrowtriangle_right_square),
+        "active_icon": const Icon(
+          CupertinoIcons.arrowtriangle_right_square_fill,
+        ),
+        "title": "Kho phim",
       },
       {
         "icon": const Icon(CupertinoIcons.person),
@@ -118,26 +134,16 @@ class _HomePageState extends State<HomePage> {
                             preferredSize: Size.fromHeight(
                               sHeight / (sHeight / 30),
                             ),
-                            child: TabBar(
-                              isScrollable: true,
-                              tabAlignment: TabAlignment.start,
-                              dividerColor: Colors.transparent,
-                              indicator: const BoxDecoration(
-                                color: Colors.transparent,
-                              ),
-                              tabs: List.generate(
-                                tabs.length,
-                                (i) => Tab(
-                                  child: ResponsiveText(text: tabs[i]["title"]),
-                                ),
-                              ),
-                            ),
+                            child: HomeTabBar(tabs: tabs),
                           ),
                         )
                       : null,
                   bottomNavigationBar: BottomNavigationBar(
                     currentIndex: state.currentPage,
                     onTap: (int i) => Helper.changeBottomNavIndex(context, i),
+                    selectedFontSize: 12,
+                    unselectedFontSize: 12,
+                    iconSize: 26,
                     items: List.generate(
                       navs.length,
                       (i) => BottomNavigationBarItem(
