@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
-import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
+import 'package:smoth_movie_app/common/widgets/cached_network/container_with_cached_network_image_provider.dart';
 import 'package:video_player/video_player.dart';
 
 class MoviePlayerWidget extends StatefulWidget {
@@ -38,23 +38,19 @@ class _MoviePlayerWidgetState extends State<MoviePlayerWidget> {
 
   _initPlayer(String url) async {
     var uri = Uri.parse(url);
-    log(uri.toString());
     _controller = VideoPlayerController.networkUrl(uri);
-    await _controller.initialize();
-    chewieController = ChewieController(
-      videoPlayerController: _controller,
-      autoPlay: true,
-      allowedScreenSleep: false,
-      errorBuilder: (context, errorMessage) {
-        return Center(
-          child: ResponsiveText(
-            text: errorMessage,
-            fontSize: 16,
-          ),
-        );
-      },
-    );
-    setState(() {});
+    try {
+      await _controller.initialize();
+      chewieController = ChewieController(
+        videoPlayerController: _controller,
+        autoPlay: true,
+        allowedScreenSleep: false,
+      );
+      setState(() {});
+    } catch (e) {
+      log(uri.toString());
+      return;
+    }
   }
 
   @override
@@ -82,15 +78,6 @@ class _MoviePlayerWidgetState extends State<MoviePlayerWidget> {
               child: Chewie(controller: chewieController!),
             ),
           )
-        : Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage(
-                  widget.posterUrl,
-                ),
-                fit: BoxFit.fill,
-              ),
-            ),
-          );
+        : ContainerWithCachedNetworkImageProvider(path: widget.posterUrl);
   }
 }

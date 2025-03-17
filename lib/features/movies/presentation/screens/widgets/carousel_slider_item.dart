@@ -14,6 +14,8 @@ class CarouselSliderItem extends StatelessWidget {
   Widget build(BuildContext context) {
     // final sHeight = MediaQuery.of(context).size.height;
     final sWidth = MediaQuery.of(context).size.width;
+    final String title =
+        "${item.name} | ${item.countries[0].name} | ${item.episodeCurrent == "Full" ? "Phim lẻ" : item.episodeCurrent}";
     return GestureDetector(
       onTap: () => Navigator.pushNamed(
         context,
@@ -31,12 +33,13 @@ class CarouselSliderItem extends StatelessWidget {
             child: Container(
               height: 40,
               width: sWidth,
-              padding: const EdgeInsets.only(left: 5, top: 5),
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(left: 10, top: 5),
               decoration: BoxDecoration(
                 color: Colors.black.withValues(alpha: 0.15),
               ),
               child: ResponsiveText(
-                text: item.name,
+                text: title,
                 fontSize: 20,
                 textColor: Colors.white,
               ),

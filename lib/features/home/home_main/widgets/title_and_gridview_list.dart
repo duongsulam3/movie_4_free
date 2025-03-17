@@ -30,7 +30,12 @@ class TitleAndGridViewList extends StatelessWidget {
           ),
           const ResponsiveSizedBox(height: 10),
           BlocProvider(
-            create: (context) => serviceLocator<MoviesBloc>(),
+            create: (context) => serviceLocator<MoviesBloc>()
+              ..add(GetListMovies(
+                path: path,
+                limit: 9,
+                isRefresh: false,
+              )),
             child: GridViewMoviesWidget(path: path),
           ),
         ],

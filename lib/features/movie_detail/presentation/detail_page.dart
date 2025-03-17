@@ -12,9 +12,9 @@ class MovieDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = context.read<DetailMovieBloc>();
     return BlocBuilder<DetailMovieBloc, DetailMovieState>(
-      bloc: context.read<DetailMovieBloc>()
-        ..add(GetMovieDetailEvent(slug: slug)),
+      bloc: bloc..add(GetMovieDetailEvent(slug: slug)),
       builder: (context, state) {
         if (state is GetMovieDetailStateSuccess) {
           final movie = state.movieDetail;
