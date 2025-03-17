@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smoth_movie_app/common/widgets/progress_indicator.dart';
 import 'package:smoth_movie_app/core/bloc/movies_state_status.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/list_movie_item_widget.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies_bloc/movies_bloc.dart';
@@ -19,15 +20,11 @@ class _GridViewMoviesWidgetState extends State<GridViewMoviesWidget>
     super.build(context);
     return BlocBuilder<MoviesBloc, MoviesState>(
       bloc: context.read<MoviesBloc>()
-        ..add(GetListMovies(
-          path: widget.path,
-          limit: 9,
-          isRefresh: false,
-        )),
+        ..add(GetListMovies(path: widget.path, limit: 9, isRefresh: false)),
       builder: (context, state) {
         switch (state.status) {
           case MoviesStateStatus.init:
-            return const Center(child: CupertinoActivityIndicator());
+            return const Center(child: ProgressIndicatorCustom());
           case MoviesStateStatus.error:
             return const Center(child: Text('Có lỗi khi tải phim'));
           case MoviesStateStatus.success:
@@ -43,9 +40,7 @@ class _GridViewMoviesWidgetState extends State<GridViewMoviesWidget>
                 mainAxisExtent: 180,
               ),
               itemCount: items.length,
-              itemBuilder: (_, i) {
-                return ListMovieItemWidget(movie: items[i]);
-              },
+              itemBuilder: (_, i) => ListMovieItemWidget(movie: items[i]),
             );
         }
       },

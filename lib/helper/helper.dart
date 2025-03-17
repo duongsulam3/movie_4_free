@@ -37,7 +37,7 @@ class Helper {
   //! CATEGORIES BLOC
   static void loadAllCategories(BuildContext context) {
     final cateBloc = context.read<CategoryListBloc>();
-    cateBloc.add(GetAllCategories());
+    cateBloc.add(const GetAllCategories());
   }
   //** BLOC FUNCTIONS */
 

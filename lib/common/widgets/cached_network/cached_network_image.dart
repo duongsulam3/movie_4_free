@@ -35,9 +35,6 @@ class CachedNetworkImageWidget extends StatelessWidget {
         log("Ảnh bị lỗi: $url");
         return const Center(child: ErrorImage());
       },
-      progressIndicatorBuilder: (context, url, progress) => const Center(
-        child: CircularProgressIndicator.adaptive(),
-      ),
     );
   }
 }

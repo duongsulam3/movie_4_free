@@ -26,7 +26,7 @@ class CarouselSliderWidget extends StatelessWidget {
             );
           case MoviesStateStatus.error:
             return const ErrorPage();
-          case MoviesStateStatus.success:
+          default:
             return CustomCarouselSliderWidget(
               sHeight: sHeight,
               items: state.movies,

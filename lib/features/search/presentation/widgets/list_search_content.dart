@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/model/movie_detail_param_model.dart';
+import 'package:smoth_movie_app/common/widgets/progress_indicator.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_sized_box.dart';
 import 'package:smoth_movie_app/core/bloc/movies_state_status.dart';
 import 'package:smoth_movie_app/core/error/error_page.dart';
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
-import 'package:smoth_movie_app/features/search/presentation/widgets/no_more_movies_for_search.dart';
 import 'package:smoth_movie_app/features/search/presentation/widgets/search_init_widget.dart';
 import 'package:smoth_movie_app/features/search/presentation/widgets/search_item_widget.dart';
 import 'package:smoth_movie_app/helper/helper.dart';
@@ -61,11 +61,11 @@ class _ListSearchContentState extends State<ListSearchContent> {
               itemBuilder: (BuildContext context, int index) {
                 if (index >= state.movies.length) {
                   if (state.isEnd) {
-                    return const NoMoreMoviesForSearchWidget();
+                    return const SizedBox();
                   } else {
                     Helper.loadMoreSearch(context, state.query);
                     return const Center(
-                      child: CircularProgressIndicator.adaptive(),
+                      child: ProgressIndicatorCustom(),
                     );
                   }
                 } else {

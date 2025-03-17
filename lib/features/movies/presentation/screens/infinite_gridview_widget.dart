@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smoth_movie_app/common/widgets/progress_indicator.dart';
 import 'package:smoth_movie_app/core/bloc/movies_state_status.dart';
 import 'package:smoth_movie_app/core/error/error_page.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/list_movie_item_widget.dart';
@@ -7,15 +8,15 @@ import 'package:smoth_movie_app/features/movies/presentation/bloc/movies_bloc/mo
 import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/load_more_container.dart';
 import 'package:smoth_movie_app/helper/helper.dart';
 
-class MoviesList extends StatefulWidget {
+class InfiniteGridView extends StatefulWidget {
   final String path;
-  const MoviesList({super.key, required this.path});
+  const InfiniteGridView({super.key, required this.path});
 
   @override
-  State<MoviesList> createState() => _MoviesListState();
+  State<InfiniteGridView> createState() => _InfiniteGridViewState();
 }
 
-class _MoviesListState extends State<MoviesList>
+class _InfiniteGridViewState extends State<InfiniteGridView>
     with AutomaticKeepAliveClientMixin {
   //** MARKED NOT WILL NOT RELOAD WHEN CHANGE TAB */
   @override
@@ -29,7 +30,7 @@ class _MoviesListState extends State<MoviesList>
       builder: (_, state) {
         switch (state.status) {
           case MoviesStateStatus.init:
-            return const Center(child: CircularProgressIndicator.adaptive());
+            return const Center(child: ProgressIndicatorCustom());
           case MoviesStateStatus.error:
             return const ErrorPage();
           case MoviesStateStatus.success:
