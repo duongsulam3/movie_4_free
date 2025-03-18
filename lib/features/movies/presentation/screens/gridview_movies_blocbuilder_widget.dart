@@ -5,22 +5,20 @@ import 'package:smoth_movie_app/core/bloc/movies_state_status.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/list_movie_item_widget.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies_bloc/movies_bloc.dart';
 
-class GridViewMoviesWidget extends StatefulWidget {
-  const GridViewMoviesWidget({super.key, required this.path});
+class GridViewMoviesBlocWidget extends StatefulWidget {
+  const GridViewMoviesBlocWidget({super.key, required this.path});
   final String path;
 
   @override
-  State<GridViewMoviesWidget> createState() => _GridViewMoviesWidgetState();
+  State<GridViewMoviesBlocWidget> createState() => _GridViewMoviesBlocWidgetState();
 }
 
-class _GridViewMoviesWidgetState extends State<GridViewMoviesWidget>
+class _GridViewMoviesBlocWidgetState extends State<GridViewMoviesBlocWidget>
     with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return BlocBuilder<MoviesBloc, MoviesState>(
-      bloc: context.read<MoviesBloc>()
-        ..add(GetListMovies(path: widget.path, limit: 9, isRefresh: false)),
       builder: (context, state) {
         switch (state.status) {
           case MoviesStateStatus.init:
@@ -30,9 +28,9 @@ class _GridViewMoviesWidgetState extends State<GridViewMoviesWidget>
           case MoviesStateStatus.success:
             final items = state.movies;
             return GridView.builder(
+              shrinkWrap: true,
               padding: EdgeInsets.zero,
               physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 mainAxisSpacing: 5,

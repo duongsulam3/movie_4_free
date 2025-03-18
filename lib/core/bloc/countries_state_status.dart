@@ -1,0 +1,1 @@
+enum CountriesStateStatus { init, loading,  error, success } 

@@ -9,8 +9,15 @@ import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/loa
 import 'package:smoth_movie_app/helper/helper.dart';
 
 class InfiniteGridView extends StatefulWidget {
+  const InfiniteGridView({
+    super.key,
+    required this.path,
+    this.primary = false,
+    this.physics,
+  });
   final String path;
-  const InfiniteGridView({super.key, required this.path});
+  final bool primary;
+  final ScrollPhysics? physics;
 
   @override
   State<InfiniteGridView> createState() => _InfiniteGridViewState();
@@ -38,6 +45,10 @@ class _InfiniteGridViewState extends State<InfiniteGridView>
               return const Center(child: Text('No more movies'));
             }
             return CustomScrollView(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              primary: widget.primary,
+              physics: widget.physics,
               slivers: [
                 SliverGrid.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

@@ -1,10 +1,20 @@
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:smoth_movie_app/features/kho_phim/data/repository/categories_repository_impl.dart';
+import 'package:smoth_movie_app/features/kho_phim/data/repository/countries_repository_impl.dart';
+import 'package:smoth_movie_app/features/kho_phim/data/repository/kho_phim_movies_repository_impl.dart';
 import 'package:smoth_movie_app/features/kho_phim/data/source/remote/categories_remote_data_source.dart';
+import 'package:smoth_movie_app/features/kho_phim/data/source/remote/countries_remote_data_source.dart';
+import 'package:smoth_movie_app/features/kho_phim/data/source/remote/kho_phim_movies_remote_data_source.dart';
 import 'package:smoth_movie_app/features/kho_phim/domain/repository/categories_repository.dart';
+import 'package:smoth_movie_app/features/kho_phim/domain/repository/countries_repository.dart';
+import 'package:smoth_movie_app/features/kho_phim/domain/repository/kho_phim_movies_repository.dart';
 import 'package:smoth_movie_app/features/kho_phim/domain/usecase/get_categories.dart';
-import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/category_list_bloc.dart';
+import 'package:smoth_movie_app/features/kho_phim/domain/usecase/get_countries.dart';
+import 'package:smoth_movie_app/features/kho_phim/domain/usecase/get_kho_phim_movies.dart';
+import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/categories/category_list_bloc.dart';
+import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/countries/countries_bloc.dart';
+import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/kho_phim_movies/kho_phim_movies_bloc.dart';
 import 'package:smoth_movie_app/features/search/data/repository/search_movies_repository_impl.dart';
 import 'package:smoth_movie_app/features/search/data/source/remote/search_movie_remote_datasource.dart';
 import 'package:smoth_movie_app/features/search/domain/repository/search_movies_repository.dart';
@@ -33,7 +43,7 @@ Future<void> initDependencies() async {
   _initListMovies();
   _initDetailMovie();
   _initSearch();
-  _initCategoryList();
+  _initKhoPhimFeature();
 }
 
 void _initListMovies() {
@@ -131,20 +141,37 @@ void _initSearch() {
   );
 }
 
-void _initCategoryList() {
+void _initKhoPhimFeature() {
+  //** Categories */
   serviceLocator.registerFactory<CategoriesRemoteDataSource>(
     () => CategoriesRemoteDataSourceImpl(client: serviceLocator()),
   );
-
   serviceLocator.registerFactory<CategoriesRepository>(
     () => CategoriesRepositoryImpl(serviceLocator()),
   );
+  serviceLocator.registerFactory(() => GetCategories(serviceLocator()));
+  serviceLocator.registerFactory(() => CategoryListBloc(serviceLocator()));
+  //** Categories */
 
-  serviceLocator.registerFactory(
-    () => GetCategories(serviceLocator()),
+  //** Countries */
+  serviceLocator.registerFactory<CountriesRemoteDataSource>(
+    () => CountriesRemoteDataSourceImpl(client: serviceLocator()),
   );
+  serviceLocator.registerFactory<CountriesRepository>(
+    () => CountriesRepositoryImpl(serviceLocator()),
+  );
+  serviceLocator.registerFactory(() => GetCountries(serviceLocator()));
+  serviceLocator.registerFactory(() => CountriesBloc(serviceLocator()));
+  //** Countries */
 
-  serviceLocator.registerFactory(
-    () => CategoryListBloc(serviceLocator<GetCategories>()),
+  //** Kho Phim Movies */
+  serviceLocator.registerFactory<KhoPhimMoviesRemoteDataSource>(
+    () => KhoPhimMoviesRemoteDataSourceImpl(serviceLocator()),
   );
+  serviceLocator.registerFactory<KhoPhimMoviesRepository>(
+    () => KhoPhimMoviesRepositoryImpl(serviceLocator()),
+  );
+  serviceLocator.registerFactory(() => GetKhoPhimMovies(serviceLocator()));
+  serviceLocator.registerFactory(() => KhoPhimMoviesBloc(serviceLocator()));
+  //** Kho Phim Movies */
 }

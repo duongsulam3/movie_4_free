@@ -14,4 +14,6 @@ class ApiEndPoint {
   static const detailMovieEndpoint = "/phim/";
   static const searchMoviesEndpoint = "/tim-kiem?";
   static const categoriesEndpoint = "/the-loai";
+  static const countriesEndpoint = "/quoc-gia";
+  static const khoPhimEndpoint = "";
 }

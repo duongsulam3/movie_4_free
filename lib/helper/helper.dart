@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/category_list_bloc.dart';
+import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/categories/category_list_bloc.dart';
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
 import 'package:smoth_movie_app/features/home/presentation/bloc/bottom_nav/bottom_nav_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies_bloc/movies_bloc.dart';
@@ -42,5 +42,13 @@ class Helper {
   //** BLOC FUNCTIONS */
 
   //** FUNCTIONS */
+  static List<int> getYears() {
+    List<int> list = List.empty(growable: true);
+    final dateTime = DateTime.now();
+    for (int i = dateTime.year; i >= 1970; i--) {
+      list.add(i);
+    }
+    return list;
+  }
   //** FUNCTIONS */
 }

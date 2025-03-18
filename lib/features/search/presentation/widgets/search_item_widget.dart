@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:smoth_movie_app/common/widgets/cached_network/cached_network_image.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_sized_box.dart';
 import 'package:smoth_movie_app/core/secret/app_secret.dart';
@@ -20,7 +20,8 @@ class SearchItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      color: Colors.transparent,
       height: screenHeight / (screenHeight / 180),
       width: screenWidth,
       child: Row(
@@ -29,7 +30,9 @@ class SearchItemWidget extends StatelessWidget {
           CachedNetworkImageWidget(
             url: AppSecret.imageUrl + movie.posterUrl,
             width: 120,
-            memCacheWidth: 200,
+            height: 180,
+            memCacheWidth: 120,
+            memCacheHeight: 180,
           ),
           const ResponsiveSizedBox(width: 10),
           //** Content */

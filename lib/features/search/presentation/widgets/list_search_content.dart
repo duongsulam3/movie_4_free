@@ -61,13 +61,12 @@ class _ListSearchContentState extends State<ListSearchContent> {
               itemBuilder: (BuildContext context, int index) {
                 if (index >= state.movies.length) {
                   if (state.isEnd) {
-                    return const SizedBox();
-                  } else {
-                    Helper.loadMoreSearch(context, state.query);
-                    return const Center(
-                      child: ProgressIndicatorCustom(),
-                    );
+                    return const SizedBox.shrink();
                   }
+                  Helper.loadMoreSearch(context, state.query);
+                  return const Center(
+                    child: ProgressIndicatorCustom(),
+                  );
                 } else {
                   return GestureDetector(
                     onTap: () => Navigator.of(context).pushNamed(

@@ -29,9 +29,10 @@ class MoviesRemoteDataSourceImpl implements MoviesRemoteDataSource {
       final res = await client.get(uri);
       if (res.statusCode == 200) {
         var jsonRes = jsonDecode(res.body)["data"]["items"] as List;
-        for (var e in jsonRes) {
-          data.add(MovieItemModel.fromJson(e));
-        }
+        // for (var e in jsonRes) {
+        //   data.add(MovieItemModel.fromJson(e));
+        // }
+        jsonRes.map((e) => data.add(MovieItemModel.fromJson(e))).toList();
         return data;
       } else {
         throw ServerException("Lỗi khi lấy dữ liệu phim $cateName");

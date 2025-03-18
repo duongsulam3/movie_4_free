@@ -12,7 +12,8 @@ import 'package:smoth_movie_app/features/home/home_main/page.dart';
 import 'package:smoth_movie_app/features/home/home_profile/page.dart';
 import 'package:smoth_movie_app/features/home/presentation/widgets/home_tab_bar.dart';
 import 'package:smoth_movie_app/features/home/presentation/widgets/logo_and_widget.dart';
-import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/category_list_bloc.dart';
+import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/categories/category_list_bloc.dart';
+import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/countries/countries_bloc.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/page.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/recently_update_movies/recently_update_movies_bloc.dart';
 import 'package:smoth_movie_app/helper/helper.dart';
@@ -67,8 +68,15 @@ class _HomePageState extends State<HomePage> {
         "appBar": true,
       },
       {
-        "page": BlocProvider(
-          create: (context) => serviceLocator<CategoryListBloc>(),
+        "page": MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => serviceLocator<CategoryListBloc>(),
+            ),
+            BlocProvider(
+              create: (context) => serviceLocator<CountriesBloc>(),
+            ),
+          ],
           child: const KhoPhimPage(),
         ),
         "appBar": false,
