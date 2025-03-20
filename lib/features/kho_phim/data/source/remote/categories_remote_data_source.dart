@@ -21,6 +21,12 @@ class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
         var jsonResponse = jsonDecode(res.body) as List;
         List<KhoPhimCategoryModel> categories =
             jsonResponse.map((e) => KhoPhimCategoryModel.fromJson(e)).toList();
+        //***** Thêm tất cả các thể loại vào đầu danh sách */
+        categories.insert(
+          0,
+          KhoPhimCategoryModel(id: "0", name: "Tất cả thể loại", slug: ""),
+        );
+        //***** Thêm tất cả các thể loại vào đầu danh sách */
         return categories;
       } else {
         throw const ServerException("Lỗi khi lấy danh sách thể loại");

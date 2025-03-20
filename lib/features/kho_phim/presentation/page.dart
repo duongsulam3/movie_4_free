@@ -74,7 +74,7 @@ class _KhoPhimPageState extends State<KhoPhimPage> {
                 });
               });
             }),
-            if (countrySlug.isNotEmpty && categorySlug.isNotEmpty)
+            if (countrySlug.isNotEmpty)
               BlocProvider(
                 create: (context) => serviceLocator<KhoPhimMoviesBloc>(),
                 child: InfiniteGridViewMovies(

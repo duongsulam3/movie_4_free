@@ -13,11 +13,12 @@ class KhoPhimYearsWidget extends StatefulWidget {
 }
 
 class _KhoPhimYearsWidgetState extends State<KhoPhimYearsWidget> {
-  late List<int> listOfYear = const <int>[];
+  late List<String> listOfYear = const <String>[];
   late int selectedIndex;
   @override
   void initState() {
     listOfYear = Helper.getYears();
+    listOfYear.insert(0, "Tất cả các năm");
     selectedIndex = 0;
     widget.onSelected(listOfYear[selectedIndex].toString());
     super.initState();

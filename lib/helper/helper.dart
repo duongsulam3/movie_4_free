@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/categories/category_list_bloc.dart';
+import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/kho_phim_movies/kho_phim_movies_bloc.dart';
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
 import 'package:smoth_movie_app/features/home/presentation/bloc/bottom_nav/bottom_nav_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies_bloc/movies_bloc.dart';
@@ -39,14 +40,30 @@ class Helper {
     final cateBloc = context.read<CategoryListBloc>();
     cateBloc.add(const GetAllCategories());
   }
+
+  //! KHO PHIM BLOC
+  static void loadKhoPhimMovies(
+    BuildContext context,
+    String countrySlug,
+    String languageSlug,
+    String categorySlug,
+    String yearSlug,
+  ) {
+    context.read<KhoPhimMoviesBloc>().add(GetKhoPhimMoviesEvent(
+          countrySlug: countrySlug,
+          lang: languageSlug,
+          categorySlug: categorySlug,
+          year: yearSlug,
+        ));
+  }
   //** BLOC FUNCTIONS */
 
   //** FUNCTIONS */
-  static List<int> getYears() {
-    List<int> list = List.empty(growable: true);
+  static List<String> getYears() {
+    List<String> list = List.empty(growable: true);
     final dateTime = DateTime.now();
     for (int i = dateTime.year; i >= 1970; i--) {
-      list.add(i);
+      list.add(i.toString());
     }
     return list;
   }

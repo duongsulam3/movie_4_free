@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:smoth_movie_app/core/bloc/categories_state_status.dart';
@@ -19,6 +21,7 @@ class CategoryListBloc extends Bloc<CategoryListEvent, CategoryListState> {
         (err) => emit(state.copyWith(status: CategoriesStateStatus.error)),
         (data) {
           categories = data;
+          log(categories.length.toString());
           emit(state.copyWith(
             status: CategoriesStateStatus.success,
             categories: categories,

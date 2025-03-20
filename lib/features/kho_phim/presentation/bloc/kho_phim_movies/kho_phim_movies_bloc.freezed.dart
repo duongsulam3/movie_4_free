@@ -15,8 +15,12 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$KhoPhimMoviesState {
-  MoviesStateStatus get status;
+  KhoPhimMoviesStateStatus get status;
   int get page;
+  String get countrySlug;
+  String get categorySlug;
+  String get langSlug;
+  String get yearSlug;
   List<MovieItemEntity> get movies;
   bool get isEnd;
 
@@ -35,17 +39,33 @@ mixin _$KhoPhimMoviesState {
             other is KhoPhimMoviesState &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.page, page) || other.page == page) &&
+            (identical(other.countrySlug, countrySlug) ||
+                other.countrySlug == countrySlug) &&
+            (identical(other.categorySlug, categorySlug) ||
+                other.categorySlug == categorySlug) &&
+            (identical(other.langSlug, langSlug) ||
+                other.langSlug == langSlug) &&
+            (identical(other.yearSlug, yearSlug) ||
+                other.yearSlug == yearSlug) &&
             const DeepCollectionEquality().equals(other.movies, movies) &&
             (identical(other.isEnd, isEnd) || other.isEnd == isEnd));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, status, page,
-      const DeepCollectionEquality().hash(movies), isEnd);
+  int get hashCode => Object.hash(
+      runtimeType,
+      status,
+      page,
+      countrySlug,
+      categorySlug,
+      langSlug,
+      yearSlug,
+      const DeepCollectionEquality().hash(movies),
+      isEnd);
 
   @override
   String toString() {
-    return 'KhoPhimMoviesState(status: $status, page: $page, movies: $movies, isEnd: $isEnd)';
+    return 'KhoPhimMoviesState(status: $status, page: $page, countrySlug: $countrySlug, categorySlug: $categorySlug, langSlug: $langSlug, yearSlug: $yearSlug, movies: $movies, isEnd: $isEnd)';
   }
 }
 
@@ -56,8 +76,12 @@ abstract mixin class $KhoPhimMoviesStateCopyWith<$Res> {
       _$KhoPhimMoviesStateCopyWithImpl;
   @useResult
   $Res call(
-      {MoviesStateStatus status,
+      {KhoPhimMoviesStateStatus status,
       int page,
+      String countrySlug,
+      String categorySlug,
+      String langSlug,
+      String yearSlug,
       List<MovieItemEntity> movies,
       bool isEnd});
 }
@@ -77,6 +101,10 @@ class _$KhoPhimMoviesStateCopyWithImpl<$Res>
   $Res call({
     Object? status = null,
     Object? page = null,
+    Object? countrySlug = null,
+    Object? categorySlug = null,
+    Object? langSlug = null,
+    Object? yearSlug = null,
     Object? movies = null,
     Object? isEnd = null,
   }) {
@@ -84,11 +112,27 @@ class _$KhoPhimMoviesStateCopyWithImpl<$Res>
       status: null == status
           ? _self.status
           : status // ignore: cast_nullable_to_non_nullable
-              as MoviesStateStatus,
+              as KhoPhimMoviesStateStatus,
       page: null == page
           ? _self.page
           : page // ignore: cast_nullable_to_non_nullable
               as int,
+      countrySlug: null == countrySlug
+          ? _self.countrySlug
+          : countrySlug // ignore: cast_nullable_to_non_nullable
+              as String,
+      categorySlug: null == categorySlug
+          ? _self.categorySlug
+          : categorySlug // ignore: cast_nullable_to_non_nullable
+              as String,
+      langSlug: null == langSlug
+          ? _self.langSlug
+          : langSlug // ignore: cast_nullable_to_non_nullable
+              as String,
+      yearSlug: null == yearSlug
+          ? _self.yearSlug
+          : yearSlug // ignore: cast_nullable_to_non_nullable
+              as String,
       movies: null == movies
           ? _self.movies
           : movies // ignore: cast_nullable_to_non_nullable
@@ -105,8 +149,12 @@ class _$KhoPhimMoviesStateCopyWithImpl<$Res>
 
 class _KhoPhimPageState extends KhoPhimMoviesState {
   const _KhoPhimPageState(
-      [this.status = MoviesStateStatus.init,
+      [this.status = KhoPhimMoviesStateStatus.init,
       this.page = 1,
+      this.countrySlug = "",
+      this.categorySlug = "",
+      this.langSlug = "",
+      this.yearSlug = "",
       final List<MovieItemEntity> movies = const [],
       this.isEnd = false])
       : _movies = movies,
@@ -114,10 +162,22 @@ class _KhoPhimPageState extends KhoPhimMoviesState {
 
   @override
   @JsonKey()
-  final MoviesStateStatus status;
+  final KhoPhimMoviesStateStatus status;
   @override
   @JsonKey()
   final int page;
+  @override
+  @JsonKey()
+  final String countrySlug;
+  @override
+  @JsonKey()
+  final String categorySlug;
+  @override
+  @JsonKey()
+  final String langSlug;
+  @override
+  @JsonKey()
+  final String yearSlug;
   final List<MovieItemEntity> _movies;
   @override
   @JsonKey()
@@ -146,17 +206,33 @@ class _KhoPhimPageState extends KhoPhimMoviesState {
             other is _KhoPhimPageState &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.page, page) || other.page == page) &&
+            (identical(other.countrySlug, countrySlug) ||
+                other.countrySlug == countrySlug) &&
+            (identical(other.categorySlug, categorySlug) ||
+                other.categorySlug == categorySlug) &&
+            (identical(other.langSlug, langSlug) ||
+                other.langSlug == langSlug) &&
+            (identical(other.yearSlug, yearSlug) ||
+                other.yearSlug == yearSlug) &&
             const DeepCollectionEquality().equals(other._movies, _movies) &&
             (identical(other.isEnd, isEnd) || other.isEnd == isEnd));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, status, page,
-      const DeepCollectionEquality().hash(_movies), isEnd);
+  int get hashCode => Object.hash(
+      runtimeType,
+      status,
+      page,
+      countrySlug,
+      categorySlug,
+      langSlug,
+      yearSlug,
+      const DeepCollectionEquality().hash(_movies),
+      isEnd);
 
   @override
   String toString() {
-    return 'KhoPhimMoviesState(status: $status, page: $page, movies: $movies, isEnd: $isEnd)';
+    return 'KhoPhimMoviesState(status: $status, page: $page, countrySlug: $countrySlug, categorySlug: $categorySlug, langSlug: $langSlug, yearSlug: $yearSlug, movies: $movies, isEnd: $isEnd)';
   }
 }
 
@@ -169,8 +245,12 @@ abstract mixin class _$KhoPhimPageStateCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {MoviesStateStatus status,
+      {KhoPhimMoviesStateStatus status,
       int page,
+      String countrySlug,
+      String categorySlug,
+      String langSlug,
+      String yearSlug,
       List<MovieItemEntity> movies,
       bool isEnd});
 }
@@ -190,6 +270,10 @@ class __$KhoPhimPageStateCopyWithImpl<$Res>
   $Res call({
     Object? status = null,
     Object? page = null,
+    Object? countrySlug = null,
+    Object? categorySlug = null,
+    Object? langSlug = null,
+    Object? yearSlug = null,
     Object? movies = null,
     Object? isEnd = null,
   }) {
@@ -197,11 +281,27 @@ class __$KhoPhimPageStateCopyWithImpl<$Res>
       null == status
           ? _self.status
           : status // ignore: cast_nullable_to_non_nullable
-              as MoviesStateStatus,
+              as KhoPhimMoviesStateStatus,
       null == page
           ? _self.page
           : page // ignore: cast_nullable_to_non_nullable
               as int,
+      null == countrySlug
+          ? _self.countrySlug
+          : countrySlug // ignore: cast_nullable_to_non_nullable
+              as String,
+      null == categorySlug
+          ? _self.categorySlug
+          : categorySlug // ignore: cast_nullable_to_non_nullable
+              as String,
+      null == langSlug
+          ? _self.langSlug
+          : langSlug // ignore: cast_nullable_to_non_nullable
+              as String,
+      null == yearSlug
+          ? _self.yearSlug
+          : yearSlug // ignore: cast_nullable_to_non_nullable
+              as String,
       null == movies
           ? _self._movies
           : movies // ignore: cast_nullable_to_non_nullable
