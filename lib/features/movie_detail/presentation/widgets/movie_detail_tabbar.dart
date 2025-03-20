@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/movie_detail.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/server_data.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/blocs/detail_page_bloc/detail_page_bloc.dart';
@@ -47,23 +46,23 @@ class MovieDetailTabBar extends StatelessWidget {
                         passingEpisode: state.newEpisode,
                       ),
                       const TabBar(
+                        dividerHeight: 0,
+                        indicator: BoxDecoration(
+                          color: Colors.transparent,
+                        ),
+                        unselectedLabelColor: Colors.grey,
+                        unselectedLabelStyle: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        labelColor: Colors.white,
+                        labelStyle: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                         tabs: [
-                          Tab(
-                            child: Center(
-                              child: ResponsiveText(
-                                text: "Tập tiếp theo",
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                          Tab(
-                            child: Center(
-                              child: ResponsiveText(
-                                text: "Phim tương tự",
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
+                          Tab(text: "Tập tiếp theo"),
+                          Tab(text: "Phim tương tự"),
                         ],
                       ),
                       ExpandedTabBarViewContent(

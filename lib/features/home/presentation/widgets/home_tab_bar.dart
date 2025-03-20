@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
 
 class HomeTabBar extends StatelessWidget {
   const HomeTabBar({super.key, required this.tabs});
@@ -11,15 +10,21 @@ class HomeTabBar extends StatelessWidget {
     return TabBar(
       isScrollable: true,
       tabAlignment: TabAlignment.start,
-      dividerColor: Colors.transparent,
-      indicator: const BoxDecoration(
-        color: Colors.transparent,
+      indicator: const BoxDecoration(color: Colors.transparent),
+      dividerHeight: 0,
+      unselectedLabelColor: Colors.grey,
+      unselectedLabelStyle: const TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+      ),
+      labelColor: Colors.white,
+      labelStyle: const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
       ),
       tabs: List.generate(
         tabs.length,
-        (i) => Tab(
-          child: ResponsiveText(text: tabs[i]["title"]),
-        ),
+        (i) => Tab(text: tabs[i]["title"]),
       ),
     );
   }

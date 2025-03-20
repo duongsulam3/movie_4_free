@@ -8,16 +8,16 @@ class CachedNetworkImageWidget extends StatelessWidget {
   final String url;
   final double? height;
   final double? width;
-  final int? memCacheHeight;
-  final int? memCacheWidth;
+  final int memCacheHeight;
+  final int memCacheWidth;
 
   const CachedNetworkImageWidget({
     super.key,
     required this.url,
     this.height,
     this.width,
-    this.memCacheHeight,
-    this.memCacheWidth,
+    this.memCacheHeight = 50,
+    this.memCacheWidth = 50,
   });
 
   @override

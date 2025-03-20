@@ -5,7 +5,8 @@ class CategoriesItemContainer extends StatelessWidget {
   const CategoriesItemContainer({
     super.key,
     required this.name,
-    required this.backgroundColor, required this.textColor,
+    required this.backgroundColor,
+    required this.textColor,
   });
 
   final String name;

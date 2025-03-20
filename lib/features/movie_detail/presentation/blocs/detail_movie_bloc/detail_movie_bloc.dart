@@ -9,6 +9,7 @@ part 'detail_movie_event.dart';
 part 'detail_movie_state.dart';
 
 class DetailMovieBloc extends Bloc<DetailMovieEvent, DetailMovieState> {
+  //TODO REFACTOR BLOC STATE
   final GetDetailMovie _getDetailMovie;
   DetailMovieBloc({
     required GetDetailMovie getDetailMovie,

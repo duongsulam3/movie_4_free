@@ -25,9 +25,16 @@ class ListMovieItemWidget extends StatelessWidget {
         AppRouter.movieDetail,
         arguments: MovieDetailParamModel(slug: movie.slug),
       ),
-      child: CachedNetworkImageWidget(
-        url: AppSecret.imageUrl + movie.posterUrl,
-        memCacheWidth: 200,
+      child: Container(
+        clipBehavior: Clip.hardEdge,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: CachedNetworkImageWidget(
+          url: AppSecret.imageUrl + movie.posterUrl,
+          memCacheWidth: 180,
+          memCacheHeight: 120,
+        ),
       ),
     );
   }

@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smoth_movie_app/common/widgets/progress_indicator.dart';
 import 'package:smoth_movie_app/core/error/error_page.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/blocs/detail_movie_bloc/detail_movie_bloc.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/blocs/detail_page_bloc/detail_page_bloc.dart';
@@ -29,9 +29,7 @@ class MovieDetailPage extends StatelessWidget {
             ),
           );
         } else if (state is MovieLoadingState) {
-          return const Scaffold(
-            body: Center(child: CupertinoActivityIndicator()),
-          );
+          return const Scaffold(body: Center(child: ProgressIndicatorCustom()));
         } else {
           return const ErrorPage();
         }

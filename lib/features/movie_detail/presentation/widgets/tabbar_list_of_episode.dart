@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smoth_movie_app/common/widgets/cached_network/container_with_cached_network_image_provider.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/movie_detail.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/blocs/detail_page_bloc/detail_page_bloc.dart';
-import 'package:smoth_movie_app/common/widgets/cached_network/cached_network_image.dart';
 
 class TabBarListOfEpisode extends StatelessWidget {
   const TabBarListOfEpisode({
@@ -18,7 +18,7 @@ class TabBarListOfEpisode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final sHeight = MediaQuery.of(context).size.height;
-    final sWidth = MediaQuery.of(context).size.width;
+    // final sWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () {
         context.read<DetailPageBloc>().add(
@@ -39,10 +39,11 @@ class TabBarListOfEpisode extends StatelessWidget {
         ),
         child: Row(
           children: [
-            SizedBox(
-              height: sHeight / (sHeight / 120),
-              width: sWidth / (sWidth / 200),
-              child: CachedNetworkImageWidget(url: movie.movieInfo.thumbUrl),
+            Expanded(
+              child: ContainerWithCachedNetworkImageProvider(
+                path: movie.movieInfo.thumbUrl,
+                height: 120,
+              ),
             ),
             Expanded(
               child: Padding(

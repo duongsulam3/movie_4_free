@@ -9,7 +9,7 @@ import 'package:smoth_movie_app/features/home/home_main/tabs/phim_le_tab.dart';
 import 'package:smoth_movie_app/features/home/home_main/tabs/phim_truyen_hinh_tab.dart';
 import 'package:smoth_movie_app/features/home/presentation/bloc/bottom_nav/bottom_nav_bloc.dart';
 import 'package:smoth_movie_app/features/home/home_main/page.dart';
-import 'package:smoth_movie_app/features/home/home_profile/page.dart';
+import 'package:smoth_movie_app/features/profile/page.dart';
 import 'package:smoth_movie_app/features/home/presentation/widgets/home_tab_bar.dart';
 import 'package:smoth_movie_app/features/home/presentation/widgets/logo_and_widget.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/categories/category_list_bloc.dart';
@@ -31,6 +31,7 @@ class _HomePageState extends State<HomePage> {
   List<Map<String, dynamic>> tabs = [];
   List<Map<String, dynamic>> navs = [];
   //** SCROLL CONTROLLERS */
+  //TODO HANDLE MULTIPLE SCROLL FOR APPBAR
   late ScrollController appbarScrollController;
   final scrollControllerMain = ScrollController();
 
@@ -100,9 +101,9 @@ class _HomePageState extends State<HomePage> {
         "title": "Kho phim",
       },
       {
-        "icon": const Icon(CupertinoIcons.person),
-        "active_icon": const Icon(CupertinoIcons.person_fill),
-        "title": "Tài khoản",
+        "icon": const Icon(CupertinoIcons.hand_thumbsup),
+        "active_icon": const Icon(CupertinoIcons.hand_thumbsup_fill),
+        "title": "Donate",
       },
     ];
     super.initState();

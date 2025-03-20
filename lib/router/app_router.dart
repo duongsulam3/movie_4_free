@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/model/movie_detail_param_model.dart';
 import 'package:smoth_movie_app/core/error/error_page.dart';
-import 'package:smoth_movie_app/features/home/home_profile/page.dart';
+import 'package:smoth_movie_app/features/profile/page.dart';
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
 import 'package:smoth_movie_app/features/search/presentation/page.dart';
 import 'package:smoth_movie_app/features/home/presentation/home_page.dart';

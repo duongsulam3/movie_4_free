@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:smoth_movie_app/core/bloc/kho_phim_movies_state_status.dart';
+import 'package:smoth_movie_app/core/bloc/kho_phim/kho_phim_movies_state_status.dart';
 import 'package:smoth_movie_app/features/kho_phim/domain/usecase/get_kho_phim_movies.dart';
 import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_item.dart';
 

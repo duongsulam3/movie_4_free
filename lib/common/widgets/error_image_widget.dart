@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
 
 class ErrorImage extends StatelessWidget {
@@ -9,7 +9,7 @@ class ErrorImage extends StatelessWidget {
     return const Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(CupertinoIcons.wifi_exclamationmark),
+        Icon(Icons.broken_image_outlined),
         ResponsiveText(
           text: "Lỗi khi tải hình ảnh",
           fontSize: 12,

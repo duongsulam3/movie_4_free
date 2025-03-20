@@ -24,7 +24,11 @@ class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
         //***** Thêm tất cả các thể loại vào đầu danh sách */
         categories.insert(
           0,
-          KhoPhimCategoryModel(id: "0", name: "Tất cả thể loại", slug: ""),
+          KhoPhimCategoryModel(
+            id: "0",
+            name: "Tất cả thể loại",
+            slug: "",
+          ),
         );
         //***** Thêm tất cả các thể loại vào đầu danh sách */
         return categories;
