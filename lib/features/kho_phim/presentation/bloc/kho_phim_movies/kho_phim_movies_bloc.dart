@@ -20,8 +20,7 @@ class KhoPhimMoviesBloc extends Bloc<KhoPhimMoviesEvent, KhoPhimMoviesState> {
         emit(state.copyWith(page: 1, status: KhoPhimMoviesStateStatus.loading));
       }
       if (state.isEnd) {
-        emit(state.copyWith(
-            status: KhoPhimMoviesStateStatus.success, isEnd: false));
+        emit(state.copyWith(isEnd: false));
       }
       final res = await usecase.call(GetKhoPhimMoviesParams(
         countrySlug: event.countrySlug,

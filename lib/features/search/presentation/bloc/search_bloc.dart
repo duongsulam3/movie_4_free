@@ -36,15 +36,14 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       res.fold(
         (err) => emit(state.copyWith(status: MoviesStateStatus.error)),
         (data) {
+          movies = data;
           if (data.isEmpty && data.length < 20) {
-            movies = data;
             emit(state.copyWith(
               status: MoviesStateStatus.success,
               isEnd: true,
               movies: [...state.movies, ...movies],
             ));
           } else {
-            movies = data;
             emit(state.copyWith(
               status: MoviesStateStatus.success,
               movies: state.query == event.query

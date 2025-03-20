@@ -35,11 +35,12 @@ class _KhoPhimPageState extends State<KhoPhimPage> {
 
   @override
   Widget build(BuildContext context) {
+    final sHeight = MediaQuery.of(context).size.height;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SingleChildScrollView(
         child: Column(
-          spacing: 20,
+          spacing: sHeight / (sHeight / 20),
           children: [
             const TitleAndSearchIcon(),
             KhoPhimCountries(onSelected: (value) {

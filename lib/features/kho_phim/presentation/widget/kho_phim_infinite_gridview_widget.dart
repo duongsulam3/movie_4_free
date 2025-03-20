@@ -1,12 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/widgets/progress_indicator.dart';
-import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
 import 'package:smoth_movie_app/core/bloc/kho_phim_movies_state_status.dart';
 import 'package:smoth_movie_app/core/error/error_page.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/kho_phim_movies/kho_phim_movies_bloc.dart';
+import 'package:smoth_movie_app/features/kho_phim/presentation/widget/kho_phim_no_more_movies_widget.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/list_movie_item_widget.dart';
 import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/load_more_container.dart';
 import 'package:smoth_movie_app/helper/helper.dart';
@@ -27,13 +25,7 @@ class InfiniteGridViewMovies extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<KhoPhimMoviesBloc, KhoPhimMoviesState>(
-      listener: (context, state) {
-        if (state.status == KhoPhimMoviesStateStatus.loading) {
-          //TODO Handle Loading
-          log("Loading...");
-        }
-      },
+    return BlocBuilder<KhoPhimMoviesBloc, KhoPhimMoviesState>(
       bloc: context.read<KhoPhimMoviesBloc>()
         ..add(GetKhoPhimMoviesEvent(
           countrySlug: countrySlug,
@@ -51,13 +43,7 @@ class InfiniteGridViewMovies extends StatelessWidget {
             return const ErrorPage();
           default:
             if (state.isEnd && state.movies.isEmpty) {
-              return const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // TODO ADD AN ICON FOR EMPTY
-                  ResponsiveText(text: "Tạm thời không có dữ liệu"),
-                ],
-              );
+              return const KhoPhimNoMoreMovie();
             } else {
               return CustomScrollView(
                 shrinkWrap: true,
@@ -65,7 +51,8 @@ class InfiniteGridViewMovies extends StatelessWidget {
                 slivers: [
                   SliverGrid.builder(
                     addAutomaticKeepAlives: false,
-                    addRepaintBoundaries: false,
+                    addRepaintBoundaries: true,
+                    addSemanticIndexes: false,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
@@ -92,7 +79,7 @@ class InfiniteGridViewMovies extends StatelessWidget {
                                   yearSlug,
                                 ),
                                 child: const LoadMoreContainer(),
-                              ),
+                              )
                       ],
                     ),
                   ),
@@ -104,3 +91,5 @@ class InfiniteGridViewMovies extends StatelessWidget {
     );
   }
 }
+
+
