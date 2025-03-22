@@ -9,6 +9,7 @@ import 'package:smoth_movie_app/features/home/home_main/tabs/phim_le_tab.dart';
 import 'package:smoth_movie_app/features/home/home_main/tabs/phim_truyen_hinh_tab.dart';
 import 'package:smoth_movie_app/features/home/presentation/bloc/bottom_nav/bottom_nav_bloc.dart';
 import 'package:smoth_movie_app/features/home/home_main/page.dart';
+import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/kho_phim/kho_phim_page_bloc.dart';
 import 'package:smoth_movie_app/features/profile/page.dart';
 import 'package:smoth_movie_app/features/home/presentation/widgets/home_tab_bar.dart';
 import 'package:smoth_movie_app/features/home/presentation/widgets/logo_and_widget.dart';
@@ -77,6 +78,12 @@ class _HomePageState extends State<HomePage> {
             BlocProvider(
               create: (context) => serviceLocator<CountriesBloc>(),
             ),
+            BlocProvider(
+              create: (context) => KhoPhimPageBloc(
+                countriesBloc: context.read<CountriesBloc>(),
+                categoryListBloc: context.read<CategoryListBloc>(),
+              ),
+            )
           ],
           child: const KhoPhimPage(),
         ),

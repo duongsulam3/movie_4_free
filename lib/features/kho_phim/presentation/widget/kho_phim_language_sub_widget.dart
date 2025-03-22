@@ -3,9 +3,10 @@ import 'package:smoth_movie_app/common/widgets/responsive_sized_box.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/widget/categories_item_container.dart';
 
 class KhoPhimLanguageSubWidget extends StatefulWidget {
-  const KhoPhimLanguageSubWidget({super.key, required this.onSelected});
+  const KhoPhimLanguageSubWidget({super.key, required this.onSelected, required this.langs});
 
   final ValueChanged<String> onSelected;
+  final List<String> langs;
 
   @override
   State<KhoPhimLanguageSubWidget> createState() =>
@@ -13,13 +14,11 @@ class KhoPhimLanguageSubWidget extends StatefulWidget {
 }
 
 class _KhoPhimLanguageSubWidgetState extends State<KhoPhimLanguageSubWidget> {
-  late List<String> listOfLanguageSub = const <String>[];
   late int selectedIndex;
   @override
   void initState() {
-    listOfLanguageSub = ["thuyet-minh", "vietsub", "long-tieng"];
     selectedIndex = 1;
-    widget.onSelected(listOfLanguageSub[selectedIndex].toString());
+    widget.onSelected(widget.langs[selectedIndex].toString());
     super.initState();
   }
 
@@ -29,18 +28,18 @@ class _KhoPhimLanguageSubWidgetState extends State<KhoPhimLanguageSubWidget> {
       height: 40,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        itemCount: listOfLanguageSub.length,
+        itemCount: widget.langs.length,
         itemBuilder: (context, index) => GestureDetector(
           onTap: () {
             setState(() {
               selectedIndex = index;
-              widget.onSelected(listOfLanguageSub[selectedIndex].toString());
+              widget.onSelected(widget.langs[selectedIndex].toString());
             });
           },
           child: CategoriesItemContainer(
-            name: listOfLanguageSub[index] == "vietsub"
+            name: widget.langs[index] == "vietsub"
                 ? "Vietsub"
-                : listOfLanguageSub[index] == "thuyet-minh"
+                : widget.langs[index] == "thuyet-minh"
                     ? "Thuyết Minh"
                     : "Lồng Tiếng",
             backgroundColor: selectedIndex == index

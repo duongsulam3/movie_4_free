@@ -1,9 +1,11 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smoth_movie_app/common/widgets/progress_indicator.dart';
+import 'package:smoth_movie_app/core/bloc/kho_phim/page_status.dart';
+import 'package:smoth_movie_app/core/error/error_page.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/categories/category_list_bloc.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/countries/countries_bloc.dart';
+import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/kho_phim/kho_phim_page_bloc.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/kho_phim_movies/kho_phim_movies_bloc.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/widget/kho_phim_categories_widget.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/widget/kho_phim_countries_widget.dart';
@@ -30,64 +32,91 @@ class _KhoPhimPageState extends State<KhoPhimPage> {
   void initState() {
     context.read<CountriesBloc>().add(const GetAllCountry());
     context.read<CategoryListBloc>().add(const GetAllCategories());
+    context.read<KhoPhimPageBloc>().add(const KhoPhimLoadAllBlocEvent());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final sHeight = MediaQuery.of(context).size.height;
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: SingleChildScrollView(
-        child: Column(
-          spacing: sHeight / (sHeight / 20),
-          children: [
-            const TitleAndSearchIcon(),
-            KhoPhimCountries(onSelected: (value) {
-              if (countrySlug == value) return;
-              setState(() {
-                countrySlug = value;
-                log("Country Slug: $countrySlug");
-              });
-            }),
-            KhoPhimCategoriesWidget(onSelected: (value) {
-              if (categorySlug == value) return;
-              setState(() {
-                categorySlug = value;
-                log("Category Slug: $categorySlug");
-              });
-            }),
-            KhoPhimYearsWidget(onSelected: (value) {
-              if (yearSlug == value) return;
-              Future.delayed(Duration.zero, () {
-                setState(() {
-                  yearSlug = value;
-                  log("Year Slug: $yearSlug");
-                });
-              });
-            }),
-            KhoPhimLanguageSubWidget(onSelected: (value) {
-              if (languageSlug == value) return;
-              Future.delayed(Duration.zero, () {
-                setState(() {
-                  languageSlug = value;
-                  log("Language Slug: $languageSlug");
-                });
-              });
-            }),
-            if (countrySlug.isNotEmpty)
-              BlocProvider(
-                create: (context) => serviceLocator<KhoPhimMoviesBloc>(),
-                child: InfiniteGridViewMovies(
-                  categorySlug: categorySlug,
-                  countrySlug: countrySlug,
-                  yearSlug: yearSlug,
-                  languageSlug: languageSlug,
+    return BlocBuilder<KhoPhimPageBloc, KhoPhimPageState>(
+      builder: (context, state) {
+        switch (state.status) {
+          case KhoPhimPageStatus.init:
+            return const SizedBox.shrink();
+          case KhoPhimPageStatus.loading:
+            return const Center(child: ProgressIndicatorCustom());
+          case KhoPhimPageStatus.error:
+            return const ErrorPage();
+          case KhoPhimPageStatus.success:
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  spacing: sHeight / (sHeight / 20),
+                  children: [
+                    const TitleAndSearchIcon(),
+                    KhoPhimCountries(
+                      countries: state.countries,
+                      onSelected: (value) {
+                        if (countrySlug == value) return;
+                        Future.delayed(Duration.zero, () {
+                          setState(() {
+                            countrySlug = value;
+                          });
+                        });
+                      },
+                    ),
+                    KhoPhimCategoriesWidget(
+                      categories: state.categories,
+                      onSelected: (value) {
+                        if (categorySlug == value) return;
+                        Future.delayed(Duration.zero, () {
+                          setState(() {
+                            categorySlug = value;
+                          });
+                        });
+                      },
+                    ),
+                    KhoPhimYearsWidget(
+                      years: state.years,
+                      onSelected: (value) {
+                        if (yearSlug == value) return;
+                        Future.delayed(Duration.zero, () {
+                          setState(() {
+                            yearSlug = value;
+                          });
+                        });
+                      },
+                    ),
+                    KhoPhimLanguageSubWidget(
+                      langs: state.langs,
+                      onSelected: (value) {
+                        if (languageSlug == value) return;
+                        Future.delayed(Duration.zero, () {
+                          setState(() {
+                            languageSlug = value;
+                          });
+                        });
+                      },
+                    ),
+                    if (countrySlug.isNotEmpty)
+                      BlocProvider(
+                        create: (context) =>
+                            serviceLocator<KhoPhimMoviesBloc>(),
+                        child: InfiniteGridViewMovies(
+                          categorySlug: categorySlug,
+                          countrySlug: countrySlug,
+                          yearSlug: yearSlug,
+                          languageSlug: languageSlug,
+                        ),
+                      ),
+                  ],
                 ),
               ),
-          ],
-        ),
-      ),
+            );
+        }
+      },
     );
   }
 }

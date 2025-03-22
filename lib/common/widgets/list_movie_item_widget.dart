@@ -32,8 +32,8 @@ class ListMovieItemWidget extends StatelessWidget {
         ),
         child: CachedNetworkImageWidget(
           url: AppSecret.imageUrl + movie.posterUrl,
-          memCacheWidth: 180,
-          memCacheHeight: 120,
+          memCacheHeight: 200,
+          memCacheWidth: 200,
         ),
       ),
     );

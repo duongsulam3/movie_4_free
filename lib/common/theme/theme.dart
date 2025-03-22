@@ -5,6 +5,8 @@ class AppTheme {
   static final blackTheme = ThemeData(
     brightness: Brightness.dark,
     primaryColor: AppColors.primaryColor,
+    primaryColorDark: AppColors.primaryColor,
+    primaryColorLight: AppColors.lightColor,
     scaffoldBackgroundColor: AppColors.primaryColor,
     appBarTheme: const AppBarTheme(
       backgroundColor: AppColors.primaryColor,
