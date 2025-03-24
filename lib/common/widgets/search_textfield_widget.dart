@@ -12,7 +12,8 @@ class SearchTextField extends StatelessWidget {
     this.onTap,
     this.controller,
     this.onChanged,
-    this.onSubmitted, this.focusNode,
+    this.onSubmitted,
+    this.focusNode,
   });
 
   final double textFieldHeight;
@@ -36,37 +37,38 @@ class SearchTextField extends StatelessWidget {
           Radius.circular(5),
         ),
       ),
-      child: TextField(
-        focusNode: focusNode,
-        controller: controller,
-        canRequestFocus: isFocus,
-        onTap: onTap,
-        onChanged: onChanged,
-        onSubmitted: onSubmitted,
-        style: TextStyle(
-          color: Colors.grey,
-          fontSize: textFieldFontSize,
-        ),
-        decoration: InputDecoration(
-          contentPadding: const EdgeInsets.only(left: 10, bottom: 14),
-          border: InputBorder.none,
-          suffixIcon: Container(
-            margin: const EdgeInsets.all(5),
-            decoration: BoxDecoration(
-              border: Border(
-                left: BorderSide(
-                  width: 0.3,
-                  color: Colors.grey.shade400,
+      child: Center(
+        child: TextField(
+          focusNode: focusNode,
+          controller: controller,
+          canRequestFocus: isFocus,
+          onTap: onTap,
+          onChanged: onChanged,
+          onSubmitted: onSubmitted,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: textFieldFontSize,
+          ),
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            suffixIcon: Container(
+              margin: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                border: Border(
+                  left: BorderSide(
+                    width: 0.3,
+                    color: Colors.grey.shade400,
+                  ),
                 ),
               ),
+              child: const FittedBox(child: Icon(CupertinoIcons.search)),
             ),
-            child: const FittedBox(child: Icon(CupertinoIcons.search)),
-          ),
-          iconColor: Colors.grey,
-          hintText: hintText,
-          hintStyle: TextStyle(
-            color: Colors.grey,
-            fontSize: hintFontSize,
+            contentPadding: const EdgeInsets.only(left: 10),
+            hintText: hintText,
+            hintStyle: TextStyle(
+              color: Colors.grey,
+              fontSize: hintFontSize,
+            ),
           ),
         ),
       ),

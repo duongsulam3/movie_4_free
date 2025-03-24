@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smoth_movie_app/common/route_params_model/search_textfield_param_model.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
 import 'package:smoth_movie_app/router/app_router.dart';
 
@@ -12,7 +13,12 @@ class TitleAndSearchIcon extends StatelessWidget {
         const ResponsiveText(text: "Kho Phim", fontSize: 24),
         const Spacer(),
         GestureDetector(
-            onTap: () => Navigator.of(context).pushNamed(AppRouter.homeSearch),
+            onTap: () => Navigator.of(context).pushNamed(
+                  AppRouter.homeSearch,
+                  arguments: const SearchTextfieldParamModel(
+                    searchHint: "Nhập phim bạn muốn tìm",
+                  ),
+                ),
             child: const Icon(Icons.search)),
       ],
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smoth_movie_app/common/model/movie_detail_param_model.dart';
+import 'package:smoth_movie_app/common/route_params_model/movie_detail_param_model.dart';
+import 'package:smoth_movie_app/common/route_params_model/search_textfield_param_model.dart';
 import 'package:smoth_movie_app/core/error/error_page.dart';
 import 'package:smoth_movie_app/features/profile/page.dart';
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
@@ -38,10 +39,11 @@ class AppRouter {
           dy: 0.0,
         );
       case '/home_search':
+        final params = settings.arguments as SearchTextfieldParamModel;
         return FadeInTransition(
           page: BlocProvider(
             create: (context) => serviceLocator<SearchBloc>(),
-            child: const SearchPage(),
+            child: SearchPage(searchHint: params.searchHint),
           ),
         );
       case '/home_profile':

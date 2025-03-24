@@ -45,7 +45,7 @@ class CustomAppbarWidget extends StatelessWidget
               if (scrollController!.hasClients) {
                 log("AppBar scroll offset: ${scrollController!.offset}");
                 return AnimatedContainer(
-                  duration: const Duration(milliseconds: 500),
+                  duration: const Duration(milliseconds: 800),
                   curve: Curves.easeInOut,
                   color: scrollController!.offset > 0
                       ? backgroundColor

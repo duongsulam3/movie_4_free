@@ -5,7 +5,8 @@ import 'package:smoth_movie_app/features/search/presentation/widgets/list_search
 import 'package:smoth_movie_app/helper/helper.dart';
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({super.key});
+  final String searchHint;
+  const SearchPage({super.key, required this.searchHint});
 
   @override
   State<SearchPage> createState() => _SearchPageState();
@@ -33,7 +34,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     final sHeight = MediaQuery.of(context).size.height;
-    // final screenWidth = MediaQuery.of(context).size.width;
+    // final sWidth = MediaQuery.of(context).size.width;
     //
     return Scaffold(
       appBar: CustomAppbarWidget(
@@ -44,7 +45,7 @@ class _SearchPageState extends State<SearchPage> {
             Expanded(
               child: SearchTextField(
                 focusNode: searchFocusNode,
-                hintText: "Jujutsu Kaisen",
+                hintText: widget.searchHint,
                 controller: searchController,
                 onSubmitted: (value) => Helper.onSubmitSearch(context, value),
               ),

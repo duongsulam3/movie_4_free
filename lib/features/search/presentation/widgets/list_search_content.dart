@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smoth_movie_app/common/model/movie_detail_param_model.dart';
+import 'package:smoth_movie_app/common/route_params_model/movie_detail_param_model.dart';
 import 'package:smoth_movie_app/common/widgets/progress_indicator.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_sized_box.dart';
 import 'package:smoth_movie_app/core/bloc/movies_state_status.dart';
@@ -22,12 +22,15 @@ class _ListSearchContentState extends State<ListSearchContent> {
   final scrollController = ScrollController();
   List<String> listTopSearch = [
     "Avatar: The Way of Water",
-    "Đấu phá thương khung",
     "The Flash",
     "The Batman",
+    "Loki Season 2",
+    "Stranger Things",
+    "Stranger Things Season 2",
+    "Stranger Things Season 3",
+    "The Witcher",
     "Jujutsu Kaisen",
     "Naruto Shippuden",
-    "Stranger Things",
   ];
   @override
   Widget build(BuildContext context) {
