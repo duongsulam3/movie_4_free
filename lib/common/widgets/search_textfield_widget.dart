@@ -5,9 +5,9 @@ class SearchTextField extends StatelessWidget {
   const SearchTextField({
     super.key,
     this.textFieldHeight = 30,
-    this.textFieldFontSize = 12,
+    this.textFieldFontSize = 11,
     this.hintText = "",
-    this.hintFontSize = 12,
+    this.hintFontSize = 11,
     this.isFocus = true,
     this.onTap,
     this.controller,
@@ -66,7 +66,7 @@ class SearchTextField extends StatelessWidget {
             contentPadding: const EdgeInsets.only(left: 10),
             hintText: hintText,
             hintStyle: TextStyle(
-              color: Colors.grey,
+              color: Colors.grey.withValues(alpha: 0.7),
               fontSize: hintFontSize,
             ),
           ),
