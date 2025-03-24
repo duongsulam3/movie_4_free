@@ -20,7 +20,6 @@ class MoviePlayerWidget extends StatefulWidget {
 }
 
 class _MoviePlayerWidgetState extends State<MoviePlayerWidget> {
-  bool isLink404 = false;
   late VideoPlayerController _controller;
   ChewieController? chewieController;
   @override
@@ -32,51 +31,42 @@ class _MoviePlayerWidgetState extends State<MoviePlayerWidget> {
   @override
   void dispose() {
     _controller.dispose();
-    chewieController?.dispose();
+    if (chewieController != null) chewieController!.dispose();
     super.dispose();
   }
 
   _initPlayer(String url) async {
-    var uri = Uri.parse(url);
-    _controller = VideoPlayerController.networkUrl(uri);
     try {
+      final uri = Uri.parse(url);
+      _controller = VideoPlayerController.networkUrl(uri);
       await _controller.initialize();
       chewieController = ChewieController(
         videoPlayerController: _controller,
         autoPlay: true,
         allowedScreenSleep: false,
+        looping: false,
       );
       setState(() {});
     } catch (e) {
-      log(uri.toString());
+      log("Không thể phát video url: $url");
       return;
+    }
+  }
+
+  void buildNewVideoPlayer(String newUrl) {
+    if (newUrl != "" && newUrl != _controller.dataSource) {
+      _controller.dispose();
+      _initPlayer(newUrl);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // log(widget.newVideoUrl);
-    if (widget.newVideoUrl != "" &&
-        widget.newVideoUrl != _controller.dataSource) {
-      _controller.dispose();
-      _initPlayer(widget.newVideoUrl);
-    }
+    buildNewVideoPlayer(widget.newVideoUrl);
     return _controller.value.isInitialized
-        ? GestureDetector(
-            onTap: () {
-              setState(
-                () {
-                  _controller.value.isPlaying
-                      ? _controller.pause()
-                      : _controller.play();
-                },
-              );
-            },
-            onDoubleTap: () {},
-            child: AspectRatio(
-              aspectRatio: _controller.value.aspectRatio,
-              child: Chewie(controller: chewieController!),
-            ),
+        ? AspectRatio(
+            aspectRatio: _controller.value.aspectRatio,
+            child: Chewie(controller: chewieController!),
           )
         : ContainerWithCachedNetworkImageProvider(path: widget.posterUrl);
   }

@@ -36,6 +36,6 @@ class SlideBottomToTopTransition extends PageRouteBuilder {
               child: child,
             );
           },
-          transitionDuration: const Duration(milliseconds: 1000),
+          transitionDuration: const Duration(milliseconds: 800),
         );
 }
