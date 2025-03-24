@@ -26,21 +26,14 @@ class KhoPhimPageBloc extends Bloc<KhoPhimPageEvent, KhoPhimPageState> {
       List<KhoPhimCountryEntity> countriesLoaded = [];
       List<KhoPhimCategoryEntity> categoriesLoaded = [];
 
-      countriesBloc.stream.listen((countryState) {
-        if (countryState.status == CountriesStateStatus.success) {
-          countriesLoaded = countryState.countries;
-        }
-        countriesBloc.close();
-      });
-      categoryListBloc.stream.listen((categoryState) {
-        if (categoryState.status == CategoriesStateStatus.success) {
-          categoriesLoaded = categoryState.categories;
-        }
-        categoryListBloc.close();
-      });
       await Future.wait([
-        countriesBloc.stream.first,
-        categoryListBloc.stream.first,
+        countriesBloc.stream
+            .firstWhere((state) => state.status == CountriesStateStatus.success)
+            .then((value) => countriesLoaded = value.countries),
+        categoryListBloc.stream
+            .firstWhere(
+                (state) => state.status == CategoriesStateStatus.success)
+            .then((value) => categoriesLoaded = value.categories),
       ]);
 
       if (countriesLoaded.isNotEmpty && categoriesLoaded.isNotEmpty) {
