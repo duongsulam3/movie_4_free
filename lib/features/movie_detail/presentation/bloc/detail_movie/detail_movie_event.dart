@@ -5,13 +5,13 @@ sealed class DetailMovieEvent {
   const DetailMovieEvent();
 }
 
-class GetRecentlyUpdateMovies extends DetailMovieEvent {}
-
 class GetMovieDetailEvent extends DetailMovieEvent {
   final String slug;
   const GetMovieDetailEvent({required this.slug});
 }
 
-class GetSingleMoviesEvent extends DetailMovieEvent {}
-
-class GetAnimeMoviesEvent extends DetailMovieEvent {}
+class UpdateVideoPlayerUrl extends DetailMovieEvent {
+  final String url;
+  final String episode;
+  const UpdateVideoPlayerUrl({required this.url, required this.episode});
+}

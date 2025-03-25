@@ -21,7 +21,6 @@ class ExpandedTabBarViewContent extends StatelessWidget {
         children: [
           ListView.builder(
             shrinkWrap: true,
-            // physics: const NeverScrollableScrollPhysics(),
             scrollDirection: Axis.vertical,
             itemCount: episodes.length,
             itemBuilder: (context, index) {

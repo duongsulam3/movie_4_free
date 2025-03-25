@@ -32,7 +32,7 @@ import 'package:smoth_movie_app/features/movies/domain/repository/movies_reposit
 import 'package:smoth_movie_app/features/movies/domain/repository/recently_update_movies_repository.dart';
 import 'package:smoth_movie_app/features/movies/domain/usecase/get_movies.dart';
 import 'package:smoth_movie_app/features/movies/domain/usecase/get_recently_movies.dart';
-import 'package:smoth_movie_app/features/movie_detail/presentation/blocs/detail_movie_bloc/detail_movie_bloc.dart';
+import 'package:smoth_movie_app/features/movie_detail/presentation/bloc/detail_movie/detail_movie_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies_bloc/movies_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/recently_update_movies/recently_update_movies_bloc.dart';
 

@@ -14,7 +14,7 @@ class HomeTabBar extends StatelessWidget {
       dividerHeight: 0,
       unselectedLabelColor: Colors.grey,
       unselectedLabelStyle: const TextStyle(
-        fontSize: 14,
+        fontSize: 16,
         fontWeight: FontWeight.w400,
       ),
       labelColor: Colors.white,

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/widgets/cached_network/container_with_cached_network_image_provider.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/movie_detail.dart';
-import 'package:smoth_movie_app/features/movie_detail/presentation/blocs/detail_page_bloc/detail_page_bloc.dart';
+import 'package:smoth_movie_app/features/movie_detail/presentation/bloc/detail_movie/detail_movie_bloc.dart';
 
 class TabBarListOfEpisode extends StatelessWidget {
   const TabBarListOfEpisode({
@@ -19,14 +19,13 @@ class TabBarListOfEpisode extends StatelessWidget {
   Widget build(BuildContext context) {
     final sHeight = MediaQuery.of(context).size.height;
     // final sWidth = MediaQuery.of(context).size.width;
+    final bloc = context.read<DetailMovieBloc>();
     return GestureDetector(
       onTap: () {
-        context.read<DetailPageBloc>().add(
-              SetNewVideoPlayer(
-                newUrl: movie.episodes[0].serverData[episodeIndex].linkM3U8,
-                newEpisode: movie.episodes[0].serverData[episodeIndex].name,
-              ),
-            );
+        bloc.add(UpdateVideoPlayerUrl(
+          url: movie.episodes[0].serverData[episodeIndex].linkM3U8,
+          episode: movie.episodes[0].serverData[episodeIndex].name,
+        ));
       },
       child: Container(
         height: sHeight / (sHeight / 120),
@@ -40,12 +39,14 @@ class TabBarListOfEpisode extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
+              flex: 4,
               child: ContainerWithCachedNetworkImageProvider(
                 path: movie.movieInfo.thumbUrl,
                 height: 120,
               ),
             ),
             Expanded(
+              flex: 5,
               child: Padding(
                 padding: EdgeInsets.all(sHeight / (sHeight / 10)),
                 child: Column(

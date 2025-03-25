@@ -147,8 +147,8 @@ class _$KhoPhimMoviesStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _KhoPhimPageState extends KhoPhimMoviesState {
-  const _KhoPhimPageState(
+class _KhoPhimMoviesState extends KhoPhimMoviesState {
+  const _KhoPhimMoviesState(
       [this.status = KhoPhimMoviesStateStatus.init,
       this.page = 1,
       this.countrySlug = "",
@@ -196,14 +196,14 @@ class _KhoPhimPageState extends KhoPhimMoviesState {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
-  _$KhoPhimPageStateCopyWith<_KhoPhimPageState> get copyWith =>
-      __$KhoPhimPageStateCopyWithImpl<_KhoPhimPageState>(this, _$identity);
+  _$KhoPhimMoviesStateCopyWith<_KhoPhimMoviesState> get copyWith =>
+      __$KhoPhimMoviesStateCopyWithImpl<_KhoPhimMoviesState>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _KhoPhimPageState &&
+            other is _KhoPhimMoviesState &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.page, page) || other.page == page) &&
             (identical(other.countrySlug, countrySlug) ||
@@ -237,11 +237,11 @@ class _KhoPhimPageState extends KhoPhimMoviesState {
 }
 
 /// @nodoc
-abstract mixin class _$KhoPhimPageStateCopyWith<$Res>
+abstract mixin class _$KhoPhimMoviesStateCopyWith<$Res>
     implements $KhoPhimMoviesStateCopyWith<$Res> {
-  factory _$KhoPhimPageStateCopyWith(
-          _KhoPhimPageState value, $Res Function(_KhoPhimPageState) _then) =
-      __$KhoPhimPageStateCopyWithImpl;
+  factory _$KhoPhimMoviesStateCopyWith(
+          _KhoPhimMoviesState value, $Res Function(_KhoPhimMoviesState) _then) =
+      __$KhoPhimMoviesStateCopyWithImpl;
   @override
   @useResult
   $Res call(
@@ -256,12 +256,12 @@ abstract mixin class _$KhoPhimPageStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$KhoPhimPageStateCopyWithImpl<$Res>
-    implements _$KhoPhimPageStateCopyWith<$Res> {
-  __$KhoPhimPageStateCopyWithImpl(this._self, this._then);
+class __$KhoPhimMoviesStateCopyWithImpl<$Res>
+    implements _$KhoPhimMoviesStateCopyWith<$Res> {
+  __$KhoPhimMoviesStateCopyWithImpl(this._self, this._then);
 
-  final _KhoPhimPageState _self;
-  final $Res Function(_KhoPhimPageState) _then;
+  final _KhoPhimMoviesState _self;
+  final $Res Function(_KhoPhimMoviesState) _then;
 
   /// Create a copy of KhoPhimMoviesState
   /// with the given fields replaced by the non-null parameter values.
@@ -277,7 +277,7 @@ class __$KhoPhimPageStateCopyWithImpl<$Res>
     Object? movies = null,
     Object? isEnd = null,
   }) {
-    return _then(_KhoPhimPageState(
+    return _then(_KhoPhimMoviesState(
       null == status
           ? _self.status
           : status // ignore: cast_nullable_to_non_nullable

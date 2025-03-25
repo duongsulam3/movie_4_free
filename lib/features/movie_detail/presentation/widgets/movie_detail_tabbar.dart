@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/movie_detail.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/server_data.dart';
-import 'package:smoth_movie_app/features/movie_detail/presentation/blocs/detail_page_bloc/detail_page_bloc.dart';
+import 'package:smoth_movie_app/features/movie_detail/presentation/bloc/detail_movie/detail_movie_bloc.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/icon_back_button.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/movie_description.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/movie_player_widget.dart';
@@ -25,8 +25,10 @@ class MovieDetailTabBar extends StatelessWidget {
     final sHeight = MediaQuery.of(context).size.height;
     final sWidth = MediaQuery.of(context).size.width;
 
-    return BlocBuilder<DetailPageBloc, DetailPageState>(
-      buildWhen: (previous, current) => current is DetailPageStateSuccess,
+    return BlocBuilder<DetailMovieBloc, DetailMovieState>(
+      buildWhen: (previous, current) {
+        return previous.passingUrl != current.passingUrl;
+      },
       builder: (context, state) {
         return DefaultTabController(
           length: 2,
@@ -43,7 +45,7 @@ class MovieDetailTabBar extends StatelessWidget {
                     children: [
                       MovieDescription(
                         movie: movie,
-                        passingEpisode: state.newEpisode,
+                        passingEpisode: state.passingEpisode,
                       ),
                       const TabBar(
                         dividerHeight: 0,
@@ -82,7 +84,7 @@ class MovieDetailTabBar extends StatelessWidget {
                   child: MoviePlayerWidget(
                     m3u8Url: initEpisode,
                     posterUrl: movie.movieInfo.posterUrl,
-                    newVideoUrl: state.newUrl,
+                    newVideoUrl: state.passingUrl,
                   ),
                 ),
               ),

@@ -7,7 +7,7 @@ import 'package:smoth_movie_app/features/profile/page.dart';
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
 import 'package:smoth_movie_app/features/search/presentation/page.dart';
 import 'package:smoth_movie_app/features/home/presentation/home_page.dart';
-import 'package:smoth_movie_app/features/movie_detail/presentation/blocs/detail_movie_bloc/detail_movie_bloc.dart';
+import 'package:smoth_movie_app/features/movie_detail/presentation/bloc/detail_movie/detail_movie_bloc.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/detail_page.dart';
 import 'package:smoth_movie_app/features/splash/bloc/splash_bloc.dart';
 import 'package:smoth_movie_app/features/splash/presentation/splash_page.dart';

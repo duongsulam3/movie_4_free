@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/widgets/progress_indicator.dart';
+import 'package:smoth_movie_app/core/bloc/detail_movie/detail_movie_status.dart';
 import 'package:smoth_movie_app/core/error/error_page.dart';
-import 'package:smoth_movie_app/features/movie_detail/presentation/blocs/detail_movie_bloc/detail_movie_bloc.dart';
-import 'package:smoth_movie_app/features/movie_detail/presentation/blocs/detail_page_bloc/detail_page_bloc.dart';
+import 'package:smoth_movie_app/features/movie_detail/presentation/bloc/detail_movie/detail_movie_bloc.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/movie_detail_content.dart';
 
 class MovieDetailPage extends StatelessWidget {
@@ -16,22 +16,21 @@ class MovieDetailPage extends StatelessWidget {
     return BlocBuilder<DetailMovieBloc, DetailMovieState>(
       bloc: bloc..add(GetMovieDetailEvent(slug: slug)),
       builder: (context, state) {
-        if (state is GetMovieDetailStateSuccess) {
-          final movie = state.movieDetail;
-          final episodes = movie.episodes[0].serverData;
-          String initEpisode = episodes[0].linkM3U8;
-          return BlocProvider(
-            create: (context) => DetailPageBloc(),
-            child: MovieDetailContent(
-              initEpisode: initEpisode,
-              movie: movie,
-              episodes: episodes,
-            ),
-          );
-        } else if (state is MovieLoadingState) {
-          return const Scaffold(body: Center(child: ProgressIndicatorCustom()));
-        } else {
-          return const ErrorPage();
+        switch (state.status) {
+          case DetailMovieStatus.init:
+            return const Scaffold(
+                body: Center(child: ProgressIndicatorCustom()));
+          case DetailMovieStatus.loading:
+            return const Scaffold(
+                body: Center(child: ProgressIndicatorCustom()));
+          case DetailMovieStatus.error:
+            return const ErrorPage();
+          default:
+            return MovieDetailContent(
+              initEpisode: state.movie!.episodes[0].serverData[0].linkM3U8,
+              movie: state.movie!,
+              episodes: state.movie!.episodes[0].serverData,
+            );
         }
       },
     );

@@ -1,0 +1,1 @@
+enum DetailMovieStatus { init, loading, success, error }

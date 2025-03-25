@@ -12,5 +12,5 @@ abstract class KhoPhimMoviesState with _$KhoPhimMoviesState {
     @Default("") String yearSlug,
     @Default([]) List<MovieItemEntity> movies,
     @Default(false) bool isEnd,
-  ]) = _KhoPhimPageState;
+  ]) = _KhoPhimMoviesState;
 }
