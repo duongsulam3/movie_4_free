@@ -11,18 +11,13 @@ class MovieDescription extends StatelessWidget {
   const MovieDescription({
     super.key,
     required this.movie,
-    this.passingEpisode = "",
+    required this.passingEpisode,
   });
 
   @override
   Widget build(BuildContext context) {
     // Convert string to list
     final listCate = movie.movieInfo.categories.map((e) => e.name).toList();
-    //** Get current episode */
-    String currentEpisode = movie.episodes[0].serverData[0].name;
-    if (passingEpisode != "" && passingEpisode != currentEpisode) {
-      currentEpisode = passingEpisode;
-    }
 
     final sWidth = MediaQuery.of(context).size.width;
     final sHeight = MediaQuery.of(context).size.height;
@@ -31,21 +26,27 @@ class MovieDescription extends StatelessWidget {
       scrollDirection: Axis.vertical,
       padding: EdgeInsets.all(sHeight / (sHeight / 10)),
       child: Column(
+        spacing: 5,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          movie.movieInfo.episodeTotal == "1"
-              ? ResponsiveText(
-                  text:
-                      "${movie.movieInfo.name} - ${movie.movieInfo.originName}",
-                  fontSize: 16,
-                )
-              : ResponsiveText(
-                  text:
-                      "${movie.movieInfo.name} - ${movie.movieInfo.originName}\n$currentEpisode",
-                  fontSize: 20,
-                  textColor: Colors.white,
-                  maxLines: 10,
-                ),
+          ResponsiveText(
+            text: movie.movieInfo.name,
+            fontSize: 24,
+            textColor: Colors.white,
+            fontWeight: FontWeight.bold,
+            maxLines: 3,
+          ),
+          ResponsiveText(
+            text: movie.movieInfo.originName,
+            fontSize: 16,
+            maxLines: 3,
+          ),
+          ResponsiveText(
+            text: movie.movieInfo.episodeTotal == "1"
+                ? "Phim lẻ"
+                : passingEpisode,
+            fontSize: 16,
+          ),
           SizedBox(height: sHeight / (sHeight / 10)),
           ReadMoreText(
             movie.movieInfo.content,
@@ -59,26 +60,16 @@ class MovieDescription extends StatelessWidget {
             ),
           ),
           SizedBox(height: sHeight / (sHeight / 10)),
-          movie.movieInfo.episodeTotal == "1"
-              ? IconAndTextWidget(
-                  screenWidth: sWidth,
-                  text: '1/1',
-                  icon: CupertinoIcons.square_stack_3d_down_right,
-                )
-              : movie.movieInfo.episodeCurrent.contains("Hoàn Tất")
-                  ? IconAndTextWidget(
-                      screenWidth: sWidth,
-                      text: movie.movieInfo.episodeCurrent,
-                      fontSize: 14,
-                      icon: CupertinoIcons.square_stack_3d_down_right,
-                    )
-                  : IconAndTextWidget(
-                      screenWidth: sWidth,
-                      text:
-                          "${movie.movieInfo.episodeCurrent}/${movie.movieInfo.episodeTotal}",
-                      fontSize: 14,
-                      icon: CupertinoIcons.square_stack_3d_down_right,
-                    ),
+          IconAndTextWidget(
+            screenWidth: sWidth,
+            text: movie.movieInfo.episodeTotal == "1"
+                ? "Phim Điện Ảnh"
+                : movie.movieInfo.episodeCurrent.contains("Hoàn Tất")
+                    ? movie.movieInfo.episodeCurrent
+                    : "${movie.movieInfo.episodeCurrent}/${movie.movieInfo.episodeTotal}",
+            fontSize: 12,
+            icon: CupertinoIcons.square_stack_3d_down_right,
+          ),
           SizedBox(height: sHeight / (sHeight / 10)),
           IconAndTextWidget(
             screenWidth: sWidth,

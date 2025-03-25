@@ -59,7 +59,7 @@ class MovieDetailTabBar extends StatelessWidget {
                         ),
                         labelColor: Colors.white,
                         labelStyle: TextStyle(
-                          fontSize: 18,
+                          fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
                         tabs: [
