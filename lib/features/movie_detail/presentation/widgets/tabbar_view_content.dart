@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smoth_movie_app/common/widgets/responsive_sized_box.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/movie_detail.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/server_data.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/tabbar_list_of_episode.dart';
@@ -15,8 +16,8 @@ class ExpandedTabBarViewContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 400,
+    return ResponsiveSizedBox(
+      height: 360,
       child: TabBarView(
         children: [
           ListView.builder(
