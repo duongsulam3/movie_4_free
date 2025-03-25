@@ -25,5 +25,15 @@ class AppTheme {
         fontWeight: FontWeight.bold,
       ),
     ),
+    progressIndicatorTheme: const ProgressIndicatorThemeData(
+      color: Colors.lightGreenAccent,
+      strokeWidth: 2,
+      constraints: BoxConstraints(
+        maxWidth: 34,
+        maxHeight: 34,
+        minWidth: 26,
+        minHeight: 26,
+      ),
+    ),
   );
 }
