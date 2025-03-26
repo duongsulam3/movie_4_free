@@ -1,7 +1,9 @@
 import 'dart:developer';
+
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:smoth_movie_app/common/widgets/cached_network/container_with_cached_network_image_provider.dart';
+import 'package:smoth_movie_app/helper/helper.dart';
 import 'package:video_player/video_player.dart';
 
 class MoviePlayerWidget extends StatefulWidget {
@@ -35,21 +37,27 @@ class _MoviePlayerWidgetState extends State<MoviePlayerWidget> {
     super.dispose();
   }
 
-  _initPlayer(String url) async {
+  void _initPlayer(String url) async {
+    //**** INIT VIDEO CONTROLLER */
+    final uri = Uri.parse(url);
+    _controller = VideoPlayerController.networkUrl(uri);
+    //**** TRY CATCH CONTROLLER INITIALIZE */
     try {
-      final uri = Uri.parse(url);
-      _controller = VideoPlayerController.networkUrl(uri);
       await _controller.initialize();
+    } catch (e) {
+      log("Không thể phát video: $e");
+    }
+    //**** HANDLE CONTROLLER INITIALIZED OR NOT */
+    if (_controller.value.isInitialized == false) {
+      if (mounted) Helper.showInitPlayerErrorSnackBar(context);
+      return;
+    } else {
       chewieController = ChewieController(
         videoPlayerController: _controller,
         autoPlay: true,
         allowedScreenSleep: false,
-        looping: false,
       );
       setState(() {});
-    } catch (e) {
-      log("Không thể phát video url: $url");
-      return;
     }
   }
 
@@ -63,11 +71,13 @@ class _MoviePlayerWidgetState extends State<MoviePlayerWidget> {
   @override
   Widget build(BuildContext context) {
     buildNewVideoPlayer(widget.newVideoUrl);
-    return _controller.value.isInitialized
-        ? AspectRatio(
-            aspectRatio: _controller.value.aspectRatio,
-            child: Chewie(controller: chewieController!),
-          )
-        : ContainerWithCachedNetworkImageProvider(path: widget.posterUrl);
+    if (_controller.value.isInitialized) {
+      return AspectRatio(
+        aspectRatio: _controller.value.aspectRatio,
+        child: Chewie(controller: chewieController!),
+      );
+    } else {
+      return ContainerWithCachedNetworkImageProvider(path: widget.posterUrl);
+    }
   }
 }

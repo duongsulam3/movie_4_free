@@ -26,7 +26,7 @@ class AppTheme {
       ),
     ),
     progressIndicatorTheme: const ProgressIndicatorThemeData(
-      color: Colors.lightGreenAccent,
+      color: Colors.redAccent,
       strokeWidth: 2,
       constraints: BoxConstraints(
         maxWidth: 34,

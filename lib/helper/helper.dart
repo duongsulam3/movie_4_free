@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/categories/category_list_bloc.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/kho_phim_movies/kho_phim_movies_bloc.dart';
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
@@ -66,6 +68,33 @@ class Helper {
       list.add(i.toString());
     }
     return list;
+  }
+
+  static void showInitPlayerErrorSnackBar(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        elevation: 0,
+        duration: const Duration(seconds: 5),
+        backgroundColor: Colors.black.withValues(alpha: 0.9),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        margin: const EdgeInsets.only(bottom: 20, left: 30, right: 30),
+        content: const Row(
+          spacing: 10,
+          children: [
+            FittedBox(child: Icon(CupertinoIcons.wifi_slash)),
+            Expanded(
+              child: ResponsiveText(
+                text: "Lỗi khi tải dữ liệu phim!",
+                textColor: Colors.white,
+              ),
+            ),
+          ],
+        ),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
   }
   //** FUNCTIONS */
 }
