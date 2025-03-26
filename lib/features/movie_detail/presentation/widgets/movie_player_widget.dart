@@ -50,15 +50,13 @@ class _MoviePlayerWidgetState extends State<MoviePlayerWidget> {
     //**** HANDLE CONTROLLER INITIALIZED OR NOT */
     if (_controller.value.isInitialized == false) {
       if (mounted) Helper.showInitPlayerErrorSnackBar(context);
-      return;
-    } else {
-      chewieController = ChewieController(
-        videoPlayerController: _controller,
-        autoPlay: true,
-        allowedScreenSleep: false,
-      );
-      setState(() {});
     }
+    chewieController = ChewieController(
+      videoPlayerController: _controller,
+      autoPlay: true,
+      allowedScreenSleep: false,
+    );
+    setState(() {});
   }
 
   void buildNewVideoPlayer(String newUrl) {
