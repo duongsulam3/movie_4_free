@@ -56,6 +56,7 @@ class MovieDetailTabBar extends StatelessWidget {
                 right: 0,
                 bottom: 0,
                 child: NestedScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
                   headerSliverBuilder: (context, value) {
                     return [
                       SliverToBoxAdapter(

@@ -25,6 +25,7 @@ class IconAndTextWidget extends StatelessWidget {
           child: ResponsiveText(
             text: text,
             fontSize: fontSize,
+            maxLines: 5,
           ),
         ),
       ],

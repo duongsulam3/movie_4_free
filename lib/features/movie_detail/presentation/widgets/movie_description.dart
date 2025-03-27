@@ -68,7 +68,7 @@ class MovieDescription extends StatelessWidget {
                     ? movie.movieInfo.episodeCurrent
                     : "${movie.movieInfo.episodeCurrent}/${movie.movieInfo.episodeTotal}",
             fontSize: 12,
-            icon: CupertinoIcons.square_stack_3d_down_right,
+            icon: CupertinoIcons.square_stack_3d_up,
           ),
           SizedBox(height: sHeight / (sHeight / 10)),
           IconAndTextWidget(
@@ -82,7 +82,7 @@ class MovieDescription extends StatelessWidget {
           IconAndTextWidget(
             screenWidth: sWidth,
             text: movie.movieInfo.actor.join(", "),
-            icon: CupertinoIcons.rectangle_stack_person_crop,
+            icon: CupertinoIcons.person_3_fill,
             fontSize: 12,
           ),
           SizedBox(height: sHeight / (sHeight / 10)),
