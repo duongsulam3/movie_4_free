@@ -1,7 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:smoth_movie_app/core/error/exception.dart';
-import 'package:smoth_movie_app/core/secret/app_secret.dart';
+import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
 import 'package:smoth_movie_app/features/movie_detail/data/model/movie_detail.dart';
 
 abstract interface class DetailMovieRemoteDataSource {

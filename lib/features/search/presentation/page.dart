@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smoth_movie_app/common/widgets/custom_appbar_widget.dart';
 import 'package:smoth_movie_app/common/widgets/search_textfield_widget.dart';
 import 'package:smoth_movie_app/features/search/presentation/widgets/list_search_content.dart';
-import 'package:smoth_movie_app/helper/helper.dart';
+import 'package:smoth_movie_app/core/utils/helper/helper.dart';
 
 class SearchPage extends StatefulWidget {
   final String searchHint;

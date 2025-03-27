@@ -1,7 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:smoth_movie_app/core/error/exception.dart';
-import 'package:smoth_movie_app/core/secret/app_secret.dart';
+import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
 import 'package:smoth_movie_app/features/movies/data/model/recently_update_movies/recently_update_list_item_model.dart';
 
 abstract interface class RecentlyUpdateMoviesRemoteDataSource {

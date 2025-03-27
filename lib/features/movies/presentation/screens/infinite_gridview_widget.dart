@@ -6,7 +6,7 @@ import 'package:smoth_movie_app/common/widgets/error_page.dart';
 import 'package:smoth_movie_app/common/widgets/list_movie_item_widget.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies_bloc/movies_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/load_more_container.dart';
-import 'package:smoth_movie_app/helper/helper.dart';
+import 'package:smoth_movie_app/core/utils/helper/helper.dart';
 
 class InfiniteGridView extends StatefulWidget {
   const InfiniteGridView({

@@ -7,7 +7,7 @@ import 'package:smoth_movie_app/features/kho_phim/domain/entity/kho_phim_categor
 import 'package:smoth_movie_app/features/kho_phim/domain/entity/kho_phim_country_entity.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/categories/category_list_bloc.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/countries/countries_bloc.dart';
-import 'package:smoth_movie_app/helper/helper.dart';
+import 'package:smoth_movie_app/core/utils/helper/helper.dart';
 
 part 'kho_phim_page_event.dart';
 part 'kho_phim_page_state.dart';

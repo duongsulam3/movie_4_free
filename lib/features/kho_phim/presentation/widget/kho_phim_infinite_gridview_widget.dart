@@ -7,7 +7,7 @@ import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/kho_phim_mov
 import 'package:smoth_movie_app/features/kho_phim/presentation/widget/kho_phim_no_more_movies_widget.dart';
 import 'package:smoth_movie_app/common/widgets/list_movie_item_widget.dart';
 import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/load_more_container.dart';
-import 'package:smoth_movie_app/helper/helper.dart';
+import 'package:smoth_movie_app/core/utils/helper/helper.dart';
 
 class InfiniteGridViewMovies extends StatelessWidget {
   const InfiniteGridViewMovies({

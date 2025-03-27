@@ -8,7 +8,7 @@ import 'package:smoth_movie_app/common/widgets/error_page.dart';
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
 import 'package:smoth_movie_app/features/search/presentation/widgets/search_init_widget.dart';
 import 'package:smoth_movie_app/features/search/presentation/widgets/search_item_widget.dart';
-import 'package:smoth_movie_app/helper/helper.dart';
+import 'package:smoth_movie_app/core/utils/helper/helper.dart';
 import 'package:smoth_movie_app/router/app_router.dart';
 
 class ListSearchContent extends StatefulWidget {

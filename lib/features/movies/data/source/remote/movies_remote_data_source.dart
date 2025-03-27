@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:smoth_movie_app/core/error/exception.dart';
-import 'package:smoth_movie_app/core/secret/app_secret.dart';
+import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
 import 'package:smoth_movie_app/features/movies/data/model/single_movies/movie_item_model.dart';
 import 'package:http/http.dart' as http;
 

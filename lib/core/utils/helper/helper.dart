@@ -7,7 +7,7 @@ import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/kho_phim_mov
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
 import 'package:smoth_movie_app/features/home/presentation/bloc/bottom_nav/bottom_nav_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies_bloc/movies_bloc.dart';
-import 'package:smoth_movie_app/helper/http_override.dart';
+import 'package:smoth_movie_app/core/utils/helper/http_override.dart';
 
 class Helper {
   //** HTTP OVERRIDE WITH BAD CERTIFICATION */

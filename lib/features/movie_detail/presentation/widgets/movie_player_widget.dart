@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:smoth_movie_app/common/widgets/cached_network/container_with_cached_network_image_provider.dart';
-import 'package:smoth_movie_app/helper/helper.dart';
+import 'package:smoth_movie_app/core/utils/helper/helper.dart';
 import 'package:video_player/video_player.dart';
 
 class MoviePlayerWidget extends StatefulWidget {
