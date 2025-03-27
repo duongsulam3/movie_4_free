@@ -24,15 +24,9 @@ class MovieDetailPage extends StatelessWidget {
           case DetailMovieStatus.error:
             return const ErrorPage();
           default:
-            return MovieDetailContent(
-              initEpisode: state.movie!.episodes[0].serverData[0].linkM3U8,
-              movie: state.movie!,
-              episodes: state.movie!.episodes[0].serverData,
-            );
+            return MovieDetailContent(movie: state.movie!);
         }
       },
     );
   }
 }
-
-
