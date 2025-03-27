@@ -16,7 +16,7 @@ class MovieDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Convert string to list
+    //** ADD CATEGORIES NAME TO LIST */
     final listCate = movie.movieInfo.categories.map((e) => e.name).toList();
 
     final sWidth = MediaQuery.of(context).size.width;
@@ -64,7 +64,7 @@ class MovieDescription extends StatelessWidget {
             screenWidth: sWidth,
             text: movie.movieInfo.episodeTotal == "1"
                 ? "Phim Điện Ảnh"
-                : movie.movieInfo.episodeCurrent.contains("Hoàn Tất")
+                : movie.movieInfo.episodeCurrent.contains("Hoàn")
                     ? movie.movieInfo.episodeCurrent
                     : "${movie.movieInfo.episodeCurrent}/${movie.movieInfo.episodeTotal}",
             fontSize: 12,

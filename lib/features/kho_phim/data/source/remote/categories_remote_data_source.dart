@@ -19,10 +19,10 @@ class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
       final res = await client.get(uri);
       if (res.statusCode == 200) {
         var jsonResponse = jsonDecode(res.body) as List;
-        List<KhoPhimCategoryModel> categories =
+        List<KhoPhimCategoryModel> data =
             jsonResponse.map((e) => KhoPhimCategoryModel.fromJson(e)).toList();
         //***** Thêm tất cả các thể loại vào đầu danh sách */
-        categories.insert(
+        data.insert(
           0,
           KhoPhimCategoryModel(
             id: "0",
@@ -31,7 +31,7 @@ class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
           ),
         );
         //***** Thêm tất cả các thể loại vào đầu danh sách */
-        return categories;
+        return data;
       } else {
         throw const ServerException("Lỗi khi lấy danh sách thể loại");
       }

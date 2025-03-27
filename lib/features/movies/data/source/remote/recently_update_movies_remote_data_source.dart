@@ -15,17 +15,16 @@ class RecentlyUpdateMoviesRemoteDataSourceImpl
 
   @override
   Future<List<RecentlyUpdateListItemModel>> getRecentlyUpdateMovies() async {
-    List<RecentlyUpdateListItemModel> recentlyUpdateMovies = [];
     try {
       var url = AppSecret.baseUrl + ApiEndPoint.recentlyUpdateEndPoint;
       var uri = Uri.parse(url);
       final response = await client.get(uri);
       if (response.statusCode == 200) {
-        var jsonResponse = jsonDecode(response.body)['items'];
-        for (var item in jsonResponse) {
-          recentlyUpdateMovies.add(RecentlyUpdateListItemModel.fromJson(item));
-        }
-        return recentlyUpdateMovies;
+        var jsonResponse = jsonDecode(response.body)['items'] as List;
+        List<RecentlyUpdateListItemModel> data = jsonResponse
+            .map((e) => RecentlyUpdateListItemModel.fromJson(e))
+            .toList();
+        return data;
       } else {
         throw const ServerException("Lỗi khi lấy dữ liệu: phim mới cập nhật");
       }

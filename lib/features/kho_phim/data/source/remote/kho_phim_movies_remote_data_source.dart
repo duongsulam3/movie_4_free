@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
-
 import 'package:smoth_movie_app/core/error/exception.dart';
 import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
 import 'package:smoth_movie_app/features/movies/data/model/single_movies/movie_item_model.dart';
@@ -35,10 +33,9 @@ class KhoPhimMoviesRemoteDataSourceImpl
     required int limit,
   }) async {
     try {
-      var url =
+      final url =
           "${AppSecret.kkPhimUrl}${ApiEndPoint.countriesEndpoint}/$countrySlug?page=$page&sort_field=$sortField&sort_type=$sortType&sort_lang=$lang&category=$categorySlug&year=$year&limit=$limit";
-      var uri = Uri.parse(url);
-      log(url);
+      final uri = Uri.parse(url);
       final res = await client.get(uri);
       if (res.statusCode == 200) {
         final jsonRes = jsonDecode(res.body)["data"]["items"] as List;
