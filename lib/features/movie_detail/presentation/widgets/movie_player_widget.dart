@@ -37,26 +37,23 @@ class _MoviePlayerWidgetState extends State<MoviePlayerWidget> {
     super.dispose();
   }
 
-  void _initPlayer(String url) async {
-    //**** INIT VIDEO CONTROLLER */
-    final uri = Uri.parse(url);
-    _controller = VideoPlayerController.networkUrl(uri);
-    //**** TRY CATCH CONTROLLER INITIALIZE */
+  Future<void> _initPlayer(String url) async {
     try {
+      final uri = Uri.parse(url);
+      _controller = VideoPlayerController.networkUrl(uri);
       await _controller.initialize();
+      chewieController = ChewieController(
+        videoPlayerController: _controller,
+        autoPlay: true,
+        allowedScreenSleep: false,
+      );
+      setState(() {});
     } catch (e) {
-      log("Không thể phát video: $e");
-    }
-    //**** HANDLE CONTROLLER INITIALIZED OR NOT */
-    if (_controller.value.isInitialized == false) {
       if (mounted) Helper.showInitPlayerErrorSnackBar(context);
+      log("Không thể phát video: $url");
+      log(e.toString());
+      return;
     }
-    chewieController = ChewieController(
-      videoPlayerController: _controller,
-      autoPlay: true,
-      allowedScreenSleep: false,
-    );
-    setState(() {});
   }
 
   void buildNewVideoPlayer(String newUrl) {
@@ -69,13 +66,11 @@ class _MoviePlayerWidgetState extends State<MoviePlayerWidget> {
   @override
   Widget build(BuildContext context) {
     buildNewVideoPlayer(widget.newVideoUrl);
-    if (_controller.value.isInitialized) {
-      return AspectRatio(
-        aspectRatio: _controller.value.aspectRatio,
-        child: Chewie(controller: chewieController!),
-      );
-    } else {
-      return ContainerWithCachedNetworkImageProvider(path: widget.posterUrl);
-    }
+    return _controller.value.isInitialized
+        ? AspectRatio(
+            aspectRatio: _controller.value.aspectRatio,
+            child: Chewie(controller: chewieController!),
+          )
+        : ContainerWithCachedNetworkImageProvider(path: widget.posterUrl);
   }
 }

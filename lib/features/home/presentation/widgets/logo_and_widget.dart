@@ -63,7 +63,7 @@ class _LogoAndWidgetState extends State<LogoAndWidget> {
         children: [
           const Expanded(
             flex: 1,
-            child: ResponsiveAssetImage(path: "assets/images/logo.png"),
+            child: ResponsiveAssetImage(path: "assets/images/logo_dark.png"),
           ),
           Expanded(
             flex: 6,

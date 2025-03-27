@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smoth_movie_app/common/widgets/dotlottie_asset_widget.dart';
+import 'package:smoth_movie_app/core/utils/constants.dart';
 import 'package:smoth_movie_app/features/splash/bloc/splash_bloc.dart';
 import 'package:smoth_movie_app/router/app_router.dart';
 
@@ -15,10 +17,10 @@ class SplashPage extends StatelessWidget {
             Navigator.of(context).pushReplacementNamed(AppRouter.homePage);
           }
         },
-        child: Center(
-          child: Image.asset(
-            'assets/images/logo_dark.png',
-            scale: 0.9,
+        child: const Center(
+          child: DotlottieAssetWidget(
+            assetString: AppConstants.movieTickerPlayer,
+            isLoop: false,
           ),
         ),
       ),

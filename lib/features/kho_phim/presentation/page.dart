@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smoth_movie_app/common/widgets/progress_indicator.dart';
-import 'package:smoth_movie_app/core/bloc/kho_phim/page_status.dart';
-import 'package:smoth_movie_app/core/error/error_page.dart';
+import 'package:smoth_movie_app/common/widgets/loading_page.dart';
+import 'package:smoth_movie_app/core/utils/enum/kho_phim/page_status.dart';
+import 'package:smoth_movie_app/common/widgets/error_page.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/categories/category_list_bloc.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/countries/countries_bloc.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/kho_phim/kho_phim_page_bloc.dart';
@@ -45,7 +45,7 @@ class _KhoPhimPageState extends State<KhoPhimPage> {
           case KhoPhimPageStatus.init:
             return const SizedBox.shrink();
           case KhoPhimPageStatus.loading:
-            return const Center(child: ProgressIndicatorCustom());
+            return const LoadingPage();
           case KhoPhimPageStatus.error:
             return const ErrorPage();
           case KhoPhimPageStatus.success:
