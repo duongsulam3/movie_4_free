@@ -88,7 +88,10 @@ class MovieDetailTabBar extends StatelessWidget {
                       ),
                     ];
                   },
-                  body: ExpandedTabBarViewContent(movie: movie),
+                  body: ExpandedTabBarViewContent(
+                    movie: movie,
+                    categories: movie.movieInfo.categories,
+                  ),
                 ),
               ),
             ],

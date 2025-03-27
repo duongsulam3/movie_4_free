@@ -15,6 +15,11 @@ import 'package:smoth_movie_app/features/kho_phim/domain/usecase/get_kho_phim_mo
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/categories/category_list_bloc.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/countries/countries_bloc.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/kho_phim_movies/kho_phim_movies_bloc.dart';
+import 'package:smoth_movie_app/features/movies/data/repository/similar_repository_impl.dart';
+import 'package:smoth_movie_app/features/movies/data/source/remote/similar_movies_remote_data_source.dart';
+import 'package:smoth_movie_app/features/movies/domain/repository/similar_movies_repository.dart';
+import 'package:smoth_movie_app/features/movies/domain/usecase/get_similar_movies.dart';
+import 'package:smoth_movie_app/features/movies/presentation/bloc/similar_movies/similar_movies_bloc.dart';
 import 'package:smoth_movie_app/features/search/data/repository/search_movies_repository_impl.dart';
 import 'package:smoth_movie_app/features/search/data/source/remote/search_movie_remote_datasource.dart';
 import 'package:smoth_movie_app/features/search/domain/repository/search_movies_repository.dart';
@@ -33,7 +38,7 @@ import 'package:smoth_movie_app/features/movies/domain/repository/recently_updat
 import 'package:smoth_movie_app/features/movies/domain/usecase/get_movies.dart';
 import 'package:smoth_movie_app/features/movies/domain/usecase/get_recently_movies.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/bloc/detail_movie/detail_movie_bloc.dart';
-import 'package:smoth_movie_app/features/movies/presentation/bloc/movies_bloc/movies_bloc.dart';
+import 'package:smoth_movie_app/features/movies/presentation/bloc/movies/movies_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/recently_update_movies/recently_update_movies_bloc.dart';
 
 final serviceLocator = GetIt.instance;
@@ -84,9 +89,20 @@ void _initListMovies() {
     ),
   );
   serviceLocator.registerFactory(
-    () => RecentlyUpdateMoviesBloc(serviceLocator<GetRecentlyMovies>()),
+    () => RecentlyUpdateMoviesBloc(serviceLocator()),
   );
   //** Recently Update Movies */
+
+  //** Similar Movies */
+  serviceLocator.registerFactory<SimilarMoviesRemoteDataSource>(
+    () => SimilarMoviesRemoteDataSourceImpl(serviceLocator()),
+  );
+  serviceLocator.registerFactory<SimilarMoviesRepository>(
+    () => SimilarRepositoryImpl(serviceLocator()),
+  );
+  serviceLocator.registerFactory(() => GetSimilarMovies(serviceLocator()));
+  serviceLocator.registerFactory(() => SimilarMoviesBloc(serviceLocator()));
+  //** Similar Movies */
 }
 
 void _initDetailMovie() {

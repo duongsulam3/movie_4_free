@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/widgets/progress_indicator_custom.dart';
 import 'package:smoth_movie_app/core/utils/enum/movies_state_status.dart';
 import 'package:smoth_movie_app/common/widgets/list_movie_item_widget.dart';
-import 'package:smoth_movie_app/features/movies/presentation/bloc/movies_bloc/movies_bloc.dart';
+import 'package:smoth_movie_app/features/movies/presentation/bloc/movies/movies_bloc.dart';
 
 class GridViewMoviesBlocWidget extends StatefulWidget {
   const GridViewMoviesBlocWidget({super.key, required this.path});
