@@ -3,7 +3,7 @@ import 'package:smoth_movie_app/common/route_params_model/movie_detail_param_mod
 import 'package:smoth_movie_app/common/widgets/cached_network/cached_network_image.dart';
 import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
 import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_item.dart';
-import 'package:smoth_movie_app/router/app_router.dart';
+import 'package:smoth_movie_app/core/router/app_router.dart';
 
 class ListMovieItemWidget extends StatelessWidget {
   final MovieItemEntity movie;
