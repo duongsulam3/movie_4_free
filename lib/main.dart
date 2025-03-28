@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: "Movies For Free",
       debugShowCheckedModeBanner: false,
       theme: AppTheme.blackTheme,
       onGenerateRoute: (settings) => AppRouter().onGenerateRoute(settings),
