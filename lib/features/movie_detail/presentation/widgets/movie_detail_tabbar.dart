@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_sized_box.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/movie_detail.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/bloc/detail_movie/detail_movie_bloc.dart';
+import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/detail_page_tabbar.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/icon_back_button.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/movie_description.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/movie_player_widget.dart';
@@ -64,28 +65,7 @@ class MovieDetailTabBar extends StatelessWidget {
                           passingEpisode: state.passingEpisode,
                         ),
                       ),
-                      const SliverToBoxAdapter(
-                        child: TabBar(
-                          dividerHeight: 0,
-                          indicator: BoxDecoration(
-                            color: Colors.transparent,
-                          ),
-                          unselectedLabelColor: Colors.grey,
-                          unselectedLabelStyle: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                          labelColor: Colors.white,
-                          labelStyle: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          tabs: [
-                            Tab(text: "Tập tiếp theo"),
-                            Tab(text: "Phim tương tự"),
-                          ],
-                        ),
-                      ),
+                      const SliverToBoxAdapter(child: DetailPageTabBar()),
                     ];
                   },
                   body: ExpandedTabBarViewContent(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/widgets/progress_indicator_custom.dart';
+import 'package:smoth_movie_app/core/router/app_router.dart';
+import 'package:smoth_movie_app/core/router/params/movie_detail_param_model.dart';
 import 'package:smoth_movie_app/core/utils/enum/movies_state_status.dart';
 import 'package:smoth_movie_app/common/screens/error_page.dart';
 import 'package:smoth_movie_app/common/widgets/list_movie_item_widget.dart';
@@ -59,7 +61,15 @@ class _InfiniteGridViewState extends State<InfiniteGridView>
                   ),
                   itemCount: state.movies.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return ListMovieItemWidget(movie: state.movies[index]);
+                    return ListMovieItemWidget(
+                      onTap: () => Navigator.of(context).pushNamed(
+                        AppRouter.movieDetail,
+                        arguments: MovieDetailParamModel(
+                          slug: state.movies[index].slug,
+                        ),
+                      ),
+                      movie: state.movies[index],
+                    );
                   },
                 ),
                 SliverList(

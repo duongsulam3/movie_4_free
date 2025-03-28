@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/widgets/progress_indicator_custom.dart';
+import 'package:smoth_movie_app/core/router/app_router.dart';
+import 'package:smoth_movie_app/core/router/params/movie_detail_param_model.dart';
 import 'package:smoth_movie_app/core/utils/enum/movies_state_status.dart';
 import 'package:smoth_movie_app/common/widgets/list_movie_item_widget.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies/movies_bloc.dart';
@@ -10,7 +12,8 @@ class GridViewMoviesBlocWidget extends StatefulWidget {
   final String path;
 
   @override
-  State<GridViewMoviesBlocWidget> createState() => _GridViewMoviesBlocWidgetState();
+  State<GridViewMoviesBlocWidget> createState() =>
+      _GridViewMoviesBlocWidgetState();
 }
 
 class _GridViewMoviesBlocWidgetState extends State<GridViewMoviesBlocWidget>
@@ -38,7 +41,13 @@ class _GridViewMoviesBlocWidgetState extends State<GridViewMoviesBlocWidget>
                 mainAxisExtent: 180,
               ),
               itemCount: items.length,
-              itemBuilder: (_, i) => ListMovieItemWidget(movie: items[i]),
+              itemBuilder: (_, i) => ListMovieItemWidget(
+                onTap: () => Navigator.of(context).pushNamed(
+                  AppRouter.movieDetail,
+                  arguments: MovieDetailParamModel(slug: items[i].slug),
+                ),
+                movie: items[i],
+              ),
             );
         }
       },

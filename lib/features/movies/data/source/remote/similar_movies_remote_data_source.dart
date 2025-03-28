@@ -18,7 +18,7 @@ class SimilarMoviesRemoteDataSourceImpl
     required String categorySlug,
   }) async {
     try {
-      final url = "${AppSecret.kkPhimUrl}/the-loai/$categorySlug?limit=20";
+      final url = "${AppSecret.kkPhimUrl}/the-loai/$categorySlug?limit=18";
       final uri = Uri.parse(url);
       final res = await client.get(uri);
       if (res.statusCode == 200) {

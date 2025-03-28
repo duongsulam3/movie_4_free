@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:smoth_movie_app/core/router/params/movie_detail_param_model.dart';
 import 'package:smoth_movie_app/common/widgets/cached_network/cached_network_image.dart';
 import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
 import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_item.dart';
-import 'package:smoth_movie_app/core/router/app_router.dart';
 
 class ListMovieItemWidget extends StatelessWidget {
+  const ListMovieItemWidget({super.key, required this.movie, required this.onTap});
   final MovieItemEntity movie;
-  const ListMovieItemWidget({super.key, required this.movie});
+  final void Function() onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +20,11 @@ class ListMovieItemWidget extends StatelessWidget {
     //******************************************/
     //******************************************/
     return GestureDetector(
-      onTap: () => Navigator.of(context).pushNamed(
-        AppRouter.movieDetail,
-        arguments: MovieDetailParamModel(slug: movie.slug),
-      ),
+      onTap: onTap,
+      // onTap: () => Navigator.of(context).pushNamed(
+      //   AppRouter.movieDetail,
+      //   arguments: MovieDetailParamModel(slug: movie.slug),
+      // ),
       child: Container(
         clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(
