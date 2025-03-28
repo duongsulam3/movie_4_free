@@ -12,7 +12,8 @@ import 'package:smoth_movie_app/core/utils/helper/helper.dart';
 import 'package:smoth_movie_app/core/router/app_router.dart';
 
 class ListSearchContent extends StatefulWidget {
-  const ListSearchContent({super.key});
+  const ListSearchContent({super.key, required this.onSelected});
+  final ValueChanged<String> onSelected;
 
   @override
   State<ListSearchContent> createState() => _ListSearchContentState();
@@ -24,7 +25,7 @@ class _ListSearchContentState extends State<ListSearchContent> {
     "Avatar: The Way of Water",
     "The Flash",
     "The Batman",
-    "Loki Season 2",
+    "Loki",
     "Stranger Things",
     "Stranger Things Season 2",
     "Stranger Things Season 3",
@@ -50,6 +51,7 @@ class _ListSearchContentState extends State<ListSearchContent> {
         switch (state.status) {
           case MoviesStateStatus.init:
             return SearchInitWidget(
+              onSelected: (value) => widget.onSelected(value),
               screenHeight: screenHeight,
               screenWidth: screenWidth,
               topSearchList: listTopSearch,

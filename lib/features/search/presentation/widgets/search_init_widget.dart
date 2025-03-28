@@ -7,11 +7,13 @@ class SearchInitWidget extends StatelessWidget {
     required this.screenHeight,
     required this.screenWidth,
     required this.topSearchList,
+    required this.onSelected,
   });
 
   final double screenHeight;
   final double screenWidth;
   final List<String> topSearchList;
+  final ValueChanged<String> onSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -26,18 +28,15 @@ class SearchInitWidget extends StatelessWidget {
         ListView.separated(
           shrinkWrap: true,
           itemBuilder: (context, i) {
-            return Row(
-              children: [
-                const Icon(
-                  CupertinoIcons.bolt_horizontal_circle,
-                  size: 16,
-                ),
-                SizedBox(width: screenWidth / (screenWidth / 10)),
-                ResponsiveText(
-                  text: topSearchList[i],
-                  fontSize: 16,
-                ),
-              ],
+            return GestureDetector(
+              onTap: () => onSelected(topSearchList[i]),
+              child: Row(
+                spacing: 10,
+                children: [
+                  const Icon(CupertinoIcons.bolt_horizontal_circle, size: 16),
+                  ResponsiveText(text: topSearchList[i], fontSize: 16),
+                ],
+              ),
             );
           },
           separatorBuilder: (context, i) {

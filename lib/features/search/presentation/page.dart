@@ -16,7 +16,6 @@ class _SearchPageState extends State<SearchPage> {
   //TextController
   final searchController = TextEditingController();
   final searchFocusNode = FocusNode();
-  //List Top Search
 
   @override
   void initState() {
@@ -55,7 +54,9 @@ class _SearchPageState extends State<SearchPage> {
       ),
       body: Container(
         padding: const EdgeInsets.all(10),
-        child: const ListSearchContent(),
+        child: ListSearchContent(
+          onSelected: (value) => searchController.text = value,
+        ),
       ),
     );
   }
