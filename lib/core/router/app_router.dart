@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smoth_movie_app/common/route_params_model/movie_detail_param_model.dart';
-import 'package:smoth_movie_app/common/route_params_model/search_textfield_param_model.dart';
-import 'package:smoth_movie_app/common/widgets/error_page.dart';
+import 'package:smoth_movie_app/core/router/params/movie_detail_param_model.dart';
+import 'package:smoth_movie_app/core/router/params/search_textfield_param_model.dart';
+import 'package:smoth_movie_app/common/screens/error_page.dart';
 import 'package:smoth_movie_app/features/profile/page.dart';
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
 import 'package:smoth_movie_app/features/search/presentation/page.dart';

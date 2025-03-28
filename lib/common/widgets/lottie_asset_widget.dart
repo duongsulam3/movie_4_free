@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-class DotlottieAssetWidget extends StatelessWidget {
-  const DotlottieAssetWidget({
+class LottieAssetWidget extends StatelessWidget {
+  const LottieAssetWidget({
     super.key,
     required this.assetString,
     this.renderCache = RenderCache.drawingCommands,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smoth_movie_app/common/route_params_model/search_textfield_param_model.dart';
+import 'package:smoth_movie_app/core/router/params/search_textfield_param_model.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
 import 'package:smoth_movie_app/core/router/app_router.dart';
 

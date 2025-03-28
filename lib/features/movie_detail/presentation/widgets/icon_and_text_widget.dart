@@ -18,9 +18,9 @@ class IconAndTextWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      spacing: 10,
       children: [
         Icon(icon),
-        SizedBox(width: screenWidth / (screenWidth / 10)),
         Flexible(
           child: ResponsiveText(
             text: text,

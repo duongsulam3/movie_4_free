@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/widgets/progress_indicator_custom.dart';
 import 'package:smoth_movie_app/core/utils/enum/kho_phim/kho_phim_movies_state_status.dart';
-import 'package:smoth_movie_app/common/widgets/error_page.dart';
+import 'package:smoth_movie_app/common/screens/error_page.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/kho_phim_movies/kho_phim_movies_bloc.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/widget/kho_phim_no_more_movies_widget.dart';
 import 'package:smoth_movie_app/common/widgets/list_movie_item_widget.dart';
