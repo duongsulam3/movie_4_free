@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:smoth_movie_app/core/constants/app_constants.dart';
 import 'package:smoth_movie_app/core/router/params/search_textfield_param_model.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_asset_image.dart';
 import 'package:smoth_movie_app/common/widgets/search_textfield_widget.dart';
@@ -63,7 +64,7 @@ class _LogoAndWidgetState extends State<LogoAndWidget> {
         children: [
           const Expanded(
             flex: 1,
-            child: ResponsiveAssetImage(path: "assets/images/logo_dark.png"),
+            child: ResponsiveAssetImage(path: AppConstants.appLogo),
           ),
           Expanded(
             flex: 6,
