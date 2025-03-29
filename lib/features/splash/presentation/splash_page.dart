@@ -20,7 +20,6 @@ class SplashPage extends StatelessWidget {
         child: const Center(
           child: LottieAssetWidget(
             assetString: AppConstants.movieTickerPlayer,
-            isLoop: false,
           ),
         ),
       ),
