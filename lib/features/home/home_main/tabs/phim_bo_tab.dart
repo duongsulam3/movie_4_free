@@ -5,7 +5,9 @@ import 'package:smoth_movie_app/features/movies/presentation/screens/infinite_gr
 import 'package:smoth_movie_app/init_dependencies.dart';
 
 class PhimBoTab extends StatelessWidget {
-  const PhimBoTab({super.key});
+  const PhimBoTab({super.key, required this.scrollController});
+
+  final ScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +15,10 @@ class PhimBoTab extends StatelessWidget {
     return BlocProvider(
       create: (context) => serviceLocator<MoviesBloc>()
         ..add(const GetListMovies(path: 'phim-bo', limit: 18)),
-      child: const InfiniteGridView(path: 'phim-bo'),
+      child: InfiniteGridView(
+        path: 'phim-bo',
+        scrollController: scrollController,
+      ),
     );
   }
 }

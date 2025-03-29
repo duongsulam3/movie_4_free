@@ -27,45 +27,56 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
   List<Map<String, dynamic>> pages = [];
   List<Map<String, dynamic>> tabs = [];
   List<Map<String, dynamic>> navs = [];
   //** SCROLL CONTROLLERS */
-  //TODO HANDLE MULTIPLE SCROLL FOR APPBAR
   late ScrollController appbarScrollController;
-  final scrollControllerMain = ScrollController();
+  late TabController tabController;
+  final List<ScrollController> scrollControllers = [];
+  final initialIndex = 0;
 
   @override
   void initState() {
-    appbarScrollController = scrollControllerMain;
+    for (int i = 0; i < 5; i++) {
+      scrollControllers.add(ScrollController());
+    }
+    appbarScrollController = scrollControllers[initialIndex];
     tabs = [
       {
         "title": "Trang chủ",
-        "widget": HomeMainContent(scrollController: scrollControllerMain),
+        "widget": HomeMainContent(scrollController: scrollControllers[0]),
       },
       {
         "title": "Anime",
-        "widget": const AnimeTab(),
+        "widget": AnimeTab(scrollController: scrollControllers[1]),
       },
       {
         "title": "Phim lẻ",
-        "widget": const PhimLeTab(),
+        "widget": PhimLeTab(scrollController: scrollControllers[2]),
       },
       {
         "title": "Phim bộ",
-        "widget": const PhimBoTab(),
+        "widget": PhimBoTab(scrollController: scrollControllers[3]),
       },
       {
         "title": "Phim truyền hình",
-        "widget": const PhimTruyenHinhTab(),
+        "widget": PhimTruyenHinhTab(scrollController: scrollControllers[4]),
       },
     ];
+    tabController = TabController(length: tabs.length, vsync: this);
+    tabController.addListener(() {
+      setState(() {
+        appbarScrollController = scrollControllers[tabController.index];
+      });
+    });
     pages = [
       {
         "page": BlocProvider(
           create: (context) => serviceLocator<RecentlyUpdateMoviesBloc>(),
-          child: HomeMain(tabs: tabs),
+          child: HomeMain(tabs: tabs, tabController: tabController),
         ),
         "appBar": true,
       },
@@ -119,7 +130,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void dispose() {
     appbarScrollController.dispose();
-    scrollControllerMain.dispose();
+    tabController.dispose();
+    scrollControllers.map((element) => element.dispose());
     super.dispose();
   }
 
@@ -137,6 +149,7 @@ class _HomePageState extends State<HomePage> {
               right: false,
               left: false,
               child: DefaultTabController(
+                initialIndex: initialIndex,
                 length: tabs.length,
                 child: Scaffold(
                   extendBodyBehindAppBar: true,
@@ -150,7 +163,10 @@ class _HomePageState extends State<HomePage> {
                             preferredSize: Size.fromHeight(
                               sHeight / (sHeight / 30),
                             ),
-                            child: HomeTabBar(tabs: tabs),
+                            child: HomeTabBar(
+                              tabs: tabs,
+                              tabController: tabController,
+                            ),
                           ),
                         )
                       : null,

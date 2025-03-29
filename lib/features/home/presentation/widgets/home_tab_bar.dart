@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
 class HomeTabBar extends StatelessWidget {
-  const HomeTabBar({super.key, required this.tabs});
+  const HomeTabBar({super.key, required this.tabs, required this.tabController});
 
   final List<Map<String, dynamic>> tabs;
+  final TabController tabController;
 
   @override
   Widget build(BuildContext context) {
     return TabBar(
+      controller: tabController,
       isScrollable: true,
       tabAlignment: TabAlignment.start,
       indicator: const BoxDecoration(color: Colors.transparent),

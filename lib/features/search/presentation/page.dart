@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smoth_movie_app/common/widgets/custom_appbar_widget.dart';
 import 'package:smoth_movie_app/common/widgets/search_textfield_widget.dart';
 import 'package:smoth_movie_app/features/search/presentation/widgets/list_search_content.dart';
 import 'package:smoth_movie_app/core/utils/helper/helper.dart';
@@ -16,6 +15,7 @@ class _SearchPageState extends State<SearchPage> {
   //TextController
   final searchController = TextEditingController();
   final searchFocusNode = FocusNode();
+  final scrollController = ScrollController();
 
   @override
   void initState() {
@@ -32,14 +32,10 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    final sHeight = MediaQuery.of(context).size.height;
-    // final sWidth = MediaQuery.of(context).size.width;
-    //
     return Scaffold(
-      appBar: CustomAppbarWidget(
-        appBarHeight: sHeight / (sHeight / 50),
-        backgroundColor: Colors.transparent,
-        titleWidget: Row(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: Row(
           children: [
             Expanded(
               child: SearchTextField(
