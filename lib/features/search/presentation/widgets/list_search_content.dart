@@ -11,30 +11,18 @@ import 'package:smoth_movie_app/features/search/presentation/widgets/search_item
 import 'package:smoth_movie_app/core/utils/helper/helper.dart';
 import 'package:smoth_movie_app/core/router/app_router.dart';
 
-class ListSearchContent extends StatefulWidget {
-  const ListSearchContent({super.key, required this.onSelected});
+class ListSearchContent extends StatelessWidget {
+  const ListSearchContent({
+    super.key,
+    required this.onSelected,
+    required this.listSearch,
+  });
   final ValueChanged<String> onSelected;
+  final List<String> listSearch;
 
-  @override
-  State<ListSearchContent> createState() => _ListSearchContentState();
-}
-
-class _ListSearchContentState extends State<ListSearchContent> {
-  final scrollController = ScrollController();
-  List<String> listTopSearch = [
-    "Avatar: The Way of Water",
-    "The Flash",
-    "The Batman",
-    "Loki",
-    "Stranger Things",
-    "Stranger Things Season 2",
-    "Stranger Things Season 3",
-    "The Witcher",
-    "Jujutsu Kaisen",
-    "Naruto Shippuden",
-  ];
   @override
   Widget build(BuildContext context) {
+    final scrollController = ScrollController();
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     return BlocConsumer<SearchBloc, SearchState>(
@@ -51,10 +39,10 @@ class _ListSearchContentState extends State<ListSearchContent> {
         switch (state.status) {
           case MoviesStateStatus.init:
             return SearchInitWidget(
-              onSelected: (value) => widget.onSelected(value),
+              onSelected: (value) => onSelected(value),
               screenHeight: screenHeight,
               screenWidth: screenWidth,
-              topSearchList: listTopSearch,
+              topSearchList: listSearch,
             );
           case MoviesStateStatus.error:
             return const ErrorPage();

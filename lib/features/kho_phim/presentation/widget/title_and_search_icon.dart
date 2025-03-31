@@ -17,6 +17,17 @@ class TitleAndSearchIcon extends StatelessWidget {
                   AppRouter.homeSearch,
                   arguments: const SearchTextfieldParamModel(
                     searchHint: "Nhập phim bạn muốn tìm",
+                    //TODO IF THE LIST SEARCH CHANGE UPDATE LIST SEARCH FOR SYNC
+                    listSearch: [
+                      "Avatar: The Way of Water",
+                      "The Flash",
+                      "The Batman",
+                      "Loki Season 2",
+                      "Stranger Things",
+                      "The Witcher",
+                      "Jujutsu Kaisen",
+                      "Naruto Shippuden",
+                    ],
                   ),
                 ),
             child: const Icon(Icons.search)),

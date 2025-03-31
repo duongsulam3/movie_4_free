@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class SearchTextField extends StatelessWidget {
+class SearchTextField extends StatefulWidget {
   const SearchTextField({
     super.key,
     this.textFieldHeight = 30,
-    this.textFieldFontSize = 11,
     this.hintText = "",
-    this.hintFontSize = 11,
     this.isFocus = true,
     this.onTap,
     this.controller,
@@ -17,9 +15,7 @@ class SearchTextField extends StatelessWidget {
   });
 
   final double textFieldHeight;
-  final double textFieldFontSize;
   final String hintText;
-  final double hintFontSize;
   final bool isFocus;
   final FocusNode? focusNode;
   final void Function()? onTap;
@@ -28,49 +24,83 @@ class SearchTextField extends StatelessWidget {
   final TextEditingController? controller;
 
   @override
+  State<SearchTextField> createState() => _SearchTextFieldState();
+}
+
+class _SearchTextFieldState extends State<SearchTextField> {
+  bool isNotEmpty = false;
+
+  @override
+  void initState() {
+    updateIsNotEmpty();
+    super.initState();
+  }
+
+  void updateIsNotEmpty() {
+    if (widget.controller == null) return;
+    widget.controller!.addListener(() {
+      if (widget.controller!.text.isNotEmpty) {
+        setState(() {
+          isNotEmpty = true;
+        });
+      } else {
+        setState(() {
+          isNotEmpty = false;
+        });
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
-      height: textFieldHeight,
+      padding: const EdgeInsets.only(left: 10, bottom: 1),
+      height: widget.textFieldHeight,
       decoration: BoxDecoration(
         color: const Color(0xffc1bfbf).withValues(alpha: 0.2),
         borderRadius: const BorderRadius.all(
           Radius.circular(5),
         ),
       ),
-      child: Center(
-        child: TextField(
-          focusNode: focusNode,
-          controller: controller,
-          canRequestFocus: isFocus,
-          onTap: onTap,
-          onChanged: onChanged,
-          onSubmitted: onSubmitted,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: textFieldFontSize,
-          ),
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            suffixIcon: Container(
-              margin: const EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                border: Border(
-                  left: BorderSide(
-                    width: 0.3,
-                    color: Colors.grey.shade400,
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              focusNode: widget.focusNode,
+              controller: widget.controller,
+              canRequestFocus: widget.isFocus,
+              onTap: widget.onTap,
+              onChanged: widget.onChanged,
+              onSubmitted: widget.onSubmitted,
+              cursorHeight: widget.textFieldHeight / 2,
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                suffixIcon: Container(
+                  margin: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      left: BorderSide(
+                        width: 0.3,
+                        color: Colors.grey.shade400,
+                      ),
+                    ),
+                  ),
+                  child: FittedBox(
+                    child: isNotEmpty
+                        ? GestureDetector(
+                            onTap: () => widget.controller!.clear(),
+                            child: const Icon(CupertinoIcons.xmark_circle_fill),
+                          )
+                        : const Icon(CupertinoIcons.search),
                   ),
                 ),
+                hintText: widget.hintText,
+                hintStyle: TextStyle(color: Colors.grey.withValues(alpha: 0.7)),
               ),
-              child: const FittedBox(child: Icon(CupertinoIcons.search)),
-            ),
-            contentPadding: const EdgeInsets.only(left: 10),
-            hintText: hintText,
-            hintStyle: TextStyle(
-              color: Colors.grey.withValues(alpha: 0.7),
-              fontSize: hintFontSize,
             ),
           ),
-        ),
+        ],
       ),
     );
   }

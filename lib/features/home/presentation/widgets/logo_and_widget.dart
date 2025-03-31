@@ -21,8 +21,6 @@ class _LogoAndWidgetState extends State<LogoAndWidget> {
     "The Batman",
     "Loki Season 2",
     "Stranger Things",
-    "Stranger Things Season 2",
-    "Stranger Things Season 3",
     "The Witcher",
     "Jujutsu Kaisen",
     "Naruto Shippuden",
@@ -73,7 +71,10 @@ class _LogoAndWidgetState extends State<LogoAndWidget> {
               isFocus: false,
               onTap: () => Navigator.of(context).pushNamed(
                 AppRouter.homeSearch,
-                arguments: SearchTextfieldParamModel(searchHint: currentHint),
+                arguments: SearchTextfieldParamModel(
+                  searchHint: currentHint,
+                  listSearch: hints,
+                ),
               ),
             ),
           ),

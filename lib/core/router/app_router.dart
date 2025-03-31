@@ -43,7 +43,10 @@ class AppRouter {
         return FadeInTransition(
           page: BlocProvider(
             create: (context) => serviceLocator<SearchBloc>(),
-            child: SearchPage(searchHint: params.searchHint),
+            child: SearchPage(
+              searchHint: params.searchHint,
+              listSearch: params.listSearch,
+            ),
           ),
         );
       case '/home_profile':

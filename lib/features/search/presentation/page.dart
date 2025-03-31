@@ -4,8 +4,13 @@ import 'package:smoth_movie_app/features/search/presentation/widgets/list_search
 import 'package:smoth_movie_app/core/utils/helper/helper.dart';
 
 class SearchPage extends StatefulWidget {
+  const SearchPage({
+    super.key,
+    required this.searchHint,
+    required this.listSearch,
+  });
   final String searchHint;
-  const SearchPage({super.key, required this.searchHint});
+  final List<String> listSearch;
 
   @override
   State<SearchPage> createState() => _SearchPageState();
@@ -52,6 +57,7 @@ class _SearchPageState extends State<SearchPage> {
         padding: const EdgeInsets.all(10),
         child: ListSearchContent(
           onSelected: (value) => searchController.text = value,
+          listSearch: widget.listSearch,
         ),
       ),
     );
