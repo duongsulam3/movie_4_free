@@ -37,9 +37,7 @@ class TitleAndGridViewList extends StatelessWidget {
           children: [
             RowTitleAndMore(
               title: title,
-              onTap: () {
-                tabController.animateTo(tabIndex);
-              },
+              onTap: () => tabController.animateTo(tabIndex),
             ),
             const GridViewMoviesBlocWidget(),
           ],

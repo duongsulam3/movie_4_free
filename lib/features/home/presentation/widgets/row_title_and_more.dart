@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
 
