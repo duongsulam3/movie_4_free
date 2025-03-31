@@ -8,8 +8,8 @@ import 'package:smoth_movie_app/common/widgets/list_movie_item_widget.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies/movies_bloc.dart';
 
 class GridViewMoviesBlocWidget extends StatefulWidget {
-  const GridViewMoviesBlocWidget({super.key, required this.path});
-  final String path;
+  const GridViewMoviesBlocWidget({super.key});
+ 
 
   @override
   State<GridViewMoviesBlocWidget> createState() =>

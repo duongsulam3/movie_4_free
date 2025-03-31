@@ -14,11 +14,14 @@ class RowTitleAndMore extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          ResponsiveText(
-            text: title,
-            fontSize: 24,
-            fontWeight: FontWeight.w600,
+          Expanded(
+            child: ResponsiveText(
+              text: title,
+              fontSize: 24,
+              fontWeight: FontWeight.w600,
+            ),
           ),
+          const Icon(Icons.read_more_sharp, color: Colors.grey),
         ],
       ),
     );

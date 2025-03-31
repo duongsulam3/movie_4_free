@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:smoth_movie_app/common/entity/tab_item.dart';
 
 class HomeTabBar extends StatelessWidget {
-  const HomeTabBar(
-      {super.key, required this.tabs, required this.tabController});
+  const HomeTabBar({
+    super.key,
+    required this.tabs,
+    required this.tabController,
+  });
 
   final List<TabItem> tabs;
   final TabController tabController;

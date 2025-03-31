@@ -19,7 +19,6 @@ import 'package:smoth_movie_app/features/home/presentation/widgets/logo_and_widg
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/categories/category_list_bloc.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/countries/countries_bloc.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/page.dart';
-import 'package:smoth_movie_app/features/movies/presentation/bloc/recently_update_movies/recently_update_movies_bloc.dart';
 import 'package:smoth_movie_app/core/utils/helper/helper.dart';
 import 'package:smoth_movie_app/init_dependencies.dart';
 
@@ -73,6 +72,7 @@ class _HomePageState extends State<HomePage>
         title: "Trang chủ",
         widget: HomeMainContent(
           scrollController: scrollControllers[0],
+          tabController: tabController,
         ),
       ),
       TabItem(
@@ -98,10 +98,7 @@ class _HomePageState extends State<HomePage>
     pages = [
       PageItem(
         hasAppBar: true,
-        widget: BlocProvider(
-          create: (context) => serviceLocator<RecentlyUpdateMoviesBloc>(),
-          child: HomeMain(tabs: tabs, tabController: tabController),
-        ),
+        widget: HomeMain(tabs: tabs, tabController: tabController),
       ),
       PageItem(
         hasAppBar: false,
