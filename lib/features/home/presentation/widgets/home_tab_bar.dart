@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:smoth_movie_app/common/entity/tab_item.dart';
 
 class HomeTabBar extends StatelessWidget {
-  const HomeTabBar({super.key, required this.tabs, required this.tabController});
+  const HomeTabBar(
+      {super.key, required this.tabs, required this.tabController});
 
-  final List<Map<String, dynamic>> tabs;
+  final List<TabItem> tabs;
   final TabController tabController;
 
   @override
@@ -26,7 +28,7 @@ class HomeTabBar extends StatelessWidget {
       ),
       tabs: List.generate(
         tabs.length,
-        (i) => Tab(text: tabs[i]["title"]),
+        (i) => Tab(text: tabs[i].title),
       ),
     );
   }

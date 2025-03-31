@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:smoth_movie_app/common/entity/tab_item.dart';
 
 class HomeMain extends StatelessWidget {
   const HomeMain({super.key, required this.tabs, required this.tabController});
-  final List<Map<String, dynamic>> tabs;
+  final List<TabItem> tabs;
   final TabController tabController;
 
   @override
@@ -11,7 +12,7 @@ class HomeMain extends StatelessWidget {
       controller: tabController,
       children: List.generate(
         tabs.length,
-        (i) => tabs[i]['widget'],
+        (i) => tabs[i].widget,
       ),
     );
   }

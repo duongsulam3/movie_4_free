@@ -1,9 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
-class CustomAppbarWidget extends StatelessWidget
-    implements PreferredSizeWidget {
+class CustomAppbarWidget extends StatefulWidget implements PreferredSizeWidget {
   final double appBarHeight;
   final Widget? leadingWidget;
   final Widget? titleWidget;
@@ -11,12 +8,14 @@ class CustomAppbarWidget extends StatelessWidget
   final double titleFontSize;
   final bool isCenterTitle;
   final Color backgroundColor;
-  final ScrollController scrollController;
+  final List<ScrollController> scrollControllers;
+  final TabController tabController;
   final PreferredSizeWidget? appBarBottomWidget;
   const CustomAppbarWidget({
     super.key,
     required this.appBarHeight,
-    required this.scrollController,
+    required this.scrollControllers,
+    required this.tabController,
     this.leadingWidget,
     this.titleWidget,
     this.titleFontSize = 30,
@@ -27,44 +26,73 @@ class CustomAppbarWidget extends StatelessWidget
   });
 
   @override
+  State<CustomAppbarWidget> createState() => _CustomAppbarWidgetState();
+
+  @override
+  Size get preferredSize => Size.fromHeight(appBarHeight);
+}
+
+class _CustomAppbarWidgetState extends State<CustomAppbarWidget> {
+  @override
+  void initState() {
+    super.initState();
+    widget.tabController.addListener(_handleTabChange);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        setState(() {});
+      }
+    });
+  }
+
+  void _handleTabChange() {
+    setState(() {
+      widget.scrollControllers[widget.tabController.index];
+    });
+  }
+
+  @override
+  void dispose() {
+    widget.tabController.removeListener(_handleTabChange);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final currentScrollController =
+        widget.scrollControllers[widget.tabController.index];
     return AnimatedBuilder(
-      animation: scrollController,
+      animation: currentScrollController,
       builder: (_, child) {
-        if (scrollController.hasClients) {
-          log("AppBar scroll offset: ${scrollController.offset}");
+        if (currentScrollController.hasClients) {
           return AnimatedContainer(
-            duration: const Duration(milliseconds: 500),
+            duration: const Duration(milliseconds: 800),
             curve: Curves.easeInOut,
-            color: scrollController.offset > 0
-                ? backgroundColor
+            color: currentScrollController.offset > 0
+                ? widget.backgroundColor
                 : Colors.transparent,
             child: AppBar(
               scrolledUnderElevation: 0,
               elevation: 0,
-              leading: leadingWidget,
-              centerTitle: isCenterTitle,
-              actions: actions,
+              leading: widget.leadingWidget,
+              centerTitle: widget.isCenterTitle,
+              actions: widget.actions,
               backgroundColor: Colors.transparent,
-              title: titleWidget,
-              bottom: appBarBottomWidget,
+              title: widget.titleWidget,
+              bottom: widget.appBarBottomWidget,
             ),
           );
         }
         return AppBar(
           scrolledUnderElevation: 0,
           elevation: 0,
-          leading: leadingWidget,
-          centerTitle: isCenterTitle,
-          actions: actions,
+          leading: widget.leadingWidget,
+          centerTitle: widget.isCenterTitle,
+          actions: widget.actions,
           backgroundColor: Colors.transparent,
-          title: titleWidget,
-          bottom: appBarBottomWidget,
+          title: widget.titleWidget,
+          bottom: widget.appBarBottomWidget,
         );
       },
     );
   }
-
-  @override
-  Size get preferredSize => Size.fromHeight(appBarHeight);
 }

@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smoth_movie_app/common/entity/nav_item.dart';
+import 'package:smoth_movie_app/common/entity/page_item.dart';
+import 'package:smoth_movie_app/common/entity/tab_item.dart';
 import 'package:smoth_movie_app/common/widgets/custom_appbar_widget.dart';
 import 'package:smoth_movie_app/features/home/home_main/tabs/anime_tab.dart';
 import 'package:smoth_movie_app/features/home/home_main/tabs/home_main_content.dart';
@@ -29,169 +32,179 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
-  List<Map<String, dynamic>> pages = [];
-  List<Map<String, dynamic>> tabs = [];
-  List<Map<String, dynamic>> navs = [];
-  //** SCROLL CONTROLLERS */
-  late ScrollController appbarScrollController;
-  late TabController tabController;
-  final List<ScrollController> scrollControllers = [];
-  final initialIndex = 0;
+  static const _tabCount = 5;
+  static const _appBarHeight = 90.0;
+  static const _tabBarHeight = 30.0;
+  //** CONTROLLERS */
+  late final TabController tabController;
+  late final List<ScrollController> scrollControllers;
+  late final List<TabItem> tabs;
+  late final List<PageItem> pages;
+  late final List<NavItem> navs;
+
+  //! Kho phim bloc providers
+  final List<BlocProvider> khoPhimProviders = [
+    BlocProvider<CountriesBloc>(
+      create: (context) => serviceLocator<CountriesBloc>(),
+    ),
+    BlocProvider<CategoryListBloc>(
+      create: (context) => serviceLocator<CategoryListBloc>(),
+    ),
+    BlocProvider<KhoPhimPageBloc>(
+      create: (context) => KhoPhimPageBloc(
+        countriesBloc: context.read<CountriesBloc>(),
+        categoryListBloc: context.read<CategoryListBloc>(),
+      ),
+    ),
+  ];
 
   @override
   void initState() {
-    for (int i = 0; i < 5; i++) {
-      scrollControllers.add(ScrollController());
-    }
-    appbarScrollController = scrollControllers[initialIndex];
+    super.initState();
+    _initializeControllers();
+    _initializeTabs();
+    _initializePages();
+    _initializeNavs();
+  }
+
+  void _initializeTabs() {
     tabs = [
-      {
-        "title": "Trang chủ",
-        "widget": HomeMainContent(scrollController: scrollControllers[0]),
-      },
-      {
-        "title": "Anime",
-        "widget": AnimeTab(scrollController: scrollControllers[1]),
-      },
-      {
-        "title": "Phim lẻ",
-        "widget": PhimLeTab(scrollController: scrollControllers[2]),
-      },
-      {
-        "title": "Phim bộ",
-        "widget": PhimBoTab(scrollController: scrollControllers[3]),
-      },
-      {
-        "title": "Phim truyền hình",
-        "widget": PhimTruyenHinhTab(scrollController: scrollControllers[4]),
-      },
+      TabItem(
+        title: "Trang chủ",
+        widget: HomeMainContent(
+          scrollController: scrollControllers[0],
+        ),
+      ),
+      TabItem(
+        title: "Anime",
+        widget: AnimeTab(scrollController: scrollControllers[1]),
+      ),
+      TabItem(
+        title: "Phim lẻ",
+        widget: PhimLeTab(scrollController: scrollControllers[2]),
+      ),
+      TabItem(
+        title: "Phim bộ",
+        widget: PhimBoTab(scrollController: scrollControllers[3]),
+      ),
+      TabItem(
+        title: "Phim truyện hình",
+        widget: PhimTruyenHinhTab(scrollController: scrollControllers[4]),
+      ),
     ];
-    tabController = TabController(length: tabs.length, vsync: this);
-    tabController.addListener(() {
-      setState(() {
-        appbarScrollController = scrollControllers[tabController.index];
-      });
-    });
+  }
+
+  void _initializePages() {
     pages = [
-      {
-        "page": BlocProvider(
+      PageItem(
+        hasAppBar: true,
+        widget: BlocProvider(
           create: (context) => serviceLocator<RecentlyUpdateMoviesBloc>(),
           child: HomeMain(tabs: tabs, tabController: tabController),
         ),
-        "appBar": true,
-      },
-      {
-        "page": MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (context) => serviceLocator<CategoryListBloc>(),
-            ),
-            BlocProvider(
-              create: (context) => serviceLocator<CountriesBloc>(),
-            ),
-            BlocProvider(
-              create: (context) => KhoPhimPageBloc(
-                countriesBloc: context.read<CountriesBloc>(),
-                categoryListBloc: context.read<CategoryListBloc>(),
-              ),
-            )
-          ],
+      ),
+      PageItem(
+        hasAppBar: false,
+        widget: MultiBlocProvider(
+          providers: khoPhimProviders,
           child: const KhoPhimPage(),
         ),
-        "appBar": false,
-      },
-      {
-        "page": const ProfilePage(),
-        "appBar": false,
-      },
+      ),
+      const PageItem(hasAppBar: false, widget: ProfilePage()),
     ];
+  }
+
+  void _initializeNavs() {
     navs = [
-      {
-        "icon": const Icon(CupertinoIcons.house),
-        "active_icon": const Icon(CupertinoIcons.house_fill),
-        "title": "Trang chủ",
-      },
-      {
-        "icon": const Icon(CupertinoIcons.arrowtriangle_right_square),
-        "active_icon": const Icon(
-          CupertinoIcons.arrowtriangle_right_square_fill,
-        ),
-        "title": "Kho phim",
-      },
-      {
-        "icon": const Icon(CupertinoIcons.hand_thumbsup),
-        "active_icon": const Icon(CupertinoIcons.hand_thumbsup_fill),
-        "title": "Donate",
-      },
+      const NavItem(
+        icon: Icon(CupertinoIcons.house),
+        activeIcon: Icon(CupertinoIcons.house_fill),
+        title: "Trang chủ",
+      ),
+      const NavItem(
+        icon: Icon(CupertinoIcons.arrowtriangle_right_square),
+        activeIcon: Icon(CupertinoIcons.arrowtriangle_right_square_fill),
+        title: "Kho phim",
+      ),
+      const NavItem(
+        icon: Icon(CupertinoIcons.hand_thumbsup),
+        activeIcon: Icon(CupertinoIcons.hand_thumbsup_fill),
+        title: "Donate",
+      ),
     ];
-    super.initState();
+  }
+
+  void _initializeControllers() {
+    tabController = TabController(length: _tabCount, vsync: this);
+    scrollControllers = List.generate(_tabCount, (index) => ScrollController());
+  }
+
+  void _disposeControllers() {
+    for (final controller in scrollControllers) {
+      controller.dispose();
+    }
+    tabController.dispose();
   }
 
   @override
   void dispose() {
-    appbarScrollController.dispose();
-    tabController.dispose();
-    scrollControllers.map((element) => element.dispose());
+    _disposeControllers();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final sHeight = MediaQuery.of(context).size.height;
-    // final sWidth = MediaQuery.of(context).size.width;
     return BlocProvider(
       create: (context) => BottomNavBloc(),
       child: BlocBuilder<BottomNavBloc, BottomNavState>(
         builder: (context, state) {
-          if (state is HomeInitialBottomNav) {
-            return SafeArea(
-              bottom: false,
-              right: false,
-              left: false,
-              child: DefaultTabController(
-                initialIndex: initialIndex,
-                length: tabs.length,
-                child: Scaffold(
-                  extendBodyBehindAppBar: true,
-                  appBar: pages[state.currentPage]["appBar"] == true
-                      ? CustomAppbarWidget(
-                          scrollController: appbarScrollController,
-                          appBarHeight: sHeight / (sHeight / 90),
-                          backgroundColor: Colors.black,
-                          titleWidget: const LogoAndWidget(),
-                          appBarBottomWidget: PreferredSize(
-                            preferredSize: Size.fromHeight(
-                              sHeight / (sHeight / 30),
-                            ),
-                            child: HomeTabBar(
-                              tabs: tabs,
-                              tabController: tabController,
-                            ),
-                          ),
-                        )
-                      : null,
-                  bottomNavigationBar: BottomNavigationBar(
-                    currentIndex: state.currentPage,
-                    onTap: (int i) => Helper.changeBottomNavIndex(context, i),
-                    selectedFontSize: 12,
-                    unselectedFontSize: 12,
-                    iconSize: 26,
-                    items: List.generate(
-                      navs.length,
-                      (i) => BottomNavigationBarItem(
-                        icon: navs[i]["icon"],
-                        activeIcon: navs[i]["active_icon"],
-                        label: navs[i]["title"],
-                      ),
-                    ),
-                  ),
-                  body: pages[state.currentPage]["page"],
-                ),
-              ),
-            );
-          } else {
+          if (state is! HomeInitialBottomNav) {
             return const SizedBox.shrink();
           }
+          final currentPage = pages[state.currentPage];
+          return SafeArea(
+            bottom: false,
+            right: false,
+            left: false,
+            child: DefaultTabController(
+              length: _tabCount,
+              child: Scaffold(
+                extendBodyBehindAppBar: true,
+                appBar: currentPage.hasAppBar == true
+                    ? CustomAppbarWidget(
+                        scrollControllers: scrollControllers,
+                        tabController: tabController,
+                        appBarHeight: _appBarHeight,
+                        backgroundColor: Colors.black,
+                        titleWidget: const LogoAndWidget(),
+                        appBarBottomWidget: PreferredSize(
+                          preferredSize: const Size.fromHeight(_tabBarHeight),
+                          child: HomeTabBar(
+                            tabs: tabs,
+                            tabController: tabController,
+                          ),
+                        ),
+                      )
+                    : null,
+                bottomNavigationBar: BottomNavigationBar(
+                  currentIndex: state.currentPage,
+                  onTap: (int i) => Helper.changeBottomNavIndex(context, i),
+                  selectedFontSize: 12,
+                  unselectedFontSize: 12,
+                  iconSize: 26,
+                  items: List.generate(
+                    navs.length,
+                    (i) => BottomNavigationBarItem(
+                      icon: navs[i].icon,
+                      activeIcon: navs[i].activeIcon,
+                      label: navs[i].title,
+                    ),
+                  ),
+                ),
+                body: currentPage.widget,
+              ),
+            ),
+          );
         },
       ),
     );
