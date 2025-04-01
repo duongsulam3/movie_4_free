@@ -29,10 +29,10 @@ class SearchItemWidget extends StatelessWidget {
           //** Image */
           CachedNetworkImageWidget(
             url: AppSecret.imageUrl + movie.posterUrl,
-            width: 120,
             height: 180,
-            memCacheWidth: 120,
-            memCacheHeight: 180,
+            width: 120,
+            memCacheWidth: 300,
+            memCacheHeight: 300,
           ),
           const ResponsiveSizedBox(width: 10),
           //** Content */

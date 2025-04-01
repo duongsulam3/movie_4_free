@@ -6,6 +6,7 @@ import 'package:smoth_movie_app/core/router/params/movie_detail_param_model.dart
 import 'package:smoth_movie_app/core/utils/enum/movies_state_status.dart';
 import 'package:smoth_movie_app/common/widgets/list_movie_item_widget.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies/movies_bloc.dart';
+import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/movies_gridview_builder.dart';
 
 class BlocBuilderGridview extends StatefulWidget {
   const BlocBuilderGridview({super.key});
@@ -28,23 +29,14 @@ class _BlocBuilderGridviewState extends State<BlocBuilderGridview>
             return const Center(child: Text('Có lỗi khi tải phim'));
           case MoviesStateStatus.success:
             final items = state.movies;
-            return GridView.builder(
-              shrinkWrap: true,
-              padding: EdgeInsets.zero,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-                mainAxisExtent: 220,
-              ),
+            return MoviesGridBuilder(
               itemCount: items.length,
               itemBuilder: (_, i) => ListMovieItemWidget(
+                movie: items[i],
                 onTap: () => Navigator.of(context).pushNamed(
                   AppRouter.movieDetail,
                   arguments: MovieDetailParamModel(slug: items[i].slug),
                 ),
-                movie: items[i],
               ),
             );
         }

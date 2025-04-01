@@ -16,8 +16,8 @@ class CachedNetworkImageWidget extends StatelessWidget {
     required this.url,
     this.height,
     this.width,
-    this.memCacheHeight = 100,
-    this.memCacheWidth = 100,
+    this.memCacheHeight = 200,
+    this.memCacheWidth = 200,
   });
 
   @override

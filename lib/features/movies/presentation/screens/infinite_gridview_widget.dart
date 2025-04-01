@@ -9,6 +9,7 @@ import 'package:smoth_movie_app/common/widgets/list_movie_item_widget.dart';
 import 'package:smoth_movie_app/core/utils/helper/helper.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies/movies_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/load_more_container.dart';
+import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/movies_silver_gridview_builder.dart';
 
 class InfiniteGridView extends StatefulWidget {
   const InfiniteGridView({
@@ -33,7 +34,6 @@ class _InfiniteGridViewState extends State<InfiniteGridView>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final sHeight = MediaQuery.of(context).size.height;
     return BlocBuilder<MoviesBloc, MoviesState>(
       builder: (_, state) {
         switch (state.status) {
@@ -51,13 +51,7 @@ class _InfiniteGridViewState extends State<InfiniteGridView>
               primary: widget.primary,
               physics: widget.physics,
               slivers: [
-                SliverGrid.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 10,
-                    mainAxisExtent: sHeight / (sHeight / 220),
-                  ),
+                MoviesSilverGridviewBuilder(
                   itemCount: state.movies.length,
                   itemBuilder: (BuildContext context, int index) {
                     return ListMovieItemWidget(

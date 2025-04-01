@@ -7,6 +7,7 @@ import 'package:smoth_movie_app/core/router/params/movie_detail_param_model.dart
 import 'package:smoth_movie_app/core/utils/enum/movies_state_status.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/category.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/similar_movies/similar_movies_bloc.dart';
+import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/movies_gridview_builder.dart';
 
 class SimilarMovies extends StatefulWidget {
   const SimilarMovies({super.key, required this.categories});
@@ -21,9 +22,9 @@ class _SimilarMoviesState extends State<SimilarMovies>
     with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
-    context.read<SimilarMoviesBloc>().add(FetchMovies(
-          categorySlug: widget.categories[0].slug,
-        ));
+    context
+        .read<SimilarMoviesBloc>()
+        .add(FetchMovies(categorySlug: widget.categories[0].slug));
     super.initState();
   }
 
@@ -38,23 +39,14 @@ class _SimilarMoviesState extends State<SimilarMovies>
           case MoviesStateStatus.error:
             return const ErrorPage();
           default:
-            return GridView.builder(
-              shrinkWrap: true,
-              padding: EdgeInsets.zero,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                mainAxisSpacing: 5,
-                crossAxisSpacing: 5,
-                mainAxisExtent: 180,
-              ),
+            return MoviesGridBuilder(
               itemCount: state.movies.length,
               itemBuilder: (_, i) => ListMovieItemWidget(
+                movie: state.movies[i],
                 onTap: () => Navigator.of(context).pushReplacementNamed(
                   AppRouter.movieDetail,
                   arguments: MovieDetailParamModel(slug: state.movies[i].slug),
                 ),
-                movie: state.movies[i],
               ),
             );
         }
