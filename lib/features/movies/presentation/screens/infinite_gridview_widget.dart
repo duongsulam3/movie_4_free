@@ -54,9 +54,9 @@ class _InfiniteGridViewState extends State<InfiniteGridView>
                 SliverGrid.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
-                    mainAxisSpacing: 5,
-                    crossAxisSpacing: 5,
-                    mainAxisExtent: sHeight / (sHeight / 180),
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    mainAxisExtent: sHeight / (sHeight / 220),
                   ),
                   itemCount: state.movies.length,
                   itemBuilder: (BuildContext context, int index) {

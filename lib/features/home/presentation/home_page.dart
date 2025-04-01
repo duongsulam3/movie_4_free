@@ -5,11 +5,9 @@ import 'package:smoth_movie_app/common/entity/nav_item.dart';
 import 'package:smoth_movie_app/common/entity/page_item.dart';
 import 'package:smoth_movie_app/common/entity/tab_item.dart';
 import 'package:smoth_movie_app/common/widgets/custom_appbar_widget.dart';
-import 'package:smoth_movie_app/features/home/home_main/tabs/anime_tab.dart';
+import 'package:smoth_movie_app/core/constants/app_path.dart';
+import 'package:smoth_movie_app/features/home/home_main/tabs/categories_tab.dart';
 import 'package:smoth_movie_app/features/home/home_main/tabs/home_main_content.dart';
-import 'package:smoth_movie_app/features/home/home_main/tabs/phim_bo_tab.dart';
-import 'package:smoth_movie_app/features/home/home_main/tabs/phim_le_tab.dart';
-import 'package:smoth_movie_app/features/home/home_main/tabs/phim_truyen_hinh_tab.dart';
 import 'package:smoth_movie_app/features/home/presentation/bloc/bottom_nav/bottom_nav_bloc.dart';
 import 'package:smoth_movie_app/features/home/home_main/page.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/kho_phim/kho_phim_page_bloc.dart';
@@ -77,22 +75,31 @@ class _HomePageState extends State<HomePage>
       ),
       TabItem(
         title: "Anime",
-        widget: AnimeTab(
+        widget: CategoriesTab(
           scrollController: scrollControllers[1],
-          path: "hoat-hinh",
+          path: AppPath.anime,
         ),
       ),
       TabItem(
         title: "Phim lẻ",
-        widget: PhimLeTab(scrollController: scrollControllers[2]),
+        widget: CategoriesTab(
+          scrollController: scrollControllers[2],
+          path: AppPath.phimLe,
+        ),
       ),
       TabItem(
         title: "Phim bộ",
-        widget: PhimBoTab(scrollController: scrollControllers[3]),
+        widget: CategoriesTab(
+          scrollController: scrollControllers[3],
+          path: AppPath.phimBo,
+        ),
       ),
       TabItem(
         title: "Phim truyện hình",
-        widget: PhimTruyenHinhTab(scrollController: scrollControllers[4]),
+        widget: CategoriesTab(
+          scrollController: scrollControllers[4],
+          path: AppPath.phimTruyenHinh,
+        ),
       ),
     ];
   }

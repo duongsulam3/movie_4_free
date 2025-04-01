@@ -9,11 +9,9 @@ import 'package:smoth_movie_app/features/movies/presentation/bloc/movies/movies_
 
 class BlocBuilderGridview extends StatefulWidget {
   const BlocBuilderGridview({super.key});
- 
 
   @override
-  State<BlocBuilderGridview> createState() =>
-      _BlocBuilderGridviewState();
+  State<BlocBuilderGridview> createState() => _BlocBuilderGridviewState();
 }
 
 class _BlocBuilderGridviewState extends State<BlocBuilderGridview>
@@ -36,9 +34,9 @@ class _BlocBuilderGridviewState extends State<BlocBuilderGridview>
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
-                mainAxisSpacing: 5,
-                crossAxisSpacing: 5,
-                mainAxisExtent: 180,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                mainAxisExtent: 220,
               ),
               itemCount: items.length,
               itemBuilder: (_, i) => ListMovieItemWidget(
