@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:isolate';
 
 import 'package:smoth_movie_app/core/error/exception.dart';
 import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
@@ -23,8 +24,9 @@ class SimilarMoviesRemoteDataSourceImpl
       final res = await client.get(uri);
       if (res.statusCode == 200) {
         var jsonRes = jsonDecode(res.body)["data"]["items"] as List;
-        List<MovieItemModel> data =
-            jsonRes.map((e) => MovieItemModel.fromJson(e)).toList();
+        List<MovieItemModel> data = await Isolate.run(
+          () => jsonRes.map((e) => MovieItemModel.fromJson(e)).toList(),
+        );
         return data;
       } else {
         throw const ServerException("Lỗi khi lấy dữ liệu phim tương tự");
