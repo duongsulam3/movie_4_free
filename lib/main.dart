@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
       title: "Movies For Free",
       debugShowCheckedModeBanner: false,
       theme: AppTheme.blackTheme,
+      initialRoute: AppRouter.splash,
       onGenerateRoute: (settings) => AppRouter().onGenerateRoute(settings),
     );
   }
