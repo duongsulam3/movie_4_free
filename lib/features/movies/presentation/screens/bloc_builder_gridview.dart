@@ -7,16 +7,16 @@ import 'package:smoth_movie_app/core/utils/enum/movies_state_status.dart';
 import 'package:smoth_movie_app/common/widgets/list_movie_item_widget.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies/movies_bloc.dart';
 
-class GridViewMoviesBlocWidget extends StatefulWidget {
-  const GridViewMoviesBlocWidget({super.key});
+class BlocBuilderGridview extends StatefulWidget {
+  const BlocBuilderGridview({super.key});
  
 
   @override
-  State<GridViewMoviesBlocWidget> createState() =>
-      _GridViewMoviesBlocWidgetState();
+  State<BlocBuilderGridview> createState() =>
+      _BlocBuilderGridviewState();
 }
 
-class _GridViewMoviesBlocWidgetState extends State<GridViewMoviesBlocWidget>
+class _BlocBuilderGridviewState extends State<BlocBuilderGridview>
     with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {

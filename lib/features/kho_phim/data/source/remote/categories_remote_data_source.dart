@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:smoth_movie_app/core/error/exception.dart';
+import 'package:smoth_movie_app/core/utils/secret/api_end_point.dart';
 import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
 import 'package:smoth_movie_app/features/kho_phim/data/model/kho_phim_category_model.dart';
 

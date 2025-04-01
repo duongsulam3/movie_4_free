@@ -1,0 +1,1 @@
+enum MoviesSortByTimeStateStatus { init, loading, success, error }

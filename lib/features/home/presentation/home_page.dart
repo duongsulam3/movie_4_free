@@ -77,7 +77,10 @@ class _HomePageState extends State<HomePage>
       ),
       TabItem(
         title: "Anime",
-        widget: AnimeTab(scrollController: scrollControllers[1]),
+        widget: AnimeTab(
+          scrollController: scrollControllers[1],
+          path: "hoat-hinh",
+        ),
       ),
       TabItem(
         title: "Phim lẻ",

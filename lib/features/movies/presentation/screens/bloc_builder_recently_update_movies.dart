@@ -7,16 +7,14 @@ import 'package:smoth_movie_app/common/screens/error_page.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/recently_update_movies/recently_update_movies_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/custom_carousel_slider.dart';
 
-class CarouselSliderWidget extends StatelessWidget {
-  const CarouselSliderWidget({super.key});
+class BlocBuilderRecentlyUpdateMovies extends StatelessWidget {
+  const BlocBuilderRecentlyUpdateMovies({super.key});
 
   @override
   Widget build(BuildContext context) {
     final sHeight = MediaQuery.of(context).size.height;
     final sWidth = MediaQuery.of(context).size.width;
     return BlocBuilder<RecentlyUpdateMoviesBloc, RecentlyUpdateMoviesState>(
-      bloc: context.read<RecentlyUpdateMoviesBloc>()
-        ..add(GetRecentlyUpdateMovies()),
       builder: (context, state) {
         switch (state.status) {
           case MoviesStateStatus.init:

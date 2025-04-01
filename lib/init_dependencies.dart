@@ -15,10 +15,15 @@ import 'package:smoth_movie_app/features/kho_phim/domain/usecase/get_kho_phim_mo
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/categories/category_list_bloc.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/countries/countries_bloc.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/kho_phim_movies/kho_phim_movies_bloc.dart';
+import 'package:smoth_movie_app/features/movies/data/repository/movies_sortby_time_repository_impl.dart';
 import 'package:smoth_movie_app/features/movies/data/repository/similar_repository_impl.dart';
+import 'package:smoth_movie_app/features/movies/data/source/remote/movies_sortby_modified_time_remote_data_source.dart';
 import 'package:smoth_movie_app/features/movies/data/source/remote/similar_movies_remote_data_source.dart';
+import 'package:smoth_movie_app/features/movies/domain/repository/movies_sortby_time_repository.dart';
 import 'package:smoth_movie_app/features/movies/domain/repository/similar_movies_repository.dart';
+import 'package:smoth_movie_app/features/movies/domain/usecase/get_movies_sortby_time.dart';
 import 'package:smoth_movie_app/features/movies/domain/usecase/get_similar_movies.dart';
+import 'package:smoth_movie_app/features/movies/presentation/bloc/movies_sortby_time/movies_sort_by_time_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/similar_movies/similar_movies_bloc.dart';
 import 'package:smoth_movie_app/features/search/data/repository/search_movies_repository_impl.dart';
 import 'package:smoth_movie_app/features/search/data/source/remote/search_movie_remote_datasource.dart';
@@ -66,7 +71,7 @@ void _initListMovies() {
   );
 
   serviceLocator.registerFactory(
-    () => MoviesBloc(getMovies: serviceLocator<GetMovies>()),
+    () => MoviesBloc(usecase: serviceLocator()),
   );
   //** Movies */
 
@@ -103,6 +108,19 @@ void _initListMovies() {
   serviceLocator.registerFactory(() => GetSimilarMovies(serviceLocator()));
   serviceLocator.registerFactory(() => SimilarMoviesBloc(serviceLocator()));
   //** Similar Movies */
+
+  //** Movies Sort By Time */
+  serviceLocator.registerFactory<MoviesSortbyModifiedTimeRemoteDataSource>(
+    () => MoviesSortbyModifiedTimeRemoteDataSourceImpl(
+      client: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerFactory<MoviesSortbyTimeRepository>(
+    () => MoviesSortbyTimeRepositoryImpl(serviceLocator()),
+  );
+  serviceLocator.registerFactory(() => GetMoviesSortbyTime(serviceLocator()));
+  serviceLocator.registerFactory(() => MoviesSortByTimeBloc(serviceLocator()));
+  //** Movies Sort By Time */
 }
 
 void _initDetailMovie() {

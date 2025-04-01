@@ -9,8 +9,8 @@ part 'movies_event.dart';
 part 'movies_state.dart';
 
 class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
-  final GetMovies getMovies;
-  MoviesBloc({required this.getMovies}) : super(const MoviesState()) {
+  final GetMovies usecase;
+  MoviesBloc({required this.usecase}) : super(const MoviesState()) {
     on<GetListMovies>(fetchMovie);
   }
 
@@ -20,7 +20,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   ) async {
     List<MovieItemEntity> movies = const <MovieItemEntity>[];
     if (state.isEnd) return;
-    final res = await getMovies.call(
+    final res = await usecase.call(
       GetMoviesParams(
         page: state.page,
         cateName: event.path,
