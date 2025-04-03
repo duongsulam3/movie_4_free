@@ -8,6 +8,7 @@ import 'package:smoth_movie_app/features/kho_phim/data/model/kho_phim_category_m
 import 'package:smoth_movie_app/features/kho_phim/data/model/kho_phim_country_model.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/categories/category_list_bloc.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/kho_phim_movies/kho_phim_movies_bloc.dart';
+import 'package:smoth_movie_app/features/movies/data/model/recently_update_movies/recently_update_list_item_model.dart';
 import 'package:smoth_movie_app/features/movies/data/model/single_movies/movie_item_model.dart';
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
 import 'package:smoth_movie_app/features/home/presentation/bloc/bottom_nav/bottom_nav_bloc.dart';
@@ -124,9 +125,24 @@ class Helper {
     return cate;
   }
 
+  //! KHO PHIM MOVIES
   static List<MovieItemModel> parseKhoPhimMovies(String json) {
     final jsonResponse = jsonDecode(json)["data"]["items"] as List;
     return jsonResponse.map((e) => MovieItemModel.fromJson(e)).toList();
+  }
+
+  //! MOVIES
+  static List<MovieItemModel> parseMovies(String json) {
+    final jsonResponse = jsonDecode(json)["data"]["items"] as List;
+    return jsonResponse.map((e) => MovieItemModel.fromJson(e)).toList();
+  }
+
+  //! RECENTLY UPDATED MOVIES
+  static List<RecentlyUpdateListItemModel> parseRecentlyMovies(String json) {
+    final jsonResponse = jsonDecode(json)['items'] as List;
+    return jsonResponse
+        .map((e) => RecentlyUpdateListItemModel.fromJson(e))
+        .toList();
   }
   //** FUNCTIONS */
 }

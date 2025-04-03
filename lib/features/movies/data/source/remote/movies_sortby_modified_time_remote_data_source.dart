@@ -1,6 +1,6 @@
-import 'dart:convert';
 import 'dart:isolate';
 import 'package:smoth_movie_app/core/error/exception.dart';
+import 'package:smoth_movie_app/core/utils/helper/helper.dart';
 import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
 import 'package:smoth_movie_app/features/movies/data/model/single_movies/movie_item_model.dart';
 import 'package:http/http.dart' as http;
@@ -31,11 +31,7 @@ class MoviesSortbyModifiedTimeRemoteDataSourceImpl
       var uri = Uri.parse(url);
       final res = await client.get(uri);
       if (res.statusCode == 200) {
-        var jsonRes = jsonDecode(res.body)["data"]["items"] as List;
-        List<MovieItemModel> data = await Isolate.run(
-          () => jsonRes.map((e) => MovieItemModel.fromJson(e)).toList(),
-        );
-        return data;
+        return Isolate.run(() => Helper.parseMovies(res.body));
       } else {
         throw ServerException(
           "Lỗi khi lấy dữ liệu phim $cateName mới cập nhật",
