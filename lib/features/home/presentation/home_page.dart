@@ -163,6 +163,7 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => BottomNavBloc(),
+      //TODO FIND THE WAY TO NOT RELOAD PAGES WHEN CHANGE BOTTOM NAV PAGE
       child: BlocBuilder<BottomNavBloc, BottomNavState>(
         buildWhen: (previous, current) => previous != current,
         builder: (context, state) {
