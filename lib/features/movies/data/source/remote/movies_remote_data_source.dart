@@ -1,4 +1,3 @@
-import 'dart:isolate';
 import 'package:smoth_movie_app/core/error/exception.dart';
 import 'package:smoth_movie_app/core/utils/helper/helper.dart';
 import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
@@ -25,10 +24,10 @@ class MoviesRemoteDataSourceImpl implements MoviesRemoteDataSource {
     try {
       var url =
           "${AppSecret.kkPhimUrl}/danh-sach/$cateName?page=$page&limit=$limit";
-      var uri = Uri.parse(url);
+      final uri = Uri.parse(url);
       final res = await client.get(uri);
       if (res.statusCode == 200) {
-        return Isolate.run(() => Helper.parseMovies(res.body));
+        return Helper.parseMovies(res.body);
       } else {
         throw ServerException("Lỗi khi lấy dữ liệu phim $cateName");
       }

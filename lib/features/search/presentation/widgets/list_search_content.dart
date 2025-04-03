@@ -44,9 +44,11 @@ class ListSearchContent extends StatelessWidget {
               screenWidth: screenWidth,
               topSearchList: listSearch,
             );
+          case MoviesStateStatus.loading:
+            return const ProgressIndicatorCustom();
           case MoviesStateStatus.error:
             return const ErrorPage();
-          case MoviesStateStatus.success:
+          default:
             return ListView.separated(
               controller: scrollController,
               shrinkWrap: true,
@@ -55,11 +57,10 @@ class ListSearchContent extends StatelessWidget {
                 if (index >= state.movies.length) {
                   if (state.isEnd) {
                     return const SizedBox.shrink();
+                  } else {
+                    Helper.loadMoreSearch(context, state.query);
+                    return const Center(child: ProgressIndicatorCustom());
                   }
-                  Helper.loadMoreSearch(context, state.query);
-                  return const Center(
-                    child: ProgressIndicatorCustom(),
-                  );
                 } else {
                   return GestureDetector(
                     onTap: () => Navigator.of(context).pushNamed(

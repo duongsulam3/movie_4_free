@@ -1,5 +1,3 @@
-import 'dart:isolate';
-
 import 'package:http/http.dart' as http;
 import 'package:smoth_movie_app/core/error/exception.dart';
 import 'package:smoth_movie_app/core/utils/helper/helper.dart';
@@ -20,10 +18,10 @@ class RecentlyUpdateMoviesRemoteDataSourceImpl
   Future<List<RecentlyUpdateListItemModel>> getRecentlyUpdateMovies() async {
     try {
       var url = AppSecret.baseUrl + ApiEndPoint.recentlyUpdateEndPoint;
-      var uri = Uri.parse(url);
+      final uri = Uri.parse(url);
       final response = await client.get(uri);
       if (response.statusCode == 200) {
-        return Isolate.run(() => Helper.parseRecentlyMovies(response.body));
+        return Helper.parseRecentlyMovies(response.body);
       } else {
         throw const ServerException("Lỗi khi lấy dữ liệu: phim mới cập nhật");
       }

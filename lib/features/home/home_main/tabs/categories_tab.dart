@@ -11,10 +11,12 @@ class CategoriesTab extends StatelessWidget {
     super.key,
     required this.scrollController,
     required this.path,
+    this.limit = 30,
   });
 
   final ScrollController scrollController;
   final String path;
+  final int limit;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,7 @@ class CategoriesTab extends StatelessWidget {
           create: (context) => serviceLocator()
             ..add(GetListMovies(
               path: path,
-              limit: 30,
+              limit: limit,
             )),
         ),
       ],
@@ -43,7 +45,7 @@ class CategoriesTab extends StatelessWidget {
           spacing: sHeight / (sHeight / 20),
           children: [
             const BlocBuilderMoviesSortByTime(),
-            InfiniteGridView(path: path),
+            InfiniteGridView(path: path, itemCount: limit),
           ],
         ),
       ),

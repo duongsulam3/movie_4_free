@@ -21,31 +21,29 @@ class ListMovieItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        clipBehavior: Clip.hardEdge,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: Column(
-          spacing: 5,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CachedNetworkImageWidget(
+      child: Column(
+        spacing: 5,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            clipBehavior: Clip.hardEdge,
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+            child: CachedNetworkImageWidget(
               url: AppSecret.imageUrl + movie.posterUrl,
               height: 180,
               memCacheHeight: memCacheHeight,
               memCacheWidth: memCacheWidth,
             ),
-            Expanded(
-              child: ResponsiveText(
-                text: movie.name,
-                maxLines: 2,
-                fontSize: 12,
-                textColor: Colors.grey,
-              ),
+          ),
+          Expanded(
+            child: ResponsiveText(
+              text: movie.name,
+              maxLines: 2,
+              fontSize: 12,
+              textColor: Colors.grey,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -21,7 +21,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     Emitter<SearchState> emit,
   ) async {
     try {
-      //** HANDLE SEARCH STATES */
+      emit(state.copyWith(status: MoviesStateStatus.loading));
       List<MovieItemEntity> movies = const [];
       if (state.isEnd) {
         emit(state.copyWith(status: MoviesStateStatus.success, isEnd: false));

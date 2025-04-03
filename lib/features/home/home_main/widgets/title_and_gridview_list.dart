@@ -13,6 +13,7 @@ class TitleAndGridViewList extends StatelessWidget {
     required this.path,
     required this.tabController,
     required this.tabIndex,
+    this.limit = 9,
   });
 
   final double sHeight;
@@ -20,6 +21,7 @@ class TitleAndGridViewList extends StatelessWidget {
   final String path;
   final TabController tabController;
   final int tabIndex;
+  final int limit;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class TitleAndGridViewList extends StatelessWidget {
       create: (context) => serviceLocator()
         ..add(GetListMovies(
           path: path,
-          limit: 9,
+          limit: limit,
           isRefresh: false,
         )),
       child: Padding(
@@ -39,7 +41,7 @@ class TitleAndGridViewList extends StatelessWidget {
               title: title,
               onTap: () => tabController.animateTo(tabIndex),
             ),
-            const BlocBuilderGridview(),
+            BlocBuilderGridview(itemCount: limit),
           ],
         ),
       ),

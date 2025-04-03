@@ -18,7 +18,8 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     GetListMovies event,
     Emitter<MoviesState> emit,
   ) async {
-    List<MovieItemEntity> movies = const <MovieItemEntity>[];
+    emit(state.copyWith(status: MoviesStateStatus.loading));
+    List<MovieItemEntity> movies = const [];
     if (state.isEnd) return;
     final res = await usecase.call(
       GetMoviesParams(

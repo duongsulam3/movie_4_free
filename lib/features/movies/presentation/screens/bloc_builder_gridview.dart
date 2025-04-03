@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smoth_movie_app/common/widgets/progress_indicator_custom.dart';
+import 'package:smoth_movie_app/common/widgets/movie_item_skeleton_loading.dart';
 import 'package:smoth_movie_app/core/router/app_router.dart';
 import 'package:smoth_movie_app/core/router/params/movie_detail_param_model.dart';
 import 'package:smoth_movie_app/core/utils/enum/movies_state_status.dart';
@@ -9,7 +9,9 @@ import 'package:smoth_movie_app/features/movies/presentation/bloc/movies/movies_
 import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/movies_gridview_builder.dart';
 
 class BlocBuilderGridview extends StatefulWidget {
-  const BlocBuilderGridview({super.key});
+  const BlocBuilderGridview({super.key, required this.itemCount});
+
+  final int itemCount;
 
   @override
   State<BlocBuilderGridview> createState() => _BlocBuilderGridviewState();
@@ -24,10 +26,15 @@ class _BlocBuilderGridviewState extends State<BlocBuilderGridview>
       builder: (context, state) {
         switch (state.status) {
           case MoviesStateStatus.init:
-            return const Center(child: ProgressIndicatorCustom());
+            return const SizedBox.shrink();
           case MoviesStateStatus.error:
             return const Center(child: Text('Có lỗi khi tải phim'));
-          case MoviesStateStatus.success:
+          case MoviesStateStatus.loading:
+            return MoviesGridBuilder(
+              itemCount: widget.itemCount,
+              itemBuilder: (_, i) => const MovieItemSkeletonLoading(),
+            );
+          default:
             final items = state.movies;
             return MoviesGridBuilder(
               itemCount: items.length,
