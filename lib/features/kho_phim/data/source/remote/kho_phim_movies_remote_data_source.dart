@@ -1,4 +1,3 @@
-import 'dart:isolate';
 import 'package:smoth_movie_app/core/error/exception.dart';
 import 'package:smoth_movie_app/core/utils/helper/helper.dart';
 import 'package:smoth_movie_app/core/utils/secret/api_end_point.dart';
@@ -40,7 +39,7 @@ class KhoPhimMoviesRemoteDataSourceImpl
       final uri = Uri.parse(url);
       final res = await client.get(uri);
       if (res.statusCode == 200) {
-        return Isolate.run(() => Helper.parseKhoPhimMovies(res.body));
+        return Helper.parseKhoPhimMovies(res.body);
       } else {
         throw const ServerException("Lỗi khi lấy dữ liệu phim từ server");
       }

@@ -1,4 +1,3 @@
-import 'dart:isolate';
 import 'package:http/http.dart' as http;
 import 'package:smoth_movie_app/core/error/exception.dart';
 import 'package:smoth_movie_app/core/utils/helper/helper.dart';
@@ -20,7 +19,7 @@ class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
       var uri = Uri.parse(url);
       final res = await client.get(uri);
       if (res.statusCode == 200) {
-        return Isolate.run(() => Helper.parseKhoPhimCateJsonToList(res.body));
+        return Helper.parseKhoPhimCateJsonToList(res.body);
       } else {
         throw const ServerException("Lỗi khi lấy danh sách thể loại");
       }
