@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smoth_movie_app/common/widgets/progress_indicator_custom.dart';
+import 'package:smoth_movie_app/common/widgets/movie_item_skeleton_loading.dart';
 import 'package:smoth_movie_app/core/router/app_router.dart';
 import 'package:smoth_movie_app/core/router/params/movie_detail_param_model.dart';
 import 'package:smoth_movie_app/core/utils/enum/kho_phim/kho_phim_movies_state_status.dart';
@@ -10,6 +10,7 @@ import 'package:smoth_movie_app/features/kho_phim/presentation/widget/kho_phim_n
 import 'package:smoth_movie_app/common/widgets/list_movie_item_widget.dart';
 import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/load_more_container.dart';
 import 'package:smoth_movie_app/core/utils/helper/helper.dart';
+import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/movies_gridview_builder.dart';
 import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/movies_silver_gridview_builder.dart';
 
 class InfiniteGridViewMovies extends StatelessWidget {
@@ -19,12 +20,14 @@ class InfiniteGridViewMovies extends StatelessWidget {
     required this.countrySlug,
     required this.yearSlug,
     required this.languageSlug,
+    this.limit = 30,
   });
 
   final String categorySlug;
   final String countrySlug;
   final String yearSlug;
   final String languageSlug;
+  final int limit;
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +38,17 @@ class InfiniteGridViewMovies extends StatelessWidget {
           lang: languageSlug,
           categorySlug: categorySlug,
           year: yearSlug,
+          limit: limit,
         )),
       builder: (context, state) {
         switch (state.status) {
           case KhoPhimMoviesStateStatus.init:
-            return const Center(child: ProgressIndicatorCustom());
+            return const SizedBox.shrink();
           case KhoPhimMoviesStateStatus.loading:
-            return const Center(child: ProgressIndicatorCustom());
+            return MoviesGridBuilder(
+              itemCount: limit,
+              itemBuilder: (_, i) => const MovieItemSkeletonLoading(),
+            );
           case KhoPhimMoviesStateStatus.error:
             return const ErrorPage();
           default:
@@ -78,6 +85,7 @@ class InfiniteGridViewMovies extends StatelessWidget {
                                   languageSlug,
                                   categorySlug,
                                   yearSlug,
+                                  limit,
                                 ),
                                 child: const LoadMoreContainer(),
                               )

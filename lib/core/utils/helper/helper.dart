@@ -56,12 +56,14 @@ class Helper {
     String languageSlug,
     String categorySlug,
     String yearSlug,
+    int limit,
   ) {
     context.read<KhoPhimMoviesBloc>().add(GetKhoPhimMoviesEvent(
           countrySlug: countrySlug,
           lang: languageSlug,
           categorySlug: categorySlug,
           year: yearSlug,
+          limit: limit,
         ));
   }
   //** BLOC FUNCTIONS */
