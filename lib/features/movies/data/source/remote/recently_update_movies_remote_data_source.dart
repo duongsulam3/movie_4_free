@@ -1,8 +1,8 @@
 import 'dart:isolate';
 
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:smoth_movie_app/core/error/exception.dart';
+import 'package:smoth_movie_app/core/utils/helper/helper.dart';
 import 'package:smoth_movie_app/core/utils/secret/api_end_point.dart';
 import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
 import 'package:smoth_movie_app/features/movies/data/model/recently_update_movies/recently_update_list_item_model.dart';
@@ -23,13 +23,7 @@ class RecentlyUpdateMoviesRemoteDataSourceImpl
       var uri = Uri.parse(url);
       final response = await client.get(uri);
       if (response.statusCode == 200) {
-        var jsonResponse = jsonDecode(response.body)['items'] as List;
-        List<RecentlyUpdateListItemModel> data = await Isolate.run(
-          () => jsonResponse
-              .map((e) => RecentlyUpdateListItemModel.fromJson(e))
-              .toList(),
-        );
-        return data;
+        return Isolate.run(() => Helper.parseRecentlyMovies(response.body));
       } else {
         throw const ServerException("Lỗi khi lấy dữ liệu: phim mới cập nhật");
       }
