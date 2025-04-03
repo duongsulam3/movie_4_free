@@ -1,5 +1,6 @@
-import 'dart:convert';
+import 'dart:isolate';
 import 'package:smoth_movie_app/core/error/exception.dart';
+import 'package:smoth_movie_app/core/utils/helper/helper.dart';
 import 'package:smoth_movie_app/core/utils/secret/api_end_point.dart';
 import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
 import 'package:smoth_movie_app/features/movies/data/model/single_movies/movie_item_model.dart';
@@ -39,10 +40,7 @@ class KhoPhimMoviesRemoteDataSourceImpl
       final uri = Uri.parse(url);
       final res = await client.get(uri);
       if (res.statusCode == 200) {
-        final jsonRes = jsonDecode(res.body)["data"]["items"] as List;
-        List<MovieItemModel> data =
-            jsonRes.map((e) => MovieItemModel.fromJson(e)).toList();
-        return data;
+        return Isolate.run(() => Helper.parseKhoPhimMovies(res.body));
       } else {
         throw const ServerException("Lỗi khi lấy dữ liệu phim từ server");
       }

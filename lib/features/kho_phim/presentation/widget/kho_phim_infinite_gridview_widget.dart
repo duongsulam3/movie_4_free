@@ -10,6 +10,7 @@ import 'package:smoth_movie_app/features/kho_phim/presentation/widget/kho_phim_n
 import 'package:smoth_movie_app/common/widgets/list_movie_item_widget.dart';
 import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/load_more_container.dart';
 import 'package:smoth_movie_app/core/utils/helper/helper.dart';
+import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/movies_silver_gridview_builder.dart';
 
 class InfiniteGridViewMovies extends StatelessWidget {
   const InfiniteGridViewMovies({
@@ -51,27 +52,17 @@ class InfiniteGridViewMovies extends StatelessWidget {
                 shrinkWrap: true,
                 primary: false,
                 slivers: [
-                  SliverGrid.builder(
-                    addAutomaticKeepAlives: false,
-                    addRepaintBoundaries: true,
-                    addSemanticIndexes: false,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      mainAxisSpacing: 5,
-                      crossAxisSpacing: 5,
-                      mainAxisExtent: 180,
-                    ),
+                  MoviesSilverGridviewBuilder(
                     itemCount: state.movies.length,
                     itemBuilder: (BuildContext context, int index) {
                       return ListMovieItemWidget(
+                        movie: state.movies[index],
                         onTap: () => Navigator.of(context).pushNamed(
                           AppRouter.movieDetail,
                           arguments: MovieDetailParamModel(
                             slug: state.movies[index].slug,
                           ),
                         ),
-                        movie: state.movies[index],
                       );
                     },
                   ),

@@ -1,9 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
+import 'package:smoth_movie_app/features/kho_phim/data/model/kho_phim_category_model.dart';
+import 'package:smoth_movie_app/features/kho_phim/data/model/kho_phim_country_model.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/categories/category_list_bloc.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/kho_phim_movies/kho_phim_movies_bloc.dart';
+import 'package:smoth_movie_app/features/movies/data/model/single_movies/movie_item_model.dart';
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
 import 'package:smoth_movie_app/features/home/presentation/bloc/bottom_nav/bottom_nav_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies/movies_bloc.dart';
@@ -73,6 +78,7 @@ class Helper {
   static void showInitPlayerErrorSnackBar(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
+        behavior: SnackBarBehavior.floating,
         elevation: 0,
         duration: const Duration(seconds: 5),
         backgroundColor: Colors.black.withValues(alpha: 0.9),
@@ -92,9 +98,35 @@ class Helper {
             ),
           ],
         ),
-        behavior: SnackBarBehavior.floating,
       ),
     );
+  }
+
+  //! KHO PHIM -> COUNTRIES
+  static List<KhoPhimCountryModel> parseKhoPhimCoutryJsonToList(String json) {
+    final jsonResponse = jsonDecode(json) as List;
+    return jsonResponse.map((e) => KhoPhimCountryModel.fromJson(e)).toList();
+  }
+
+  //! KHO PHIM -> CATEGORIES
+  static List<KhoPhimCategoryModel> parseKhoPhimCateJsonToList(String json) {
+    List<KhoPhimCategoryModel> cate = const [];
+    final jsonResponse = jsonDecode(json) as List;
+    cate = jsonResponse.map((e) => KhoPhimCategoryModel.fromJson(e)).toList();
+    cate.insert(
+      0,
+      KhoPhimCategoryModel(
+        id: "0",
+        name: "Tất cả thể loại",
+        slug: "",
+      ),
+    );
+    return cate;
+  }
+
+  static List<MovieItemModel> parseKhoPhimMovies(String json) {
+    final jsonResponse = jsonDecode(json)["data"]["items"] as List;
+    return jsonResponse.map((e) => MovieItemModel.fromJson(e)).toList();
   }
   //** FUNCTIONS */
 }

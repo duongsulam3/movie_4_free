@@ -27,7 +27,7 @@ class ListMovieItemWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(5),
         ),
         child: Column(
-          spacing: 10,
+          spacing: 5,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CachedNetworkImageWidget(
@@ -38,7 +38,7 @@ class ListMovieItemWidget extends StatelessWidget {
             ),
             Expanded(
               child: ResponsiveText(
-                text: "${movie.name} ${movie.lang}",
+                text: movie.name,
                 maxLines: 2,
                 fontSize: 12,
                 textColor: Colors.grey,

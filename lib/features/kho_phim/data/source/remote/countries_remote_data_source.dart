@@ -1,6 +1,7 @@
-import 'dart:convert';
+import 'dart:isolate';
 
 import 'package:smoth_movie_app/core/error/exception.dart';
+import 'package:smoth_movie_app/core/utils/helper/helper.dart';
 import 'package:smoth_movie_app/core/utils/secret/api_end_point.dart';
 import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
 import 'package:smoth_movie_app/features/kho_phim/data/model/kho_phim_country_model.dart';
@@ -17,13 +18,10 @@ class CountriesRemoteDataSourceImpl implements CountriesRemoteDataSource {
   Future<List<KhoPhimCountryModel>> getCountries() async {
     try {
       var url = AppSecret.baseUrl + ApiEndPoint.countriesEndpoint;
-      var uri = Uri.parse(url);
+      final uri = Uri.parse(url);
       final res = await client.get(uri);
       if (res.statusCode == 200) {
-        var jsonResponse = jsonDecode(res.body) as List;
-        List<KhoPhimCountryModel> categories =
-            jsonResponse.map((e) => KhoPhimCountryModel.fromJson(e)).toList();
-        return categories;
+        return Isolate.run(() => Helper.parseKhoPhimCoutryJsonToList(res.body));
       } else {
         throw const ServerException("Lỗi khi lấy danh sách thể loại");
       }
