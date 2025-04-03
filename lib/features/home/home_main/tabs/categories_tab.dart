@@ -45,7 +45,10 @@ class CategoriesTab extends StatelessWidget {
           spacing: sHeight / (sHeight / 20),
           children: [
             const BlocBuilderMoviesSortByTime(),
-            InfiniteGridView(path: path, itemCount: limit),
+            Padding(
+              padding: const EdgeInsets.only(left: 5, right: 5),
+              child: InfiniteGridView(path: path, itemCount: limit),
+            ),
           ],
         ),
       ),

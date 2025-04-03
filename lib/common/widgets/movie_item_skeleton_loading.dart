@@ -11,7 +11,10 @@ class MovieItemSkeletonLoading extends StatelessWidget {
       children: [
         Container(
           height: 180,
-          decoration: BoxDecoration(color: Colors.grey.shade300),
+          decoration: BoxDecoration(
+            color: Colors.grey.shade300,
+            borderRadius: BorderRadius.circular(5),
+          ),
         ),
         Expanded(
           child: Container(

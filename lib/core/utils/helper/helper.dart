@@ -8,6 +8,7 @@ import 'package:smoth_movie_app/features/kho_phim/data/model/kho_phim_category_m
 import 'package:smoth_movie_app/features/kho_phim/data/model/kho_phim_country_model.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/categories/category_list_bloc.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/kho_phim_movies/kho_phim_movies_bloc.dart';
+import 'package:smoth_movie_app/features/movie_detail/data/model/movie_detail.dart';
 import 'package:smoth_movie_app/features/movies/data/model/recently_update_movies/recently_update_list_item_model.dart';
 import 'package:smoth_movie_app/features/movies/data/model/single_movies/movie_item_model.dart';
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
@@ -145,6 +146,12 @@ class Helper {
     return jsonResponse
         .map((e) => RecentlyUpdateListItemModel.fromJson(e))
         .toList();
+  }
+
+  //! MOVIE DETAIL
+  static MovieDetailModel parseMovieDetail(String json) {
+    final jsonResponse = jsonDecode(json);
+    return MovieDetailModel.fromJson(jsonResponse);
   }
   //** FUNCTIONS */
 }

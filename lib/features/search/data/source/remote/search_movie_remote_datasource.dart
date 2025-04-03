@@ -1,8 +1,8 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 import 'package:smoth_movie_app/core/error/exception.dart';
+import 'package:smoth_movie_app/core/utils/helper/helper.dart';
 import 'package:smoth_movie_app/core/utils/secret/api_end_point.dart';
 import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
 import 'package:smoth_movie_app/features/movies/data/model/single_movies/movie_item_model.dart';
@@ -25,18 +25,12 @@ class SearchMovieRemoteDatasourceImpl implements SearchMovieRemoteDataSource {
     required int limit,
   }) async {
     try {
-      List<MovieItemModel> data = [];
       var url =
           "${AppSecret.kkPhimUrl + ApiEndPoint.searchMoviesEndpoint}keyword=$query&page=$page&sort_lang=vietsub&limit=$limit";
-      var uri = Uri.parse(url);
-      log(url);
+      final uri = Uri.parse(url);
       final res = await client.get(uri);
       if (res.statusCode == 200) {
-        var jsonResponse = jsonDecode(res.body)["data"]["items"];
-        for (var item in jsonResponse) {
-          data.add(MovieItemModel.fromJson(item));
-        }
-        return data;
+        return Helper.parseMovies(res.body);
       } else {
         throw const ServerException("Lỗi khi lấy dữ liệu tìm kiếm phim");
       }
