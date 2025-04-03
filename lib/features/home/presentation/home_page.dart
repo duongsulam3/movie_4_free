@@ -164,6 +164,7 @@ class _HomePageState extends State<HomePage>
     return BlocProvider(
       create: (context) => BottomNavBloc(),
       child: BlocBuilder<BottomNavBloc, BottomNavState>(
+        buildWhen: (previous, current) => previous != current,
         builder: (context, state) {
           if (state is! HomeInitialBottomNav) {
             return const SizedBox.shrink();
