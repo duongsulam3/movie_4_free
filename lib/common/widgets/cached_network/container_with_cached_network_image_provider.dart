@@ -25,9 +25,7 @@ class ContainerWithCachedNetworkImageProvider extends StatelessWidget {
         image: DecorationImage(
           image: CachedNetworkImageProvider(
             path,
-            errorListener: (p0) => const Center(
-              child: ErrorImage(),
-            ),
+            errorListener: (p0) => const Center(child: ErrorImage()),
           ),
           fit: BoxFit.fill,
         ),

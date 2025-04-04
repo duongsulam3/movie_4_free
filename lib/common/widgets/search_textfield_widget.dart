@@ -54,7 +54,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 10, bottom: 1),
+      padding: const EdgeInsets.only(left: 10),
       height: widget.textFieldHeight,
       decoration: BoxDecoration(
         color: const Color(0xffc1bfbf).withValues(alpha: 0.2),
@@ -73,7 +73,10 @@ class _SearchTextFieldState extends State<SearchTextField> {
               onChanged: widget.onChanged,
               onSubmitted: widget.onSubmitted,
               cursorHeight: widget.textFieldHeight / 2,
-              style: const TextStyle(color: Colors.white),
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: widget.textFieldHeight / 2,
+              ),
               decoration: InputDecoration(
                 border: InputBorder.none,
                 suffixIcon: Container(
@@ -96,7 +99,10 @@ class _SearchTextFieldState extends State<SearchTextField> {
                   ),
                 ),
                 hintText: widget.hintText,
-                hintStyle: TextStyle(color: Colors.grey.withValues(alpha: 0.7)),
+                hintStyle: TextStyle(
+                  color: Colors.grey.withValues(alpha: 0.7),
+                  fontSize: widget.textFieldHeight / 2,
+                ),
               ),
             ),
           ),
