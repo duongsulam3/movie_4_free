@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:smoth_movie_app/core/utils/enum/movies_state_status.dart';
@@ -20,44 +18,40 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     GetSearchMoviesEvent event,
     Emitter<SearchState> emit,
   ) async {
-    try {
-      emit(state.copyWith(status: MoviesStateStatus.loading));
-      List<MovieItemEntity> movies = const [];
-      if (state.isEnd) {
-        emit(state.copyWith(status: MoviesStateStatus.success, isEnd: false));
-      }
-      if (state.query != event.query) {
-        emit(state.copyWith(page: 1));
-      }
-      final res = await getSearchMovies.call(
-        SearchParams(query: event.query, page: state.page, limit: 20),
-      );
-      //** HANDLE SEARCH STATES */
-      res.fold(
-        (err) => emit(state.copyWith(status: MoviesStateStatus.error)),
-        (data) {
-          movies = data;
-          if (data.isEmpty && data.length < 20) {
-            emit(state.copyWith(
-              status: MoviesStateStatus.success,
-              isEnd: true,
-              movies: [...state.movies, ...movies],
-            ));
-          } else {
-            emit(state.copyWith(
-              status: MoviesStateStatus.success,
-              movies: state.query == event.query
-                  ? [...state.movies, ...movies]
-                  : movies,
-              query: event.query,
-              page: state.page + 1,
-            ));
-          }
-        },
-      );
-    } catch (e) {
-      log(e.toString());
-      emit(state.copyWith(status: MoviesStateStatus.error));
+    if (state.isEnd) {
+      emit(state.copyWith(status: MoviesStateStatus.success, isEnd: false));
     }
+    List<MovieItemEntity> movies = const [];
+    if (state.query != event.query) {
+      emit(state.copyWith(page: 1));
+    }
+    final res = await getSearchMovies.call(
+      SearchParams(query: event.query, page: state.page, limit: event.limit),
+    );
+    //** HANDLE SEARCH STATES */
+    res.fold(
+      (err) => emit(state.copyWith(status: MoviesStateStatus.error)),
+      (data) {
+        movies = data;
+        if (movies.length < event.limit) {
+          emit(state.copyWith(
+            status: MoviesStateStatus.success,
+            isEnd: true,
+            movies: state.query == event.query
+                ? [...state.movies, ...movies]
+                : movies,
+          ));
+        } else {
+          emit(state.copyWith(
+            status: MoviesStateStatus.success,
+            movies: state.query == event.query
+                ? [...state.movies, ...movies]
+                : movies,
+            query: event.query,
+            page: state.page + 1,
+          ));
+        }
+      },
+    );
   }
 }

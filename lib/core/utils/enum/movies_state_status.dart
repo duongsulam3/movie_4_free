@@ -1,1 +1,1 @@
-enum MoviesStateStatus { init, loading, success, error }
+enum MoviesStateStatus { init, success, error }

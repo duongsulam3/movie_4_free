@@ -28,20 +28,26 @@ class Helper {
   }
 
   //! SEARCH BLOC
-  static void onSubmitSearch(BuildContext context, String query) {
+  static void onSubmitSearch(BuildContext context, String query, int limit) {
     if (query.isEmpty) return;
-    context.read<SearchBloc>().add(GetSearchMoviesEvent(query));
+    context.read<SearchBloc>().add(GetSearchMoviesEvent(
+          query: query,
+          limit: limit,
+        ));
   }
 
-  static void loadMoreSearch(BuildContext context, String query) {
+  static void loadMoreSearch(BuildContext context, String query, int limit) {
     if (query.isEmpty) return;
-    context.read<SearchBloc>().add(GetSearchMoviesEvent(query));
+    context.read<SearchBloc>().add(GetSearchMoviesEvent(
+          query: query,
+          limit: limit,
+        ));
   }
 
   //! INFINITE MOVIES BLOC
   static void loadMoreInfiniteMovies(BuildContext context, String path) {
     final moviesBloc = context.read<MoviesBloc>();
-    moviesBloc.add(GetListMovies(path: path, limit: 18));
+    moviesBloc.add(GetListMovies(path: path, limit: 30));
   }
 
   //! CATEGORIES BLOC

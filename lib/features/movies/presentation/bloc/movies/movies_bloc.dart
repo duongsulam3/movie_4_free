@@ -18,9 +18,8 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     GetListMovies event,
     Emitter<MoviesState> emit,
   ) async {
-    emit(state.copyWith(status: MoviesStateStatus.loading));
-    List<MovieItemEntity> movies = const [];
     if (state.isEnd) return;
+    List<MovieItemEntity> movies = const [];
     final res = await usecase.call(
       GetMoviesParams(
         page: state.page,
@@ -31,16 +30,20 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     res.fold(
       (err) => emit(state.copyWith(status: MoviesStateStatus.error)),
       (data) {
-        if (data.isNotEmpty) {
-          movies = data;
+        movies = data;
+        if (movies.length < event.limit) {
+          emit(state.copyWith(
+            status: MoviesStateStatus.success,
+            isEnd: true,
+            movies: [...state.movies, ...movies],
+          ));
+        } else {
           emit(state.copyWith(
             status: MoviesStateStatus.success,
             movies: [...state.movies, ...movies],
-            isEnd: event.isRefresh == false ? true : false,
+            isEnd: event.isRefresh ? false : true,
             page: state.page + 1,
           ));
-        } else {
-          emit(state.copyWith(isEnd: true));
         }
       },
     );

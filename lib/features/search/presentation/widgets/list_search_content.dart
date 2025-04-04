@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
 import 'package:smoth_movie_app/core/router/params/movie_detail_param_model.dart';
 import 'package:smoth_movie_app/common/widgets/progress_indicator_custom.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_sized_box.dart';
@@ -44,8 +45,6 @@ class ListSearchContent extends StatelessWidget {
               screenWidth: screenWidth,
               topSearchList: listSearch,
             );
-          case MoviesStateStatus.loading:
-            return const ProgressIndicatorCustom();
           case MoviesStateStatus.error:
             return const ErrorPage();
           default:
@@ -56,9 +55,15 @@ class ListSearchContent extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                 if (index >= state.movies.length) {
                   if (state.isEnd) {
-                    return const SizedBox.shrink();
+                    if (state.movies.isEmpty) {
+                      return const ResponsiveText(
+                        text: "Không có kết quả tìm kiếm",
+                      );
+                    } else {
+                      return const SizedBox.shrink();
+                    }
                   } else {
-                    Helper.loadMoreSearch(context, state.query);
+                    Helper.loadMoreSearch(context, state.query, 10);
                     return const Center(child: ProgressIndicatorCustom());
                   }
                 } else {

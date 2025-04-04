@@ -5,5 +5,6 @@ sealed class SearchEvent {}
 
 class GetSearchMoviesEvent extends SearchEvent {
   final String query;
-  GetSearchMoviesEvent(this.query);
+  final int limit;
+  GetSearchMoviesEvent({required this.query, required this.limit});
 }

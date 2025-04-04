@@ -41,14 +41,12 @@ class _InfiniteGridViewState extends State<InfiniteGridView>
       builder: (_, state) {
         switch (state.status) {
           case MoviesStateStatus.init:
-            return const SizedBox.shrink();
-          case MoviesStateStatus.error:
-            return const ErrorPage();
-          case MoviesStateStatus.loading:
             return MoviesGridBuilder(
               itemCount: widget.itemCount,
               itemBuilder: (_, i) => const MovieItemSkeletonLoading(),
             );
+          case MoviesStateStatus.error:
+            return const ErrorPage();
           default:
             if (state.movies.isEmpty) {
               return const Center(child: Text('Không còn phim'));

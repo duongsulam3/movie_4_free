@@ -47,7 +47,11 @@ class _SearchPageState extends State<SearchPage> {
                 focusNode: searchFocusNode,
                 hintText: widget.searchHint,
                 controller: searchController,
-                onSubmitted: (value) => Helper.onSubmitSearch(context, value),
+                onSubmitted: (value) => Helper.onSubmitSearch(
+                  context,
+                  value,
+                  20,
+                ),
               ),
             ),
           ],
