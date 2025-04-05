@@ -16,7 +16,7 @@ class HomeMainContent extends StatelessWidget {
   final ScrollController scrollController;
   final TabController tabController;
 
-  final List<HomeMainContentGridItem> gridItems = const [
+  final List<HomeMainContentGridItem> listItems = const [
     HomeMainContentGridItem(title: "Anime", path: "hoat-hinh", tabIndex: 1),
     HomeMainContentGridItem(title: "Phim lẻ", path: "phim-le", tabIndex: 2),
     HomeMainContentGridItem(title: "Phim bộ", path: "phim-bo", tabIndex: 3),
@@ -46,14 +46,14 @@ class HomeMainContent extends StatelessWidget {
             padding: EdgeInsets.zero,
             shrinkWrap: true,
             primary: false,
-            itemCount: gridItems.length,
+            itemCount: listItems.length,
             itemBuilder: (context, index) {
               return TitleAndGridViewList(
                 sHeight: sHeight,
                 tabController: tabController,
-                title: gridItems[index].title,
-                path: gridItems[index].path,
-                tabIndex: gridItems[index].tabIndex,
+                title: listItems[index].title,
+                path: listItems[index].path,
+                tabIndex: listItems[index].tabIndex,
               );
             },
           )
