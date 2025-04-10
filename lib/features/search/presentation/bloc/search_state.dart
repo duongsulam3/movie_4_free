@@ -4,7 +4,7 @@ part of 'search_bloc.dart';
 abstract class SearchState with _$SearchState {
   const SearchState._();
   const factory SearchState([
-    @Default(MoviesStateStatus.init) MoviesStateStatus status,
+    @Default(SearchPageStatus.init) SearchPageStatus status,
     @Default(1) int page,
     @Default("") String query,
     @Default([]) List<MovieItemEntity> movies,

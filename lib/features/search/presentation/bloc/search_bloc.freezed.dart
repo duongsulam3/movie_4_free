@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$SearchState {
-  MoviesStateStatus get status;
+  SearchPageStatus get status;
   int get page;
   String get query;
   List<MovieItemEntity> get movies;
@@ -57,7 +57,7 @@ abstract mixin class $SearchStateCopyWith<$Res> {
       _$SearchStateCopyWithImpl;
   @useResult
   $Res call(
-      {MoviesStateStatus status,
+      {SearchPageStatus status,
       int page,
       String query,
       List<MovieItemEntity> movies,
@@ -86,7 +86,7 @@ class _$SearchStateCopyWithImpl<$Res> implements $SearchStateCopyWith<$Res> {
       status: null == status
           ? _self.status
           : status // ignore: cast_nullable_to_non_nullable
-              as MoviesStateStatus,
+              as SearchPageStatus,
       page: null == page
           ? _self.page
           : page // ignore: cast_nullable_to_non_nullable
@@ -111,7 +111,7 @@ class _$SearchStateCopyWithImpl<$Res> implements $SearchStateCopyWith<$Res> {
 
 class _SearchState extends SearchState {
   const _SearchState(
-      [this.status = MoviesStateStatus.init,
+      [this.status = SearchPageStatus.init,
       this.page = 1,
       this.query = "",
       final List<MovieItemEntity> movies = const [],
@@ -121,7 +121,7 @@ class _SearchState extends SearchState {
 
   @override
   @JsonKey()
-  final MoviesStateStatus status;
+  final SearchPageStatus status;
   @override
   @JsonKey()
   final int page;
@@ -180,7 +180,7 @@ abstract mixin class _$SearchStateCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {MoviesStateStatus status,
+      {SearchPageStatus status,
       int page,
       String query,
       List<MovieItemEntity> movies,
@@ -209,7 +209,7 @@ class __$SearchStateCopyWithImpl<$Res> implements _$SearchStateCopyWith<$Res> {
       null == status
           ? _self.status
           : status // ignore: cast_nullable_to_non_nullable
-              as MoviesStateStatus,
+              as SearchPageStatus,
       null == page
           ? _self.page
           : page // ignore: cast_nullable_to_non_nullable

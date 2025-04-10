@@ -3,7 +3,8 @@ import 'package:smoth_movie_app/common/widgets/responsive_sized_box.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/widget/categories_item_container.dart';
 
 class KhoPhimYearsWidget extends StatefulWidget {
-  const KhoPhimYearsWidget({super.key, required this.onSelected, required this.years});
+  const KhoPhimYearsWidget(
+      {super.key, required this.onSelected, required this.years});
 
   final ValueChanged<String> onSelected;
   final List<String> years;
@@ -36,7 +37,9 @@ class _KhoPhimYearsWidgetState extends State<KhoPhimYearsWidget> {
             });
           },
           child: CategoriesItemContainer(
-            name: widget.years[index],
+            name: widget.years[index] == "0"
+                ? "Tất cả các năm"
+                : widget.years[index],
             backgroundColor: selectedIndex == index
                 ? Colors.grey.withValues(alpha: 0.2)
                 : Colors.transparent,

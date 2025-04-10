@@ -38,7 +38,7 @@ class KhoPhimPageBloc extends Bloc<KhoPhimPageEvent, KhoPhimPageState> {
 
       if (countriesLoaded.isNotEmpty && categoriesLoaded.isNotEmpty) {
         List<String> listOfYear = Helper.getYears();
-        listOfYear.insert(0, "Tất cả các năm");
+        listOfYear.insert(0, "0");
         List<String> listOfLanguageSub = [
           "thuyet-minh",
           "vietsub",

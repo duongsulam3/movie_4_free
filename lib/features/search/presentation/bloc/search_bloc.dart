@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:smoth_movie_app/core/utils/enum/movies_state_status.dart';
+import 'package:smoth_movie_app/core/utils/enum/search/search_page_status.dart';
 import 'package:smoth_movie_app/features/search/domain/usecase/get_search_movies.dart';
 import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_item.dart';
 part 'search_bloc.freezed.dart';
@@ -19,31 +19,36 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     Emitter<SearchState> emit,
   ) async {
     if (state.isEnd) {
-      emit(state.copyWith(status: MoviesStateStatus.success, isEnd: false));
+      emit(state.copyWith(status: SearchPageStatus.success, isEnd: false));
+    }
+    if (state.query != event.query) {
+      emit(state.copyWith(
+        status: SearchPageStatus.loading,
+        page: 1,
+        movies: const [],
+      ));
     }
     List<MovieItemEntity> movies = const [];
-    if (state.query != event.query) {
-      emit(state.copyWith(page: 1));
-    }
     final res = await getSearchMovies.call(
       SearchParams(query: event.query, page: state.page, limit: event.limit),
     );
     //** HANDLE SEARCH STATES */
     res.fold(
-      (err) => emit(state.copyWith(status: MoviesStateStatus.error)),
+      (err) => emit(state.copyWith(status: SearchPageStatus.error)),
       (data) {
         movies = data;
         if (movies.length < event.limit) {
           emit(state.copyWith(
-            status: MoviesStateStatus.success,
-            isEnd: true,
+            status: SearchPageStatus.success,
             movies: state.query == event.query
                 ? [...state.movies, ...movies]
                 : movies,
+            query: event.query,
+            isEnd: true,
           ));
         } else {
           emit(state.copyWith(
-            status: MoviesStateStatus.success,
+            status: SearchPageStatus.success,
             movies: state.query == event.query
                 ? [...state.movies, ...movies]
                 : movies,

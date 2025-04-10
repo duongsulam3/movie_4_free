@@ -62,6 +62,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
           Radius.circular(5),
         ),
       ),
+      //TODO HANDLE TEXTFIELD ALIGN CENTER VERTICALLY
       child: Row(
         children: [
           Expanded(
@@ -73,9 +74,9 @@ class _SearchTextFieldState extends State<SearchTextField> {
               onChanged: widget.onChanged,
               onSubmitted: widget.onSubmitted,
               cursorHeight: widget.textFieldHeight / 2,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
-                fontSize: widget.textFieldHeight / 2,
+                // fontSize: widget.textFieldHeight / 2,
               ),
               decoration: InputDecoration(
                 border: InputBorder.none,
@@ -101,7 +102,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
                 hintText: widget.hintText,
                 hintStyle: TextStyle(
                   color: Colors.grey.withValues(alpha: 0.7),
-                  fontSize: widget.textFieldHeight / 2,
+                  // fontSize: widget.textFieldHeight / 2,
                 ),
               ),
             ),

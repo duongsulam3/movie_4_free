@@ -33,37 +33,47 @@ class TabBarListItem extends StatelessWidget {
             flex: 4,
             child: ContainerWithCachedNetworkImageProvider(
               path: movie.movieInfo.thumbUrl,
-              height: 120,
             ),
           ),
           Expanded(
             flex: 5,
             child: Padding(
-              padding: EdgeInsets.all(sHeight / (sHeight / 10)),
+              padding: const EdgeInsets.all(8),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  ResponsiveText(
-                    text: movie.movieInfo.name,
-                    fontSize: 16,
-                    textOverflow: TextOverflow.ellipsis,
-                    maxLines: 1,
+                  Expanded(
+                    child: ResponsiveText(
+                      text: movie.movieInfo.name,
+                      fontSize: 16,
+                      textOverflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
                   ),
-                  ResponsiveText(
-                    text: "Chất lượng: ${movie.movieInfo.quality}",
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
+                  Expanded(
+                    child: ResponsiveText(
+                      text: "Chất lượng: ${movie.movieInfo.quality}",
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      maxLines: 1,
+                    ),
                   ),
-                  ResponsiveText(
-                    text: movie.episodes[0].serverData[episodeIndex].name,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
+                  Expanded(
+                    child: ResponsiveText(
+                      text: movie.episodes[0].serverData[episodeIndex].name,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      maxLines: 1,
+                    ),
                   ),
-                  ResponsiveText(
-                    text: "Thời lượng: ${movie.movieInfo.time}",
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
+                  Expanded(
+                    child: ResponsiveText(
+                      text: "Thời lượng: ${movie.movieInfo.time}",
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      maxLines: 1,
+                    ),
                   ),
                 ],
               ),
