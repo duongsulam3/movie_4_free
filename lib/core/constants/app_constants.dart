@@ -5,4 +5,5 @@ class AppConstants {
       "assets/lottiefiles/ripple_loading.lottie";
   static const String thankYouLottie = "assets/lottiefiles/thank_you.lottie";
   static const String appLogo = "assets/images/logo_dark.png";
+  static const String noData = "Không có dữ liệu";
 }

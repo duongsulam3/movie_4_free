@@ -62,7 +62,6 @@ class _SearchTextFieldState extends State<SearchTextField> {
           Radius.circular(5),
         ),
       ),
-      //TODO HANDLE TEXTFIELD ALIGN CENTER VERTICALLY
       child: Row(
         children: [
           Expanded(
@@ -74,12 +73,18 @@ class _SearchTextFieldState extends State<SearchTextField> {
               onChanged: widget.onChanged,
               onSubmitted: widget.onSubmitted,
               cursorHeight: widget.textFieldHeight / 2,
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.white,
-                // fontSize: widget.textFieldHeight / 2,
+                fontSize: widget.textFieldHeight / 2,
               ),
               decoration: InputDecoration(
+                isDense: true, //! Add this to align center vertical
                 border: InputBorder.none,
+                hintText: widget.hintText,
+                hintStyle: TextStyle(
+                  color: Colors.grey.withValues(alpha: 0.7),
+                  fontSize: widget.textFieldHeight / 2,
+                ),
                 suffixIcon: Container(
                   margin: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
@@ -98,11 +103,6 @@ class _SearchTextFieldState extends State<SearchTextField> {
                           )
                         : const Icon(CupertinoIcons.search),
                   ),
-                ),
-                hintText: widget.hintText,
-                hintStyle: TextStyle(
-                  color: Colors.grey.withValues(alpha: 0.7),
-                  // fontSize: widget.textFieldHeight / 2,
                 ),
               ),
             ),

@@ -8,14 +8,14 @@ class MovieItemEntity {
   final String originName;
   final String posterUrl;
   final String thumbUrl;
-  final int year;
-  final String type;
-  final String time;
-  final String episodeCurrent;
   final String quality;
   final String lang;
-  final List<CategoryEntity> categories;
-  final List<CountryEnity> countries;
+  final String episodeCurrent;
+  final String? time;
+  final int? year;
+  final String? type;
+  final List<CategoryEntity>? categories;
+  final List<CountryEnity>? countries;
   const MovieItemEntity({
     required this.sId,
     required this.name,
@@ -23,13 +23,13 @@ class MovieItemEntity {
     required this.originName,
     required this.posterUrl,
     required this.thumbUrl,
-    required this.year,
-    required this.time,
     required this.episodeCurrent,
     required this.quality,
     required this.lang,
-    required this.type,
-    required this.categories,
-    required this.countries,
+    this.time,
+    this.year,
+    this.type,
+    this.categories,
+    this.countries,
   });
 }
