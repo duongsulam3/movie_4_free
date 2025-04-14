@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:readmore/readmore.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
-import 'package:smoth_movie_app/core/constants/app_constants.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/movie_detail.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/icon_and_text_widget.dart';
 
@@ -18,7 +17,7 @@ class MovieDescription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //** ADD CATEGORIES NAME TO LIST */
-    final listCate = movie.movieInfo.categories?.map((e) => e.name).toList();
+    final listCate = movie.movieInfo.categories.map((e) => e.name).toList();
 
     final sWidth = MediaQuery.of(context).size.width;
     final sHeight = MediaQuery.of(context).size.height;
@@ -74,7 +73,7 @@ class MovieDescription extends StatelessWidget {
           SizedBox(height: sHeight / (sHeight / 10)),
           IconAndTextWidget(
             screenWidth: sWidth,
-            text: listCate?.join(", ") ?? AppConstants.noData,
+            text: listCate.join(", "),
             icon: CupertinoIcons.tags,
             fontSize: 12,
           ),
@@ -97,7 +96,7 @@ class MovieDescription extends StatelessWidget {
           SizedBox(height: sHeight / (sHeight / 10)),
           IconAndTextWidget(
             screenWidth: sWidth,
-            text: movie.movieInfo.countries?[0].name ?? AppConstants.noData,
+            text: movie.movieInfo.countries[0].name,
             icon: CupertinoIcons.globe,
             fontSize: 12,
           ),

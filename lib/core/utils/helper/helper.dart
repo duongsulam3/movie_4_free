@@ -11,6 +11,8 @@ import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/kho_phim_mov
 import 'package:smoth_movie_app/features/movie_detail/data/model/movie_detail.dart';
 import 'package:smoth_movie_app/features/movies/data/model/recently_update_movies/recently_update_list_item_model.dart';
 import 'package:smoth_movie_app/features/movies/data/model/single_movies/movie_item_model.dart';
+import 'package:smoth_movie_app/features/nguonc_movies/data/model/nguonc_movie_item_model.dart';
+import 'package:smoth_movie_app/features/nguonc_movies/presentation/bloc/nguonc_search_bloc.dart';
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
 import 'package:smoth_movie_app/features/home/presentation/bloc/bottom_nav/bottom_nav_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies/movies_bloc.dart';
@@ -42,6 +44,11 @@ class Helper {
           query: query,
           limit: limit,
         ));
+  }
+
+  static void nguonCSearchFilms(BuildContext context, String query) {
+    if (query.isEmpty) return;
+    context.read<NguoncSearchBloc>().add(GetSearchFilmsEvent(query: query));
   }
 
   //! INFINITE MOVIES BLOC
@@ -152,6 +159,12 @@ class Helper {
     return jsonResponse
         .map((e) => RecentlyUpdateListItemModel.fromJson(e))
         .toList();
+  }
+
+  //! NGUỒN C SEARCH
+  static List<NguoncMovieItemModel> parseNguoncSearchMovies(String json) {
+    final jsonResponse = jsonDecode(json)['items'] as List;
+    return jsonResponse.map((e) => NguoncMovieItemModel.fromJson(e)).toList();
   }
 
   //! MOVIE DETAIL

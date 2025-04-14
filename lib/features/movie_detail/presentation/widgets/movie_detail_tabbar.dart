@@ -70,7 +70,7 @@ class MovieDetailTabBar extends StatelessWidget {
                   },
                   body: ExpandedTabBarViewContent(
                     movie: movie,
-                    categories: movie.movieInfo.categories ?? [],
+                    categories: movie.movieInfo.categories,
                   ),
                 ),
               ),

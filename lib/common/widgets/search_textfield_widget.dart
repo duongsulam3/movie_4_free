@@ -7,6 +7,7 @@ class SearchTextField extends StatefulWidget {
     this.textFieldHeight = 30,
     this.hintText = "",
     this.isFocus = true,
+    this.fontSize = 13,
     this.onTap,
     this.controller,
     this.onChanged,
@@ -16,6 +17,7 @@ class SearchTextField extends StatefulWidget {
 
   final double textFieldHeight;
   final String hintText;
+  final double fontSize;
   final bool isFocus;
   final FocusNode? focusNode;
   final void Function()? onTap;
@@ -75,15 +77,16 @@ class _SearchTextFieldState extends State<SearchTextField> {
               cursorHeight: widget.textFieldHeight / 2,
               style: TextStyle(
                 color: Colors.white,
-                fontSize: widget.textFieldHeight / 2,
+                fontSize: widget.fontSize,
               ),
+              textAlignVertical: TextAlignVertical.center,
               decoration: InputDecoration(
                 isDense: true, //! Add this to align center vertical
                 border: InputBorder.none,
                 hintText: widget.hintText,
                 hintStyle: TextStyle(
                   color: Colors.grey.withValues(alpha: 0.7),
-                  fontSize: widget.textFieldHeight / 2,
+                  fontSize: widget.fontSize,
                 ),
                 suffixIcon: Container(
                   margin: const EdgeInsets.all(5),

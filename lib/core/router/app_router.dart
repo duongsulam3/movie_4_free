@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/core/router/params/movie_detail_param_model.dart';
 import 'package:smoth_movie_app/core/router/params/search_textfield_param_model.dart';
 import 'package:smoth_movie_app/common/screens/error_page.dart';
+import 'package:smoth_movie_app/features/nguonc_movies/presentation/bloc/nguonc_search_bloc.dart';
 import 'package:smoth_movie_app/features/profile/page.dart';
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
 import 'package:smoth_movie_app/features/search/presentation/page.dart';
@@ -40,9 +41,13 @@ class AppRouter {
         );
       case '/home_search':
         final params = settings.arguments as SearchTextfieldParamModel;
+        final providers = <BlocProvider>[
+          BlocProvider<SearchBloc>(create: (context) => serviceLocator()),
+          BlocProvider<NguoncSearchBloc>(create: (context) => serviceLocator()),
+        ];
         return FadeInTransition(
-          page: BlocProvider(
-            create: (context) => serviceLocator<SearchBloc>(),
+          page: MultiBlocProvider(
+            providers: providers,
             child: SearchPage(
               searchHint: params.searchHint,
               listSearch: params.listSearch,

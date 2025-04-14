@@ -12,10 +12,10 @@ class MovieItemEntity {
   final String lang;
   final String episodeCurrent;
   final String? time;
-  final int? year;
-  final String? type;
-  final List<CategoryEntity>? categories;
-  final List<CountryEnity>? countries;
+  final int year;
+  final String type;
+  final List<CategoryEntity> categories;
+  final List<CountryEnity> countries;
   const MovieItemEntity({
     required this.sId,
     required this.name,
@@ -26,10 +26,10 @@ class MovieItemEntity {
     required this.episodeCurrent,
     required this.quality,
     required this.lang,
-    this.time,
-    this.year,
-    this.type,
-    this.categories,
-    this.countries,
+    required this.time,
+    required this.year,
+    required this.type,
+    required this.categories,
+    required this.countries,
   });
 }

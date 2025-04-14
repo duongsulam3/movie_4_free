@@ -44,15 +44,14 @@ class CustomCarouselSliderWidget extends StatelessWidget {
               height: sHeight / (sHeight / 50),
               width: sWidth / (sWidth / 50),
               decoration: const BoxDecoration(
-                color: Colors.black,
+                color: Colors.green,
                 shape: BoxShape.circle,
               ),
-              child: const Center(
-                child: FittedBox(
-                  child: Icon(
-                    CupertinoIcons.play_arrow_solid,
-                    color: Colors.white,
-                  ),
+              child: Center(
+                child: Icon(
+                  CupertinoIcons.play_arrow_solid,
+                  color: Colors.white,
+                  size: sHeight / (sHeight / 26),
                 ),
               ),
             ),

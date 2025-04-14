@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
-import 'package:smoth_movie_app/core/constants/app_constants.dart';
+import 'package:smoth_movie_app/common/widgets/search_play_icon_widget.dart';
 import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_item.dart';
 
 class SearchItemContent extends StatelessWidget {
@@ -27,7 +27,7 @@ class SearchItemContent extends StatelessWidget {
         ),
         ResponsiveText(
           text:
-              "${movie.year ?? AppConstants.noData} | ${movie.countries?[0].name ?? AppConstants.noData} | ${movie.categories?[0].name ?? AppConstants.noData}",
+              "${movie.year} | ${movie.countries[0].name} | ${movie.categories[0].name}",
           fontSize: 12,
         ),
         ResponsiveText(
@@ -47,7 +47,7 @@ class SearchItemContent extends StatelessWidget {
           fontSize: 12,
         ),
         const Spacer(),
-        const Icon(CupertinoIcons.play)
+        const SearchPlayIcon()
       ],
     );
   }

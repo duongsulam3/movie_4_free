@@ -37,9 +37,7 @@ class HomeMainContent extends StatelessWidget {
         spacing: sHeight / (sHeight / 10),
         children: [
           BlocProvider<RecentlyUpdateMoviesBloc>(
-            create: (context) {
-              return serviceLocator()..add(GetRecentlyUpdateMovies());
-            },
+            create: (context) => serviceLocator(),
             child: const BlocBuilderRecentlyUpdateMovies(),
           ),
           ListView.builder(

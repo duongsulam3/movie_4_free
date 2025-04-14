@@ -6,7 +6,7 @@ import 'package:smoth_movie_app/features/movies/presentation/screens/bloc_builde
 import 'package:smoth_movie_app/features/movies/presentation/screens/infinite_gridview_widget.dart';
 import 'package:smoth_movie_app/init_dependencies.dart';
 
-class CategoriesTab extends StatelessWidget {
+class CategoriesTab extends StatefulWidget {
   const CategoriesTab({
     super.key,
     required this.scrollController,
@@ -19,35 +19,53 @@ class CategoriesTab extends StatelessWidget {
   final int limit;
 
   @override
+  State<CategoriesTab> createState() => _CategoriesTabState();
+}
+
+class _CategoriesTabState extends State<CategoriesTab> {
+  late List<BlocProvider> providers;
+
+  @override
+  void initState() {
+    super.initState();
+    initProviders();
+  }
+
+  void initProviders() {
+    providers = [
+      BlocProvider<MoviesSortByTimeBloc>(
+        create: (context) => serviceLocator()
+          ..add(GetSortByTimeMovies(
+            cateName: widget.path,
+            page: 1,
+            sortfield: "modified.time",
+          )),
+      ),
+      BlocProvider<MoviesBloc>(
+        create: (context) => serviceLocator()
+          ..add(GetListMovies(
+            path: widget.path,
+            limit: widget.limit,
+          )),
+      ),
+    ];
+  }
+
+  @override
   Widget build(BuildContext context) {
     final sHeight = MediaQuery.of(context).size.height;
     return MultiBlocProvider(
-      providers: [
-        BlocProvider<MoviesSortByTimeBloc>(
-          create: (context) => serviceLocator()
-            ..add(GetSortByTimeMovies(
-              cateName: path,
-              page: 1,
-              sortfield: "modified.time",
-            )),
-        ),
-        BlocProvider<MoviesBloc>(
-          create: (context) => serviceLocator()
-            ..add(GetListMovies(
-              path: path,
-              limit: limit,
-            )),
-        ),
-      ],
+      providers: providers,
       child: SingleChildScrollView(
-        controller: scrollController,
+        controller: widget.scrollController,
         child: Column(
           spacing: sHeight / (sHeight / 20),
           children: [
             const BlocBuilderMoviesSortByTime(),
             Padding(
               padding: const EdgeInsets.only(left: 5, right: 5),
-              child: InfiniteGridView(path: path, itemCount: limit),
+              child:
+                  InfiniteGridView(path: widget.path, itemCount: widget.limit),
             ),
           ],
         ),

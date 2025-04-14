@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smoth_movie_app/core/constants/app_constants.dart';
 import 'package:smoth_movie_app/core/router/params/movie_detail_param_model.dart';
 import 'package:smoth_movie_app/common/widgets/cached_network/container_with_cached_network_image_provider.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
@@ -16,7 +15,7 @@ class CarouselSliderItem extends StatelessWidget {
     // final sHeight = MediaQuery.of(context).size.height;
     final sWidth = MediaQuery.of(context).size.width;
     final String title =
-        "${item.name} | ${item.countries?[0].name ?? AppConstants.noData} | ${item.episodeCurrent == "Full" ? "Phim lẻ" : item.episodeCurrent}";
+        "${item.name} | ${item.countries[0].name} | ${item.episodeCurrent == "Full" ? "Phim lẻ" : item.episodeCurrent}";
     return GestureDetector(
       onTap: () => Navigator.pushNamed(
         context,
