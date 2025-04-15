@@ -20,9 +20,10 @@ class SearchNguoncListViewItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       height: screenHeight / (screenHeight / 180),
-      width: screenWidth,
+      width: double.infinity,
+      color: Colors.transparent,
       child: Row(
         children: <Widget>[
           CachedNetworkImageWidget(

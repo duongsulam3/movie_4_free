@@ -25,6 +25,11 @@ import 'package:smoth_movie_app/features/movies/domain/usecase/get_movies_sortby
 import 'package:smoth_movie_app/features/movies/domain/usecase/get_similar_movies.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies_sortby_time/movies_sort_by_time_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/similar_movies/similar_movies_bloc.dart';
+import 'package:smoth_movie_app/features/nguonc_movie_detail/data/repository/nguonc_movie_detail_repository_impl.dart';
+import 'package:smoth_movie_app/features/nguonc_movie_detail/data/source/remote/nguonc_movide_detail_remote_datasource.dart';
+import 'package:smoth_movie_app/features/nguonc_movie_detail/domain/repository/nguonc_movie_detail_repository.dart';
+import 'package:smoth_movie_app/features/nguonc_movie_detail/domain/usecase/get_nguonc_movie_detail.dart';
+import 'package:smoth_movie_app/features/nguonc_movie_detail/presentation/bloc/nguonc_movie_detail_bloc.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/data/repository/nguonc_search_movies_repository_impl.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/data/source/remote/search_movies_remote_data_source.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/domain/repository/nguonc_search_movies_repository.dart';
@@ -129,29 +134,35 @@ void _initListMovies() {
 }
 
 void _initDetailMovie() {
+  //** KK Phim */
   serviceLocator.registerFactory<DetailMovieRemoteDataSource>(
-    () => DetailMovieRemoteDataSourceImpl(
-      client: serviceLocator(),
-    ),
+    () => DetailMovieRemoteDataSourceImpl(client: serviceLocator()),
   );
-  //
   serviceLocator.registerFactory<DetailMovieRepository>(
     () => DetailMovieRepositoryImpl(
       detailMovieRemoteDataSource: serviceLocator(),
     ),
   );
-  //
   serviceLocator.registerFactory(
-    () => GetDetailMovie(
-      detailMovieRepository: serviceLocator(),
-    ),
+    () => GetDetailMovie(detailMovieRepository: serviceLocator()),
   );
-  //
   serviceLocator.registerFactory(
-    () => DetailMovieBloc(
-      getDetailMovie: serviceLocator<GetDetailMovie>(),
-    ),
+    () => DetailMovieBloc(getDetailMovie: serviceLocator<GetDetailMovie>()),
   );
+  //** KK Phim */
+
+  //** Nguồn C */
+  serviceLocator.registerFactory<NguoncMovieDetailRemoteDatasource>(
+    () => NguoncMovieDetailRemoteDatasourceImpl(serviceLocator()),
+  );
+  serviceLocator.registerFactory<NguoncMovieDetailRepository>(
+    () => NguoncMovieDetailRepositoryImpl(serviceLocator()),
+  );
+  serviceLocator.registerFactory(() => GetNguoncMovieDetail(serviceLocator()));
+  serviceLocator.registerFactory(
+    () => NguoncMovieDetailBloc(serviceLocator<GetNguoncMovieDetail>()),
+  );
+  //** Nguồn C */
 }
 
 void _initSearch() {

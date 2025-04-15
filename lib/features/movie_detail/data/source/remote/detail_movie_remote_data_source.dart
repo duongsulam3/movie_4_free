@@ -16,7 +16,7 @@ class DetailMovieRemoteDataSourceImpl implements DetailMovieRemoteDataSource {
   Future<MovieDetailModel> getDetailMovie({required String slug}) async {
     try {
       var url = AppSecret.baseUrl + ApiEndPoint.detailMovieEndpoint + slug;
-      var uri = Uri.parse(url);
+      final uri = Uri.parse(url);
       final res = await client.get(uri);
       if (res.statusCode == 200) {
         return Helper.parseMovieDetail(res.body);
