@@ -35,6 +35,8 @@ class ListSearchContent extends StatelessWidget {
               screenHeight: screenHeight,
               screenWidth: screenWidth,
               topSearchList: listSearch,
+              introduceSource:
+                  'Nguồn chính (Khuyên dùng): Được tài trở bởi KKPhim.\nDữ liệu phim miễn phí mãi mãi. Luôn được cập nhật nhanh chóng, chất lượng cao và ổn định trong thời gian dài. Tốc độ phát cực nhanh nhờ đường truyền băng thông cao, đảm bảo phục vụ lượng lớn người xem phim trực tuyến.',
             );
           case SearchPageStatus.error:
             return const ErrorPage();
@@ -44,6 +46,7 @@ class ListSearchContent extends StatelessWidget {
             return ListView.separated(
               shrinkWrap: true,
               itemCount: state.movies.length + 1,
+              separatorBuilder: (_, i) => const ResponsiveSizedBox(height: 20),
               itemBuilder: (BuildContext context, int index) {
                 if (index >= state.movies.length) {
                   if (state.isEnd) {
@@ -52,6 +55,9 @@ class ListSearchContent extends StatelessWidget {
                     } else {
                       return ResponsiveText(
                         text: "Không có kết quả cho tìm kiếm: ${state.query}",
+                        fontStyle: FontStyle.italic,
+                        maxLines: 2,
+                        textOverflow: TextOverflow.ellipsis,
                       );
                     }
                   } else {
@@ -74,8 +80,6 @@ class ListSearchContent extends StatelessWidget {
                   );
                 }
               },
-              separatorBuilder: (BuildContext context, int index) =>
-                  const ResponsiveSizedBox(height: 20),
             );
         }
       },

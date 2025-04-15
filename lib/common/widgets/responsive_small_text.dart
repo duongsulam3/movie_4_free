@@ -6,17 +6,19 @@ class ResponsiveText extends StatelessWidget {
     required this.text,
     this.fontSize = 16,
     this.fontWeight = FontWeight.w600,
-    this.textOverflow,
     this.maxLines = 1,
     this.textColor = Colors.grey,
+    this.fontStyle = FontStyle.normal,
+    this.textOverflow,
   });
 
   final String text;
   final double fontSize;
   final FontWeight fontWeight;
-  final TextOverflow? textOverflow;
   final int maxLines;
   final Color textColor;
+  final FontStyle fontStyle;
+  final TextOverflow? textOverflow;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +29,7 @@ class ResponsiveText extends StatelessWidget {
       style: TextStyle(
         fontSize: size.width / (size.width / fontSize),
         fontWeight: fontWeight,
+        fontStyle: fontStyle,
         overflow: textOverflow,
         color: textColor,
         shadows: [

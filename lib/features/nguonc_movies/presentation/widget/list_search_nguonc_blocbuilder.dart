@@ -34,6 +34,8 @@ class ListSearchNguoncContent extends StatelessWidget {
               screenHeight: screenHeight,
               screenWidth: screenWidth,
               topSearchList: listSearch,
+              introduceSource:
+                  'Nguồn phụ: Được tài trở bởi NguồnC.\nTuy có nhiều phim hơn nhưng đường truyền dữ liệu sẽ không ổn định bằng nguồn chính, chỉ nên chọn khi nguồn chính không có dữ liệu phim bạn muốn tìm. Dữ liệu phim miễn phí mãi mãi. Luôn được cập nhật nhanh chóng, chất lượng cao và ổn định trong thời gian dài. Tốc độ phát cực nhanh nhờ đường truyền băng thông cao, đảm bảo phục vụ lượng lớn người xem phim trực tuyến.',
             );
           case SearchPageStatus.error:
             return const ErrorPage();
@@ -43,8 +45,7 @@ class ListSearchNguoncContent extends StatelessWidget {
             return ListView.separated(
               shrinkWrap: true,
               itemCount: state.movies.length + 1,
-              separatorBuilder: (context, index) =>
-                  const ResponsiveSizedBox(height: 20),
+              separatorBuilder: (_, i) => const ResponsiveSizedBox(height: 20),
               itemBuilder: (context, index) {
                 if (index >= state.movies.length) {
                   if (state.isEnd) {
@@ -53,6 +54,9 @@ class ListSearchNguoncContent extends StatelessWidget {
                     } else {
                       return ResponsiveText(
                         text: "Không có kết quả cho tìm kiếm: ${state.query}",
+                        fontStyle: FontStyle.italic,
+                        maxLines: 2,
+                        textOverflow: TextOverflow.ellipsis,
                       );
                     }
                   } else {
