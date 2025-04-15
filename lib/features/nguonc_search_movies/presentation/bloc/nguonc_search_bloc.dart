@@ -3,8 +3,8 @@ import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:smoth_movie_app/core/utils/enum/search/search_page_status.dart';
-import 'package:smoth_movie_app/features/nguonc_movies/domain/entity/nguonc_movie_item_entity.dart';
-import 'package:smoth_movie_app/features/nguonc_movies/domain/usecase/nguonc_get_search_films.dart';
+import 'package:smoth_movie_app/features/nguonc_search_movies/domain/entity/nguonc_movie_item_entity.dart';
+import 'package:smoth_movie_app/features/nguonc_search_movies/domain/usecase/nguonc_get_search_films.dart';
 
 part 'nguonc_search_event.dart';
 part 'nguonc_search_state.dart';

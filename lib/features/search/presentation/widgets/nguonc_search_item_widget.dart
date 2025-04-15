@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smoth_movie_app/common/widgets/cached_network/cached_network_image.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_sized_box.dart';
-import 'package:smoth_movie_app/features/nguonc_movies/domain/entity/nguonc_movie_item_entity.dart';
+import 'package:smoth_movie_app/features/nguonc_search_movies/domain/entity/nguonc_movie_item_entity.dart';
 import 'package:smoth_movie_app/features/search/presentation/widgets/nguonc_search_item_content.dart';
 
 class SearchNguoncListViewItem extends StatelessWidget {

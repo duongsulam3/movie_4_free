@@ -11,8 +11,8 @@ import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/kho_phim_mov
 import 'package:smoth_movie_app/features/movie_detail/data/model/movie_detail.dart';
 import 'package:smoth_movie_app/features/movies/data/model/recently_update_movies/recently_update_list_item_model.dart';
 import 'package:smoth_movie_app/features/movies/data/model/single_movies/movie_item_model.dart';
-import 'package:smoth_movie_app/features/nguonc_movies/data/model/nguonc_movie_item_model.dart';
-import 'package:smoth_movie_app/features/nguonc_movies/presentation/bloc/nguonc_search_bloc.dart';
+import 'package:smoth_movie_app/features/nguonc_search_movies/data/model/nguonc_movie_item_model.dart';
+import 'package:smoth_movie_app/features/nguonc_search_movies/presentation/bloc/nguonc_search_bloc.dart';
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
 import 'package:smoth_movie_app/features/home/presentation/bloc/bottom_nav/bottom_nav_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies/movies_bloc.dart';

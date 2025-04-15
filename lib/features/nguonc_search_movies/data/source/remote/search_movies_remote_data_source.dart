@@ -2,7 +2,7 @@ import 'package:smoth_movie_app/core/error/exception.dart';
 import 'package:smoth_movie_app/core/utils/helper/helper.dart';
 import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
 import 'package:http/http.dart' as http;
-import 'package:smoth_movie_app/features/nguonc_movies/data/model/nguonc_movie_item_model.dart';
+import 'package:smoth_movie_app/features/nguonc_search_movies/data/model/nguonc_movie_item_model.dart';
 
 abstract interface class NguonCSearchMoviesRemoteDataSource {
   Future<List<NguoncMovieItemModel>> searchFilms({

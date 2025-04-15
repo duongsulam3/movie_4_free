@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
 import 'package:smoth_movie_app/common/widgets/search_play_icon_widget.dart';
-import 'package:smoth_movie_app/features/nguonc_movies/domain/entity/nguonc_movie_item_entity.dart';
+import 'package:smoth_movie_app/features/nguonc_search_movies/domain/entity/nguonc_movie_item_entity.dart';
 
 class NguoncSearchItemContent extends StatelessWidget {
   const NguoncSearchItemContent({

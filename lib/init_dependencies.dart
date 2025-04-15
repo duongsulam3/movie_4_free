@@ -25,11 +25,11 @@ import 'package:smoth_movie_app/features/movies/domain/usecase/get_movies_sortby
 import 'package:smoth_movie_app/features/movies/domain/usecase/get_similar_movies.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies_sortby_time/movies_sort_by_time_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/similar_movies/similar_movies_bloc.dart';
-import 'package:smoth_movie_app/features/nguonc_movies/data/repository/nguonc_search_movies_repository_impl.dart';
-import 'package:smoth_movie_app/features/nguonc_movies/data/source/remote/search_movies_remote_data_source.dart';
-import 'package:smoth_movie_app/features/nguonc_movies/domain/repository/nguonc_search_movies_repository.dart';
-import 'package:smoth_movie_app/features/nguonc_movies/domain/usecase/nguonc_get_search_films.dart';
-import 'package:smoth_movie_app/features/nguonc_movies/presentation/bloc/nguonc_search_bloc.dart';
+import 'package:smoth_movie_app/features/nguonc_search_movies/data/repository/nguonc_search_movies_repository_impl.dart';
+import 'package:smoth_movie_app/features/nguonc_search_movies/data/source/remote/search_movies_remote_data_source.dart';
+import 'package:smoth_movie_app/features/nguonc_search_movies/domain/repository/nguonc_search_movies_repository.dart';
+import 'package:smoth_movie_app/features/nguonc_search_movies/domain/usecase/nguonc_get_search_films.dart';
+import 'package:smoth_movie_app/features/nguonc_search_movies/presentation/bloc/nguonc_search_bloc.dart';
 import 'package:smoth_movie_app/features/search/data/repository/search_movies_repository_impl.dart';
 import 'package:smoth_movie_app/features/search/data/source/remote/search_movie_remote_datasource.dart';
 import 'package:smoth_movie_app/features/search/domain/repository/search_movies_repository.dart';
