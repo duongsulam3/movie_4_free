@@ -1,3 +1,4 @@
+import 'package:smoth_movie_app/core/constants/app_constants.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/data/model/nguonc_category_model.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/data/model/nguonc_episodes_model.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/domain/entity/nguonc_movie_entity.dart';
@@ -19,9 +20,9 @@ class NguoncMovieModel extends NguoncMovieEntity {
     required super.language,
     required super.episodes,
     required super.categories,
-    super.time,
-    super.casts,
-    super.director,
+    required super.casts,
+    required super.time,
+    required super.director,
   });
 
   factory NguoncMovieModel.fromJson(Map<String, dynamic> json) {
@@ -35,7 +36,7 @@ class NguoncMovieModel extends NguoncMovieEntity {
       id: json['id'],
       name: json['name'],
       slug: json['slug'],
-      originalName: json['original_name'],
+      originalName: json['original_name'] ?? AppConstants.noData,
       thumbUrl: json['thumb_url'],
       posterUrl: json['poster_url'],
       created: json['created'],
@@ -43,13 +44,15 @@ class NguoncMovieModel extends NguoncMovieEntity {
       description: json['description'],
       totalEpisodes: json['total_episodes'],
       currentEpisode: json['current_episode'],
-      time: json['time'],
       quality: json['quality'],
       language: json['language'],
       categories: categories,
       episodes: (json['episodes'] as List)
           .map((e) => NguoncEpisodesModel.fromJson(e))
           .toList(),
+      time: json['time'] ?? AppConstants.noData,
+      casts: json['casts'] ?? AppConstants.noData,
+      director: json['director'] ?? AppConstants.noData,
     );
   }
 }

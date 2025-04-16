@@ -26,12 +26,15 @@ class SearchNguoncListViewItem extends StatelessWidget {
       color: Colors.transparent,
       child: Row(
         children: <Widget>[
-          CachedNetworkImageWidget(
-            url: movie.thumbUrl,
-            height: 180,
-            width: 120,
-            memCacheWidth: 300,
-            memCacheHeight: 300,
+          Hero(
+            tag: movie.slug,
+            child: CachedNetworkImageWidget(
+              url: movie.thumbUrl,
+              height: 180,
+              width: 120,
+              memCacheWidth: 300,
+              memCacheHeight: 300,
+            ),
           ),
           const ResponsiveSizedBox(width: 10),
           NguoncSearchItemContent(

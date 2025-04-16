@@ -11,8 +11,19 @@ class TopSearchListItem extends StatelessWidget {
     return Row(
       spacing: 10,
       children: [
-        const Icon(CupertinoIcons.bolt_horizontal_circle, size: 16),
-        Expanded(child: ResponsiveText(text: itemName, fontSize: 16)),
+        const Icon(
+          CupertinoIcons.bolt_horizontal_circle,
+          size: 14,
+          color: CupertinoColors.systemGrey,
+        ),
+        Expanded(
+          child: ResponsiveText(
+            text: itemName,
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+            textColor: CupertinoColors.white,
+          ),
+        ),
       ],
     );
   }

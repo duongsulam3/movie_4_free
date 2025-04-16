@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:smoth_movie_app/core/utils/enum/search/search_page_status.dart';
@@ -14,7 +12,6 @@ class NguoncSearchBloc extends Bloc<NguoncSearchEvent, NguoncSearchState> {
   final NguoncGetSearchFilms usecase;
   NguoncSearchBloc(this.usecase) : super(const NguoncSearchState()) {
     on<GetSearchFilmsEvent>((event, emit) async {
-      log(event.query);
       if (state.isEnd) {
         emit(state.copyWith(status: SearchPageStatus.success, isEnd: false));
       }
@@ -25,21 +22,18 @@ class NguoncSearchBloc extends Bloc<NguoncSearchEvent, NguoncSearchState> {
           movies: const [],
         ));
       }
-      List<NguoncMovieItemEntity> movies = const [];
       final res = await usecase.call(
         NguoncGetSearchFilmsParams(query: event.query, page: state.page),
       );
       res.fold(
         (err) => emit(state.copyWith(status: SearchPageStatus.error)),
         (data) {
-          movies = data;
-          log(movies.length.toString());
-          if (movies.length < 10) {
+          if (data.length < 10) {
             emit(state.copyWith(
               status: SearchPageStatus.success,
               movies: state.query == event.query
-                  ? [...state.movies, ...movies]
-                  : movies,
+                  ? [...state.movies, ...data]
+                  : data,
               query: event.query,
               isEnd: true,
             ));
@@ -47,8 +41,8 @@ class NguoncSearchBloc extends Bloc<NguoncSearchEvent, NguoncSearchState> {
             emit(state.copyWith(
               status: SearchPageStatus.success,
               movies: state.query == event.query
-                  ? [...state.movies, ...movies]
-                  : movies,
+                  ? [...state.movies, ...data]
+                  : data,
               query: event.query,
               page: state.page + 1,
             ));

@@ -78,7 +78,6 @@ class MovieDescription extends StatelessWidget {
             fontSize: 12,
           ),
           SizedBox(height: sHeight / (sHeight / 10)),
-          // Text("Diễn viên: $listActor"),
           IconAndTextWidget(
             screenWidth: sWidth,
             text: movie.movieInfo.actor.join(", "),

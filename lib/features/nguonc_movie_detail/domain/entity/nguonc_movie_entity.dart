@@ -19,9 +19,9 @@ class NguoncMovieEntity extends NguoncMovieItemEntity {
     required super.currentEpisode,
     required super.quality,
     required super.language,
-    super.time,
-    super.casts,
-    super.director,
+    required super.casts,
+    required super.time,
+    required super.director,
     required this.categories,
     required this.episodes,
   });

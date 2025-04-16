@@ -6,7 +6,7 @@ import 'package:smoth_movie_app/features/movie_detail/presentation/bloc/detail_m
 import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/detail_page_tabbar.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/icon_back_button.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/movie_description.dart';
-import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/movie_player_widget.dart';
+import 'package:smoth_movie_app/common/widgets/movie_player_widget.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/tabbar_view_content.dart';
 
 class MovieDetailTabBar extends StatelessWidget {

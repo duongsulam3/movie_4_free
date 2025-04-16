@@ -34,7 +34,8 @@ class SearchInitWidget extends StatelessWidget {
           ),
           const ResponsiveText(
             text: "Phim có lượt tìm kiếm cao",
-            fontSize: 24,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
           ),
           ListView.separated(
             shrinkWrap: true,

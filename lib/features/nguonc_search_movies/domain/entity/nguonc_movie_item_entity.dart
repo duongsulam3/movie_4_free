@@ -12,10 +12,9 @@ class NguoncMovieItemEntity {
   final String currentEpisode;
   final String quality;
   final String language;
-  final String? time;
-  final String? director;
-  final String? casts;
-
+  final String casts;
+  final String time;
+  final String director;
   const NguoncMovieItemEntity({
     required this.id,
     required this.name,
@@ -30,8 +29,8 @@ class NguoncMovieItemEntity {
     required this.currentEpisode,
     required this.quality,
     required this.language,
-    this.time,
-    this.director,
-    this.casts,
+    required this.casts,
+    required this.time,
+    required this.director,
   });
 }
