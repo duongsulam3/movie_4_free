@@ -1,18 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readmore/readmore.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/movie_detail.dart';
+import 'package:smoth_movie_app/features/movie_detail/presentation/bloc/detail_movie/detail_movie_bloc.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/icon_and_text_widget.dart';
 
 class MovieDescription extends StatelessWidget {
+  const MovieDescription({super.key, required this.movie});
+
   final MovieDetailEntity movie;
-  final String passingEpisode;
-  const MovieDescription({
-    super.key,
-    required this.movie,
-    required this.passingEpisode,
-  });
 
   @override
   Widget build(BuildContext context) {
@@ -41,11 +39,18 @@ class MovieDescription extends StatelessWidget {
             fontSize: 16,
             maxLines: 3,
           ),
-          ResponsiveText(
-            text: movie.movieInfo.episodeTotal == "1"
-                ? "Phim lẻ"
-                : passingEpisode,
-            fontSize: 16,
+          BlocBuilder<DetailMovieBloc, DetailMovieState>(
+            buildWhen: (previous, current) {
+              return previous.passingEpisode != current.passingEpisode;
+            },
+            builder: (context, state) {
+              return ResponsiveText(
+                text: movie.movieInfo.episodeTotal == "1"
+                    ? "Phim lẻ"
+                    : state.passingEpisode,
+                fontSize: 16,
+              );
+            },
           ),
           SizedBox(height: sHeight / (sHeight / 10)),
           ReadMoreText(
@@ -85,7 +90,6 @@ class MovieDescription extends StatelessWidget {
             fontSize: 12,
           ),
           SizedBox(height: sHeight / (sHeight / 10)),
-          // Text("Đạo diễn: ${movie.movieInfo.director}"),
           IconAndTextWidget(
             screenWidth: sWidth,
             text: movie.movieInfo.director.join(", "),

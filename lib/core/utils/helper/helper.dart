@@ -9,9 +9,11 @@ import 'package:smoth_movie_app/features/kho_phim/data/model/kho_phim_country_mo
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/categories/category_list_bloc.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/kho_phim_movies/kho_phim_movies_bloc.dart';
 import 'package:smoth_movie_app/features/movie_detail/data/model/movie_detail.dart';
+import 'package:smoth_movie_app/features/movie_detail/presentation/bloc/detail_movie/detail_movie_bloc.dart';
 import 'package:smoth_movie_app/features/movies/data/model/recently_update_movies/recently_update_list_item_model.dart';
 import 'package:smoth_movie_app/features/movies/data/model/single_movies/movie_item_model.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/data/model/nguonc_movie_model.dart';
+import 'package:smoth_movie_app/features/nguonc_movie_detail/presentation/bloc/nguonc_movie_detail_bloc.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/data/model/nguonc_movie_item_model.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/presentation/bloc/nguonc_search_bloc.dart';
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
@@ -79,6 +81,25 @@ class Helper {
           categorySlug: categorySlug,
           year: yearSlug,
           limit: limit,
+        ));
+  }
+
+  //! MOVIE DETAIL BLOCs
+  static void updateUrlEvent(BuildContext context, String url, String episode) {
+    context.read<DetailMovieBloc>().add(UpdateVideoPlayerUrl(
+          url: url,
+          episode: episode,
+        ));
+  }
+
+  static void nguoncUpdateUrlEvent(
+    BuildContext context,
+    String url,
+    String episode,
+  ) {
+    context.read<NguoncMovieDetailBloc>().add(UpdateWebViewPlayerUrlEvent(
+          url: url,
+          episode: episode,
         ));
   }
   //** BLOC FUNCTIONS */

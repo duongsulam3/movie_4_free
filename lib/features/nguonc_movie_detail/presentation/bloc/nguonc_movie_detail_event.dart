@@ -9,3 +9,9 @@ class GetNguoncMovieDetailEvent extends NguoncMovieDetailEvent {
   final String slug;
   const GetNguoncMovieDetailEvent({required this.slug});
 }
+
+class UpdateWebViewPlayerUrlEvent extends NguoncMovieDetailEvent {
+  final String url;
+  final String episode;
+  const UpdateWebViewPlayerUrlEvent({required this.url, required this.episode});
+}

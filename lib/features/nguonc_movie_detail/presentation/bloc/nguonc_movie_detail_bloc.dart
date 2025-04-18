@@ -20,9 +20,21 @@ class NguoncMovieDetailBloc
       res.fold(
         (err) => emit(state.copyWith(status: DetailMovieStatus.error)),
         (data) {
-          emit(state.copyWith(status: DetailMovieStatus.success, movie: data));
+          emit(state.copyWith(
+            status: DetailMovieStatus.success,
+            movie: data,
+            passingUrl: data.episodes[0].items[0].embed,
+            passingEpisode: data.episodes[0].items[0].name,
+          ));
         },
       );
     });
+
+    on<UpdateWebViewPlayerUrlEvent>(
+      (event, emit) => emit(state.copyWith(
+        passingUrl: event.url,
+        passingEpisode: event.episode,
+      )),
+    );
   }
 }

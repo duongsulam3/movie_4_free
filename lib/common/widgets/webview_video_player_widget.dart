@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -6,10 +8,12 @@ class WebviewVideoPlayerWidget extends StatefulWidget {
     super.key,
     required this.url,
     required this.thumbUrl,
+    this.newVideoUrl = "",
   });
 
   final String url;
   final String thumbUrl;
+  final String newVideoUrl;
 
   @override
   State<WebviewVideoPlayerWidget> createState() =>
@@ -21,23 +25,24 @@ class _WebviewVideoPlayerWidgetState extends State<WebviewVideoPlayerWidget> {
   @override
   void initState() {
     super.initState();
-    initWebViewController();
+    initWebViewController(widget.url);
   }
 
   @override
   void dispose() {
-    pageDispose();
+    controllerDispose();
     super.dispose();
   }
 
-  void pageDispose() {
+  void controllerDispose() {
+    controller.loadRequest(Uri.parse('about:blank'));
     controller.clearCache();
     controller.clearLocalStorage();
-    _WebviewVideoPlayerWidgetState();
   }
 
-  void initWebViewController() {
-    final uri = Uri.parse(widget.url);
+  void initWebViewController(String url) {
+    final uri = Uri.parse(url);
+    log("Phát video: $url");
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
@@ -58,8 +63,16 @@ class _WebviewVideoPlayerWidgetState extends State<WebviewVideoPlayerWidget> {
       ..loadRequest(uri);
   }
 
+  Future<void> buildNewVideoPlayer(String newUrl) async {
+    if (newUrl != "" && newUrl != await controller.currentUrl()) {
+      final uri = Uri.parse(newUrl);
+      controller.loadRequest(uri);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    buildNewVideoPlayer(widget.newVideoUrl);
     return AspectRatio(
       aspectRatio: 1,
       child: WebViewWidget(controller: controller),
