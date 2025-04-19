@@ -27,12 +27,15 @@ class SearchItemWidget extends StatelessWidget {
       child: Row(
         children: [
           //** Image */
-          CachedNetworkImageWidget(
-            url: AppSecret.imageUrl + movie.posterUrl,
-            height: 180,
-            width: 120,
-            memCacheWidth: 300,
-            memCacheHeight: 300,
+          Hero(
+            tag: "KKPhim${movie.posterUrl}",
+            child: CachedNetworkImageWidget(
+              url: AppSecret.imageUrl + movie.posterUrl,
+              height: 180,
+              width: 120,
+              memCacheWidth: 300,
+              memCacheHeight: 300,
+            ),
           ),
           const ResponsiveSizedBox(width: 10),
           //** Content */

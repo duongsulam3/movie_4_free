@@ -53,7 +53,6 @@ class NguoncMovieDescription extends StatelessWidget {
                   height: 1.5,
                 ),
               ),
-              SizedBox(height: sHeight / (sHeight / 15)),
               IconAndTextWidget(
                 screenWidth: sWidth,
                 text: movie.totalEpisodes == 1
@@ -64,28 +63,24 @@ class NguoncMovieDescription extends StatelessWidget {
                 fontSize: 12,
                 icon: CupertinoIcons.square_stack_3d_up,
               ),
-              SizedBox(height: sHeight / (sHeight / 10)),
               IconAndTextWidget(
                 screenWidth: sWidth,
                 text: movie.categories[1].list[0].name,
                 icon: CupertinoIcons.tags,
                 fontSize: 12,
               ),
-              SizedBox(height: sHeight / (sHeight / 10)),
               IconAndTextWidget(
                 screenWidth: sWidth,
                 text: movie.casts,
                 icon: CupertinoIcons.person_3_fill,
                 fontSize: 12,
               ),
-              SizedBox(height: sHeight / (sHeight / 10)),
               IconAndTextWidget(
                 screenWidth: sWidth,
                 text: movie.director,
                 icon: CupertinoIcons.person_crop_rectangle,
                 fontSize: 12,
               ),
-              SizedBox(height: sHeight / (sHeight / 10)),
               IconAndTextWidget(
                 screenWidth: sWidth,
                 text: movie.categories[3].list[0].name,
@@ -99,5 +94,3 @@ class NguoncMovieDescription extends StatelessWidget {
     );
   }
 }
-
-

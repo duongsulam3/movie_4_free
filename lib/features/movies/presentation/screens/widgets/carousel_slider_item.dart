@@ -17,10 +17,9 @@ class CarouselSliderItem extends StatelessWidget {
     final String title =
         "${item.name} | ${item.countries[0].name} | ${item.episodeCurrent == "Full" ? "Phim lẻ" : item.episodeCurrent}";
     return GestureDetector(
-      onTap: () => Navigator.pushNamed(
-        context,
+      onTap: () => Navigator.of(context).pushNamed(
         AppRouter.movieDetail,
-        arguments: MovieDetailParamModel(slug: item.slug),
+        arguments: MovieDetailParamModel(movie: item),
       ),
       child: Stack(
         children: [

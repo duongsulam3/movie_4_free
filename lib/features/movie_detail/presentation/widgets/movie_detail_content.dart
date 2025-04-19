@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smoth_movie_app/common/widgets/movie_detail_page_widget.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/movie_detail.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/movie_detail_tabbar.dart';
 
@@ -9,10 +10,8 @@ class MovieDetailContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: MovieDetailTabBar(movie: movie),
-      ),
+    return MovieDetailPageWidget(
+      child: MovieDetailTabBar(movie: movie),
     );
   }
 }

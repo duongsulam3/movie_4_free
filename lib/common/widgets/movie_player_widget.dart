@@ -66,11 +66,11 @@ class _MoviePlayerWidgetState extends State<MoviePlayerWidget> {
   @override
   Widget build(BuildContext context) {
     buildNewVideoPlayer(widget.newVideoUrl);
-    return _controller.value.isInitialized
-        ? AspectRatio(
-            aspectRatio: _controller.value.aspectRatio,
-            child: Chewie(controller: chewieController!),
-          )
-        : ContainerWithCachedNetworkImageProvider(path: widget.posterUrl);
+    return AspectRatio(
+      aspectRatio: _controller.value.aspectRatio,
+      child: _controller.value.isInitialized
+          ? Chewie(controller: chewieController!)
+          : ContainerWithCachedNetworkImageProvider(path: widget.posterUrl),
+    );
   }
 }

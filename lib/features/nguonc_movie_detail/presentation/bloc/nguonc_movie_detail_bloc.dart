@@ -13,7 +13,6 @@ class NguoncMovieDetailBloc
   final GetNguoncMovieDetail usecase;
   NguoncMovieDetailBloc(this.usecase) : super(const NguoncMovieDetailState()) {
     on<GetNguoncMovieDetailEvent>((event, emit) async {
-      emit(state.copyWith(status: DetailMovieStatus.loading));
       final res = await usecase.call(GetNguoncMovieDetailParams(
         slug: event.slug,
       ));

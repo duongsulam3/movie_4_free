@@ -6,15 +6,20 @@ import 'package:smoth_movie_app/features/nguonc_movie_detail/domain/entity/nguon
 import 'package:smoth_movie_app/features/nguonc_movie_detail/presentation/bloc/nguonc_movie_detail_bloc.dart';
 
 class NguoncPlayerBlocBuilder extends StatelessWidget {
-  const NguoncPlayerBlocBuilder({super.key, required this.movie});
+  const NguoncPlayerBlocBuilder({
+    super.key,
+    required this.movie,
+    required this.sWidth,
+  });
 
   final NguoncMovieEntity movie;
+  final double sWidth;
 
   @override
   Widget build(BuildContext context) {
     return ResponsiveSizedBox(
       height: 260,
-      width: double.infinity,
+      width: sWidth,
       child: BlocBuilder<NguoncMovieDetailBloc, NguoncMovieDetailState>(
         buildWhen: (previous, current) {
           return previous.passingUrl != current.passingUrl;

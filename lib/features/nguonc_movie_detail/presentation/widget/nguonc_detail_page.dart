@@ -4,13 +4,14 @@ import 'package:smoth_movie_app/common/screens/error_page.dart';
 import 'package:smoth_movie_app/core/utils/enum/detail_movie/detail_movie_status.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/presentation/bloc/nguonc_movie_detail_bloc.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/presentation/widget/nguonc_movie_page.dart';
-import 'package:smoth_movie_app/features/nguonc_movie_detail/presentation/widget/webview_skeleton_loading.dart';
+import 'package:smoth_movie_app/features/nguonc_movie_detail/presentation/widget/nguonc_movie_detail_page_init.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/domain/entity/nguonc_movie_item_entity.dart';
 
 class NguoncDetailPage extends StatelessWidget {
-  const NguoncDetailPage({super.key, required this.movie});
+  const NguoncDetailPage({super.key, required this.movie, required this.tag});
 
   final NguoncMovieItemEntity movie;
+  final String tag;
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +21,12 @@ class NguoncDetailPage extends StatelessWidget {
       builder: (context, state) {
         switch (state.status) {
           case DetailMovieStatus.init:
-            return const SizedBox.shrink();
+            return NguoncMovieDetailPageInit(
+              movie: movie,
+              tag: tag,
+            );
           case DetailMovieStatus.error:
             return const ErrorPage();
-          case DetailMovieStatus.loading:
-            return WebViewPlayerSkeletonLoading(movie: movie);
           default:
             final movie = state.movie!;
             return NguoncMoviePage(movie: movie);

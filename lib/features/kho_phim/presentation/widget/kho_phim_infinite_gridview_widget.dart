@@ -67,7 +67,7 @@ class InfiniteGridViewMovies extends StatelessWidget {
                         onTap: () => Navigator.of(context).pushNamed(
                           AppRouter.movieDetail,
                           arguments: MovieDetailParamModel(
-                            slug: state.movies[index].slug,
+                            movie: state.movies[index],
                           ),
                         ),
                       );

@@ -27,7 +27,7 @@ class SearchNguoncListViewItem extends StatelessWidget {
       child: Row(
         children: <Widget>[
           Hero(
-            tag: movie.slug,
+            tag: "NguonC${movie.posterUrl}",
             child: CachedNetworkImageWidget(
               url: movie.thumbUrl,
               height: 180,

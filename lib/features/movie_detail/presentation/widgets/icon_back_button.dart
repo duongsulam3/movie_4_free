@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class IconBackButton extends StatelessWidget {
@@ -5,18 +6,16 @@ class IconBackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
-      onTap: () {
-        Navigator.pop(context);
-      },
+      onTap: () => Navigator.pop(context),
       child: Icon(
-        Icons.arrow_back_ios_new_rounded,
-        size: sWidth / (sWidth / 30),
+        CupertinoIcons.arrow_left,
+        color: Colors.white,
         shadows: [
-          const Shadow(
-            color: Colors.black,
-            offset: Offset(3, -1),
+          Shadow(
+            color: Colors.black.withValues(alpha: 0.7),
+            offset: const Offset(0, 2),
+            blurRadius: 2,
           ),
         ],
       ),

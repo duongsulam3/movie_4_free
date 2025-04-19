@@ -46,7 +46,7 @@ class _BlocBuilderGridviewState extends State<BlocBuilderGridview>
                 movie: items[i],
                 onTap: () => Navigator.of(context).pushNamed(
                   AppRouter.movieDetail,
-                  arguments: MovieDetailParamModel(slug: items[i].slug),
+                  arguments: MovieDetailParamModel(movie: items[i]),
                 ),
               ),
             );

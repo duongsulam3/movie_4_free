@@ -16,7 +16,6 @@ class DetailMovieBloc extends Bloc<DetailMovieEvent, DetailMovieState> {
       : _getDetailMovie = getDetailMovie,
         super(const DetailMovieState()) {
     on<GetMovieDetailEvent>((event, emit) async {
-      emit(state.copyWith(status: DetailMovieStatus.loading));
       final res = await _getDetailMovie.call(
         GetDetailMovieParams(slug: event.slug),
       );

@@ -75,7 +75,10 @@ class ListSearchNguoncContent extends StatelessWidget {
                         builder: (context) =>
                             BlocProvider<NguoncMovieDetailBloc>(
                           create: (context) => serviceLocator(),
-                          child: NguoncDetailPage(movie: movie),
+                          child: NguoncDetailPage(
+                            movie: movie,
+                            tag: "NguonC${state.movies[index].posterUrl}",
+                          ),
                         ),
                       ),
                     ),

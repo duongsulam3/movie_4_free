@@ -24,7 +24,7 @@ class MovieDescription extends StatelessWidget {
       scrollDirection: Axis.vertical,
       padding: EdgeInsets.all(sHeight / (sHeight / 10)),
       child: Column(
-        spacing: 5,
+        spacing: 10,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ResponsiveText(
@@ -52,7 +52,6 @@ class MovieDescription extends StatelessWidget {
               );
             },
           ),
-          SizedBox(height: sHeight / (sHeight / 10)),
           ReadMoreText(
             movie.movieInfo.content,
             trimLines: 5,
@@ -64,7 +63,6 @@ class MovieDescription extends StatelessWidget {
               height: 1.5,
             ),
           ),
-          SizedBox(height: sHeight / (sHeight / 10)),
           IconAndTextWidget(
             screenWidth: sWidth,
             text: movie.movieInfo.episodeTotal == "1"
@@ -75,28 +73,24 @@ class MovieDescription extends StatelessWidget {
             fontSize: 12,
             icon: CupertinoIcons.square_stack_3d_up,
           ),
-          SizedBox(height: sHeight / (sHeight / 10)),
           IconAndTextWidget(
             screenWidth: sWidth,
             text: listCate.join(", "),
             icon: CupertinoIcons.tags,
             fontSize: 12,
           ),
-          SizedBox(height: sHeight / (sHeight / 10)),
           IconAndTextWidget(
             screenWidth: sWidth,
             text: movie.movieInfo.actor.join(", "),
             icon: CupertinoIcons.person_3_fill,
             fontSize: 12,
           ),
-          SizedBox(height: sHeight / (sHeight / 10)),
           IconAndTextWidget(
             screenWidth: sWidth,
             text: movie.movieInfo.director.join(", "),
             icon: CupertinoIcons.person_crop_rectangle,
             fontSize: 12,
           ),
-          SizedBox(height: sHeight / (sHeight / 10)),
           IconAndTextWidget(
             screenWidth: sWidth,
             text: movie.movieInfo.countries[0].name,

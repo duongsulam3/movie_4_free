@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:smoth_movie_app/common/screens/error_page.dart';
+import 'package:smoth_movie_app/common/widgets/movie_default_tab_page.dart';
+import 'package:smoth_movie_app/common/widgets/movie_detail_page_widget.dart';
+import 'package:smoth_movie_app/common/widgets/responsive_sized_box.dart';
+import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/icon_back_button.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/domain/entity/nguonc_movie_entity.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/presentation/widget/nguonc_nested_scroll_content.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/presentation/widget/nguonc_player_bloc_builder.dart';
@@ -13,49 +17,27 @@ class NguoncMoviePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final sWidth = MediaQuery.of(context).size.width;
     final sHeight = MediaQuery.of(context).size.height;
-    return SafeArea(
-      child: Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          iconTheme: IconThemeData(
-            color: Colors.white,
-            shadows: [
-              Shadow(
-                color: Colors.black.withValues(alpha: 0.7),
-                offset: const Offset(0, 2),
-                blurRadius: 2,
+    return MovieDetailPageWidget(
+      child: movie.episodes.isEmpty
+          ? const ErrorPage()
+          : MovieDefaultTabPage(
+              sHeight: sHeight,
+              sWidth: sWidth,
+              player: NguoncPlayerBlocBuilder(
+                movie: movie,
+                sWidth: sWidth,
               ),
-            ],
-          ),
-        ),
-        body: movie.episodes.isEmpty
-            ? const ErrorPage()
-            : DefaultTabController(
-                length: 2,
-                child: Stack(
-                  children: [
-                    Positioned(
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      child: NguoncPlayerBlocBuilder(movie: movie),
-                    ),
-                    Positioned(
-                      top: 260,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      child: NguoncNestedScrollContent(
-                        movie: movie,
-                        sHeight: sHeight,
-                        sWidth: sWidth,
-                      ),
-                    ),
-                  ],
-                ),
+              leadingIcon: const ResponsiveSizedBox(
+                height: 20,
+                width: 20,
+                child: FittedBox(child: IconBackButton()),
               ),
-      ),
+              nestedScrollContent: NguoncNestedScrollContent(
+                movie: movie,
+                sHeight: sHeight,
+                sWidth: sWidth,
+              ),
+            ),
     );
   }
 }

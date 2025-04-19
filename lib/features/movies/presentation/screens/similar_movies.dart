@@ -5,14 +5,22 @@ import 'package:smoth_movie_app/common/widgets/list_movie_item_widget.dart';
 import 'package:smoth_movie_app/core/router/app_router.dart';
 import 'package:smoth_movie_app/core/router/params/movie_detail_param_model.dart';
 import 'package:smoth_movie_app/core/utils/enum/movies_state_status.dart';
+import 'package:smoth_movie_app/core/utils/helper/helper.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/category.dart';
+import 'package:smoth_movie_app/features/movie_detail/domain/entities/movie_detail.dart';
+import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/watching_movie_item_widget.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/similar_movies/similar_movies_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/movies_gridview_builder.dart';
 
 class SimilarMovies extends StatefulWidget {
-  const SimilarMovies({super.key, required this.categories});
+  const SimilarMovies({
+    super.key,
+    required this.categories,
+    required this.movie,
+  });
 
   final List<CategoryEntity> categories;
+  final MovieDetailEntity movie;
 
   @override
   State<SimilarMovies> createState() => _SimilarMoviesState();
@@ -22,11 +30,12 @@ class _SimilarMoviesState extends State<SimilarMovies>
     with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
-    context
-        .read<SimilarMoviesBloc>()
-        .add(FetchMovies(categorySlug: widget.categories[0].slug));
+    Helper.loadSimilarMovies(context, widget.categories[0].slug);
     super.initState();
   }
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
@@ -41,19 +50,24 @@ class _SimilarMoviesState extends State<SimilarMovies>
           default:
             return MoviesGridBuilder(
               itemCount: state.movies.length,
-              itemBuilder: (_, i) => ListMovieItemWidget(
-                movie: state.movies[i],
-                onTap: () => Navigator.of(context).pushReplacementNamed(
-                  AppRouter.movieDetail,
-                  arguments: MovieDetailParamModel(slug: state.movies[i].slug),
-                ),
-              ),
+              itemBuilder: (context, i) {
+                if (widget.movie.movieInfo.slug == state.movies[i].slug) {
+                  return WatchingMovieItem(movie: state.movies[i]);
+                } else {
+                  return ListMovieItemWidget(
+                    movie: state.movies[i],
+                    onTap: () => Navigator.of(context).pushReplacementNamed(
+                      AppRouter.movieDetail,
+                      arguments: MovieDetailParamModel(
+                        movie: state.movies[i],
+                      ),
+                    ),
+                  );
+                }
+              },
             );
         }
       },
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

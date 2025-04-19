@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
-import 'package:smoth_movie_app/core/constants/app_constants.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/category.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/movie_detail.dart';
 import 'package:smoth_movie_app/features/movies/presentation/screens/similar_movies.dart';
@@ -33,12 +31,10 @@ class ExpandedTabBarViewContent extends StatelessWidget {
           },
         ),
         //** SIMILAR MOVIES TAB */
-        categories.isNotEmpty
-            ? BlocProvider(
-                create: (context) => serviceLocator<SimilarMoviesBloc>(),
-                child: SimilarMovies(categories: categories),
-              )
-            : const Center(child: ResponsiveText(text: AppConstants.noData)),
+        BlocProvider(
+          create: (context) => serviceLocator<SimilarMoviesBloc>(),
+          child: SimilarMovies(categories: categories, movie: movie),
+        ),
       ],
     );
   }

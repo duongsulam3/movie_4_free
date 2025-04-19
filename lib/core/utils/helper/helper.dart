@@ -12,6 +12,7 @@ import 'package:smoth_movie_app/features/movie_detail/data/model/movie_detail.da
 import 'package:smoth_movie_app/features/movie_detail/presentation/bloc/detail_movie/detail_movie_bloc.dart';
 import 'package:smoth_movie_app/features/movies/data/model/recently_update_movies/recently_update_list_item_model.dart';
 import 'package:smoth_movie_app/features/movies/data/model/single_movies/movie_item_model.dart';
+import 'package:smoth_movie_app/features/movies/presentation/bloc/similar_movies/similar_movies_bloc.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/data/model/nguonc_movie_model.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/presentation/bloc/nguonc_movie_detail_bloc.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/data/model/nguonc_movie_item_model.dart';
@@ -101,6 +102,11 @@ class Helper {
           url: url,
           episode: episode,
         ));
+  }
+
+  //! SIMILAR MOVIES
+  static void loadSimilarMovies(BuildContext context, String slug) {
+    context.read<SimilarMoviesBloc>().add(FetchMovies(categorySlug: slug));
   }
   //** BLOC FUNCTIONS */
 
