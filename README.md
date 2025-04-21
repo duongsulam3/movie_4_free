@@ -1,25 +1,52 @@
-# Movie 4 Free
+# 🎬 Movies For Free
 
-A Free Movie Application Project using Bloc And Clean Architecture
+Một ứng dụng xem phim miễn phí được phát triển bằng Flutter, hỗ trợ nhiều nguồn phát, tính năng tiện ích và giao diện đẹp mắt, dễ sử dụng cho người dùng yêu thích phim ảnh.
 
-## Getting Started
+## 🚀 Tính năng nổi bật
 
-This project is a starting point for a Flutter application.
+📺 Xem phim trực tuyến với giao diện đẹp, mượt mà.
 
-This project using API from https://phim.nguonc.com/ for Vietnamese movies and will not public for commercial purposes.
+🔍 Tìm kiếm phim nhanh chóng, phân chia theo nguồn chính và phụ.
 
-PROJECT FEATURES:
+🗂️ Trang kho phim với tính năng lọc thông minh:
 
-- SPLASH PAGE
-- HOME PAGE
-- HOME MAIN PAGE
-- HOME SEARCH PAGE
-- HOME PROFILE PAGE ( DEVERLOPING )
-- MOVIE DETAIL PAGE
-- VIDEO-PLAYER LIBRARY
-- CHEWIE
-- GET-IT ( Dependency injection )
-- CAROUSEL-SLIDER
+- Năm phát hành
+- Quốc gia
+- Thể loại
+- Ngôn ngữ
 
-##TODO 
-Add more server for avoiding error load on movie player!
+🏠 Trang chủ gồm nhiều tab phân loại:
+
+- Phim lẻ
+- Phim bộ
+- Hoạt hình
+- TV Shows
+
+🧭 Chi tiết phim:
+
+Phát phim theo 2 nguồn:
+
+- Nguồn chính: sử dụng video_player + chewie
+- Nguồn phụ: sử dụng WebView để stream từ trình duyệt
+
+Tabs:
+
+- Danh sách các tập tiếp theo
+- Các phim liên quan
+
+🧑‍💻Công nghệ sử dụng
+- Flutter: Ngôn ngữ chính để phát triển ứng dụng đa nền tảng
+- video_player + chewie: Xem video mượt mà với nhiều tính năng như fullscreen, tốc độ phát,...
+- WebView: Hỗ trợ phát video từ nguồn phụ kém ổn định
+- Bloc: Quản lý dự liệu và trạng thái của dữ liệu
+- Http: Restful API
+- Get It: Dependency injection
+- Lottie: Animation & UI Movement Effect
+## 🛠TODO
+- Thêm chức năng lưu phim yêu thích
+- Giao diện dark/light mode
+- Hỗ trợ tải phim offline (nếu phù hợp)
+- Tối ưu WebView trên Android/iOS
+
+# 📜 Giấy phép
+Dự án được phát triển với mục đích học tập, phi thương mại. Mọi nội dung phim đều đến từ các API bên thứ ba là KKPhim và NguồnC.
