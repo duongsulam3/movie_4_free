@@ -27,7 +27,9 @@ class MovieDetailPageInit extends StatelessWidget {
         children: [
           tag == null
               ? ContainerWithCachedNetworkImageProvider(
-                  path: AppSecret.imageUrl + movie.posterUrl,
+                  path: movie.posterUrl.contains("http")
+                      ? movie.posterUrl
+                      : AppSecret.imageUrl + movie.posterUrl,
                   height: 260,
                   width: sHeight,
                 )
