@@ -32,8 +32,7 @@ class _MoviePlayerWidgetState extends State<MoviePlayerWidget> {
 
   @override
   void dispose() {
-    _controller.dispose();
-    if (chewieController != null) chewieController!.dispose();
+    playerDispose();
     super.dispose();
   }
 
@@ -56,11 +55,17 @@ class _MoviePlayerWidgetState extends State<MoviePlayerWidget> {
     }
   }
 
+  void playerDispose() {
+    _controller.dispose();
+    if (chewieController != null) chewieController!.dispose();
+  }
+
   void buildNewVideoPlayer(String newUrl) {
     if (newUrl != "" && newUrl != _controller.dataSource) {
-      _controller.dispose();
+      playerDispose();
       _initPlayer(newUrl);
     }
+    return;
   }
 
   @override

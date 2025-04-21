@@ -25,7 +25,6 @@ class DetailMovieBloc extends Bloc<DetailMovieEvent, DetailMovieState> {
           emit(state.copyWith(
             status: DetailMovieStatus.success,
             movie: data,
-            passingUrl: data.episodes[0].serverData[0].linkM3U8,
             passingEpisode: data.episodes[0].serverData[0].name,
           ));
         },
