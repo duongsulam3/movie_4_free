@@ -4,39 +4,37 @@ Một ứng dụng xem phim miễn phí được phát triển bằng Flutter, h
 
 ## 🚀 Tính năng nổi bật
 
-### 📺 Xem phim trực tuyến với giao diện đẹp, mượt mà.
+📺 Xem phim trực tuyến với giao diện đẹp, mượt mà.
 
-### 🔍 Tìm kiếm phim nhanh chóng, phân chia theo nguồn chính và phụ.
+🔍 Tìm kiếm phim nhanh chóng, phân chia theo nguồn chính và phụ.
 
-### 🗂️ Trang kho phim với tính năng lọc thông minh:
+🗂️ Trang kho phim với tính năng lọc thông minh:
 
 - Năm phát hành
 - Quốc gia
 - Thể loại
 - Ngôn ngữ
 
-Và nhiều tiêu chí khác
-
-### 🏠 Trang chủ gồm nhiều tab phân loại:
+🏠 Trang chủ gồm nhiều tab phân loại:
 
 - Phim lẻ
 - Phim bộ
 - Hoạt hình
 - TV Shows
 
-### 🧭 Chi tiết phim:
+🧭 Chi tiết phim:
 
-#### Phát phim theo 2 nguồn:
+Phát phim theo 2 nguồn:
 
 - Nguồn chính: sử dụng video_player + chewie
 - Nguồn phụ: sử dụng WebView để stream từ trình duyệt
 
-#### Tabs:
+Tabs:
 
 - Danh sách các tập tiếp theo
 - Các phim liên quan
 
-### 🧑‍💻Công nghệ sử dụng
+🧑‍💻Công nghệ sử dụng
 - Flutter: Ngôn ngữ chính để phát triển ứng dụng đa nền tảng
 - video_player + chewie: Xem video mượt mà với nhiều tính năng như fullscreen, tốc độ phát,...
 - WebView: Hỗ trợ phát video từ nguồn phụ kém ổn định
