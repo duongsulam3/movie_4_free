@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
-import 'package:smoth_movie_app/features/movie_detail/domain/entities/movie_detail.dart';
 
 class ItemInfo extends StatelessWidget {
   const ItemInfo({
     super.key,
-    required this.movie,
-    required this.episodeIndex,
+    required this.movieName,
+    required this.movieQuality,
+    required this.episodeName,
+    required this.episodeTime,
   });
 
-  final MovieDetailEntity movie;
-  final int episodeIndex;
+  final String movieName;
+  final String movieQuality;
+  final String episodeName;
+  final String episodeTime;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +25,7 @@ class ItemInfo extends StatelessWidget {
         children: [
           Expanded(
             child: ResponsiveText(
-              text: movie.movieInfo.name,
+              text: movieName,
               fontSize: 16,
               textOverflow: TextOverflow.ellipsis,
               maxLines: 1,
@@ -30,7 +33,7 @@ class ItemInfo extends StatelessWidget {
           ),
           Expanded(
             child: ResponsiveText(
-              text: "Chất lượng: ${movie.movieInfo.quality}",
+              text: "Chất lượng: $movieQuality",
               fontSize: 16,
               fontWeight: FontWeight.w400,
               maxLines: 1,
@@ -38,7 +41,9 @@ class ItemInfo extends StatelessWidget {
           ),
           Expanded(
             child: ResponsiveText(
-              text: movie.episodes[0].serverData[episodeIndex].name,
+              text: episodeName.contains("Tập") || episodeName.contains("tập")
+                  ? episodeName
+                  : "Tập $episodeName",
               fontSize: 16,
               fontWeight: FontWeight.w400,
               maxLines: 1,
@@ -46,7 +51,7 @@ class ItemInfo extends StatelessWidget {
           ),
           Expanded(
             child: ResponsiveText(
-              text: "Thời lượng: ${movie.movieInfo.time}",
+              text: "Thời lượng: $episodeTime",
               fontSize: 16,
               fontWeight: FontWeight.w400,
               maxLines: 1,

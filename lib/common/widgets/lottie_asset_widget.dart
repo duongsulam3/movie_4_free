@@ -24,6 +24,12 @@ class _LottieAssetWidgetState extends State<LottieAssetWidget>
   @override
   void initState() {
     _controller = AnimationController(vsync: this);
+    _controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed && widget.isLoop) {
+        _controller.repeat();
+      }
+      return;
+    });
     super.initState();
   }
 
@@ -51,7 +57,6 @@ class _LottieAssetWidgetState extends State<LottieAssetWidget>
         _controller.forward();
       },
       renderCache: widget.renderCache,
-      repeat: widget.isLoop,
       fit: BoxFit.fill,
     );
   }

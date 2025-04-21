@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smoth_movie_app/common/screens/error_page.dart';
 import 'package:smoth_movie_app/common/widgets/movie_default_tab_page.dart';
 import 'package:smoth_movie_app/common/widgets/movie_detail_page_widget.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_sized_box.dart';
@@ -18,9 +17,7 @@ class NguoncMoviePage extends StatelessWidget {
     final sWidth = MediaQuery.of(context).size.width;
     final sHeight = MediaQuery.of(context).size.height;
     return MovieDetailPageWidget(
-      child: movie.episodes.isEmpty
-          ? const ErrorPage()
-          : MovieDefaultTabPage(
+      child: MovieDefaultTabPage(
               sHeight: sHeight,
               sWidth: sWidth,
               player: NguoncPlayerBlocBuilder(

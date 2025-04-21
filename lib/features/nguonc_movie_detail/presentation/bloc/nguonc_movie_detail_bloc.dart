@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:smoth_movie_app/core/utils/enum/detail_movie/detail_movie_status.dart';
@@ -17,13 +19,18 @@ class NguoncMovieDetailBloc
         slug: event.slug,
       ));
       res.fold(
-        (err) => emit(state.copyWith(status: DetailMovieStatus.error)),
+        (err) {
+          emit(state.copyWith(status: DetailMovieStatus.error));
+          log(err.message);
+        },
         (data) {
           emit(state.copyWith(
             status: DetailMovieStatus.success,
             movie: data,
-            passingUrl: data.episodes[0].items[0].embed,
-            passingEpisode: data.episodes[0].items[0].name,
+            passingUrl:
+                data.episodes.isEmpty ? "" : data.episodes[0].items[0].embed,
+            passingEpisode:
+                data.episodes.isEmpty ? "" : data.episodes[0].items[0].name,
           ));
         },
       );

@@ -10,9 +10,11 @@ class NguoncCategoryModel extends NguoncCategoryEntity {
   factory NguoncCategoryModel.fromJson(Map<String, dynamic> json) {
     return NguoncCategoryModel(
       group: NguoncTypeListModel.fromJson(json['group']),
-      list: (json['list'] as List)
-          .map((e) => NguoncTypeItemModel.fromJson(e))
-          .toList(),
+      list: json['list'] == null
+          ? []
+          : (json['list'] as List)
+              .map((e) => NguoncTypeItemModel.fromJson(e))
+              .toList(),
     );
   }
 }

@@ -29,7 +29,9 @@ class NguoncDetailPage extends StatelessWidget {
             return const ErrorPage();
           default:
             final movie = state.movie!;
-            return NguoncMoviePage(movie: movie);
+            return movie.episodes.isEmpty
+                ? const ErrorPage()
+                : NguoncMoviePage(movie: movie);
         }
       },
     );

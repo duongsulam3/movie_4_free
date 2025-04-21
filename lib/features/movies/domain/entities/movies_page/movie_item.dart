@@ -11,7 +11,7 @@ class MovieItemEntity {
   final String quality;
   final String lang;
   final String episodeCurrent;
-  final String? time;
+  final String time;
   final int year;
   final String type;
   final List<CategoryEntity> categories;

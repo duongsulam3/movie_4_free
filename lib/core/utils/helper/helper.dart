@@ -4,16 +4,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
+import 'package:smoth_movie_app/core/constants/app_constants.dart';
 import 'package:smoth_movie_app/features/kho_phim/data/model/kho_phim_category_model.dart';
 import 'package:smoth_movie_app/features/kho_phim/data/model/kho_phim_country_model.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/categories/category_list_bloc.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/kho_phim_movies/kho_phim_movies_bloc.dart';
 import 'package:smoth_movie_app/features/movie_detail/data/model/movie_detail.dart';
+import 'package:smoth_movie_app/features/movie_detail/domain/entities/category.dart';
+import 'package:smoth_movie_app/features/movie_detail/domain/entities/country.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/bloc/detail_movie/detail_movie_bloc.dart';
 import 'package:smoth_movie_app/features/movies/data/model/recently_update_movies/recently_update_list_item_model.dart';
 import 'package:smoth_movie_app/features/movies/data/model/single_movies/movie_item_model.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/similar_movies/similar_movies_bloc.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/data/model/nguonc_movie_model.dart';
+import 'package:smoth_movie_app/features/nguonc_movie_detail/domain/entity/nguonc_category_entity.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/presentation/bloc/nguonc_movie_detail_bloc.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/data/model/nguonc_movie_item_model.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/presentation/bloc/nguonc_search_bloc.dart';
@@ -145,6 +149,24 @@ class Helper {
         ),
       ),
     );
+  }
+
+  static String getNguoncCategories(NguoncCategoryEntity category) {
+    if (category.list.isEmpty) return AppConstants.noData;
+    return category.list.map((e) => e.name).toList().join(", ");
+  }
+
+  static String getNguoncCountries(List<NguoncTypeItem> countries) {
+    if (countries.isEmpty) return AppConstants.noData;
+    return countries.map((e) => e.name).toList().join(", ");
+  }
+
+  static String getCategories(List<CategoryEntity> categories) {
+    return categories.map((e) => e.name).toList().join(", ");
+  }
+
+  static String getCountries(List<CountryEnity> countries) {
+    return countries.map((e) => e.name).toList().join(", ");
   }
 
   //! KHO PHIM -> COUNTRIES
