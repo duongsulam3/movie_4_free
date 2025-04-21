@@ -74,10 +74,14 @@ class _SearchPageState extends State<SearchPage> {
       length: searchTabsLength,
       child: Scaffold(
         appBar: AppBar(
+          toolbarHeight: 90,
           backgroundColor: Colors.black,
-          bottom: SearchTabBar(
-            searchTabsLength: searchTabsLength,
-            searchTabsBar: searchTabsBar,
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(10),
+            child: SearchTabBar(
+              searchTabsLength: searchTabsLength,
+              searchTabsBar: searchTabsBar,
+            ),
           ),
           title: SearchTextField(
             focusNode: searchFocusNode,
