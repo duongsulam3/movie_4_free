@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
+import 'package:smoth_movie_app/core/constants/app_constants.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/domain/entity/nguonc_movie_entity.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/presentation/bloc/nguonc_movie_detail_bloc.dart';
 
@@ -18,7 +19,7 @@ class NguoncEpisodeBlocBuilderName extends StatelessWidget {
       builder: (context, state) {
         return ResponsiveText(
           text: movie.totalEpisodes == 1
-              ? "Phim lẻ - Một tập"
+              ? AppConstants.phimLeMotTap
               : "Tập ${state.passingEpisode}",
           fontSize: 16,
         );

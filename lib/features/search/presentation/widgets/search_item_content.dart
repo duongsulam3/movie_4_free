@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
 import 'package:smoth_movie_app/common/widgets/search_play_icon_widget.dart';
+import 'package:smoth_movie_app/core/constants/app_constants.dart';
 import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_item.dart';
 
 class SearchItemContent extends StatelessWidget {
@@ -43,7 +44,9 @@ class SearchItemContent extends StatelessWidget {
           fontSize: 12,
         ),
         ResponsiveText(
-          text: movie.episodeCurrent,
+          text: movie.episodeCurrent.contains("ull")
+              ? AppConstants.phimLeMotTap
+              : movie.episodeCurrent,
           fontSize: 12,
         ),
         const Spacer(),

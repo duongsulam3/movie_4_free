@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:smoth_movie_app/common/widgets/list_movie_item_widget.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
-import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_item.dart';
 
 class WatchingMovieItem extends StatelessWidget {
-  const WatchingMovieItem({super.key, required this.movie});
+  const WatchingMovieItem({
+    super.key,
+    required this.movieThumbnail,
+    required this.movieName,
+  });
 
-  final MovieItemEntity movie;
+  final String movieThumbnail;
+  final String movieName;
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         ListMovieItemWidget(
-          movie: movie,
+          movieUrl: movieThumbnail,
+          movieName: movieName,
           onTap: () {},
         ),
         Container(

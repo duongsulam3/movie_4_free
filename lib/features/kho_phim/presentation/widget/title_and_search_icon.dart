@@ -4,7 +4,9 @@ import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
 import 'package:smoth_movie_app/core/router/app_router.dart';
 
 class TitleAndSearchIcon extends StatelessWidget {
-  const TitleAndSearchIcon({super.key});
+  const TitleAndSearchIcon({super.key, this.hint});
+
+  final List<String>? hint;
 
   @override
   Widget build(BuildContext context) {
@@ -15,19 +17,9 @@ class TitleAndSearchIcon extends StatelessWidget {
         GestureDetector(
             onTap: () => Navigator.of(context).pushNamed(
                   AppRouter.homeSearch,
-                  arguments: const SearchTextfieldParamModel(
+                  arguments: SearchTextfieldParamModel(
                     searchHint: "Nhập phim bạn muốn tìm",
-                    //TODO IF THE LIST SEARCH CHANGE UPDATE LIST SEARCH FOR SYNC
-                    listSearch: [
-                      "Avatar: The Way of Water",
-                      "The Flash",
-                      "The Batman",
-                      "Loki Season 2",
-                      "Stranger Things",
-                      "The Witcher",
-                      "Jujutsu Kaisen",
-                      "Naruto Shippuden",
-                    ],
+                    listSearch: hint ?? [],
                   ),
                 ),
             child: const Icon(Icons.search)),

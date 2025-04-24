@@ -1,0 +1,112 @@
+[
+    {
+        "name": "Hành Động",
+        "title": "Hành Động",
+        "slug": "hanh-dong"
+    },
+    {
+        "name": "Hài",
+        "title": "Hài",
+        "slug": "phim-hai"
+    },
+    {
+        "name": "Chính Kịch",
+        "title": "Chính Kịch",
+        "slug": "chinh-kich"
+    },
+    {
+        "name": "Lịch Sử",
+        "title": "Lịch Sử",
+        "slug": "lich-su"
+    },
+    {
+        "name": "Bí Ẩn",
+        "title": "Bí Ẩn",
+        "slug": "bi-an"
+    },
+    {
+        "name": "Gây Cấn",
+        "title": "Gây Cấn",
+        "slug": "gay-can"
+    },
+    {
+        "name": "Tình Cảm",
+        "title": "Tình Cảm",
+        "slug": "tinh-cam"
+    },
+    {
+        "name": "Phim 18+",
+        "title": "Phim 18+",
+        "slug": "phim-18"
+    },
+    {
+        "name": "Phiêu Lưu",
+        "title": "Phiêu Lưu",
+        "slug": "phieu-luu"
+    },
+    {
+        "name": "Hình Sự",
+        "title": "Hình Sự",
+        "slug": "hinh-su"
+    },
+    {
+        "name": "Gia Đình",
+        "title": "Gia Đình",
+        "slug": "gia-dinh"
+    },
+    {
+        "name": "Kinh Dị",
+        "title": "Kinh Dị",
+        "slug": "kinh-di"
+    },
+    {
+        "name": "Lãng Mạn",
+        "title": "Lãng Mạn",
+        "slug": "lang-man"
+    },
+    {
+        "name": "Chiến Tranh",
+        "title": "Chiến Tranh",
+        "slug": "chien-tranh"
+    },
+    {
+        "name": "Cổ Trang",
+        "title": "Cổ Trang",
+        "slug": "co-trang"
+    },
+    {
+        "name": "Hoạt Hình",
+        "title": "Hoạt Hình",
+        "slug": "hoat-hinh"
+    },
+    {
+        "name": "Tài Liệu",
+        "title": "Tài Liệu",
+        "slug": "tai-lieu"
+    },
+    {
+        "name": "Giả Tưởng",
+        "title": "Giả Tưởng",
+        "slug": "gia-tuong"
+    },
+    {
+        "name": "Nhạc",
+        "title": "Phim Nhạc",
+        "slug": "phim-nhac"
+    },
+    {
+        "name": "Tâm Lý",
+        "title": "Tâm Lý",
+        "slug": "tam-ly"
+    },
+    {
+        "name": "Miền Tây",
+        "title": "Miền Tây",
+        "slug": "mien-tay"
+    },
+    {
+        "name": "Khoa Học Viễn Tưởng",
+        "title": "Khoa Học Viễn Tưởng",
+        "slug": "khoa-hoc-vien-tuong"
+    }
+]

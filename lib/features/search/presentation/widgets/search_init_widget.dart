@@ -21,36 +21,44 @@ class SearchInitWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        spacing: 10,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ResponsiveText(
+    return topSearchList.isEmpty
+        ? ResponsiveText(
             text: introduceSource,
             fontSize: 12,
             fontStyle: FontStyle.italic,
             maxLines: 8,
-          ),
-          const ResponsiveText(
-            text: "Phim có lượt tìm kiếm cao",
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-          ListView.separated(
-            shrinkWrap: true,
-            primary: false,
-            itemCount: topSearchList.length,
-            separatorBuilder: (_, i) => const ResponsiveSizedBox(height: 10),
-            itemBuilder: (context, i) {
-              return GestureDetector(
-                onTap: () => onSelected(topSearchList[i]),
-                child: TopSearchListItem(itemName: topSearchList[i]),
-              );
-            },
-          ),
-        ],
-      ),
-    );
+          )
+        : SingleChildScrollView(
+            child: Column(
+              spacing: 10,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ResponsiveText(
+                  text: introduceSource,
+                  fontSize: 12,
+                  fontStyle: FontStyle.italic,
+                  maxLines: 8,
+                ),
+                const ResponsiveText(
+                  text: "Phim có lượt tìm kiếm cao",
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+                ListView.separated(
+                  shrinkWrap: true,
+                  primary: false,
+                  itemCount: topSearchList.length,
+                  separatorBuilder: (_, i) =>
+                      const ResponsiveSizedBox(height: 10),
+                  itemBuilder: (context, i) {
+                    return GestureDetector(
+                      onTap: () => onSelected(topSearchList[i]),
+                      child: TopSearchListItem(itemName: topSearchList[i]),
+                    );
+                  },
+                ),
+              ],
+            ),
+          );
   }
 }

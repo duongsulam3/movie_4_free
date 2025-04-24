@@ -4,14 +4,13 @@ import 'package:smoth_movie_app/common/screens/error_page.dart';
 import 'package:smoth_movie_app/common/widgets/progress_indicator_custom.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_sized_box.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
+import 'package:smoth_movie_app/core/router/app_router.dart';
+import 'package:smoth_movie_app/core/router/params/nguonc_movie_detail_params_model.dart';
 import 'package:smoth_movie_app/core/utils/enum/search/search_page_status.dart';
 import 'package:smoth_movie_app/core/utils/helper/helper.dart';
-import 'package:smoth_movie_app/features/nguonc_movie_detail/presentation/bloc/nguonc_movie_detail_bloc.dart';
-import 'package:smoth_movie_app/features/nguonc_movie_detail/presentation/widget/nguonc_detail_page.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/presentation/bloc/nguonc_search_bloc.dart';
 import 'package:smoth_movie_app/features/search/presentation/widgets/nguonc_search_item_widget.dart';
 import 'package:smoth_movie_app/features/search/presentation/widgets/search_init_widget.dart';
-import 'package:smoth_movie_app/init_dependencies.dart';
 
 class ListSearchNguoncContent extends StatelessWidget {
   const ListSearchNguoncContent({
@@ -63,23 +62,21 @@ class ListSearchNguoncContent extends StatelessWidget {
                       );
                     }
                   } else {
-                    Helper.nguonCSearchFilms(context, state.query);
+                    Helper.nguonCSearchFilms(
+                      context: context,
+                      query: state.query,
+                    );
                     return const Center(child: ProgressIndicatorCustom());
                   }
                 } else {
                   final movie = state.movies[index];
                   final modifiedTime = movie.modified.substring(0, 10);
                   return GestureDetector(
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            BlocProvider<NguoncMovieDetailBloc>(
-                          create: (context) => serviceLocator(),
-                          child: NguoncDetailPage(
-                            movie: movie,
-                            tag: "NguonC${state.movies[index].posterUrl}",
-                          ),
-                        ),
+                    onTap: () => Navigator.of(context).pushNamed(
+                      AppRouter.nguoncMovieDetail,
+                      arguments: NguoncMovieDetailParamsModel(
+                        movie: movie,
+                        tag: "NguonC${state.movies[index].posterUrl}",
                       ),
                     ),
                     child: SearchNguoncListViewItem(

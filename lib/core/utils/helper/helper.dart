@@ -16,6 +16,8 @@ import 'package:smoth_movie_app/features/movie_detail/presentation/bloc/detail_m
 import 'package:smoth_movie_app/features/movies/data/model/recently_update_movies/recently_update_list_item_model.dart';
 import 'package:smoth_movie_app/features/movies/data/model/single_movies/movie_item_model.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/similar_movies/similar_movies_bloc.dart';
+import 'package:smoth_movie_app/features/nguonc_categories/data/model/nguonc_category_item_model.dart';
+import 'package:smoth_movie_app/features/nguonc_categories/data/model/nguonc_movies_by_category_item_model.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/data/model/nguonc_movie_model.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/domain/entity/nguonc_category_entity.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/presentation/bloc/nguonc_movie_detail_bloc.dart';
@@ -38,11 +40,15 @@ class Helper {
   }
 
   //! SEARCH BLOC
-  static void onSubmitSearch(BuildContext context, String query, int limit) {
+  static void onSubmitSearch({
+    required BuildContext context,
+    required String query,
+    int? limit,
+  }) {
     if (query.isEmpty) return;
     context.read<SearchBloc>().add(GetSearchMoviesEvent(
           query: query,
-          limit: limit,
+          limit: limit ?? 10,
         ));
   }
 
@@ -54,7 +60,10 @@ class Helper {
         ));
   }
 
-  static void nguonCSearchFilms(BuildContext context, String query) {
+  static void nguonCSearchFilms({
+    required BuildContext context,
+    required String query,
+  }) {
     if (query.isEmpty) return;
     context.read<NguoncSearchBloc>().add(GetSearchFilmsEvent(query: query));
   }
@@ -169,6 +178,15 @@ class Helper {
     return countries.map((e) => e.name).toList().join(", ");
   }
 
+  static Future<List<NguoncCategoryItemModel>> parseNguoncCategories(
+    String json,
+  ) async {
+    final jsonResponse = jsonDecode(json) as List;
+    return jsonResponse
+        .map((e) => NguoncCategoryItemModel.fromJson(e))
+        .toList();
+  }
+
   //! KHO PHIM -> COUNTRIES
   static List<KhoPhimCountryModel> parseKhoPhimCoutryJsonToList(String json) {
     final jsonResponse = jsonDecode(json) as List;
@@ -217,9 +235,20 @@ class Helper {
     return jsonResponse.map((e) => NguoncMovieItemModel.fromJson(e)).toList();
   }
 
+  //! NGUỒN C MOVIE DETAIL
   static NguoncMovieModel parseNguoncMovieDetail(String json) {
     final jsonResponse = jsonDecode(json)['movie'];
     return NguoncMovieModel.fromJson(jsonResponse);
+  }
+
+  //! NGUỒN C MOVIES BY CATEGORY
+  static List<NguoncMoviesByCategoryItemModel> parseNguoncMoviesByCategory(
+    String json,
+  ) {
+    final jsonResponse = jsonDecode(json)["items"] as List;
+    return jsonResponse
+        .map((e) => NguoncMoviesByCategoryItemModel.fromJson(e))
+        .toList();
   }
 
   //! MOVIE DETAIL

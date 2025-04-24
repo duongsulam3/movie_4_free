@@ -25,8 +25,13 @@ import 'package:smoth_movie_app/features/movies/domain/usecase/get_movies_sortby
 import 'package:smoth_movie_app/features/movies/domain/usecase/get_similar_movies.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies_sortby_time/movies_sort_by_time_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/similar_movies/similar_movies_bloc.dart';
+import 'package:smoth_movie_app/features/nguonc_categories/data/repository/nguonc_movies_by_cate_repository_impl.dart';
+import 'package:smoth_movie_app/features/nguonc_categories/data/source/remote/nguonc_movies_by_category_remote_datasource.dart';
+import 'package:smoth_movie_app/features/nguonc_categories/domain/repository/nguonc_movies_by_cate_repository.dart';
+import 'package:smoth_movie_app/features/nguonc_categories/domain/usecase/nguonc_get_movies_by_cate.dart';
+import 'package:smoth_movie_app/features/nguonc_categories/presentation/bloc/movies_by_category_bloc.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/data/repository/nguonc_movie_detail_repository_impl.dart';
-import 'package:smoth_movie_app/features/nguonc_movie_detail/data/source/remote/nguonc_movide_detail_remote_datasource.dart';
+import 'package:smoth_movie_app/features/nguonc_movie_detail/data/source/remote/nguonc_movie_detail_remote_datasource.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/domain/repository/nguonc_movie_detail_repository.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/domain/usecase/get_nguonc_movie_detail.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/presentation/bloc/nguonc_movie_detail_bloc.dart';
@@ -131,6 +136,17 @@ void _initListMovies() {
   serviceLocator.registerFactory(() => GetMoviesSortbyTime(serviceLocator()));
   serviceLocator.registerFactory(() => MoviesSortByTimeBloc(serviceLocator()));
   //** Movies Sort By Time */
+
+  //** Nguồn C Movies By Category */
+  serviceLocator.registerFactory<NguoncMoviesByCategoryRemoteDatasource>(
+    () => NguoncMoviesByCategoryRemoteDatasourceImpl(serviceLocator()),
+  );
+  serviceLocator.registerFactory<NguoncMoviesByCateRepository>(
+    () => NguoncMoviesByCateRepositoryImpl(serviceLocator()),
+  );
+  serviceLocator.registerFactory(() => NguoncGetMoviesByCate(serviceLocator()));
+  serviceLocator.registerFactory(() => MoviesByCategoryBloc(serviceLocator()));
+  //** Nguồn C Movies By Category */
 }
 
 void _initDetailMovie() {

@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:smoth_movie_app/common/widgets/cached_network/cached_network_image.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
-import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
-import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_item.dart';
 
 class ListMovieItemWidget extends StatelessWidget {
   const ListMovieItemWidget({
     super.key,
-    required this.movie,
     required this.onTap,
     this.memCacheHeight = 300,
     this.memCacheWidth = 300,
+    required this.movieUrl,
+    required this.movieName,
   });
-  final MovieItemEntity movie;
   final void Function() onTap;
   final int memCacheHeight;
   final int memCacheWidth;
+  final String movieUrl;
+  final String movieName;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class ListMovieItemWidget extends StatelessWidget {
             clipBehavior: Clip.hardEdge,
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
             child: CachedNetworkImageWidget(
-              url: AppSecret.imageUrl + movie.posterUrl,
+              url: movieUrl,
               height: 180,
               width: double.infinity,
               memCacheHeight: memCacheHeight,
@@ -38,7 +38,7 @@ class ListMovieItemWidget extends StatelessWidget {
           ),
           Expanded(
             child: ResponsiveText(
-              text: movie.name,
+              text: movieName,
               maxLines: 2,
               fontSize: 12,
               textColor: Colors.grey,

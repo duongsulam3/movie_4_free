@@ -6,6 +6,7 @@ import 'package:smoth_movie_app/core/router/app_router.dart';
 import 'package:smoth_movie_app/core/router/params/movie_detail_param_model.dart';
 import 'package:smoth_movie_app/core/utils/enum/movies_state_status.dart';
 import 'package:smoth_movie_app/core/utils/helper/helper.dart';
+import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/category.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/movie_detail.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/watching_movie_item_widget.dart';
@@ -51,16 +52,19 @@ class _SimilarMoviesState extends State<SimilarMovies>
             return MoviesGridBuilder(
               itemCount: state.movies.length,
               itemBuilder: (context, i) {
-                if (widget.movie.movieInfo.slug == state.movies[i].slug) {
-                  return WatchingMovieItem(movie: state.movies[i]);
+                final movie = state.movies[i];
+                if (widget.movie.movieInfo.slug == movie.slug) {
+                  return WatchingMovieItem(
+                    movieThumbnail: AppSecret.imageUrl + movie.posterUrl,
+                    movieName: movie.name,
+                  );
                 } else {
                   return ListMovieItemWidget(
-                    movie: state.movies[i],
+                    movieUrl: AppSecret.imageUrl + movie.posterUrl,
+                    movieName: movie.name,
                     onTap: () => Navigator.of(context).pushReplacementNamed(
                       AppRouter.movieDetail,
-                      arguments: MovieDetailParamModel(
-                        movie: state.movies[i],
-                      ),
+                      arguments: MovieDetailParamModel(movie: movie),
                     ),
                   );
                 }

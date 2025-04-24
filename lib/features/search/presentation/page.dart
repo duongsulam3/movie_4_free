@@ -27,7 +27,9 @@ class _SearchPageState extends State<SearchPage> {
 
   late final List<Widget> searchTabsView;
   late final List<String> searchTabsBar;
-  final searchTabsLength = 2;
+  static const int searchTabsLength = 2;
+  static const double appBarHeight = 90.0;
+  static const double appBarBottomHeight = 10.0;
 
   @override
   void initState() {
@@ -74,10 +76,10 @@ class _SearchPageState extends State<SearchPage> {
       length: searchTabsLength,
       child: Scaffold(
         appBar: AppBar(
-          toolbarHeight: 90,
+          toolbarHeight: appBarHeight,
           backgroundColor: Colors.black,
           bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(10),
+            preferredSize: const Size.fromHeight(appBarBottomHeight),
             child: SearchTabBar(
               searchTabsLength: searchTabsLength,
               searchTabsBar: searchTabsBar,
@@ -88,8 +90,8 @@ class _SearchPageState extends State<SearchPage> {
             hintText: widget.searchHint,
             controller: searchController,
             onSubmitted: (value) {
-              Helper.onSubmitSearch(context, value, 10);
-              Helper.nguonCSearchFilms(context, value);
+              Helper.onSubmitSearch(context: context, query: value);
+              Helper.nguonCSearchFilms(context: context, query: value);
             },
           ),
         ),

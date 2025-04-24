@@ -12,17 +12,16 @@ class SimilarMoviesBloc extends Bloc<SimilarMoviesEvent, SimilarMoviesState> {
   final GetSimilarMovies getSimilarMovies;
   SimilarMoviesBloc(this.getSimilarMovies) : super(const SimilarMoviesState()) {
     on<FetchMovies>((event, emit) async {
-      List<MovieItemEntity> movies = const [];
       final res = await getSimilarMovies.call(GetSimilarMoviesParams(
         categorySlug: event.categorySlug,
       ));
       res.fold(
         (err) => emit(state.copyWith(status: MoviesStateStatus.error)),
         (data) {
-          movies = data;
+          if (data.isEmpty) return;
           emit(state.copyWith(
             status: MoviesStateStatus.success,
-            movies: movies,
+            movies: data,
           ));
         },
       );

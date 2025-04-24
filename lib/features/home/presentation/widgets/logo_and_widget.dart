@@ -15,12 +15,17 @@ class LogoAndWidget extends StatefulWidget {
 }
 
 class _LogoAndWidgetState extends State<LogoAndWidget> {
+  //TODO Change hints
   final hints = const <String>[
-    "Avatar: The Way of Water",
-    "The Flash",
-    "The Batman",
-    "Loki Season 2",
+    "Gia tộc rồng",
+    "Trò chơi vương quyền",
+    "Bạch Nguyệt Phạn Tinh",
+    "Trường Nguyệt Tẫn Minh",
+    "Bất lương nhân",
+    "Avatar",
     "Stranger Things",
+    "The Dark Knight",
+    "Loki",
     "The Witcher",
     "Jujutsu Kaisen",
     "Naruto Shippuden",

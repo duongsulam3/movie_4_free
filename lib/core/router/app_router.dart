@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/core/router/params/movie_detail_param_model.dart';
+import 'package:smoth_movie_app/core/router/params/nguonc_movie_detail_params_model.dart';
 import 'package:smoth_movie_app/core/router/params/search_textfield_param_model.dart';
 import 'package:smoth_movie_app/common/screens/error_page.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/bloc/detail_movie/detail_movie_bloc.dart';
+import 'package:smoth_movie_app/features/nguonc_movie_detail/presentation/bloc/nguonc_movie_detail_bloc.dart';
+import 'package:smoth_movie_app/features/nguonc_movie_detail/presentation/widget/nguonc_detail_page.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/presentation/bloc/nguonc_search_bloc.dart';
 import 'package:smoth_movie_app/features/profile/page.dart';
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
@@ -22,24 +25,25 @@ class AppRouter {
   static const String homeSearch = '/home_search';
   static const String homeProfile = '/home_profile';
   static const String movieDetail = '/movie_detail';
+  static const String nguoncMovieDetail = '/nguonc_movie_detail';
 
   Route onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case '/':
+      case splash:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (_) => SplashBloc()..add(GetToHomePageEvent()),
             child: const SplashPage(),
           ),
         );
-      case '/home':
+      case homePage:
         return SlideBottomToTopTransition(
           page: const HomePage(),
           routeName: settings.name,
           dx: 1.0,
           dy: 0.0,
         );
-      case '/home_search':
+      case homeSearch:
         final params = settings.arguments as SearchTextfieldParamModel;
         final providers = <BlocProvider>[
           BlocProvider<SearchBloc>(create: (context) => serviceLocator()),
@@ -54,9 +58,9 @@ class AppRouter {
             ),
           ),
         );
-      case '/home_profile':
+      case homeProfile:
         return MaterialPageRoute(builder: (_) => const ProfilePage());
-      case '/movie_detail':
+      case movieDetail:
         final params = settings.arguments as MovieDetailParamModel;
         if (params.hasHeroEffect) {
           return MaterialPageRoute(
@@ -78,6 +82,17 @@ class AppRouter {
             dy: 1.0,
           );
         }
+      case nguoncMovieDetail:
+      final params = settings.arguments as NguoncMovieDetailParamsModel;
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider<NguoncMovieDetailBloc>(
+            create: (context) => serviceLocator(),
+            child: NguoncDetailPage(
+              movie: params.movie,
+              tag: params.tag,
+            ),
+          ),
+        );
       default:
         return MaterialPageRoute(builder: (_) => const ErrorPage());
     }

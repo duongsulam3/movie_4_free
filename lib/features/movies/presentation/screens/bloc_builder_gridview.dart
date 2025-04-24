@@ -6,6 +6,7 @@ import 'package:smoth_movie_app/core/router/app_router.dart';
 import 'package:smoth_movie_app/core/router/params/movie_detail_param_model.dart';
 import 'package:smoth_movie_app/core/utils/enum/movies_state_status.dart';
 import 'package:smoth_movie_app/common/widgets/list_movie_item_widget.dart';
+import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies/movies_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/movies_gridview_builder.dart';
 
@@ -39,17 +40,19 @@ class _BlocBuilderGridviewState extends State<BlocBuilderGridview>
               ),
             );
           default:
-            final items = state.movies;
             return MoviesGridBuilder(
-              itemCount: items.length,
-              itemBuilder: (_, i) => ListMovieItemWidget(
-                movie: items[i],
-                onTap: () => Navigator.of(context).pushNamed(
-                  AppRouter.movieDetail,
-                  arguments: MovieDetailParamModel(movie: items[i]),
-                ),
-              ),
-            );
+                itemCount: state.movies.length,
+                itemBuilder: (_, i) {
+                  final movie = state.movies[i];
+                  return ListMovieItemWidget(
+                    movieUrl: AppSecret.imageUrl + movie.posterUrl,
+                    movieName: movie.name,
+                    onTap: () => Navigator.of(context).pushNamed(
+                      AppRouter.movieDetail,
+                      arguments: MovieDetailParamModel(movie: movie),
+                    ),
+                  );
+                });
         }
       },
     );

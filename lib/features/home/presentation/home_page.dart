@@ -29,9 +29,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
+  static const appBarHeight = 90.0;
+  static const tabBarHeight = 30.0;
   static const _tabCount = 5;
-  static const _appBarHeight = 90.0;
-  static const _tabBarHeight = 30.0;
   //** CONTROLLERS */
   late final TabController tabController;
   late final List<ScrollController> scrollControllers;
@@ -183,11 +183,11 @@ class _HomePageState extends State<HomePage>
                     ? CustomAppbarWidget(
                         scrollControllers: scrollControllers,
                         tabController: tabController,
-                        appBarHeight: _appBarHeight,
+                        appBarHeight: appBarHeight,
                         backgroundColor: Colors.black,
                         titleWidget: const LogoAndWidget(),
                         appBarBottomWidget: PreferredSize(
-                          preferredSize: const Size.fromHeight(_tabBarHeight),
+                          preferredSize: const Size.fromHeight(tabBarHeight),
                           child: HomeTabBar(
                             tabs: tabs,
                             tabController: tabController,

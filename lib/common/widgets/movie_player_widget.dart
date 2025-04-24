@@ -61,6 +61,7 @@ class _MoviePlayerWidgetState extends State<MoviePlayerWidget> {
   }
 
   void buildNewVideoPlayer(String newUrl) {
+    if (newUrl == "") return;
     if (newUrl != "" && newUrl != _controller.dataSource) {
       playerDispose();
       _initPlayer(newUrl);

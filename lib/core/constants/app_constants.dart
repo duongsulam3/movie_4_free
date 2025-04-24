@@ -6,4 +6,5 @@ class AppConstants {
   static const String thankYouLottie = "assets/lottiefiles/thank_you.lottie";
   static const String appLogo = "assets/images/logo_dark.png";
   static const String noData = "Đang cập nhật";
+  static const String phimLeMotTap = "Phim lẻ - Một tập";
 }

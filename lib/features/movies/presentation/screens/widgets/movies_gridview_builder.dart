@@ -5,18 +5,20 @@ class MoviesGridBuilder extends StatelessWidget {
     super.key,
     required this.itemCount,
     required this.itemBuilder,
+    this.primary = false,
   });
 
   final int itemCount;
   final Widget Function(BuildContext, int) itemBuilder;
+  final bool primary;
 
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
+      padding: EdgeInsets.zero,
       addAutomaticKeepAlives: true,
       shrinkWrap: true,
-      padding: EdgeInsets.zero,
-      physics: const NeverScrollableScrollPhysics(),
+      primary: primary,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
         mainAxisSpacing: 10,

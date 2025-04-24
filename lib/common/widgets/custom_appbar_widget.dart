@@ -33,20 +33,22 @@ class CustomAppbarWidget extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _CustomAppbarWidgetState extends State<CustomAppbarWidget> {
+  late ScrollController currentScrollController;
   @override
   void initState() {
     super.initState();
+    currentScrollController =
+        widget.scrollControllers[widget.tabController.index];
     widget.tabController.addListener(_handleTabChange);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        setState(() {});
-      }
+      if (mounted) setState(() {});
     });
   }
 
   void _handleTabChange() {
     setState(() {
-      widget.scrollControllers[widget.tabController.index];
+      currentScrollController =
+          widget.scrollControllers[widget.tabController.index];
     });
   }
 
@@ -58,11 +60,9 @@ class _CustomAppbarWidgetState extends State<CustomAppbarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final currentScrollController =
-        widget.scrollControllers[widget.tabController.index];
     return AnimatedBuilder(
       animation: currentScrollController,
-      builder: (_, child) {
+      builder: (context, child) {
         if (currentScrollController.hasClients) {
           return AnimatedContainer(
             duration: const Duration(milliseconds: 800),

@@ -7,6 +7,7 @@ import 'package:smoth_movie_app/core/utils/enum/movies_state_status.dart';
 import 'package:smoth_movie_app/common/screens/error_page.dart';
 import 'package:smoth_movie_app/common/widgets/list_movie_item_widget.dart';
 import 'package:smoth_movie_app/core/utils/helper/helper.dart';
+import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies/movies_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/load_more_container.dart';
 import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/movies_gridview_builder.dart';
@@ -60,12 +61,14 @@ class _InfiniteGridViewState extends State<InfiniteGridView>
                 MoviesSilverGridviewBuilder(
                   itemCount: state.movies.length,
                   itemBuilder: (BuildContext context, int index) {
+                    final movie = state.movies[index];
                     return ListMovieItemWidget(
-                      movie: state.movies[index],
+                      movieUrl: AppSecret.imageUrl + movie.posterUrl,
+                      movieName: movie.name,
                       onTap: () => Navigator.of(context).pushNamed(
                         AppRouter.movieDetail,
                         arguments: MovieDetailParamModel(
-                          movie: state.movies[index],
+                          movie: movie,
                         ),
                       ),
                     );
