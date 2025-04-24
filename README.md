@@ -53,3 +53,6 @@ Tabs:
 
 # 📜 License
 This project is developed for educational, non-commercial purposes. All movie content comes from third-party APIs KKPhim and NguồnC.
+- Flutter version 3.29.3 on channel stable
+- Dart version 3.7.2
+- Java version 17
