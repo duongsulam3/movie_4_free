@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:smoth_movie_app/common/widgets/search_suffix_icon.dart';
 
-class SearchTextField extends StatefulWidget {
+class SearchTextField extends StatelessWidget {
   const SearchTextField({
     super.key,
     this.textFieldHeight = 30,
@@ -27,15 +26,10 @@ class SearchTextField extends StatefulWidget {
   final TextEditingController? controller;
 
   @override
-  State<SearchTextField> createState() => _SearchTextFieldState();
-}
-
-class _SearchTextFieldState extends State<SearchTextField> {
-  @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(left: 10),
-      height: widget.textFieldHeight,
+      height: textFieldHeight,
       decoration: BoxDecoration(
         color: const Color(0xffc1bfbf).withValues(alpha: 0.2),
         borderRadius: const BorderRadius.all(
@@ -46,27 +40,27 @@ class _SearchTextFieldState extends State<SearchTextField> {
         children: [
           Expanded(
             child: TextField(
-              focusNode: widget.focusNode,
-              controller: widget.controller,
-              canRequestFocus: widget.isFocus,
-              onTap: widget.onTap,
-              onChanged: widget.onChanged,
-              onSubmitted: widget.onSubmitted,
-              cursorHeight: widget.textFieldHeight / 2,
+              focusNode: focusNode,
+              controller: controller,
+              canRequestFocus: isFocus,
+              onTap: onTap,
+              onChanged: onChanged,
+              onSubmitted: onSubmitted,
+              cursorHeight: textFieldHeight / 2,
+              textAlignVertical: TextAlignVertical.center,
               style: TextStyle(
                 color: Colors.white,
-                fontSize: widget.fontSize,
+                fontSize: fontSize,
               ),
-              textAlignVertical: TextAlignVertical.center,
               decoration: InputDecoration(
                 isDense: true, //! Add this to align center vertical
                 border: InputBorder.none,
-                hintText: widget.hintText,
+                hintText: hintText,
                 hintStyle: TextStyle(
                   color: Colors.grey.withValues(alpha: 0.7),
-                  fontSize: widget.fontSize,
+                  fontSize: fontSize,
                 ),
-                suffixIcon: SearchSuffixIcon(controller: widget.controller),
+                suffixIcon: SearchSuffixIcon(controller: controller),
               ),
             ),
           ),
