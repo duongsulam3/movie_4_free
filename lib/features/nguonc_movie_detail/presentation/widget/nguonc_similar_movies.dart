@@ -22,7 +22,8 @@ class NguoncSimilarMovies extends StatefulWidget {
   State<NguoncSimilarMovies> createState() => _NguoncSimilarMoviesState();
 }
 
-class _NguoncSimilarMoviesState extends State<NguoncSimilarMovies> {
+class _NguoncSimilarMoviesState extends State<NguoncSimilarMovies>
+    with AutomaticKeepAliveClientMixin {
   List<NguoncCategoryItemEntity> categories = const [];
   String slug = "";
 
@@ -46,9 +47,9 @@ class _NguoncSimilarMoviesState extends State<NguoncSimilarMovies> {
 
   void compareCategories() {
     if (categories.isEmpty) return;
-    for (int i = 0; i < categories.length; i++) {
-      if (widget.category.contains(categories[i].name)) {
-        slug = categories[i].slug;
+    for (var e in categories) {
+      if (widget.category.contains(e.name)) {
+        slug = e.slug;
         return;
       }
     }
@@ -62,6 +63,7 @@ class _NguoncSimilarMoviesState extends State<NguoncSimilarMovies> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return categories.isEmpty
         ? const SizedBox.shrink()
         : BlocProvider<MoviesByCategoryBloc>(
@@ -72,4 +74,7 @@ class _NguoncSimilarMoviesState extends State<NguoncSimilarMovies> {
             ),
           );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
