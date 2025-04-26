@@ -41,12 +41,8 @@ class _HomePageState extends State<HomePage>
 
   //! Kho phim bloc providers
   final List<BlocProvider> khoPhimProviders = [
-    BlocProvider<CountriesBloc>(
-      create: (context) => serviceLocator<CountriesBloc>(),
-    ),
-    BlocProvider<CategoryListBloc>(
-      create: (context) => serviceLocator<CategoryListBloc>(),
-    ),
+    BlocProvider<CountriesBloc>(create: (context) => serviceLocator()),
+    BlocProvider<CategoryListBloc>(create: (context) => serviceLocator()),
     BlocProvider<KhoPhimPageBloc>(
       create: (context) => KhoPhimPageBloc(
         countriesBloc: context.read<CountriesBloc>(),

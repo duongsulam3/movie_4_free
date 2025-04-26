@@ -29,11 +29,13 @@ class KhoPhimPageBloc extends Bloc<KhoPhimPageEvent, KhoPhimPageState> {
       await Future.wait([
         countriesBloc.stream
             .firstWhere((state) => state.status == CountriesStateStatus.success)
-            .then((value) => countriesLoaded = value.countries),
+            .then((value) => countriesLoaded = value.countries)
+            .onError((error, stackTrace) => countriesLoaded = []),
         categoryListBloc.stream
             .firstWhere(
                 (state) => state.status == CategoriesStateStatus.success)
-            .then((value) => categoriesLoaded = value.categories),
+            .then((value) => categoriesLoaded = value.categories)
+            .onError((error, stackTrace) => categoriesLoaded = []),
       ]);
 
       if (countriesLoaded.isNotEmpty && categoriesLoaded.isNotEmpty) {
