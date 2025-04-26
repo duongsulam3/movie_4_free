@@ -76,6 +76,7 @@ class ListSearchNguoncContent extends StatelessWidget {
                       AppRouter.nguoncMovieDetail,
                       arguments: NguoncMovieDetailParamsModel(
                         movie: movie,
+                        hasHeroEffect: true,
                         tag: "NguonC${state.movies[index].posterUrl}",
                       ),
                     ),

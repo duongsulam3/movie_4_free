@@ -71,11 +71,9 @@ class AppRouter {
           );
         } else {
           return SlideBottomToTopTransition(
-            page: BlocProvider(
-              create: (context) => serviceLocator<DetailMovieBloc>(),
-              child: MovieDetailPage(
-                movie: params.movie,
-              ),
+            page: BlocProvider<DetailMovieBloc>(
+              create: (context) => serviceLocator(),
+              child: MovieDetailPage(movie: params.movie),
             ),
             routeName: settings.name,
             dx: 0.0,
@@ -83,16 +81,25 @@ class AppRouter {
           );
         }
       case nguoncMovieDetail:
-      final params = settings.arguments as NguoncMovieDetailParamsModel;
-        return MaterialPageRoute(
-          builder: (context) => BlocProvider<NguoncMovieDetailBloc>(
-            create: (context) => serviceLocator(),
-            child: NguoncDetailPage(
-              movie: params.movie,
-              tag: params.tag,
+        final params = settings.arguments as NguoncMovieDetailParamsModel;
+        if (params.hasHeroEffect) {
+          return MaterialPageRoute(
+            builder: (context) => BlocProvider<NguoncMovieDetailBloc>(
+              create: (context) => serviceLocator(),
+              child: NguoncDetailPage(movie: params.movie, tag: params.tag),
             ),
-          ),
-        );
+          );
+        } else {
+          return SlideBottomToTopTransition(
+            page: BlocProvider<NguoncMovieDetailBloc>(
+              create: (context) => serviceLocator(),
+              child: NguoncDetailPage(movie: params.movie),
+            ),
+            routeName: settings.name,
+            dx: 0.0,
+            dy: 1.0,
+          );
+        }
       default:
         return MaterialPageRoute(builder: (_) => const ErrorPage());
     }

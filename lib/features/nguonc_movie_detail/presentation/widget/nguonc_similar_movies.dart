@@ -9,9 +9,14 @@ import 'package:smoth_movie_app/features/nguonc_categories/presentation/widget/n
 import 'package:smoth_movie_app/init_dependencies.dart';
 
 class NguoncSimilarMovies extends StatefulWidget {
-  const NguoncSimilarMovies({super.key, required this.category});
+  const NguoncSimilarMovies({
+    super.key,
+    required this.category,
+    required this.watchingMovieSlug,
+  });
 
   final String category;
+  final String watchingMovieSlug;
 
   @override
   State<NguoncSimilarMovies> createState() => _NguoncSimilarMoviesState();
@@ -61,7 +66,10 @@ class _NguoncSimilarMoviesState extends State<NguoncSimilarMovies> {
         ? const SizedBox.shrink()
         : BlocProvider<MoviesByCategoryBloc>(
             create: (context) => serviceLocator(),
-            child: NguoncMoviesByCate(slug: slug),
+            child: NguoncMoviesByCate(
+              slug: slug,
+              watchingMovieSlug: widget.watchingMovieSlug,
+            ),
           );
   }
 }

@@ -40,7 +40,6 @@ class TabBarListItem extends StatelessWidget {
             Expanded(
               flex: 4,
               child: ContainerWithCachedNetworkImageProvider(
-                // path: movie.movieInfo.thumbUrl,
                 path: imagePath,
               ),
             ),

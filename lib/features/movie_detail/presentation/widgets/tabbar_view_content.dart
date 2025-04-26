@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smoth_movie_app/common/widgets/tab_listview_episodes_widget.dart';
 import 'package:smoth_movie_app/core/utils/helper/helper.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/category.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/movie_detail.dart';
@@ -24,9 +25,8 @@ class ExpandedTabBarViewContent extends StatelessWidget {
     return TabBarView(
       children: <Widget>[
         //** NEXT EPISODES TAB */
-        ListView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
+        TabListViewEpisodes(
+          sHeight: sHeight,
           itemCount: movie.episodes[0].serverData.length,
           itemBuilder: (context, index) => TabBarListItem(
             onTap: () => Helper.updateUrlEvent(

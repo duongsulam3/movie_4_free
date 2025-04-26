@@ -11,11 +11,11 @@ class NguoncMovieDetailPageInit extends StatelessWidget {
   const NguoncMovieDetailPageInit({
     super.key,
     required this.movie,
-    required this.tag,
+    this.tag,
   });
 
   final NguoncMovieItemEntity movie;
-  final String tag;
+  final String? tag;
 
   @override
   Widget build(BuildContext context) {
@@ -23,14 +23,20 @@ class NguoncMovieDetailPageInit extends StatelessWidget {
     return MovieDetailPageWidget(
       child: Column(
         children: [
-          Hero(
-            tag: tag,
-            child: ContainerWithCachedNetworkImageProvider(
-              path: movie.thumbUrl,
-              height: 260,
-              width: sHeight,
-            ),
-          ),
+          tag == null
+              ? ContainerWithCachedNetworkImageProvider(
+                  path: movie.thumbUrl,
+                  height: 260,
+                  width: sHeight,
+                )
+              : Hero(
+                  tag: tag!,
+                  child: ContainerWithCachedNetworkImageProvider(
+                    path: movie.thumbUrl,
+                    height: 260,
+                    width: sHeight,
+                  ),
+                ),
           const ResponsiveSizedBox(
             height: 50,
             width: 50,

@@ -8,10 +8,10 @@ import 'package:smoth_movie_app/features/nguonc_movie_detail/presentation/widget
 import 'package:smoth_movie_app/features/nguonc_search_movies/domain/entity/nguonc_movie_item_entity.dart';
 
 class NguoncDetailPage extends StatelessWidget {
-  const NguoncDetailPage({super.key, required this.movie, required this.tag});
+  const NguoncDetailPage({super.key, required this.movie, this.tag});
 
   final NguoncMovieItemEntity movie;
-  final String tag;
+  final String? tag;
 
   @override
   Widget build(BuildContext context) {

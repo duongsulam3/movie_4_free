@@ -45,13 +45,13 @@ class InfiniteGridViewMovies extends StatelessWidget {
         switch (state.status) {
           case KhoPhimMoviesStateStatus.init:
             return const SizedBox.shrink();
+          case KhoPhimMoviesStateStatus.error:
+            return const ErrorPage();
           case KhoPhimMoviesStateStatus.loading:
             return MoviesGridBuilder(
               itemCount: limit,
               itemBuilder: (_, i) => const MovieItemSkeletonLoading(),
             );
-          case KhoPhimMoviesStateStatus.error:
-            return const ErrorPage();
           default:
             if (state.isEnd && state.movies.isEmpty) {
               return const KhoPhimNoMoreMovie();

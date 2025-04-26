@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smoth_movie_app/common/widgets/tab_listview_episodes_widget.dart';
 import 'package:smoth_movie_app/core/constants/app_constants.dart';
 import 'package:smoth_movie_app/core/utils/helper/helper.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/tabbar_list_item.dart';
@@ -21,9 +22,8 @@ class NguoncTabBarViewContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return TabBarView(
       children: <Widget>[
-        ListView.builder(
-          shrinkWrap: true,
-          primary: false,
+        TabListViewEpisodes(
+          sHeight: sHeight,
           itemCount: movie.episodes[0].items.length,
           itemBuilder: (context, i) => TabBarListItem(
             onTap: () => Helper.nguoncUpdateUrlEvent(
@@ -41,7 +41,7 @@ class NguoncTabBarViewContent extends StatelessWidget {
             episodeTime: movie.time,
           ),
         ),
-        NguoncSimilarMovies(category: category),
+        NguoncSimilarMovies(category: category, watchingMovieSlug: movie.slug),
       ],
     );
   }
