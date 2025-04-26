@@ -47,6 +47,7 @@ Tabs:
 # 🛠TODO
 - Handle suggestions for onChange SearchTextField
 - Search history
+- Save playing controller data when application stop
 - Dark/light mode interface
 - Optimize WebView for Android/iOS
 - Add favorite movies feature
