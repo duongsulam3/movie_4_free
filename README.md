@@ -45,11 +45,16 @@ Tabs:
 - Lottie: Animation & UI Movement Effect
 
 # 🛠TODO
-
-- Add favorite movies feature
+- Handle suggestions for onChange SearchTextField
+- Search history
+- Save playing controller data when application stop
 - Dark/light mode interface
-- Support offline downloads (if applicable)
 - Optimize WebView for Android/iOS
+- Add favorite movies feature
+- Support offline downloads (if applicable)
 
 # 📜 License
 This project is developed for educational, non-commercial purposes. All movie content comes from third-party APIs KKPhim and NguồnC.
+- Flutter version 3.29.3 on channel stable
+- Dart version 3.7.2
+- Java version 17
