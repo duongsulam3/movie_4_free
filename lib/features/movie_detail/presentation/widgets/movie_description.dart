@@ -68,8 +68,8 @@ class MovieDescription extends StatelessWidget {
           IconAndTextWidget(
             screenWidth: sWidth,
             text: movieEpisodes,
-            fontSize: 12,
             icon: CupertinoIcons.square_stack_3d_up,
+            fontSize: 12,
           ),
           IconAndTextWidget(
             screenWidth: sWidth,
