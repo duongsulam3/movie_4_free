@@ -7,7 +7,7 @@ class ErrorPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: Text('Error!!'),
+        child: Text('Có lỗi xảy ra khi tải dữ liệu!'),
       ),
     );
   }

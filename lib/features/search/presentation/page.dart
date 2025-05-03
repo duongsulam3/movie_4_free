@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smoth_movie_app/common/entity/search_tabs_item.dart';
 import 'package:smoth_movie_app/common/widgets/search_textfield_widget.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/presentation/widget/list_search_nguonc_blocbuilder.dart';
 import 'package:smoth_movie_app/features/search/presentation/widgets/list_search_content.dart';
@@ -25,17 +26,15 @@ class _SearchPageState extends State<SearchPage> {
   final searchFocusNode = FocusNode();
   final scrollController = ScrollController();
 
-  late final List<Widget> searchTabsView;
-  late final List<String> searchTabsBar;
   static const int searchTabsLength = 2;
   static const double appBarHeight = 90.0;
   static const double appBarBottomHeight = 10.0;
+  late final List<SearchTabsItem> searchTabsView;
 
   @override
   void initState() {
     searchFocusNode.requestFocus();
     initSearchTabsView();
-    initSearchTabsBar();
     super.initState();
   }
 
@@ -45,23 +44,22 @@ class _SearchPageState extends State<SearchPage> {
     super.dispose();
   }
 
-  void initSearchTabsBar() {
-    searchTabsBar = [
-      "Nguồn chính",
-      "Nguồn phụ",
-    ];
-  }
-
   void initSearchTabsView() {
     searchTabsView = [
-      ListSearchContent(
-        onSelected: (value) => searchController.text = value,
-        listSearch: widget.listSearch,
+      SearchTabsItem(
+        title: "Nguồn chính",
+        tabWidget: ListSearchContent(
+          onSelected: (value) => searchController.text = value,
+          listSearch: widget.listSearch,
+        ),
       ),
-      ListSearchNguoncContent(
-        onSelected: (value) => searchController.text = value,
-        listSearch: widget.listSearch,
-      ),
+      SearchTabsItem(
+        title: "Nguồn phụ",
+        tabWidget: ListSearchNguoncContent(
+          onSelected: (value) => searchController.text = value,
+          listSearch: widget.listSearch,
+        ),
+      )
     ];
   }
 
@@ -82,7 +80,7 @@ class _SearchPageState extends State<SearchPage> {
             preferredSize: const Size.fromHeight(appBarBottomHeight),
             child: SearchTabBar(
               searchTabsLength: searchTabsLength,
-              searchTabsBar: searchTabsBar,
+              searchTabsBar: searchTabsView.map((e) => e.title).toList(),
             ),
           ),
           title: SearchTextField(
@@ -97,7 +95,7 @@ class _SearchPageState extends State<SearchPage> {
         ),
         body: SearchPageTabsContent(
           searchTabsLength: searchTabsLength,
-          searchTabsView: searchTabsView,
+          searchTabsView: searchTabsView.map((e) => e.tabWidget).toList(),
         ),
       ),
     );
