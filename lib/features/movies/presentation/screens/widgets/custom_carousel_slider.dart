@@ -23,7 +23,8 @@ class CustomCarouselSliderWidget extends StatelessWidget {
         CarouselSlider.builder(
           itemCount: items.length,
           itemBuilder: (context, i, pageViewIndex) {
-            return CarouselSliderItem(item: items[i]);
+            final item = items[i];
+            return CarouselSliderItem(item: item);
           },
           options: CarouselOptions(
             height: sHeight / (sHeight / 400),
@@ -47,11 +48,13 @@ class CustomCarouselSliderWidget extends StatelessWidget {
                 color: Colors.green,
                 shape: BoxShape.circle,
               ),
-              child: Center(
-                child: Icon(
-                  CupertinoIcons.play_arrow_solid,
-                  color: Colors.white,
-                  size: sHeight / (sHeight / 26),
+              child: const FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Center(
+                  child: Icon(
+                    CupertinoIcons.play_arrow_solid,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
