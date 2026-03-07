@@ -11,7 +11,7 @@ class AppTheme {
     appBarTheme: const AppBarTheme(
       backgroundColor: AppColors.primaryColor,
     ),
-    tabBarTheme: const TabBarTheme(
+    tabBarTheme: const TabBarThemeData(
       indicator: BoxDecoration(color: Colors.transparent),
       dividerHeight: 0,
       unselectedLabelColor: Colors.grey,
