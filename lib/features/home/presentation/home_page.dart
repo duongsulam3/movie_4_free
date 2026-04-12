@@ -18,7 +18,7 @@ import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/categories/c
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/countries/countries_bloc.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/page.dart';
 import 'package:smoth_movie_app/core/utils/helper/helper.dart';
-import 'package:smoth_movie_app/init_dependencies.dart';
+import 'package:smoth_movie_app/core/init_dependencies.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

@@ -4,7 +4,7 @@ import 'package:smoth_movie_app/common/entity/home_main_content_grid_item.dart';
 import 'package:smoth_movie_app/features/home/home_main/widgets/title_and_gridview_list.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/recently_update_movies/recently_update_movies_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/screens/bloc_builder_recently_update_movies.dart';
-import 'package:smoth_movie_app/init_dependencies.dart';
+import 'package:smoth_movie_app/core/init_dependencies.dart';
 
 class HomeMainContent extends StatelessWidget {
   const HomeMainContent({

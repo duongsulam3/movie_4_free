@@ -13,7 +13,7 @@ import 'package:smoth_movie_app/features/kho_phim/presentation/widget/kho_phim_i
 import 'package:smoth_movie_app/features/kho_phim/presentation/widget/kho_phim_language_sub_widget.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/widget/kho_phim_years_widget.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/widget/title_and_search_icon.dart';
-import 'package:smoth_movie_app/init_dependencies.dart';
+import 'package:smoth_movie_app/core/init_dependencies.dart';
 
 class KhoPhimPage extends StatefulWidget {
   const KhoPhimPage({super.key});

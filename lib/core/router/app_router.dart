@@ -15,7 +15,7 @@ import 'package:smoth_movie_app/features/home/presentation/home_page.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/detail_page.dart';
 import 'package:smoth_movie_app/features/splash/bloc/splash_bloc.dart';
 import 'package:smoth_movie_app/features/splash/presentation/splash_page.dart';
-import 'package:smoth_movie_app/init_dependencies.dart';
+import 'package:smoth_movie_app/core/init_dependencies.dart';
 import 'package:smoth_movie_app/core/router/custom_transitions/fade_in_transition.dart';
 import 'package:smoth_movie_app/core/router/custom_transitions/slide_bottom_to_top_transition.dart';
 
