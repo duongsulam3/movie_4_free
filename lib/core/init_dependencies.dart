@@ -154,7 +154,8 @@ void _initListMovies() {
 void _initDetailMovie() {
   //** KK Phim */
   serviceLocator.registerFactory<DetailMovieRemoteDataSource>(
-    () => DetailMovieRemoteDataSourceImpl(client: serviceLocator()),
+    // Use Dio singleton for movie_detail after HTTP->Dio migration.
+    () => DetailMovieRemoteDataSourceImpl(client: serviceLocator<AppService>()),
   );
   serviceLocator.registerFactory<DetailMovieRepository>(
     () => DetailMovieRepositoryImpl(
@@ -186,7 +187,7 @@ void _initDetailMovie() {
 void _initSearch() {
   //** KK Phim Search */
   serviceLocator.registerFactory<SearchMovieRemoteDataSource>(
-    () => SearchMovieRemoteDatasourceImpl(client: serviceLocator()),
+    () => SearchMovieRemoteDatasourceImpl(client: serviceLocator<AppService>()),
   );
   serviceLocator.registerFactory<SearchMoviesRepository>(
     () => SearchMoviesRepositoryImpl(remoteDatasource: serviceLocator()),
