@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:dio/src/options.dart';
+import 'package:dio/dio.dart';
 import 'package:smoth_movie_app/core/utils/network/abstract_client/restful_api_client.dart';
 
 class AppService extends RestfulApiClient {
@@ -29,6 +29,12 @@ class AppService extends RestfulApiClient {
   @override
   Future<void> onUnauthorized(RequestOptions requestOptions) {
     // TODO: implement onUnauthorized
+    throw UnimplementedError();
+  }
+
+  @override
+  Exception handleErrors(DioException e) {
+    // TODO: implement handleErrors
     throw UnimplementedError();
   }
 }

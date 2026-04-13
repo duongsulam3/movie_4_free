@@ -25,7 +25,11 @@ abstract class AbstractDioClient {
         onResponse: (Response response, handler) {
           return handler.next(response);
         },
-        onError: (DioException e, handler) {
+        onError: (DioException e, handler) async {
+          if (shouldHandleUnauthorized(e.response?.statusCode)) {
+            await onUnauthorized(e.requestOptions);
+            return;
+          }
           return handler.next(e);
         },
       ),
@@ -41,13 +45,16 @@ abstract class AbstractDioClient {
     try {
       return await request();
     } on DioException catch (e) {
-      throw Exception(e.message);
+      // Handle errors
+      throw handleErrors(e);
     }
   }
 
   static bool shouldHandleUnauthorized(int? statusCode) {
     return statusCode == 403 || statusCode == 401;
   }
+
+  Exception handleErrors(DioException e);
 
   void cancelAllRequests() {
     cancelToken.cancel();

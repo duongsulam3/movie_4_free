@@ -12,7 +12,7 @@ Future<void> bootstrap() async {
   await initDependencies();
 
   // Initialize singleton network service
-  AppService.initialize(baseUrl: AppSecret.baseUrl);
+  AppService.initialize(baseUrl: AppSecret.baseUrl + AppSecret.apiv1Url);
 
   // Set up HTTP overrides
   HttpOverrides.global = Helper.myHttpOverrides;

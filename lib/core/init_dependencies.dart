@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:smoth_movie_app/core/utils/network/app_service.dart';
 import 'package:smoth_movie_app/features/kho_phim/data/repository/categories_repository_impl.dart';
 import 'package:smoth_movie_app/features/kho_phim/data/repository/countries_repository_impl.dart';
 import 'package:smoth_movie_app/features/kho_phim/data/repository/kho_phim_movies_repository_impl.dart';
@@ -65,6 +66,7 @@ final serviceLocator = GetIt.instance;
 
 Future<void> initDependencies() async {
   serviceLocator.registerLazySingleton(() => http.Client());
+  serviceLocator.registerLazySingleton(() => AppService.shared);
   _initListMovies();
   _initDetailMovie();
   _initSearch();
