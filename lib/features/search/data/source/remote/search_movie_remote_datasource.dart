@@ -1,10 +1,9 @@
 import 'dart:developer';
 
-import 'package:http/http.dart' as http;
 import 'package:smoth_movie_app/core/error/exception.dart';
 import 'package:smoth_movie_app/core/utils/helper/helper.dart';
+import 'package:smoth_movie_app/core/utils/network/app_service.dart';
 import 'package:smoth_movie_app/core/utils/secret/api_end_point.dart';
-import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
 import 'package:smoth_movie_app/features/movies/data/model/single_movies/movie_item_model.dart';
 
 abstract class SearchMovieRemoteDataSource {
@@ -16,7 +15,7 @@ abstract class SearchMovieRemoteDataSource {
 }
 
 class SearchMovieRemoteDatasourceImpl implements SearchMovieRemoteDataSource {
-  final http.Client client;
+  final AppService client;
   const SearchMovieRemoteDatasourceImpl({required this.client});
   @override
   Future<List<MovieItemModel>> getSearchMovies({
@@ -25,17 +24,19 @@ class SearchMovieRemoteDatasourceImpl implements SearchMovieRemoteDataSource {
     required int limit,
   }) async {
     try {
-      var url =
-          "${AppSecret.kkPhimUrl + ApiEndPoint.searchMoviesEndpoint}keyword=$query&page=$page&sort_lang=vietsub&limit=$limit";
-      final uri = Uri.parse(url);
-      final res = await client.get(uri);
-      if (res.statusCode == 200) {
-        return Helper.parseMovies(res.body);
-      } else {
-        throw const ServerException("Lỗi khi lấy dữ liệu tìm kiếm phim");
+      List<MovieItemModel> movies = [];
+      final endpoint =
+          "${ApiEndPoint.searchMoviesEndpoint}keyword=$query&page=$page&sort_lang=vietsub&limit=$limit";
+
+      final res = await client.getRequest(endpoint);
+
+      if (res.data?["status"] == "success") {
+        movies = Helper.parseMovies(res.toString());
       }
-    } catch (e, strackTrace) {
-      log("${e.toString()}: ${strackTrace.toString()}");
+
+      return movies;
+    } catch (e) {
+      log("Unexpected error on server status 200 ~ 299: $e");
       throw ServerException(e.toString());
     }
   }

@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
+import 'package:smoth_movie_app/core/error/exception.dart';
 import 'package:smoth_movie_app/core/utils/network/abstract_client/restful_api_client.dart';
 
 class AppService extends RestfulApiClient {
@@ -10,8 +9,6 @@ class AppService extends RestfulApiClient {
 
   static void initialize({required String baseUrl}) {
     _instance = AppService(baseUrl: baseUrl);
-
-    log("Network service initialized with base URL: $baseUrl");
   }
 
   static AppService get shared {
@@ -34,7 +31,6 @@ class AppService extends RestfulApiClient {
 
   @override
   Exception handleErrors(DioException e) {
-    // TODO: implement handleErrors
-    throw UnimplementedError();
+    return const ServerException("Error message");
   }
 }
