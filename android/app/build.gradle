@@ -8,8 +8,8 @@ plugins {
 android {
     namespace = "com.example.smoth_movie_app"
     compileSdk = flutter.compileSdkVersion
-//    compileSdk = 34
-    ndkVersion = flutter.ndkVersion
+   compileSdk = 34
+    // ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
