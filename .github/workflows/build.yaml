@@ -32,6 +32,9 @@ jobs:
           ENCRYPTION_KEY: ${{ secrets.ENV_DECRYPT_KEY }}
         run: |
           bash script/prepare.sh decrypt <<< "$ENCRYPTION_KEY"
+      
+      - name: Clean the Project
+        run: flutter clean
 
       - name: Install Dependencies
         run: flutter pub get
