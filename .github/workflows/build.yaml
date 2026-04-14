@@ -32,7 +32,7 @@ jobs:
           ENCRYPTION_KEY: ${{ secrets.ENV_DECRYPT_KEY }}
         run: |
           bash script/prepare.sh decrypt
-          -pass pass:"$ENCRYPTION_KEY" -pbkdf2
+          pass:"$ENCRYPTION_KEY" -pbkdf2
 
       - name: Install Dependencies
         run: flutter pub get
