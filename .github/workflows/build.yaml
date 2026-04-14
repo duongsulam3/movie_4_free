@@ -31,7 +31,7 @@ jobs:
         env:
           ENCRYPTION_KEY: ${{ secrets.ENV_DECRYPT_KEY }}
         run: |
-          bash script/prepare.sh decrypt <<< "$ENCRYPTION_KEY"
+          bash script/prepare.sh decrypt <<< "$ENCRYPTION_KEY" -pbkdf2
 
       - name: Install Dependencies
         run: flutter pub get
@@ -64,7 +64,7 @@ jobs:
         env:
           ENCRYPTION_KEY: ${{ secrets.ENV_DECRYPT_KEY }}
         run: |
-          bash script/prepare.sh decrypt -pass pass:"$ENCRYPTION_KEY" -pbkdf2
+          bash script/prepare.sh decrypt <<< "$ENCRYPTION_KEY" -pbkdf2
 
       - name: Install Dependencies
         run: |
