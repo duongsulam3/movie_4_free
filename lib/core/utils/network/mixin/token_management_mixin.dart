@@ -39,8 +39,7 @@ mixin TokenManagementMixin on AbstractDioClient {
       accessToken = tokenJson['accessToken'] ?? '';
       refreshToken = tokenJson['refreshToken'] ?? '';
       accessTokenExpired = DateTime.fromMillisecondsSinceEpoch(
-          tokenJson['accessTokenExpired'] ??
-              DateTime.now().millisecondsSinceEpoch);
+          tokenJson['accessTokenExpired'] ?? DateTime.now().millisecondsSinceEpoch);
     }
   }
 
@@ -67,7 +66,6 @@ mixin TokenManagementMixin on AbstractDioClient {
   Future<void> refreshTokenCall();
 
   bool isLoggedIn() {
-    return accessToken.isNotEmpty &&
-        DateTime.now().isBefore(accessTokenExpired);
+    return accessToken.isNotEmpty && DateTime.now().isBefore(accessTokenExpired);
   }
 }
