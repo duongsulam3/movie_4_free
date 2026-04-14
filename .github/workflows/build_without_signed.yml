@@ -4,12 +4,12 @@ on:
   push:
     branches:
       - master
-  workflow_dispatch: # Cho phép bấm chạy thủ công
+  # workflow_dispatch: # Cho phép bấm chạy thủ công
 
 jobs:
   # --- JOB BUILD ANDROID ---
   build-android:
-    name: Build Android APK (Unsigned)
+    name: Build Android APK
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -27,14 +27,14 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Decrypt .env file
+      - name: Decrypt Key
         shell: bash
         env:
           ENCRYPTION_KEY: ${{ secrets.ENV_DECRYPT_KEY }}
         run: |
           bash script/prepare.sh decrypt <<< "$ENCRYPTION_KEY"
 
-      - name: Clean and Fetch dependencies
+      - name: Clean and Fetch Dependencies
         run: |
           flutter clean
           flutter pub get
@@ -51,7 +51,7 @@ jobs:
 
   # --- JOB BUILD IOS (UNSIGNED) ---
   build-ios:
-    name: Build iOS IPA (Unsigned)
+    name: Build iOS IPA
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
@@ -62,14 +62,14 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Decrypt .env file
+      - name: Decrypt Key
         shell: bash
         env:
           ENCRYPTION_KEY: ${{ secrets.ENV_DECRYPT_KEY }}
         run: |
           bash script/prepare.sh decrypt <<< "$ENCRYPTION_KEY"
 
-      - name: Install Dependencies
+      - name: Clean and Fetch Dependencies
         run: |
           flutter pub get
           cd ios && pod install && cd ..
@@ -89,4 +89,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ios-unsigned-ipa
-          path: Flutter-Unsigned.ipa
+          path: release.ipa
