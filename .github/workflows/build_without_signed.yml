@@ -9,7 +9,7 @@ on:
 jobs:
   # --- JOB BUILD ANDROID ---
   build-android:
-    name: Build Android APK
+    name: Build Android APK (Unsigned)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -50,7 +50,7 @@ jobs:
 
   # --- JOB BUILD IOS (UNSIGNED) ---
   build-ios:
-    name: Build iOS Unsigned
+    name: Build iOS IPA (Unsigned)
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
