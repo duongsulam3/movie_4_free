@@ -6,7 +6,7 @@ import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
 import 'package:smoth_movie_app/features/nguonc_categories/domain/entity/nguonc_category_item_entity.dart';
 import 'package:smoth_movie_app/features/nguonc_categories/presentation/bloc/movies_by_category_bloc.dart';
 import 'package:smoth_movie_app/features/nguonc_categories/presentation/widget/nguonc_movies_by_cate.dart';
-import 'package:smoth_movie_app/init_dependencies.dart';
+import 'package:smoth_movie_app/core/init_dependencies.dart';
 
 class NguoncSimilarMovies extends StatefulWidget {
   const NguoncSimilarMovies({

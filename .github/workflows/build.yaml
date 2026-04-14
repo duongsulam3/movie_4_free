@@ -1,0 +1,89 @@
+name: Mobile-Build-Unsigned
+
+on:
+  # push:
+  #   branches:
+  #     - production
+  workflow_dispatch: # Cho phép bấm chạy thủ công
+
+jobs:
+  # --- JOB BUILD ANDROID ---
+  build-android:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Decrypt .env file
+        shell: bash
+        env:
+          ENCRYPTION_KEY: ${{ secrets.ENV_DECRYPT_KEY }}
+        run: |
+          bash script/prepare.sh decrypt <<< "$ENCRYPTION_KEY"
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Build APK
+        # Build release để không cần cấu hình keystore
+        run: flutter build apk --release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+  # --- JOB BUILD IOS (UNSIGNED) ---
+  build-ios:
+    name: 🍎 Build iOS Unsigned
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Decrypt .env file
+        shell: bash
+        env:
+          ENCRYPTION_KEY: ${{ secrets.ENV_DECRYPT_KEY }}
+        run: |
+          bash script/prepare.sh decrypt <<< "$ENCRYPTION_KEY"
+
+      - name: Install Dependencies
+        run: |
+          flutter pub get
+          cd ios && pod install && cd ..
+
+      - name: Build iOS Frameworks
+        # Chỉ build ra cấu trúc app, không thực hiện ký danh
+        run: flutter build ios --release --no-codesign
+
+      - name: Package "Fake" IPA
+        # Đây là cách cậu đã làm, dùng để lưu trữ hoặc cài máy Jailbreak
+        run: |
+          mkdir -p Payload
+          mv build/ios/iphoneos/Runner.app Payload/
+          zip -r Flutter-Unsigned.ipa Payload
+
+      - name: Upload Unsigned IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-unsigned-ipa
+          path: Flutter-Unsigned.ipa
