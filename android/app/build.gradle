@@ -9,7 +9,7 @@ plugins {
 android {
     namespace = "com.example.smoth_movie_app"
     // compileSdk = flutter.compileSdkVersion
-    compileSdk = 34
+    compileSdk = 35
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -29,7 +29,7 @@ android {
         // minSdk = flutter.minSdkVersion
         // targetSdk = flutter.targetSdkVersion
         minSdk = 21
-        targetSdk = 34
+        targetSdk = 35
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
