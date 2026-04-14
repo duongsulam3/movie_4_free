@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/features/home/presentation/widgets/row_title_and_more.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies/movies_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/screens/bloc_builder_gridview.dart';
-import 'package:smoth_movie_app/init_dependencies.dart';
+import 'package:smoth_movie_app/core/init_dependencies.dart';
 
 class TitleAndGridViewList extends StatelessWidget {
   const TitleAndGridViewList({

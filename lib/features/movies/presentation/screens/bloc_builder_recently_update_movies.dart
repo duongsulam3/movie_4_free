@@ -6,7 +6,7 @@ import 'package:smoth_movie_app/core/utils/enum/movies_state_status.dart';
 import 'package:smoth_movie_app/common/screens/error_page.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/recently_update_movies/recently_update_movies_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/custom_carousel_slider.dart';
-import 'package:smoth_movie_app/init_dependencies.dart';
+import 'package:smoth_movie_app/core/init_dependencies.dart';
 
 class BlocBuilderRecentlyUpdateMovies extends StatelessWidget {
   const BlocBuilderRecentlyUpdateMovies({super.key});

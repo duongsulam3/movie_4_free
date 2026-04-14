@@ -4,7 +4,7 @@ import 'package:smoth_movie_app/features/movies/presentation/bloc/movies/movies_
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies_sortby_time/movies_sort_by_time_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/screens/bloc_builder_movies_sort_by_time.dart';
 import 'package:smoth_movie_app/features/movies/presentation/screens/infinite_gridview_widget.dart';
-import 'package:smoth_movie_app/init_dependencies.dart';
+import 'package:smoth_movie_app/core/init_dependencies.dart';
 
 class CategoriesTab extends StatefulWidget {
   const CategoriesTab({
