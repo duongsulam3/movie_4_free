@@ -1,7 +1,5 @@
 import 'package:dio/dio.dart';
 
-import '../types.dart';
-
 abstract class AbstractDioClient {
   final Dio client;
   final CancelToken cancelToken = CancelToken();
@@ -40,8 +38,8 @@ abstract class AbstractDioClient {
   void applyAuthentication(RequestOptions options);
   Future<void> onUnauthorized(RequestOptions requestOptions);
 
-  Future<DioJsonResponse> executeRequest(
-    Future<DioJsonResponse> Function() request,
+  Future<Response<T>> executeRequest<T>(
+    Future<Response<T>> Function() request,
   ) async {
     try {
       return await request();

@@ -6,7 +6,7 @@ import 'abtract_dio_client.dart';
 abstract class RestfulApiClient extends AbstractDioClient {
   RestfulApiClient({required super.baseUrl});
 
-  Future<DioJsonResponse> getRequest(
+  Future<Response<T>> getRequest<T>(
     String endpoint, {
     Json? queryParameters,
     Options? options,
@@ -18,7 +18,7 @@ abstract class RestfulApiClient extends AbstractDioClient {
         ));
   }
 
-  Future<DioJsonResponse> postRequest(
+  Future<Response<T>> postRequest<T>(
     String endpoint, {
     Json? data,
     Json? queryParameters,
@@ -32,7 +32,7 @@ abstract class RestfulApiClient extends AbstractDioClient {
         ));
   }
 
-  Future<DioJsonResponse> putRequest(
+  Future<Response<T>> putRequest<T>(
     String endpoint, {
     Json? data,
     Json? queryParameters,
@@ -46,7 +46,7 @@ abstract class RestfulApiClient extends AbstractDioClient {
         ));
   }
 
-  Future<DioJsonResponse> deleteRequest(
+  Future<Response<T>> deleteRequest<T>(
     String endpoint, {
     Json? data,
     Json? queryParameters,
