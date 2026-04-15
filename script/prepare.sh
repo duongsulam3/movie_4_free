@@ -37,7 +37,7 @@ encrypt_file() {
 
     get_encryption_key
     echo "Encrypting $CONFIG_FILE to $ENCRYPTED_FILE..."
-    openssl enc -aes-256-cbc -salt -in "$CONFIG_FILE" -out "$ENCRYPTED_FILE" -pass pass:"$ENCRYPTION_KEY"
+    openssl enc -aes-256-cbc -salt -pbkdf2 -iter 100000 -in "$CONFIG_FILE" -out "$ENCRYPTED_FILE" -pass pass:"$ENCRYPTION_KEY"
     if [ $? -eq 0 ]; then
         echo "Encryption successful. $ENCRYPTED_FILE created."
     else
@@ -55,7 +55,7 @@ decrypt_file() {
 
     get_encryption_key
     echo "Decrypting $ENCRYPTED_FILE to $CONFIG_FILE..."
-    openssl enc -aes-256-cbc -d -in "$ENCRYPTED_FILE" -out "$CONFIG_FILE" -pass pass:"$ENCRYPTION_KEY"
+    openssl enc -aes-256-cbc -d -pbkdf2 -iter 100000 -in "$ENCRYPTED_FILE" -out "$CONFIG_FILE" -pass pass:"$ENCRYPTION_KEY"
     if [ $? -eq 0 ]; then
         echo "Decryption successful. $CONFIG_FILE created."
     else
