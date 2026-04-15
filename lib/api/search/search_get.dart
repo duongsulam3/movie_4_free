@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:smoth_movie_app/core/utils/network/app_service.dart';
 import 'package:smoth_movie_app/core/utils/network/types.dart';
 import 'package:smoth_movie_app/core/utils/secret/api_end_point.dart';
@@ -8,7 +7,7 @@ final class SearchGETAPI {
   static const String apiVersion = AppSecret.apiv1Url;
   static const String endpoint = ApiEndPoint.searchMoviesEndpoint;
 
-  static Future<Response<Json>> apiSearchGETMovies({
+  static Future<DioJsonResponse> apiSearchGETMovies({
     required AppService client,
     required String query,
     int? page = 1,

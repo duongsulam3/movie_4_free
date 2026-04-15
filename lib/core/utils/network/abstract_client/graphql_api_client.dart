@@ -1,11 +1,12 @@
 import 'package:dio/dio.dart';
-import 'package:smoth_movie_app/core/utils/network/abstract_client/abtract_dio_client.dart';
-import 'package:smoth_movie_app/core/utils/network/types.dart';
+
+import '../types.dart';
+import 'abtract_dio_client.dart';
 
 abstract class GraphqlApiClient extends AbstractDioClient {
   GraphqlApiClient({required super.baseUrl});
 
-  Future<Response<Json>> query(
+  Future<DioJsonResponse> query(
     String query, {
     Json? variables,
     Options? options,
@@ -17,7 +18,7 @@ abstract class GraphqlApiClient extends AbstractDioClient {
         ));
   }
 
-  Future<Response<Json>> mutate(
+  Future<DioJsonResponse> mutate(
     String mutation, {
     Json? variables,
     Options? options,

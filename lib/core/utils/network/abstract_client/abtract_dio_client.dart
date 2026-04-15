@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:smoth_movie_app/core/utils/network/types.dart';
+
+import '../types.dart';
 
 abstract class AbstractDioClient {
   final Dio client;
@@ -39,8 +40,8 @@ abstract class AbstractDioClient {
   void applyAuthentication(RequestOptions options);
   Future<void> onUnauthorized(RequestOptions requestOptions);
 
-  Future<Response<Json>> executeRequest(
-    Future<Response<Json>> Function() request,
+  Future<DioJsonResponse> executeRequest(
+    Future<DioJsonResponse> Function() request,
   ) async {
     try {
       return await request();
