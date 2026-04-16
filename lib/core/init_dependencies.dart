@@ -141,7 +141,9 @@ void _initListMovies() {
 
   //** Nguồn C Movies By Category */
   serviceLocator.registerFactory<NguoncMoviesByCategoryRemoteDatasource>(
-    () => NguoncMoviesByCategoryRemoteDatasourceImpl(serviceLocator()),
+    () => NguoncMoviesByCategoryRemoteDatasourceImpl(
+      client: serviceLocator<AppService>(),
+    ),
   );
   serviceLocator.registerFactory<NguoncMoviesByCateRepository>(
     () => NguoncMoviesByCateRepositoryImpl(serviceLocator()),

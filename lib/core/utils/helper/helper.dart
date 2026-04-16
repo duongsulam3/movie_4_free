@@ -250,9 +250,10 @@ class Helper {
 
   //! NGUỒN C MOVIES BY CATEGORY
   static List<NguoncMoviesByCategoryItemModel> parseNguoncMoviesByCategory(
-    String json,
+    dynamic json,
   ) {
-    final jsonResponse = jsonDecode(json)["items"] as List;
+    final rawJson = _toJsonString(json);
+    final jsonResponse = jsonDecode(rawJson)["items"] as List;
     return jsonResponse
         .map((e) => NguoncMoviesByCategoryItemModel.fromJson(e))
         .toList();
