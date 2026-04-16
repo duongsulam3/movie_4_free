@@ -22,6 +22,7 @@ abstract class AbstractDioClient {
           return handler.next(options);
         },
         onResponse: (Response response, handler) {
+          debugStatusLog(response);
           return handler.next(response);
         },
         onError: (DioException e, handler) async {
@@ -54,6 +55,8 @@ abstract class AbstractDioClient {
   }
 
   Exception handleErrors(DioException e);
+
+  void debugStatusLog(Response response);
 
   void cancelAllRequests() {
     cancelToken.cancel();

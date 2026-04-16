@@ -215,7 +215,7 @@ void _initSearch() {
 void _initKhoPhimFeature() {
   //** Categories */
   serviceLocator.registerFactory<CategoriesRemoteDataSource>(
-    () => CategoriesRemoteDataSourceImpl(client: serviceLocator()),
+    () => CategoriesRemoteDataSourceImpl(client: serviceLocator<AppService>()),
   );
   serviceLocator.registerFactory<CategoriesRepository>(
     () => CategoriesRepositoryImpl(serviceLocator()),
@@ -226,7 +226,7 @@ void _initKhoPhimFeature() {
 
   //** Countries */
   serviceLocator.registerFactory<CountriesRemoteDataSource>(
-    () => CountriesRemoteDataSourceImpl(client: serviceLocator()),
+    () => CountriesRemoteDataSourceImpl(client: serviceLocator<AppService>()),
   );
   serviceLocator.registerFactory<CountriesRepository>(
     () => CountriesRepositoryImpl(serviceLocator()),
@@ -237,7 +237,7 @@ void _initKhoPhimFeature() {
 
   //** Kho Phim Movies */
   serviceLocator.registerFactory<KhoPhimMoviesRemoteDataSource>(
-    () => KhoPhimMoviesRemoteDataSourceImpl(serviceLocator()),
+    () => KhoPhimMoviesRemoteDataSourceImpl(serviceLocator<AppService>()),
   );
   serviceLocator.registerFactory<KhoPhimMoviesRepository>(
     () => KhoPhimMoviesRepositoryImpl(serviceLocator()),

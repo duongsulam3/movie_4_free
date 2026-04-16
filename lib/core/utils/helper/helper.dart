@@ -188,15 +188,17 @@ class Helper {
   }
 
   //! KHO PHIM -> COUNTRIES
-  static List<KhoPhimCountryModel> parseKhoPhimCoutryJsonToList(String json) {
-    final jsonResponse = jsonDecode(json) as List;
+  static List<KhoPhimCountryModel> parseKhoPhimCoutryJsonToList(dynamic json) {
+    final rawJson = json is String ? json : jsonEncode(json);
+    final jsonResponse = jsonDecode(rawJson) as List;
     return jsonResponse.map((e) => KhoPhimCountryModel.fromJson(e)).toList();
   }
 
   //! KHO PHIM -> CATEGORIES
-  static List<KhoPhimCategoryModel> parseKhoPhimCateJsonToList(String json) {
+  static List<KhoPhimCategoryModel> parseKhoPhimCateJsonToList(dynamic json) {
     List<KhoPhimCategoryModel> cate = const [];
-    final jsonResponse = jsonDecode(json) as List;
+    final rawJson = json is String ? json : jsonEncode(json);
+    final jsonResponse = jsonDecode(rawJson) as List;
     cate = jsonResponse.map((e) => KhoPhimCategoryModel.fromJson(e)).toList();
     cate.insert(
       0,
@@ -210,8 +212,9 @@ class Helper {
   }
 
   //! KHO PHIM MOVIES
-  static List<MovieItemModel> parseKhoPhimMovies(String json) {
-    final jsonResponse = jsonDecode(json)["data"]["items"] as List;
+  static List<MovieItemModel> parseKhoPhimMovies(dynamic json) {
+    final rawJson = json is String ? json : jsonEncode(json);
+    final jsonResponse = jsonDecode(rawJson)["data"]["items"] as List;
     return jsonResponse.map((e) => MovieItemModel.fromJson(e)).toList();
   }
 

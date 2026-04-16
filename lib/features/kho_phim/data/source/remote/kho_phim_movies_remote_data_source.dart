@@ -1,11 +1,9 @@
-import 'dart:developer';
-
 import 'package:smoth_movie_app/core/error/exception.dart';
 import 'package:smoth_movie_app/core/utils/helper/helper.dart';
+import 'package:smoth_movie_app/core/utils/network/app_service.dart';
 import 'package:smoth_movie_app/core/utils/secret/api_end_point.dart';
 import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
 import 'package:smoth_movie_app/features/movies/data/model/single_movies/movie_item_model.dart';
-import 'package:http/http.dart' as http;
 
 abstract interface class KhoPhimMoviesRemoteDataSource {
   Future<List<MovieItemModel>> getKhoPhimMovies({
@@ -22,7 +20,7 @@ abstract interface class KhoPhimMoviesRemoteDataSource {
 
 class KhoPhimMoviesRemoteDataSourceImpl
     implements KhoPhimMoviesRemoteDataSource {
-  final http.Client client;
+  final AppService client;
   const KhoPhimMoviesRemoteDataSourceImpl(this.client);
   @override
   Future<List<MovieItemModel>> getKhoPhimMovies({
@@ -36,16 +34,12 @@ class KhoPhimMoviesRemoteDataSourceImpl
     required int limit,
   }) async {
     try {
-      var url =
-          "${AppSecret.kkPhimUrl}${ApiEndPoint.countriesEndpoint}/$countrySlug?page=$page&sort_field=$sortField&sort_type=$sortType&sort_lang=$lang&category=$categorySlug&year=$year&limit=$limit";
-      final uri = Uri.parse(url);
-      log(url);
-      final res = await client.get(uri);
-      if (res.statusCode == 200) {
-        return Helper.parseKhoPhimMovies(res.body);
-      } else {
-        throw const ServerException("Lỗi khi lấy dữ liệu phim từ server");
-      }
+      final url =
+          "${AppSecret.apiv1Url}${ApiEndPoint.countriesEndpoint}/$countrySlug?page=$page&sort_field=$sortField&sort_type=$sortType&sort_lang=$lang&category=$categorySlug&year=$year&limit=$limit";
+
+      // Full URL is passed intentionally because Kho Phim uses another domain.
+      final res = await client.getRequest(url);
+      return Helper.parseKhoPhimMovies(res.data);
     } catch (e) {
       throw ServerException(e.toString());
     }
