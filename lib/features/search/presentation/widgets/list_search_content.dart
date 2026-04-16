@@ -36,9 +36,10 @@ class ListSearchContent extends StatelessWidget {
           previous.suggestions != current.suggestions ||
           previous.isSuggestionLoading != current.isSuggestionLoading,
       builder: (context, state) {
-        final shouldShowSuggestions = state.typingQuery.isNotEmpty;
+        final shouldShowSuggestions = state.typingQuery.trim().isNotEmpty &&
+            state.typingQuery.trim() != state.query.trim();
 
-        if (state.status == SearchPageStatus.init && shouldShowSuggestions) {
+        if (shouldShowSuggestions) {
           // Replace the init content with suggestions while the user is typing.
           return SearchSuggestionDropdown(
             suggestions: state.suggestions,
