@@ -242,8 +242,9 @@ class Helper {
   }
 
   //! NGUỒN C MOVIE DETAIL
-  static NguoncMovieModel parseNguoncMovieDetail(String json) {
-    final jsonResponse = jsonDecode(json)['movie'];
+  static NguoncMovieModel parseNguoncMovieDetail(dynamic json) {
+    final rawJson = _toJsonString(json);
+    final jsonResponse = jsonDecode(rawJson)['movie'];
     return NguoncMovieModel.fromJson(jsonResponse);
   }
 

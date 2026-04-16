@@ -172,7 +172,9 @@ void _initDetailMovie() {
 
   //** Nguồn C */
   serviceLocator.registerFactory<NguoncMovieDetailRemoteDatasource>(
-    () => NguoncMovieDetailRemoteDatasourceImpl(serviceLocator()),
+    () => NguoncMovieDetailRemoteDatasourceImpl(
+      client: serviceLocator<AppService>(),
+    ),
   );
   serviceLocator.registerFactory<NguoncMovieDetailRepository>(
     () => NguoncMovieDetailRepositoryImpl(serviceLocator()),

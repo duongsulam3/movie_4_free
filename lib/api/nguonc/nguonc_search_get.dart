@@ -2,8 +2,6 @@ import 'package:smoth_movie_app/core/utils/network/app_service.dart';
 import 'package:smoth_movie_app/core/utils/network/types.dart';
 import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
 
-/// API layer for Nguồn C search.
-/// Keep URL construction out of the data layer.
 final class NguonCSearchGETAPI {
   static Future<DioJsonResponse> apiNguonCSearchGETFilms({
     required AppService client,
@@ -16,4 +14,3 @@ final class NguonCSearchGETAPI {
     return client.getRequest(url);
   }
 }
-

@@ -1,9 +1,8 @@
 import 'package:smoth_movie_app/core/error/exception.dart';
 import 'package:smoth_movie_app/core/utils/helper/helper.dart';
-import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
+import 'package:smoth_movie_app/api/nguonc/nguonc_movie_detail_get.dart';
+import 'package:smoth_movie_app/core/utils/network/app_service.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/data/model/nguonc_movie_model.dart';
-
-import 'package:http/http.dart' as http;
 
 abstract interface class NguoncMovieDetailRemoteDatasource {
   Future<NguoncMovieModel> getNguoncMovieDetail({required String slug});
@@ -11,19 +10,19 @@ abstract interface class NguoncMovieDetailRemoteDatasource {
 
 class NguoncMovieDetailRemoteDatasourceImpl
     implements NguoncMovieDetailRemoteDatasource {
-  final http.Client client;
-  const NguoncMovieDetailRemoteDatasourceImpl(this.client);
+  final AppService client;
+  const NguoncMovieDetailRemoteDatasourceImpl({required this.client});
   @override
-  Future<NguoncMovieModel> getNguoncMovieDetail({required String slug}) async {
+  Future<NguoncMovieModel> getNguoncMovieDetail({
+    required String slug,
+  }) async {
     try {
-      var url = "${AppSecret.nguoncPhimUrl}/film/$slug";
-      final uri = Uri.parse(url);
-      final res = await client.get(uri);
-      if (res.statusCode == 200) {
-        return Helper.parseNguoncMovieDetail(res.body);
-      } else {
-        throw ServerException("Lỗi khi lấy dữ liệu: chi tiết phim: $slug");
-      }
+      final res = await NguonCMovieDetailGETAPI.apiNguonCGETMovieDetail(
+        client: client,
+        slug: slug,
+      );
+
+      return Helper.parseNguoncMovieDetail(res.data);
     } catch (e) {
       throw ServerException(e.toString());
     }
