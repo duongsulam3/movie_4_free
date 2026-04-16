@@ -14,7 +14,7 @@ final class SearchGETAPI {
     int? limit = 10,
     String? sortLang = "vietsub",
   }) async {
-    return client.getRequest(
-        '$apiVersion${endpoint}keyword=$query&page=$page&sort_lang=$sortLang&limit=$limit');
+    final params = 'keyword=$query&page=$page&sort_lang=$sortLang&limit=$limit';
+    return client.getRequest(apiVersion + endpoint + params);
   }
 }
