@@ -1,7 +1,7 @@
+import 'package:smoth_movie_app/api/kho_phim/kho_phim_get.dart';
 import 'package:smoth_movie_app/core/error/exception.dart';
 import 'package:smoth_movie_app/core/utils/helper/helper.dart';
 import 'package:smoth_movie_app/core/utils/network/app_service.dart';
-import 'package:smoth_movie_app/core/utils/secret/api_end_point.dart';
 import 'package:smoth_movie_app/features/kho_phim/data/model/kho_phim_category_model.dart';
 
 abstract interface class CategoriesRemoteDataSource {
@@ -14,7 +14,7 @@ class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
   @override
   Future<List<KhoPhimCategoryModel>> getCategories() async {
     try {
-      final res = await client.getRequest(ApiEndPoint.categoriesEndpoint);
+      final res = await KhoPhimGETAPI.apiKhoPhimGETCategories(client: client);
 
       return Helper.parseKhoPhimCateJsonToList(res.data);
     } catch (e) {

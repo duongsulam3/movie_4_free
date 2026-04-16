@@ -1,8 +1,7 @@
 import 'package:smoth_movie_app/core/error/exception.dart';
 import 'package:smoth_movie_app/core/utils/helper/helper.dart';
 import 'package:smoth_movie_app/core/utils/network/app_service.dart';
-import 'package:smoth_movie_app/core/utils/secret/api_end_point.dart';
-import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
+import 'package:smoth_movie_app/api/kho_phim/kho_phim_get.dart';
 import 'package:smoth_movie_app/features/movies/data/model/single_movies/movie_item_model.dart';
 
 abstract interface class KhoPhimMoviesRemoteDataSource {
@@ -34,11 +33,18 @@ class KhoPhimMoviesRemoteDataSourceImpl
     required int limit,
   }) async {
     try {
-      final url =
-          "${AppSecret.apiv1Url}${ApiEndPoint.countriesEndpoint}/$countrySlug?page=$page&sort_field=$sortField&sort_type=$sortType&sort_lang=$lang&category=$categorySlug&year=$year&limit=$limit";
+      final res = await KhoPhimGETAPI.apiKhoPhimGETMovies(
+        client: client,
+        countrySlug: countrySlug,
+        page: page,
+        sortField: sortField,
+        sortType: sortType,
+        lang: lang,
+        categorySlug: categorySlug,
+        year: year,
+        limit: limit,
+      );
 
-      // Full URL is passed intentionally because Kho Phim uses another domain.
-      final res = await client.getRequest(url);
       return Helper.parseKhoPhimMovies(res.data);
     } catch (e) {
       throw ServerException(e.toString());
