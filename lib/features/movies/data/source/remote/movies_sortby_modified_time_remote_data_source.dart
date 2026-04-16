@@ -1,8 +1,8 @@
 import 'package:smoth_movie_app/core/error/exception.dart';
 import 'package:smoth_movie_app/core/utils/helper/helper.dart';
-import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
+import 'package:smoth_movie_app/api/movies/movies_get.dart';
+import 'package:smoth_movie_app/core/utils/network/app_service.dart';
 import 'package:smoth_movie_app/features/movies/data/model/single_movies/movie_item_model.dart';
-import 'package:http/http.dart' as http;
 
 abstract interface class MoviesSortbyModifiedTimeRemoteDataSource {
   Future<List<MovieItemModel>> getMovies({
@@ -15,7 +15,7 @@ abstract interface class MoviesSortbyModifiedTimeRemoteDataSource {
 
 class MoviesSortbyModifiedTimeRemoteDataSourceImpl
     implements MoviesSortbyModifiedTimeRemoteDataSource {
-  final http.Client client;
+  final AppService client;
   const MoviesSortbyModifiedTimeRemoteDataSourceImpl({required this.client});
   @override
   Future<List<MovieItemModel>> getMovies({
@@ -25,17 +25,14 @@ class MoviesSortbyModifiedTimeRemoteDataSourceImpl
     required String cateName,
   }) async {
     try {
-      var url =
-          "${AppSecret.kkPhimUrl}/danh-sach/$cateName?page=$page&sortfield=$sortfield&limit=$limit";
-      final uri = Uri.parse(url);
-      final res = await client.get(uri);
-      if (res.statusCode == 200) {
-        return Helper.parseMovies(res.body);
-      } else {
-        throw ServerException(
-          "Lỗi khi lấy dữ liệu phim $cateName mới cập nhật",
-        );
-      }
+      final res = await MoviesGETAPI.apiMoviesSortbyModifiedTimeGET(
+        client: client,
+        page: page,
+        limit: limit,
+        sortfield: sortfield,
+        cateName: cateName,
+      );
+      return Helper.parseMovies(res.data);
     } catch (e) {
       throw ServerException(e.toString());
     }

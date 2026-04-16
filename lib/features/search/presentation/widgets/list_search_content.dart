@@ -9,6 +9,7 @@ import 'package:smoth_movie_app/core/utils/enum/search/search_page_status.dart';
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
 import 'package:smoth_movie_app/features/search/presentation/widgets/search_init_widget.dart';
 import 'package:smoth_movie_app/features/search/presentation/widgets/search_item_widget.dart';
+import 'package:smoth_movie_app/features/search/presentation/widgets/search_suggestion_dropdown.dart';
 import 'package:smoth_movie_app/core/utils/helper/helper.dart';
 import 'package:smoth_movie_app/core/router/app_router.dart';
 
@@ -16,9 +17,11 @@ class ListSearchContent extends StatelessWidget {
   const ListSearchContent({
     super.key,
     required this.onSelected,
+    required this.onSuggestionSelected,
     required this.listSearch,
   });
   final ValueChanged<String> onSelected;
+  final ValueChanged<String> onSuggestionSelected;
   final List<String> listSearch;
 
   @override
@@ -26,8 +29,25 @@ class ListSearchContent extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     return BlocBuilder<SearchBloc, SearchState>(
-      buildWhen: (previous, current) => previous.movies != current.movies,
+      buildWhen: (previous, current) =>
+          previous.movies != current.movies ||
+          previous.status != current.status ||
+          previous.typingQuery != current.typingQuery ||
+          previous.suggestions != current.suggestions ||
+          previous.isSuggestionLoading != current.isSuggestionLoading,
       builder: (context, state) {
+        final shouldShowSuggestions = state.typingQuery.trim().isNotEmpty &&
+            state.typingQuery.trim() != state.query.trim();
+
+        if (shouldShowSuggestions) {
+          // Replace the init content with suggestions while the user is typing.
+          return SearchSuggestionDropdown(
+            suggestions: state.suggestions,
+            isLoading: state.isSuggestionLoading,
+            onSelected: onSuggestionSelected,
+          );
+        }
+
         switch (state.status) {
           case SearchPageStatus.init:
             return SearchInitWidget(

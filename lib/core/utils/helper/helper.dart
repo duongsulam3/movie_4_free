@@ -23,6 +23,7 @@ import 'package:smoth_movie_app/features/nguonc_movie_detail/domain/entity/nguon
 import 'package:smoth_movie_app/features/nguonc_movie_detail/presentation/bloc/nguonc_movie_detail_bloc.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/data/model/nguonc_movie_item_model.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/presentation/bloc/nguonc_search_bloc.dart';
+import 'package:smoth_movie_app/features/search/data/models/search_suggestion_model.dart';
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
 import 'package:smoth_movie_app/features/home/presentation/bloc/bottom_nav/bottom_nav_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies/movies_bloc.dart';
@@ -188,15 +189,17 @@ class Helper {
   }
 
   //! KHO PHIM -> COUNTRIES
-  static List<KhoPhimCountryModel> parseKhoPhimCoutryJsonToList(String json) {
-    final jsonResponse = jsonDecode(json) as List;
+  static List<KhoPhimCountryModel> parseKhoPhimCoutryJsonToList(dynamic json) {
+    final rawJson = _toJsonString(json);
+    final jsonResponse = jsonDecode(rawJson) as List;
     return jsonResponse.map((e) => KhoPhimCountryModel.fromJson(e)).toList();
   }
 
   //! KHO PHIM -> CATEGORIES
-  static List<KhoPhimCategoryModel> parseKhoPhimCateJsonToList(String json) {
+  static List<KhoPhimCategoryModel> parseKhoPhimCateJsonToList(dynamic json) {
     List<KhoPhimCategoryModel> cate = const [];
-    final jsonResponse = jsonDecode(json) as List;
+    final rawJson = _toJsonString(json);
+    final jsonResponse = jsonDecode(rawJson) as List;
     cate = jsonResponse.map((e) => KhoPhimCategoryModel.fromJson(e)).toList();
     cate.insert(
       0,
@@ -210,42 +213,63 @@ class Helper {
   }
 
   //! KHO PHIM MOVIES
-  static List<MovieItemModel> parseKhoPhimMovies(String json) {
-    final jsonResponse = jsonDecode(json)["data"]["items"] as List;
+  static List<MovieItemModel> parseKhoPhimMovies(dynamic json) {
+    final rawJson = _toJsonString(json);
+    final jsonResponse = jsonDecode(rawJson)["data"]["items"] as List;
     return jsonResponse.map((e) => MovieItemModel.fromJson(e)).toList();
   }
 
   //! MOVIES
-  static List<MovieItemModel> parseMovies(String json) {
-    final jsonResponse = jsonDecode(json)["data"]["items"] as List;
+  static List<MovieItemModel> parseMovies(dynamic json) {
+    final rawJson = _toJsonString(json);
+    final jsonResponse = jsonDecode(rawJson)["data"]["items"] as List;
     return jsonResponse.map((e) => MovieItemModel.fromJson(e)).toList();
   }
 
+  static List<SearchSuggestionModel> parseSearchSuggestions(dynamic json) {
+    final rawJson = _toJsonString(json);
+    final jsonResponse = jsonDecode(rawJson)["data"]["items"] as List;
+    return jsonResponse
+        .map((e) => SearchSuggestionModel.fromJson(e))
+        .where((e) => e.name.trim().isNotEmpty)
+        .fold<List<SearchSuggestionModel>>([], (previousValue, element) {
+      final isDuplicated = previousValue.any(
+        (item) => item.name.toLowerCase() == element.name.toLowerCase(),
+      );
+      if (!isDuplicated) previousValue.add(element);
+      return previousValue;
+    });
+  }
+
   //! RECENTLY UPDATED MOVIES
-  static List<RecentlyUpdateListItemModel> parseRecentlyMovies(String json) {
-    final jsonResponse = jsonDecode(json)['items'] as List;
+  static List<RecentlyUpdateListItemModel> parseRecentlyMovies(dynamic json) {
+    final rawJson = _toJsonString(json);
+    final jsonResponse = jsonDecode(rawJson)['items'] as List;
     return jsonResponse
         .map((e) => RecentlyUpdateListItemModel.fromJson(e))
         .toList();
   }
 
   //! NGUỒN C SEARCH
-  static List<NguoncMovieItemModel> parseNguoncSearchMovies(String json) {
-    final jsonResponse = jsonDecode(json)['items'] as List;
+  static List<NguoncMovieItemModel> parseNguoncSearchMovies(dynamic json) {
+    final rawJson = _toJsonString(json);
+    final jsonResponse = jsonDecode(rawJson)['items'] as List;
     return jsonResponse.map((e) => NguoncMovieItemModel.fromJson(e)).toList();
   }
 
   //! NGUỒN C MOVIE DETAIL
-  static NguoncMovieModel parseNguoncMovieDetail(String json) {
-    final jsonResponse = jsonDecode(json)['movie'];
+  static NguoncMovieModel parseNguoncMovieDetail(dynamic json) {
+    final rawJson = _toJsonString(json);
+    final jsonResponse = jsonDecode(rawJson)['movie'];
     return NguoncMovieModel.fromJson(jsonResponse);
   }
 
   //! NGUỒN C MOVIES BY CATEGORY
   static List<NguoncMoviesByCategoryItemModel> parseNguoncMoviesByCategory(
-    String json,
+    dynamic json,
   ) {
-    final jsonResponse = jsonDecode(json)["items"] as List;
+    final rawJson = _toJsonString(json);
+    final jsonResponse = jsonDecode(rawJson)["items"] as List;
     return jsonResponse
         .map((e) => NguoncMoviesByCategoryItemModel.fromJson(e))
         .toList();
@@ -256,5 +280,11 @@ class Helper {
     final jsonResponse = jsonDecode(json);
     return MovieDetailModel.fromJson(jsonResponse);
   }
+
   //** FUNCTIONS */
+  /// Ensures we always return JSON text for helpers expecting `String json`.
+  static String _toJsonString(dynamic data) {
+    if (data is String) return data;
+    return jsonEncode(data);
+  }
 }

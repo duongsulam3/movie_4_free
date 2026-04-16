@@ -1,8 +1,7 @@
-import 'package:http/http.dart' as http;
+import 'package:smoth_movie_app/api/kho_phim/kho_phim_get.dart';
 import 'package:smoth_movie_app/core/error/exception.dart';
 import 'package:smoth_movie_app/core/utils/helper/helper.dart';
-import 'package:smoth_movie_app/core/utils/secret/api_end_point.dart';
-import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
+import 'package:smoth_movie_app/core/utils/network/app_service.dart';
 import 'package:smoth_movie_app/features/kho_phim/data/model/kho_phim_category_model.dart';
 
 abstract interface class CategoriesRemoteDataSource {
@@ -10,19 +9,14 @@ abstract interface class CategoriesRemoteDataSource {
 }
 
 class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
-  final http.Client client;
+  final AppService client;
   const CategoriesRemoteDataSourceImpl({required this.client});
   @override
   Future<List<KhoPhimCategoryModel>> getCategories() async {
     try {
-      var url = AppSecret.baseUrl + ApiEndPoint.categoriesEndpoint;
-      var uri = Uri.parse(url);
-      final res = await client.get(uri);
-      if (res.statusCode == 200) {
-        return Helper.parseKhoPhimCateJsonToList(res.body);
-      } else {
-        throw const ServerException("Lỗi khi lấy danh sách thể loại");
-      }
+      final res = await KhoPhimGETAPI.apiKhoPhimGETCategories(client: client);
+
+      return Helper.parseKhoPhimCateJsonToList(res.data);
     } catch (e) {
       throw ServerException(e.toString());
     }

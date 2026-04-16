@@ -9,5 +9,9 @@ abstract class SearchState with _$SearchState {
     @Default("") String query,
     @Default([]) List<MovieItemEntity> movies,
     @Default(false) bool isEnd,
+    @Default("") String typingQuery,
+    @Default([]) List<SearchSuggestionEntity> suggestions,
+    @Default(false) bool isSuggestionLoading,
+    @Default(false) bool showSuggestions,
   ]) = _SearchState;
 }
