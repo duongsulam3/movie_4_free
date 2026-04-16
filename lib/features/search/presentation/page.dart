@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/entity/search_tabs_item.dart';
 import 'package:smoth_movie_app/common/widgets/search_textfield_widget.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/presentation/widget/list_search_nguonc_blocbuilder.dart';
+import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
 import 'package:smoth_movie_app/features/search/presentation/widgets/list_search_content.dart';
 import 'package:smoth_movie_app/core/utils/helper/helper.dart';
 import 'package:smoth_movie_app/features/search/presentation/widgets/search_page_tabs_content.dart';
@@ -34,6 +36,11 @@ class _SearchPageState extends State<SearchPage> {
   @override
   void initState() {
     searchFocusNode.requestFocus();
+    searchController.addListener(() {
+      if (searchController.text.isEmpty) {
+        context.read<SearchBloc>().add(ClearSearchSuggestionsEvent());
+      }
+    });
     initSearchTabsView();
     super.initState();
   }
@@ -50,6 +57,7 @@ class _SearchPageState extends State<SearchPage> {
         title: "Nguồn chính",
         tabWidget: ListSearchContent(
           onSelected: (value) => searchController.text = value,
+          onSuggestionSelected: submitSearch,
           listSearch: widget.listSearch,
         ),
       ),
@@ -66,6 +74,16 @@ class _SearchPageState extends State<SearchPage> {
   void pageDispose() {
     searchFocusNode.unfocus();
     searchController.dispose();
+  }
+
+  void submitSearch(String value) {
+    final query = value.trim();
+    if (query.isEmpty) return;
+
+    searchController.text = query;
+    context.read<SearchBloc>().add(ClearSearchSuggestionsEvent());
+    Helper.onSubmitSearch(context: context, query: query);
+    Helper.nguonCSearchFilms(context: context, query: query);
   }
 
   @override
@@ -87,10 +105,12 @@ class _SearchPageState extends State<SearchPage> {
             focusNode: searchFocusNode,
             hintText: widget.searchHint,
             controller: searchController,
-            onSubmitted: (value) {
-              Helper.onSubmitSearch(context: context, query: value);
-              Helper.nguonCSearchFilms(context: context, query: value);
+            onChanged: (value) {
+              context.read<SearchBloc>().add(
+                    SearchQueryChangedEvent(query: value),
+                  );
             },
+            onSubmitted: submitSearch,
           ),
         ),
         body: SearchPageTabsContent(

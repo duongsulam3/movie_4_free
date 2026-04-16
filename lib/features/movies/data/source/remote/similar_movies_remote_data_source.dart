@@ -1,8 +1,8 @@
 import 'package:smoth_movie_app/core/error/exception.dart';
 import 'package:smoth_movie_app/core/utils/helper/helper.dart';
-import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
+import 'package:smoth_movie_app/api/movies/movies_get.dart';
+import 'package:smoth_movie_app/core/utils/network/app_service.dart';
 import 'package:smoth_movie_app/features/movies/data/model/single_movies/movie_item_model.dart';
-import 'package:http/http.dart' as http;
 
 abstract interface class SimilarMoviesRemoteDataSource {
   Future<List<MovieItemModel>> getSimilarMovies({required String categorySlug});
@@ -10,21 +10,18 @@ abstract interface class SimilarMoviesRemoteDataSource {
 
 class SimilarMoviesRemoteDataSourceImpl
     implements SimilarMoviesRemoteDataSource {
-  final http.Client client;
+  final AppService client;
   const SimilarMoviesRemoteDataSourceImpl(this.client);
   @override
   Future<List<MovieItemModel>> getSimilarMovies({
     required String categorySlug,
   }) async {
     try {
-      final url = "${AppSecret.kkPhimUrl}/the-loai/$categorySlug?limit=18";
-      final uri = Uri.parse(url);
-      final res = await client.get(uri);
-      if (res.statusCode == 200) {
-        return Helper.parseMovies(res.body);
-      } else {
-        throw const ServerException("Lỗi khi lấy dữ liệu phim tương tự");
-      }
+      final res = await MoviesGETAPI.apiMoviesGETSimilar(
+        client: client,
+        categorySlug: categorySlug,
+      );
+      return Helper.parseMovies(res.data);
     } catch (e) {
       throw ServerException(e.toString());
     }

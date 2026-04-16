@@ -1,8 +1,8 @@
+import 'package:smoth_movie_app/api/nguonc/nguonc_movies_by_category_get.dart';
 import 'package:smoth_movie_app/core/error/exception.dart';
 import 'package:smoth_movie_app/core/utils/helper/helper.dart';
-import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
+import 'package:smoth_movie_app/core/utils/network/app_service.dart';
 import 'package:smoth_movie_app/features/nguonc_categories/data/model/nguonc_movies_by_category_item_model.dart';
-import 'package:http/http.dart' as http;
 
 abstract interface class NguoncMoviesByCategoryRemoteDatasource {
   Future<List<NguoncMoviesByCategoryItemModel>> getMoviesByCategory(
@@ -13,22 +13,21 @@ abstract interface class NguoncMoviesByCategoryRemoteDatasource {
 
 class NguoncMoviesByCategoryRemoteDatasourceImpl
     implements NguoncMoviesByCategoryRemoteDatasource {
-  final http.Client client;
-  const NguoncMoviesByCategoryRemoteDatasourceImpl(this.client);
+  final AppService client;
+  const NguoncMoviesByCategoryRemoteDatasourceImpl({required this.client});
   @override
   Future<List<NguoncMoviesByCategoryItemModel>> getMoviesByCategory(
     String slug,
     int page,
   ) async {
     try {
-      var url = "${AppSecret.nguoncPhimUrl}/films/the-loai/$slug?page=$page";
-      final uri = Uri.parse(url);
-      final res = await client.get(uri);
-      if (res.statusCode == 200) {
-        return Helper.parseNguoncMoviesByCategory(res.body);
-      } else {
-        throw const ServerException("Lỗi khi lấy dữ liệu tìm kiếm phim");
-      }
+      final res = await NguonCMoviesByCategoryGETAPI.apiNguonCGETMoviesByCategory(
+        client: client,
+        slug: slug,
+        page: page,
+      );
+
+      return Helper.parseNguoncMoviesByCategory(res.data);
     } catch (e) {
       throw ServerException(e.toString());
     }

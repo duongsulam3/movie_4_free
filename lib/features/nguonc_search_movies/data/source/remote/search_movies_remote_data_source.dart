@@ -1,7 +1,7 @@
 import 'package:smoth_movie_app/core/error/exception.dart';
 import 'package:smoth_movie_app/core/utils/helper/helper.dart';
-import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
-import 'package:http/http.dart' as http;
+import 'package:smoth_movie_app/api/nguonc/nguonc_search_get.dart';
+import 'package:smoth_movie_app/core/utils/network/app_service.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/data/model/nguonc_movie_item_model.dart';
 
 abstract interface class NguonCSearchMoviesRemoteDataSource {
@@ -13,23 +13,21 @@ abstract interface class NguonCSearchMoviesRemoteDataSource {
 
 class NguonCSearchMoviesRemoteDataSourceImpl
     implements NguonCSearchMoviesRemoteDataSource {
-  final http.Client client;
-  const NguonCSearchMoviesRemoteDataSourceImpl(this.client);
+  final AppService client;
+  const NguonCSearchMoviesRemoteDataSourceImpl({required this.client});
   @override
   Future<List<NguoncMovieItemModel>> searchFilms({
     required String query,
     required int page,
   }) async {
     try {
-      var url =
-          "${AppSecret.nguoncPhimUrl}/films/search?keyword=$query&page=$page";
-      final uri = Uri.parse(url);
-      final res = await client.get(uri);
-      if (res.statusCode == 200) {
-        return Helper.parseNguoncSearchMovies(res.body);
-      } else {
-        throw const ServerException("Lỗi khi lấy dữ liệu tìm kiếm phim");
-      }
+      final res = await NguonCSearchGETAPI.apiNguonCSearchGETFilms(
+        client: client,
+        query: query,
+        page: page,
+      );
+
+      return Helper.parseNguoncSearchMovies(res.data);
     } catch (e) {
       throw ServerException(e.toString());
     }

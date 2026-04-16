@@ -1,11 +1,12 @@
 import 'package:dio/dio.dart';
-import 'package:smoth_movie_app/core/utils/network/abstract_client/abtract_dio_client.dart';
-import 'package:smoth_movie_app/core/utils/network/types.dart';
+
+import '../types.dart';
+import 'abtract_dio_client.dart';
 
 abstract class RestfulApiClient extends AbstractDioClient {
   RestfulApiClient({required super.baseUrl});
 
-  Future<Response<Json>> getRequest(
+  Future<Response<T>> getRequest<T>(
     String endpoint, {
     Json? queryParameters,
     Options? options,
@@ -17,7 +18,7 @@ abstract class RestfulApiClient extends AbstractDioClient {
         ));
   }
 
-  Future<Response<Json>> postRequest(
+  Future<Response<T>> postRequest<T>(
     String endpoint, {
     Json? data,
     Json? queryParameters,
@@ -31,7 +32,7 @@ abstract class RestfulApiClient extends AbstractDioClient {
         ));
   }
 
-  Future<Response<Json>> putRequest(
+  Future<Response<T>> putRequest<T>(
     String endpoint, {
     Json? data,
     Json? queryParameters,
@@ -45,7 +46,7 @@ abstract class RestfulApiClient extends AbstractDioClient {
         ));
   }
 
-  Future<Response<Json>> deleteRequest(
+  Future<Response<T>> deleteRequest<T>(
     String endpoint, {
     Json? data,
     Json? queryParameters,

@@ -6,14 +6,18 @@ import 'package:smoth_movie_app/core/error/failure.dart';
 import 'package:smoth_movie_app/core/utils/enum/search/search_page_status.dart';
 import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_item.dart';
 import 'package:smoth_movie_app/features/search/domain/usecase/get_search_movies.dart';
+import 'package:smoth_movie_app/features/search/domain/usecase/get_search_suggestions.dart';
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
 
 import '../../fixtures/movie_item_fixtures.dart';
 
 class MockGetSearchMovies extends Mock implements GetSearchMovies {}
 
+class MockGetSearchSuggestions extends Mock implements GetSearchSuggestions {}
+
 void main() {
   late MockGetSearchMovies getSearchMovies;
+  late MockGetSearchSuggestions getSearchSuggestions;
 
   setUpAll(() {
     registerFallbackValue(
@@ -23,6 +27,7 @@ void main() {
 
   setUp(() {
     getSearchMovies = MockGetSearchMovies();
+    getSearchSuggestions = MockGetSearchSuggestions();
   });
 
   group('SearchBloc', () {
@@ -32,7 +37,10 @@ void main() {
         when(() => getSearchMovies.call(any())).thenAnswer(
           (_) async => const Left(Failure('e')),
         );
-        return SearchBloc(getSearchMovies: getSearchMovies);
+        return SearchBloc(
+          getSearchMovies: getSearchMovies,
+          getSearchSuggestions: getSearchSuggestions,
+        );
       },
       act: (bloc) => bloc.add(GetSearchMoviesEvent(query: 'x', limit: 10)),
       expect: () => [
@@ -59,7 +67,10 @@ void main() {
         when(() => getSearchMovies.call(any())).thenAnswer(
           (_) async => Right(fakeMovieItems(3)),
         );
-        return SearchBloc(getSearchMovies: getSearchMovies);
+        return SearchBloc(
+          getSearchMovies: getSearchMovies,
+          getSearchSuggestions: getSearchSuggestions,
+        );
       },
       act: (bloc) => bloc.add(GetSearchMoviesEvent(query: 'a', limit: 10)),
       expect: () => [
@@ -87,7 +98,10 @@ void main() {
         when(() => getSearchMovies.call(any())).thenAnswer(
           (_) async => Right(fakeMovieItems(10)),
         );
-        return SearchBloc(getSearchMovies: getSearchMovies);
+        return SearchBloc(
+          getSearchMovies: getSearchMovies,
+          getSearchSuggestions: getSearchSuggestions,
+        );
       },
       act: (bloc) => bloc.add(GetSearchMoviesEvent(query: 'b', limit: 10)),
       expect: () => [
@@ -119,7 +133,10 @@ void main() {
           }
           return Right(fakeMovieItems(3));
         });
-        return SearchBloc(getSearchMovies: getSearchMovies);
+        return SearchBloc(
+          getSearchMovies: getSearchMovies,
+          getSearchSuggestions: getSearchSuggestions,
+        );
       },
       act: (bloc) async {
         bloc.add(GetSearchMoviesEvent(query: 'a', limit: 10));
@@ -164,7 +181,10 @@ void main() {
         when(() => getSearchMovies.call(any())).thenAnswer(
           (_) async => Right(fakeMovieItems(1)),
         );
-        return SearchBloc(getSearchMovies: getSearchMovies);
+        return SearchBloc(
+          getSearchMovies: getSearchMovies,
+          getSearchSuggestions: getSearchSuggestions,
+        );
       },
       seed: () => SearchState(
         SearchPageStatus.success,
