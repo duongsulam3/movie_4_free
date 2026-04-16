@@ -76,7 +76,7 @@ Future<void> initDependencies() async {
 void _initListMovies() {
   //** Movies */
   serviceLocator.registerFactory<MoviesRemoteDataSource>(
-    () => MoviesRemoteDataSourceImpl(client: serviceLocator()),
+    () => MoviesRemoteDataSourceImpl(client: serviceLocator<AppService>()),
   );
   //
   serviceLocator.registerFactory<MoviesRepository>(
@@ -95,7 +95,7 @@ void _initListMovies() {
   //** Recently Update Movies */
   serviceLocator.registerFactory<RecentlyUpdateMoviesRemoteDataSource>(
     () => RecentlyUpdateMoviesRemoteDataSourceImpl(
-      client: serviceLocator(),
+      client: serviceLocator<AppService>(),
     ),
   );
   //
@@ -117,7 +117,7 @@ void _initListMovies() {
 
   //** Similar Movies */
   serviceLocator.registerFactory<SimilarMoviesRemoteDataSource>(
-    () => SimilarMoviesRemoteDataSourceImpl(serviceLocator()),
+    () => SimilarMoviesRemoteDataSourceImpl(serviceLocator<AppService>()),
   );
   serviceLocator.registerFactory<SimilarMoviesRepository>(
     () => SimilarRepositoryImpl(serviceLocator()),
@@ -129,7 +129,7 @@ void _initListMovies() {
   //** Movies Sort By Time */
   serviceLocator.registerFactory<MoviesSortbyModifiedTimeRemoteDataSource>(
     () => MoviesSortbyModifiedTimeRemoteDataSourceImpl(
-      client: serviceLocator(),
+      client: serviceLocator<AppService>(),
     ),
   );
   serviceLocator.registerFactory<MoviesSortbyTimeRepository>(

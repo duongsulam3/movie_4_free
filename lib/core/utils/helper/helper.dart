@@ -189,7 +189,7 @@ class Helper {
 
   //! KHO PHIM -> COUNTRIES
   static List<KhoPhimCountryModel> parseKhoPhimCoutryJsonToList(dynamic json) {
-    final rawJson = json is String ? json : jsonEncode(json);
+    final rawJson = _toJsonString(json);
     final jsonResponse = jsonDecode(rawJson) as List;
     return jsonResponse.map((e) => KhoPhimCountryModel.fromJson(e)).toList();
   }
@@ -197,7 +197,7 @@ class Helper {
   //! KHO PHIM -> CATEGORIES
   static List<KhoPhimCategoryModel> parseKhoPhimCateJsonToList(dynamic json) {
     List<KhoPhimCategoryModel> cate = const [];
-    final rawJson = json is String ? json : jsonEncode(json);
+    final rawJson = _toJsonString(json);
     final jsonResponse = jsonDecode(rawJson) as List;
     cate = jsonResponse.map((e) => KhoPhimCategoryModel.fromJson(e)).toList();
     cate.insert(
@@ -213,20 +213,22 @@ class Helper {
 
   //! KHO PHIM MOVIES
   static List<MovieItemModel> parseKhoPhimMovies(dynamic json) {
-    final rawJson = json is String ? json : jsonEncode(json);
+    final rawJson = _toJsonString(json);
     final jsonResponse = jsonDecode(rawJson)["data"]["items"] as List;
     return jsonResponse.map((e) => MovieItemModel.fromJson(e)).toList();
   }
 
   //! MOVIES
-  static List<MovieItemModel> parseMovies(String json) {
-    final jsonResponse = jsonDecode(json)["data"]["items"] as List;
+  static List<MovieItemModel> parseMovies(dynamic json) {
+    final rawJson = _toJsonString(json);
+    final jsonResponse = jsonDecode(rawJson)["data"]["items"] as List;
     return jsonResponse.map((e) => MovieItemModel.fromJson(e)).toList();
   }
 
   //! RECENTLY UPDATED MOVIES
-  static List<RecentlyUpdateListItemModel> parseRecentlyMovies(String json) {
-    final jsonResponse = jsonDecode(json)['items'] as List;
+  static List<RecentlyUpdateListItemModel> parseRecentlyMovies(dynamic json) {
+    final rawJson = _toJsonString(json);
+    final jsonResponse = jsonDecode(rawJson)['items'] as List;
     return jsonResponse
         .map((e) => RecentlyUpdateListItemModel.fromJson(e))
         .toList();
@@ -259,5 +261,11 @@ class Helper {
     final jsonResponse = jsonDecode(json);
     return MovieDetailModel.fromJson(jsonResponse);
   }
+
   //** FUNCTIONS */
+  /// Ensures we always return JSON text for helpers expecting `String json`.
+  static String _toJsonString(dynamic data) {
+    if (data is String) return data;
+    return jsonEncode(data);
+  }
 }
