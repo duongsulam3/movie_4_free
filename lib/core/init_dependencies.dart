@@ -44,6 +44,7 @@ import 'package:smoth_movie_app/features/search/data/repository/search_movies_re
 import 'package:smoth_movie_app/features/search/data/source/remote/search_movie_remote_datasource.dart';
 import 'package:smoth_movie_app/features/search/domain/repository/search_movies_repository.dart';
 import 'package:smoth_movie_app/features/search/domain/usecase/get_search_movies.dart';
+import 'package:smoth_movie_app/features/search/domain/usecase/get_search_suggestions.dart';
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
 import 'package:smoth_movie_app/features/movie_detail/data/repository/detail_movie_repository_impl.dart';
 import 'package:smoth_movie_app/features/movie_detail/data/source/remote/detail_movie_remote_data_source.dart';
@@ -198,7 +199,13 @@ void _initSearch() {
     () => GetSearchMovies(searchMoviesRepository: serviceLocator()),
   );
   serviceLocator.registerFactory(
-    () => SearchBloc(getSearchMovies: serviceLocator<GetSearchMovies>()),
+    () => GetSearchSuggestions(searchMoviesRepository: serviceLocator()),
+  );
+  serviceLocator.registerFactory(
+    () => SearchBloc(
+      getSearchMovies: serviceLocator<GetSearchMovies>(),
+      getSearchSuggestions: serviceLocator<GetSearchSuggestions>(),
+    ),
   );
   //** KK Phim Search */
 

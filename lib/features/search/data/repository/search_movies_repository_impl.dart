@@ -4,6 +4,7 @@ import 'package:smoth_movie_app/core/error/failure.dart';
 import 'package:smoth_movie_app/features/search/data/source/remote/search_movie_remote_datasource.dart';
 import 'package:smoth_movie_app/features/search/domain/repository/search_movies_repository.dart';
 import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_item.dart';
+import 'package:smoth_movie_app/features/search/domain/entities/search_suggestion_entity.dart';
 
 class SearchMoviesRepositoryImpl implements SearchMoviesRepository {
   final SearchMovieRemoteDataSource remoteDatasource;
@@ -18,6 +19,22 @@ class SearchMoviesRepositoryImpl implements SearchMoviesRepository {
       final result = await remoteDatasource.getSearchMovies(
         query: query,
         page: page,
+        limit: limit,
+      );
+      return Right(result);
+    } on ServerException catch (e) {
+      return Left(Failure(e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<SearchSuggestionEntity>>> getSearchSuggestions({
+    required String query,
+    required int limit,
+  }) async {
+    try {
+      final result = await remoteDatasource.getSearchSuggestions(
+        query: query,
         limit: limit,
       );
       return Right(result);

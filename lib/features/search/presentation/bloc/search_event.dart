@@ -8,3 +8,21 @@ class GetSearchMoviesEvent extends SearchEvent {
   final int limit;
   GetSearchMoviesEvent({required this.query, required this.limit});
 }
+
+class SearchQueryChangedEvent extends SearchEvent {
+  final String query;
+
+  SearchQueryChangedEvent({required this.query});
+}
+
+class FetchSearchSuggestionsEvent extends SearchEvent {
+  final String query;
+  final int limit;
+
+  FetchSearchSuggestionsEvent({
+    required this.query,
+    this.limit = 5,
+  });
+}
+
+class ClearSearchSuggestionsEvent extends SearchEvent {}

@@ -23,6 +23,7 @@ import 'package:smoth_movie_app/features/nguonc_movie_detail/domain/entity/nguon
 import 'package:smoth_movie_app/features/nguonc_movie_detail/presentation/bloc/nguonc_movie_detail_bloc.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/data/model/nguonc_movie_item_model.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/presentation/bloc/nguonc_search_bloc.dart';
+import 'package:smoth_movie_app/features/search/data/models/search_suggestion_model.dart';
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
 import 'package:smoth_movie_app/features/home/presentation/bloc/bottom_nav/bottom_nav_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies/movies_bloc.dart';
@@ -223,6 +224,21 @@ class Helper {
     final rawJson = _toJsonString(json);
     final jsonResponse = jsonDecode(rawJson)["data"]["items"] as List;
     return jsonResponse.map((e) => MovieItemModel.fromJson(e)).toList();
+  }
+
+  static List<SearchSuggestionModel> parseSearchSuggestions(dynamic json) {
+    final rawJson = _toJsonString(json);
+    final jsonResponse = jsonDecode(rawJson)["data"]["items"] as List;
+    return jsonResponse
+        .map((e) => SearchSuggestionModel.fromJson(e))
+        .where((e) => e.name.trim().isNotEmpty)
+        .fold<List<SearchSuggestionModel>>([], (previousValue, element) {
+      final isDuplicated = previousValue.any(
+        (item) => item.name.toLowerCase() == element.name.toLowerCase(),
+      );
+      if (!isDuplicated) previousValue.add(element);
+      return previousValue;
+    });
   }
 
   //! RECENTLY UPDATED MOVIES
