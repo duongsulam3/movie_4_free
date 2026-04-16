@@ -202,7 +202,9 @@ void _initSearch() {
 
   //** Nguồn C Search */
   serviceLocator.registerFactory<NguonCSearchMoviesRemoteDataSource>(
-    () => NguonCSearchMoviesRemoteDataSourceImpl(serviceLocator()),
+    () => NguonCSearchMoviesRemoteDataSourceImpl(
+      client: serviceLocator<AppService>(),
+    ),
   );
   serviceLocator.registerFactory<NguoncSearchMoviesRepository>(
     () => NguoncSearchMoviesRepositoryImpl(serviceLocator()),

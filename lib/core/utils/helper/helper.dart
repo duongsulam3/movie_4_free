@@ -235,8 +235,9 @@ class Helper {
   }
 
   //! NGUỒN C SEARCH
-  static List<NguoncMovieItemModel> parseNguoncSearchMovies(String json) {
-    final jsonResponse = jsonDecode(json)['items'] as List;
+  static List<NguoncMovieItemModel> parseNguoncSearchMovies(dynamic json) {
+    final rawJson = _toJsonString(json);
+    final jsonResponse = jsonDecode(rawJson)['items'] as List;
     return jsonResponse.map((e) => NguoncMovieItemModel.fromJson(e)).toList();
   }
 
