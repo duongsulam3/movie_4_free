@@ -106,7 +106,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       showSuggestions: true,
     ));
 
-    _suggestionDebounce = Timer(const Duration(milliseconds: 350), () {
+    _suggestionDebounce = Timer(const Duration(seconds: 1), () {
       add(FetchSearchSuggestionsEvent(query: query));
     });
   }
