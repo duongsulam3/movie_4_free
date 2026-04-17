@@ -15,27 +15,47 @@ class DetailMovieBloc extends Bloc<DetailMovieEvent, DetailMovieState> {
   DetailMovieBloc({required GetDetailMovie getDetailMovie})
       : _getDetailMovie = getDetailMovie,
         super(const DetailMovieState()) {
-    on<GetMovieDetailEvent>((event, emit) async {
-      final res = await _getDetailMovie.call(
-        GetDetailMovieParams(slug: event.slug),
-      );
-      res.fold(
-        (err) => emit(state.copyWith(status: DetailMovieStatus.error)),
-        (data) {
-          emit(state.copyWith(
-            status: DetailMovieStatus.success,
-            movie: data,
-            passingEpisode: data.episodes[0].serverData[0].name,
-          ));
-        },
-      );
-    });
+    on<GetMovieDetailEvent>(_onGetMovieDetail);
+    on<UpdateVideoPlayerUrl>(_onUpdateVideoPlayerUrl);
+  }
 
-    on<UpdateVideoPlayerUrl>((event, emit) {
-      emit(state.copyWith(
-        passingUrl: event.url,
-        passingEpisode: event.episode,
-      ));
-    });
+  Future<void> _onGetMovieDetail(
+    GetMovieDetailEvent event,
+    Emitter<DetailMovieState> emit,
+  ) async {
+    final res = await _getDetailMovie.call(
+      GetDetailMovieParams(slug: event.slug),
+    );
+
+    // Keep success/error transitions explicit for easier review.
+    res.fold(
+      (_) => _emitGetMovieDetailError(emit),
+      (data) => _emitGetMovieDetailSuccess(emit, data),
+    );
+  }
+
+  void _emitGetMovieDetailError(Emitter<DetailMovieState> emit) {
+    emit(state.copyWith(status: DetailMovieStatus.error));
+  }
+
+  void _emitGetMovieDetailSuccess(
+    Emitter<DetailMovieState> emit,
+    MovieDetailEntity movie,
+  ) {
+    emit(state.copyWith(
+      status: DetailMovieStatus.success,
+      movie: movie,
+      passingEpisode: movie.episodes[0].serverData[0].name,
+    ));
+  }
+
+  void _onUpdateVideoPlayerUrl(
+    UpdateVideoPlayerUrl event,
+    Emitter<DetailMovieState> emit,
+  ) {
+    emit(state.copyWith(
+      passingUrl: event.url,
+      passingEpisode: event.episode,
+    ));
   }
 }
