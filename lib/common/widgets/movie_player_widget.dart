@@ -1,10 +1,17 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
-import 'package:smoth_movie_app/common/widgets/cached_network/container_with_cached_network_image_provider.dart';
-import 'package:smoth_movie_app/core/utils/helper/helper.dart';
 import 'package:video_player/video_player.dart';
+
+import '../../core/utils/helper/helper.dart';
+
+enum _MoviePlayerViewState {
+  initializing,
+  ready,
+  error,
+}
 
 class MoviePlayerWidget extends StatefulWidget {
   final String m3u8Url;
@@ -22,8 +29,12 @@ class MoviePlayerWidget extends StatefulWidget {
 }
 
 class _MoviePlayerWidgetState extends State<MoviePlayerWidget> {
-  late VideoPlayerController _controller;
+  VideoPlayerController? _controller;
   ChewieController? chewieController;
+  bool _isInitializing = false;
+  bool _hasInitError = false;
+  int _initRequestId = 0;
+
   @override
   void initState() {
     _initPlayer(widget.m3u8Url);
@@ -32,51 +43,155 @@ class _MoviePlayerWidgetState extends State<MoviePlayerWidget> {
 
   @override
   void dispose() {
-    playerDispose();
+    _playerDispose();
     super.dispose();
   }
 
-  Future<void> _initPlayer(String url) async {
-    try {
-      final uri = Uri.parse(url);
-      _controller = VideoPlayerController.networkUrl(uri);
-      await _controller.initialize();
-      chewieController = ChewieController(
-        videoPlayerController: _controller,
-        autoPlay: true,
-        allowedScreenSleep: false,
-      );
-      setState(() {});
-    } catch (e) {
-      if (mounted) Helper.showInitPlayerErrorSnackBar(context);
-      log("Không thể phát video: $url");
-      log(e.toString());
-      return;
+  @override
+  void didUpdateWidget(covariant MoviePlayerWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.newVideoUrl != oldWidget.newVideoUrl) {
+      buildNewVideoPlayer(widget.newVideoUrl);
     }
   }
 
-  void playerDispose() {
-    _controller.dispose();
-    if (chewieController != null) chewieController!.dispose();
+  Future<void> _initPlayer(String url) async {
+    final requestId = ++_initRequestId;
+    final controller = VideoPlayerController.networkUrl(Uri.parse(url));
+
+    if (mounted) {
+      setState(() {
+        _isInitializing = true;
+        _hasInitError = false;
+      });
+    }
+
+    try {
+      await controller.initialize();
+
+      // Ignore stale async completion when a newer source was requested.
+      if (!mounted || requestId != _initRequestId) {
+        controller.dispose();
+        return;
+      }
+
+      _controller = controller;
+      chewieController = ChewieController(
+        videoPlayerController: controller,
+        autoPlay: true,
+        allowedScreenSleep: false,
+      );
+
+      setState(() {
+        _isInitializing = false;
+        _hasInitError = false;
+      });
+    } catch (e) {
+      controller.dispose();
+      if (mounted) Helper.showInitPlayerErrorSnackBar(context);
+      log(e.toString());
+
+      if (!mounted || requestId != _initRequestId) return;
+      setState(() {
+        _isInitializing = false;
+        _hasInitError = true;
+      });
+    }
+  }
+
+  void _playerDispose() {
+    _controller?.dispose();
+    _controller = null;
+    chewieController?.dispose();
+    chewieController = null;
   }
 
   void buildNewVideoPlayer(String newUrl) {
     if (newUrl == "") return;
-    if (newUrl != "" && newUrl != _controller.dataSource) {
-      playerDispose();
+    final currentUrl = _controller?.dataSource;
+    if (newUrl != currentUrl) {
+      _playerDispose();
       _initPlayer(newUrl);
     }
-    return;
+  }
+
+  _MoviePlayerViewState _resolveViewState(bool hasReadyController) {
+    if (_isInitializing) return _MoviePlayerViewState.initializing;
+    if (hasReadyController) return _MoviePlayerViewState.ready;
+    if (_hasInitError) return _MoviePlayerViewState.error;
+    return _MoviePlayerViewState.error;
+  }
+
+  Widget _buildPlayerContent(_MoviePlayerViewState viewState) {
+    switch (viewState) {
+      case _MoviePlayerViewState.initializing:
+        return _MoviePlayerFallbackPoster(
+          posterUrl: widget.posterUrl,
+          isLoading: true,
+        );
+      case _MoviePlayerViewState.ready:
+        return Chewie(controller: chewieController!);
+      case _MoviePlayerViewState.error:
+        return _MoviePlayerFallbackPoster(
+          posterUrl: widget.posterUrl,
+          isLoading: false,
+        );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    buildNewVideoPlayer(widget.newVideoUrl);
+    final controller = _controller;
+    final hasReadyController = controller != null &&
+        controller.value.isInitialized &&
+        chewieController != null;
+    final viewState = _resolveViewState(hasReadyController);
+
     return AspectRatio(
-      aspectRatio: _controller.value.aspectRatio,
-      child: _controller.value.isInitialized
-          ? Chewie(controller: chewieController!)
-          : ContainerWithCachedNetworkImageProvider(path: widget.posterUrl),
+      aspectRatio: controller?.value.aspectRatio ?? (16 / 9),
+      child: _buildPlayerContent(viewState),
+    );
+  }
+}
+
+class _MoviePlayerFallbackPoster extends StatelessWidget {
+  const _MoviePlayerFallbackPoster({
+    required this.posterUrl,
+    this.isLoading = false,
+  });
+
+  final String posterUrl;
+  final bool isLoading;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: CachedNetworkImageProvider(posterUrl),
+          fit: BoxFit.fill,
+        ),
+      ),
+      child: Container(
+        color: Colors.black.withValues(alpha: 0.9),
+        child: Center(
+          // Built feature: loading mode uses spinner, error mode keeps disabled icon.
+          child: isLoading
+              ? const SizedBox(
+                  width: 36,
+                  height: 36,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 3,
+                    color: Colors.white,
+                  ),
+                )
+              : const Icon(
+                  Icons.play_disabled_rounded,
+                  size: 50,
+                  color: Colors.white,
+                ),
+        ),
+      ),
     );
   }
 }

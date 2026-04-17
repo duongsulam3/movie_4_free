@@ -90,12 +90,16 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     _suggestionDebounce?.cancel();
 
     if (query.isEmpty) {
-      emit(state.copyWith(
-        typingQuery: "",
-        suggestions: const [],
-        isSuggestionLoading: false,
-        showSuggestions: false,
-      ));
+      emit(
+        state.copyWith(
+          status: SearchPageStatus.init,
+          typingQuery: "",
+          suggestions: const [],
+          isSuggestionLoading: false,
+          showSuggestions: false,
+        ),
+      );
+
       return;
     }
 
@@ -151,6 +155,8 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   ) {
     _suggestionDebounce?.cancel();
     emit(state.copyWith(
+      status: SearchPageStatus.init,
+      typingQuery: "",
       suggestions: const [],
       isSuggestionLoading: false,
       showSuggestions: false,

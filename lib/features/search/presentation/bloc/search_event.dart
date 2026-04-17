@@ -21,7 +21,7 @@ class FetchSearchSuggestionsEvent extends SearchEvent {
 
   FetchSearchSuggestionsEvent({
     required this.query,
-    this.limit = 5,
+    this.limit = 8,
   });
 }
 
