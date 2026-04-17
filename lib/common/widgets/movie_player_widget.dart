@@ -32,8 +32,16 @@ class _MoviePlayerWidgetState extends State<MoviePlayerWidget> {
 
   @override
   void dispose() {
-    playerDispose();
+    _playerDispose();
     super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(covariant MoviePlayerWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.newVideoUrl != oldWidget.newVideoUrl) {
+      buildNewVideoPlayer(widget.newVideoUrl);
+    }
   }
 
   Future<void> _initPlayer(String url) async {
@@ -55,7 +63,7 @@ class _MoviePlayerWidgetState extends State<MoviePlayerWidget> {
     }
   }
 
-  void playerDispose() {
+  void _playerDispose() {
     _controller.dispose();
     if (chewieController != null) chewieController!.dispose();
   }
@@ -63,15 +71,13 @@ class _MoviePlayerWidgetState extends State<MoviePlayerWidget> {
   void buildNewVideoPlayer(String newUrl) {
     if (newUrl == "") return;
     if (newUrl != "" && newUrl != _controller.dataSource) {
-      playerDispose();
+      _playerDispose();
       _initPlayer(newUrl);
     }
-    return;
   }
 
   @override
   Widget build(BuildContext context) {
-    buildNewVideoPlayer(widget.newVideoUrl);
     return AspectRatio(
       aspectRatio: _controller.value.aspectRatio,
       child: _controller.value.isInitialized
