@@ -7,6 +7,12 @@ import 'package:video_player/video_player.dart';
 
 import '../../core/utils/helper/helper.dart';
 
+enum _MoviePlayerViewState {
+  initializing,
+  ready,
+  error,
+}
+
 class MoviePlayerWidget extends StatefulWidget {
   final String m3u8Url;
   final String posterUrl;
@@ -23,8 +29,12 @@ class MoviePlayerWidget extends StatefulWidget {
 }
 
 class _MoviePlayerWidgetState extends State<MoviePlayerWidget> {
-  late VideoPlayerController _controller;
+  VideoPlayerController? _controller;
   ChewieController? chewieController;
+  bool _isInitializing = false;
+  bool _hasInitError = false;
+  int _initRequestId = 0;
+
   @override
   void initState() {
     _initPlayer(widget.m3u8Url);
@@ -46,50 +56,112 @@ class _MoviePlayerWidgetState extends State<MoviePlayerWidget> {
   }
 
   Future<void> _initPlayer(String url) async {
+    final requestId = ++_initRequestId;
+    final controller = VideoPlayerController.networkUrl(Uri.parse(url));
+
+    if (mounted) {
+      setState(() {
+        _isInitializing = true;
+        _hasInitError = false;
+      });
+    }
+
     try {
-      final uri = Uri.parse(url);
-      _controller = VideoPlayerController.networkUrl(uri);
-      await _controller.initialize();
+      await controller.initialize();
+
+      // Ignore stale async completion when a newer source was requested.
+      if (!mounted || requestId != _initRequestId) {
+        controller.dispose();
+        return;
+      }
+
+      _controller = controller;
       chewieController = ChewieController(
-        videoPlayerController: _controller,
+        videoPlayerController: controller,
         autoPlay: true,
         allowedScreenSleep: false,
       );
-      setState(() {});
+
+      setState(() {
+        _isInitializing = false;
+        _hasInitError = false;
+      });
     } catch (e) {
+      controller.dispose();
       if (mounted) Helper.showInitPlayerErrorSnackBar(context);
       log(e.toString());
+
+      if (!mounted || requestId != _initRequestId) return;
+      setState(() {
+        _isInitializing = false;
+        _hasInitError = true;
+      });
     }
   }
 
   void _playerDispose() {
-    _controller.dispose();
-    if (chewieController != null) chewieController!.dispose();
+    _controller?.dispose();
+    _controller = null;
+    chewieController?.dispose();
+    chewieController = null;
   }
 
   void buildNewVideoPlayer(String newUrl) {
     if (newUrl == "") return;
-    if (newUrl != "" && newUrl != _controller.dataSource) {
+    final currentUrl = _controller?.dataSource;
+    if (newUrl != currentUrl) {
       _playerDispose();
       _initPlayer(newUrl);
     }
   }
 
+  _MoviePlayerViewState _resolveViewState(bool hasReadyController) {
+    if (_isInitializing) return _MoviePlayerViewState.initializing;
+    if (hasReadyController) return _MoviePlayerViewState.ready;
+    if (_hasInitError) return _MoviePlayerViewState.error;
+    return _MoviePlayerViewState.error;
+  }
+
+  Widget _buildPlayerContent(_MoviePlayerViewState viewState) {
+    switch (viewState) {
+      case _MoviePlayerViewState.initializing:
+        return _MoviePlayerFallbackPoster(
+          posterUrl: widget.posterUrl,
+          isLoading: true,
+        );
+      case _MoviePlayerViewState.ready:
+        return Chewie(controller: chewieController!);
+      case _MoviePlayerViewState.error:
+        return _MoviePlayerFallbackPoster(
+          posterUrl: widget.posterUrl,
+          isLoading: false,
+        );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final controller = _controller;
+    final hasReadyController = controller != null &&
+        controller.value.isInitialized &&
+        chewieController != null;
+    final viewState = _resolveViewState(hasReadyController);
+
     return AspectRatio(
-      aspectRatio: _controller.value.aspectRatio,
-      child: _controller.value.isInitialized
-          ? Chewie(controller: chewieController!)
-          : _MoviePlayerFallbackPoster(posterUrl: widget.posterUrl),
+      aspectRatio: controller?.value.aspectRatio ?? (16 / 9),
+      child: _buildPlayerContent(viewState),
     );
   }
 }
 
 class _MoviePlayerFallbackPoster extends StatelessWidget {
-  const _MoviePlayerFallbackPoster({required this.posterUrl});
+  const _MoviePlayerFallbackPoster({
+    required this.posterUrl,
+    this.isLoading = false,
+  });
 
   final String posterUrl;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -102,12 +174,22 @@ class _MoviePlayerFallbackPoster extends StatelessWidget {
       ),
       child: Container(
         color: Colors.black.withValues(alpha: 0.9),
-        child: const Center(
-          child: Icon(
-            Icons.play_disabled_rounded,
-            size: 50,
-            color: Colors.white,
-          ),
+        child: Center(
+          // Built feature: loading mode uses spinner, error mode keeps disabled icon.
+          child: isLoading
+              ? const SizedBox(
+                  width: 36,
+                  height: 36,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 3,
+                    color: Colors.white,
+                  ),
+                )
+              : const Icon(
+                  Icons.play_disabled_rounded,
+                  size: 50,
+                  color: Colors.white,
+                ),
         ),
       ),
     );
