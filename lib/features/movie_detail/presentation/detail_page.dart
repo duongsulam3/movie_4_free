@@ -9,24 +9,38 @@ import 'bloc/detail_movie/detail_movie_bloc.dart';
 import 'widgets/movie_detail_page_init.dart';
 import 'widgets/movie_detail_tabbar.dart';
 
-class MovieDetailPage extends StatelessWidget {
+class MovieDetailPage extends StatefulWidget {
   final MovieItemEntity movie;
   final String? tag;
   const MovieDetailPage({super.key, required this.movie, this.tag});
 
   @override
+  State<MovieDetailPage> createState() => _MovieDetailPageState();
+}
+
+class _MovieDetailPageState extends State<MovieDetailPage> {
+  late final DetailMovieBloc _detailMovieBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    // Trigger detail fetching once to avoid repeated calls on rebuilds.
+    _detailMovieBloc = context.read<DetailMovieBloc>()
+      ..add(GetMovieDetailEvent(slug: widget.movie.slug));
+  }
+
+  @override
   Widget build(BuildContext context) {
     final sHeight = MediaQuery.of(context).size.height;
-    final bloc = context.read<DetailMovieBloc>();
     return BlocBuilder<DetailMovieBloc, DetailMovieState>(
-      bloc: bloc..add(GetMovieDetailEvent(slug: movie.slug)),
+      bloc: _detailMovieBloc,
       builder: (context, state) {
         switch (state.status) {
           case DetailMovieStatus.init:
             return MovieDetailPageInit(
-              movie: movie,
+              movie: widget.movie,
               sHeight: sHeight,
-              tag: tag,
+              tag: widget.tag,
             );
           case DetailMovieStatus.error:
             return const ErrorPage();
