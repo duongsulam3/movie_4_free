@@ -30,17 +30,16 @@ import 'package:smoth_movie_app/features/movies/presentation/bloc/movies/movies_
 import 'package:smoth_movie_app/core/utils/helper/http_override.dart';
 
 class Helper {
-  //** HTTP OVERRIDE WITH BAD CERTIFICATION */
+  // ===== Core =====
+  // Keep the existing global override entrypoint unchanged.
   static final myHttpOverrides = MyHttpOverrides();
-  //** HTTP OVERRIDE WITH BAD CERTIFICATION */
 
-  //** BLOC FUNCTIONS */
-  //! BOTTOM NAV BLOC
+  // ===== Feature: Home / Bottom Navigation =====
   static void changeBottomNavIndex(BuildContext context, int index) {
     context.read<BottomNavBloc>().add(HomeChangeBottomNavStateEvent(index));
   }
 
-  //! SEARCH BLOC
+  // ===== Feature: Search =====
   static void onSubmitSearch({
     required BuildContext context,
     required String query,
@@ -61,6 +60,7 @@ class Helper {
         ));
   }
 
+  // ===== Feature: NguonC Search =====
   static void nguonCSearchFilms({
     required BuildContext context,
     required String query,
@@ -69,19 +69,22 @@ class Helper {
     context.read<NguoncSearchBloc>().add(GetSearchFilmsEvent(query: query));
   }
 
-  //! INFINITE MOVIES BLOC
+  // ===== Feature: Movies (Infinite / Similar) =====
   static void loadMoreInfiniteMovies(BuildContext context, String path) {
     final moviesBloc = context.read<MoviesBloc>();
     moviesBloc.add(GetListMovies(path: path, limit: 30));
   }
 
-  //! CATEGORIES BLOC
+  static void loadSimilarMovies(BuildContext context, String slug) {
+    context.read<SimilarMoviesBloc>().add(FetchMovies(categorySlug: slug));
+  }
+
+  // ===== Feature: Kho Phim =====
   static void loadAllCategories(BuildContext context) {
     final cateBloc = context.read<CategoryListBloc>();
     cateBloc.add(const GetAllCategories());
   }
 
-  //! KHO PHIM BLOC
   static void loadKhoPhimMovies(
     BuildContext context,
     String countrySlug,
@@ -99,7 +102,7 @@ class Helper {
         ));
   }
 
-  //! MOVIE DETAIL BLOCs
+  // ===== Feature: Movie Detail =====
   static void updateUrlEvent(BuildContext context, String url, String episode) {
     context.read<DetailMovieBloc>().add(UpdateVideoPlayerUrl(
           url: url,
@@ -107,6 +110,7 @@ class Helper {
         ));
   }
 
+  // ===== Feature: NguonC Movie Detail =====
   static void nguoncUpdateUrlEvent(
     BuildContext context,
     String url,
@@ -118,13 +122,7 @@ class Helper {
         ));
   }
 
-  //! SIMILAR MOVIES
-  static void loadSimilarMovies(BuildContext context, String slug) {
-    context.read<SimilarMoviesBloc>().add(FetchMovies(categorySlug: slug));
-  }
-  //** BLOC FUNCTIONS */
-
-  //** FUNCTIONS */
+  // ===== Shared UI / Utility =====
   static List<String> getYears() {
     List<String> list = List.empty(growable: true);
     final dateTime = DateTime.now();
@@ -161,6 +159,7 @@ class Helper {
     );
   }
 
+  // ===== Display Mapping: Movie Detail / NguonC =====
   static String getNguoncCategories(NguoncCategoryEntity category) {
     if (category.list.isEmpty) return AppConstants.noData;
     return category.list.map((e) => e.name).toList().join(", ");
@@ -179,6 +178,7 @@ class Helper {
     return countries.map((e) => e.name).toList().join(", ");
   }
 
+  // ===== Parsing: NguonC =====
   static Future<List<NguoncCategoryItemModel>> parseNguoncCategories(
     String json,
   ) async {
@@ -188,14 +188,13 @@ class Helper {
         .toList();
   }
 
-  //! KHO PHIM -> COUNTRIES
+  // ===== Parsing: Kho Phim =====
   static List<KhoPhimCountryModel> parseKhoPhimCoutryJsonToList(dynamic json) {
     final rawJson = _toJsonString(json);
     final jsonResponse = jsonDecode(rawJson) as List;
     return jsonResponse.map((e) => KhoPhimCountryModel.fromJson(e)).toList();
   }
 
-  //! KHO PHIM -> CATEGORIES
   static List<KhoPhimCategoryModel> parseKhoPhimCateJsonToList(dynamic json) {
     List<KhoPhimCategoryModel> cate = const [];
     final rawJson = _toJsonString(json);
@@ -212,14 +211,13 @@ class Helper {
     return cate;
   }
 
-  //! KHO PHIM MOVIES
   static List<MovieItemModel> parseKhoPhimMovies(dynamic json) {
     final rawJson = _toJsonString(json);
     final jsonResponse = jsonDecode(rawJson)["data"]["items"] as List;
     return jsonResponse.map((e) => MovieItemModel.fromJson(e)).toList();
   }
 
-  //! MOVIES
+  // ===== Parsing: Movies / Search =====
   static List<MovieItemModel> parseMovies(dynamic json) {
     final rawJson = _toJsonString(json);
     final jsonResponse = jsonDecode(rawJson)["data"]["items"] as List;
@@ -241,7 +239,7 @@ class Helper {
     });
   }
 
-  //! RECENTLY UPDATED MOVIES
+  // ===== Parsing: Recently Updated =====
   static List<RecentlyUpdateListItemModel> parseRecentlyMovies(dynamic json) {
     final rawJson = _toJsonString(json);
     final jsonResponse = jsonDecode(rawJson)['items'] as List;
@@ -250,21 +248,18 @@ class Helper {
         .toList();
   }
 
-  //! NGUỒN C SEARCH
   static List<NguoncMovieItemModel> parseNguoncSearchMovies(dynamic json) {
     final rawJson = _toJsonString(json);
     final jsonResponse = jsonDecode(rawJson)['items'] as List;
     return jsonResponse.map((e) => NguoncMovieItemModel.fromJson(e)).toList();
   }
 
-  //! NGUỒN C MOVIE DETAIL
   static NguoncMovieModel parseNguoncMovieDetail(dynamic json) {
     final rawJson = _toJsonString(json);
     final jsonResponse = jsonDecode(rawJson)['movie'];
     return NguoncMovieModel.fromJson(jsonResponse);
   }
 
-  //! NGUỒN C MOVIES BY CATEGORY
   static List<NguoncMoviesByCategoryItemModel> parseNguoncMoviesByCategory(
     dynamic json,
   ) {
@@ -275,13 +270,13 @@ class Helper {
         .toList();
   }
 
-  //! MOVIE DETAIL
+  // ===== Parsing: Movie Detail =====
   static MovieDetailModel parseMovieDetail(String json) {
     final jsonResponse = jsonDecode(json);
     return MovieDetailModel.fromJson(jsonResponse);
   }
 
-  //** FUNCTIONS */
+  // ===== Internal =====
   /// Ensures we always return JSON text for helpers expecting `String json`.
   static String _toJsonString(dynamic data) {
     if (data is String) return data;
