@@ -1,10 +1,11 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
-import 'package:smoth_movie_app/common/widgets/cached_network/container_with_cached_network_image_provider.dart';
-import 'package:smoth_movie_app/core/utils/helper/helper.dart';
 import 'package:video_player/video_player.dart';
+
+import '../../core/utils/helper/helper.dart';
 
 class MoviePlayerWidget extends StatefulWidget {
   final String m3u8Url;
@@ -57,9 +58,7 @@ class _MoviePlayerWidgetState extends State<MoviePlayerWidget> {
       setState(() {});
     } catch (e) {
       if (mounted) Helper.showInitPlayerErrorSnackBar(context);
-      log("Không thể phát video: $url");
       log(e.toString());
-      return;
     }
   }
 
@@ -82,7 +81,35 @@ class _MoviePlayerWidgetState extends State<MoviePlayerWidget> {
       aspectRatio: _controller.value.aspectRatio,
       child: _controller.value.isInitialized
           ? Chewie(controller: chewieController!)
-          : ContainerWithCachedNetworkImageProvider(path: widget.posterUrl),
+          : _MoviePlayerFallbackPoster(posterUrl: widget.posterUrl),
+    );
+  }
+}
+
+class _MoviePlayerFallbackPoster extends StatelessWidget {
+  const _MoviePlayerFallbackPoster({required this.posterUrl});
+
+  final String posterUrl;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: CachedNetworkImageProvider(posterUrl),
+          fit: BoxFit.fill,
+        ),
+      ),
+      child: Container(
+        color: Colors.black.withValues(alpha: 0.9),
+        child: const Center(
+          child: Icon(
+            Icons.play_disabled_rounded,
+            size: 50,
+            color: Colors.white,
+          ),
+        ),
+      ),
     );
   }
 }
