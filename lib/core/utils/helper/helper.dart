@@ -103,10 +103,16 @@ class Helper {
   }
 
   // ===== Feature: Movie Detail =====
-  static void updateUrlEvent(BuildContext context, String url, String episode) {
-    context.read<DetailMovieBloc>().add(UpdateVideoPlayerUrl(
+  static void updateUrlEvent(
+    BuildContext cxt,
+    String url,
+    String episode,
+    String slug,
+  ) {
+    cxt.read<DetailMovieBloc>().add(UpdateVideoPlayerUrl(
           url: url,
           episode: episode,
+          slug: slug,
         ));
   }
 

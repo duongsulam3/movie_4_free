@@ -8,5 +8,6 @@ abstract class DetailMovieState with _$DetailMovieState {
     @Default(null) MovieDetailEntity? movie,
     @Default("") String passingUrl,
     @Default("") String passingEpisode,
+    @Default("") String passingSlug,
   ]) = _DetailMovieState;
 }
