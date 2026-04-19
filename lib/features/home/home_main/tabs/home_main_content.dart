@@ -32,11 +32,11 @@ class _HomeMainContentState extends State<HomeMainContent> {
   ];
 
   List<HomeMainContentGridItem> buildSection(List<HomeCategoryTab> sections) {
-    return List.generate(sections.length, (section) {
+    return List.generate(sections.length, (index) {
       return HomeMainContentGridItem(
-        title: sections[section].homeGridTitle ?? "",
-        path: sections[section].slug,
-        tabIndex: section,
+        title: sections[index].homeGridTitle ?? "",
+        path: sections[index].slug,
+        tabIndex: index,
       );
     });
   }

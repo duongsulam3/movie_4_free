@@ -139,7 +139,6 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => BottomNavBloc(),
-      //TODO FIND THE WAY TO NOT RELOAD PAGES WHEN CHANGE BOTTOM NAV PAGE
       child: BlocBuilder<BottomNavBloc, BottomNavState>(
         buildWhen: (previous, current) => previous != current,
         builder: (context, state) {
@@ -186,7 +185,13 @@ class _HomePageState extends State<HomePage>
                     ),
                   ),
                 ),
-                body: currentPage.widget,
+                // Keeps all bottom-nav pages mounted so switching tabs does not
+                // dispose/recreate their state (scroll, blocs below each page).
+                body: IndexedStack(
+                  index: state.currentPage,
+                  sizing: StackFit.expand,
+                  children: List.generate(pages.length, (i) => pages[i].widget),
+                ),
               ),
             ),
           );
