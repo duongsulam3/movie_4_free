@@ -4,21 +4,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/entity/nav_item.dart';
 import 'package:smoth_movie_app/common/entity/page_item.dart';
 import 'package:smoth_movie_app/common/entity/tab_item.dart';
-import 'package:smoth_movie_app/common/widgets/custom_appbar_widget.dart';
-import 'package:smoth_movie_app/core/constants/app_path.dart';
-import 'package:smoth_movie_app/features/home/home_main/tabs/categories_tab.dart';
-import 'package:smoth_movie_app/features/home/home_main/tabs/home_main_content.dart';
-import 'package:smoth_movie_app/features/home/presentation/bloc/bottom_nav/bottom_nav_bloc.dart';
-import 'package:smoth_movie_app/features/home/home_main/page.dart';
-import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/kho_phim/kho_phim_page_bloc.dart';
-import 'package:smoth_movie_app/features/profile/page.dart';
-import 'package:smoth_movie_app/features/home/presentation/widgets/home_tab_bar.dart';
-import 'package:smoth_movie_app/features/home/presentation/widgets/logo_and_widget.dart';
-import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/categories/category_list_bloc.dart';
-import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/countries/countries_bloc.dart';
-import 'package:smoth_movie_app/features/kho_phim/presentation/page.dart';
-import 'package:smoth_movie_app/core/utils/helper/helper.dart';
 import 'package:smoth_movie_app/core/init_dependencies.dart';
+import 'package:smoth_movie_app/core/utils/helper/helper.dart';
+
+import '../../../common/widgets/custom_appbar_widget.dart';
+import '../../kho_phim/presentation/bloc/categories/category_list_bloc.dart';
+import '../../kho_phim/presentation/bloc/countries/countries_bloc.dart';
+import '../../kho_phim/presentation/bloc/kho_phim/kho_phim_page_bloc.dart';
+import '../../kho_phim/presentation/page.dart';
+import '../../profile/page.dart';
+import '../enum/category.dart';
+import '../home_main/page.dart';
+import '../home_main/tabs/categories_tab.dart';
+import '../home_main/tabs/home_main_content.dart';
+import 'bloc/bottom_nav/bottom_nav_bloc.dart';
+import 'widgets/home_tab_bar.dart';
+import 'widgets/logo_and_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -61,43 +62,22 @@ class _HomePageState extends State<HomePage>
   }
 
   void _initializeTabs() {
-    tabs = [
-      TabItem(
-        title: "Trang chủ",
-        widget: HomeMainContent(
-          scrollController: scrollControllers[0],
-          tabController: tabController,
-        ),
-      ),
-      TabItem(
-        title: "Anime",
-        widget: CategoriesTab(
-          scrollController: scrollControllers[1],
-          path: AppPath.anime,
-        ),
-      ),
-      TabItem(
-        title: "Phim lẻ",
-        widget: CategoriesTab(
-          scrollController: scrollControllers[2],
-          path: AppPath.phimLe,
-        ),
-      ),
-      TabItem(
-        title: "Phim bộ",
-        widget: CategoriesTab(
-          scrollController: scrollControllers[3],
-          path: AppPath.phimBo,
-        ),
-      ),
-      TabItem(
-        title: "Phim truyện hình",
-        widget: CategoriesTab(
-          scrollController: scrollControllers[4],
-          path: AppPath.phimTruyenHinh,
-        ),
-      ),
-    ];
+    tabs = List.generate(HomeCategoryTab.values.length, (i) {
+      final category = HomeCategoryTab.values[i];
+      return TabItem(
+        title: category.tabLabel,
+        widget: switch (category) {
+          HomeCategoryTab.home => HomeMainContent(
+              scrollController: scrollControllers[i],
+              tabController: tabController,
+            ),
+          _ => CategoriesTab(
+              scrollController: scrollControllers[i],
+              path: category.slug,
+            ),
+        },
+      );
+    });
   }
 
   void _initializePages() {
