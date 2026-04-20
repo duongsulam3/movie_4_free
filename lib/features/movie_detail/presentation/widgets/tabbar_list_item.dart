@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:smoth_movie_app/common/widgets/cached_network/container_with_cached_network_image_provider.dart';
+import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/item_info.dart';
 
 class TabBarListItem extends StatelessWidget {
   const TabBarListItem({
     super.key,
+    this.isCurrentlyPlaying = false,
     required this.sHeight,
     required this.imagePath,
     required this.movieName,
@@ -14,6 +16,8 @@ class TabBarListItem extends StatelessWidget {
     required this.onTap,
   });
 
+  /// When true, shows a dim overlay on the thumbnail with "Đang chiếu".
+  final bool isCurrentlyPlaying;
   final double sHeight;
   final String imagePath;
   final String movieName;
@@ -39,8 +43,14 @@ class TabBarListItem extends StatelessWidget {
           children: [
             Expanded(
               flex: 4,
-              child: ContainerWithCachedNetworkImageProvider(
-                path: imagePath,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  ContainerWithCachedNetworkImageProvider(
+                    path: imagePath,
+                  ),
+                  if (isCurrentlyPlaying) const _EpisodePlayingOverlay(),
+                ],
               ),
             ),
             Expanded(
@@ -53,6 +63,28 @@ class TabBarListItem extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Dim overlay + label for the episode row thumbnail when it matches the active stream.
+class _EpisodePlayingOverlay extends StatelessWidget {
+  const _EpisodePlayingOverlay();
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned.fill(
+      child: ColoredBox(
+        color: Colors.black.withValues(alpha: 0.7),
+        child: const Center(
+          child: ResponsiveText(
+            text: 'Đang chiếu',
+            textColor: Colors.white,
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
     );

@@ -46,6 +46,7 @@ class DetailMovieBloc extends Bloc<DetailMovieEvent, DetailMovieState> {
       status: DetailMovieStatus.success,
       movie: movie,
       passingEpisode: movie.episodes[0].serverData[0].name,
+      passingSlug: movie.episodes[0].serverData[0].slug,
     ));
   }
 
@@ -56,6 +57,7 @@ class DetailMovieBloc extends Bloc<DetailMovieEvent, DetailMovieState> {
     emit(state.copyWith(
       passingUrl: event.url,
       passingEpisode: event.episode,
+      passingSlug: event.slug,
     ));
   }
 }

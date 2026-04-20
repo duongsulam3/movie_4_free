@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smoth_movie_app/features/home/presentation/scope/title_grid_movies_scope.dart';
 import 'package:smoth_movie_app/features/home/presentation/widgets/row_title_and_more.dart';
-import 'package:smoth_movie_app/features/movies/presentation/bloc/movies/movies_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/screens/bloc_builder_gridview.dart';
-import 'package:smoth_movie_app/core/init_dependencies.dart';
 
 class TitleAndGridViewList extends StatelessWidget {
   const TitleAndGridViewList({
@@ -23,15 +21,15 @@ class TitleAndGridViewList extends StatelessWidget {
   final int tabIndex;
   final int limit;
 
+  void _onTap() {
+    tabController.animateTo(tabIndex);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<MoviesBloc>(
-      create: (context) => serviceLocator()
-        ..add(GetListMovies(
-          path: path,
-          limit: limit,
-          isRefresh: false,
-        )),
+    return TitleGridMoviesScope(
+      path: path,
+      limit: limit,
       child: Padding(
         padding: EdgeInsets.all(sHeight / (sHeight / 5)),
         child: Column(
@@ -39,7 +37,7 @@ class TitleAndGridViewList extends StatelessWidget {
           children: [
             RowTitleAndMore(
               title: title,
-              onTap: () => tabController.animateTo(tabIndex),
+              onTap: _onTap,
             ),
             BlocBuilderGridview(itemCount: limit),
           ],

@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smoth_movie_app/features/movies/presentation/bloc/movies/movies_bloc.dart';
-import 'package:smoth_movie_app/features/movies/presentation/bloc/movies_sortby_time/movies_sort_by_time_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/screens/bloc_builder_movies_sort_by_time.dart';
 import 'package:smoth_movie_app/features/movies/presentation/screens/infinite_gridview_widget.dart';
-import 'package:smoth_movie_app/core/init_dependencies.dart';
+import 'package:smoth_movie_app/features/home/presentation/scope/categories_tab_scope.dart';
 
 class CategoriesTab extends StatefulWidget {
   const CategoriesTab({
@@ -22,40 +19,15 @@ class CategoriesTab extends StatefulWidget {
   State<CategoriesTab> createState() => _CategoriesTabState();
 }
 
-class _CategoriesTabState extends State<CategoriesTab> {
-  late List<BlocProvider> providers;
-
-  @override
-  void initState() {
-    super.initState();
-    initProviders();
-  }
-
-  void initProviders() {
-    providers = [
-      BlocProvider<MoviesSortByTimeBloc>(
-        create: (context) => serviceLocator()
-          ..add(GetSortByTimeMovies(
-            cateName: widget.path,
-            page: 1,
-            sortfield: "modified.time",
-          )),
-      ),
-      BlocProvider<MoviesBloc>(
-        create: (context) => serviceLocator()
-          ..add(GetListMovies(
-            path: widget.path,
-            limit: widget.limit,
-          )),
-      ),
-    ];
-  }
-
+class _CategoriesTabState extends State<CategoriesTab>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final sHeight = MediaQuery.of(context).size.height;
-    return MultiBlocProvider(
-      providers: providers,
+    return CategoriesTabScope(
+      path: widget.path,
+      limit: widget.limit,
       child: SingleChildScrollView(
         controller: widget.scrollController,
         child: Column(
@@ -64,12 +36,17 @@ class _CategoriesTabState extends State<CategoriesTab> {
             const BlocBuilderMoviesSortByTime(),
             Padding(
               padding: const EdgeInsets.only(left: 5, right: 5),
-              child:
-                  InfiniteGridView(path: widget.path, itemCount: widget.limit),
+              child: InfiniteGridView(
+                path: widget.path,
+                itemCount: widget.limit,
+              ),
             ),
           ],
         ),
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

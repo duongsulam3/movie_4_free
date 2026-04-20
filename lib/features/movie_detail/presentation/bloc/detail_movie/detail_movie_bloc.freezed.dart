@@ -18,6 +18,7 @@ mixin _$DetailMovieState {
   MovieDetailEntity? get movie;
   String get passingUrl;
   String get passingEpisode;
+  String get passingSlug;
 
   /// Create a copy of DetailMovieState
   /// with the given fields replaced by the non-null parameter values.
@@ -37,16 +38,18 @@ mixin _$DetailMovieState {
             (identical(other.passingUrl, passingUrl) ||
                 other.passingUrl == passingUrl) &&
             (identical(other.passingEpisode, passingEpisode) ||
-                other.passingEpisode == passingEpisode));
+                other.passingEpisode == passingEpisode) &&
+            (identical(other.passingSlug, passingSlug) ||
+                other.passingSlug == passingSlug));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, status, movie, passingUrl, passingEpisode);
+  int get hashCode => Object.hash(
+      runtimeType, status, movie, passingUrl, passingEpisode, passingSlug);
 
   @override
   String toString() {
-    return 'DetailMovieState(status: $status, movie: $movie, passingUrl: $passingUrl, passingEpisode: $passingEpisode)';
+    return 'DetailMovieState(status: $status, movie: $movie, passingUrl: $passingUrl, passingEpisode: $passingEpisode, passingSlug: $passingSlug)';
   }
 }
 
@@ -60,7 +63,8 @@ abstract mixin class $DetailMovieStateCopyWith<$Res> {
       {DetailMovieStatus status,
       MovieDetailEntity? movie,
       String passingUrl,
-      String passingEpisode});
+      String passingEpisode,
+      String passingSlug});
 }
 
 /// @nodoc
@@ -80,6 +84,7 @@ class _$DetailMovieStateCopyWithImpl<$Res>
     Object? movie = freezed,
     Object? passingUrl = null,
     Object? passingEpisode = null,
+    Object? passingSlug = null,
   }) {
     return _then(_self.copyWith(
       status: null == status
@@ -97,6 +102,10 @@ class _$DetailMovieStateCopyWithImpl<$Res>
       passingEpisode: null == passingEpisode
           ? _self.passingEpisode
           : passingEpisode // ignore: cast_nullable_to_non_nullable
+              as String,
+      passingSlug: null == passingSlug
+          ? _self.passingSlug
+          : passingSlug // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -196,15 +205,15 @@ extension DetailMovieStatePatterns on DetailMovieState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(DetailMovieStatus status, MovieDetailEntity? movie,
-            String passingUrl, String passingEpisode)?
+            String passingUrl, String passingEpisode, String passingSlug)?
         $default, {
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
       case _DetailMovieState() when $default != null:
-        return $default(
-            _that.status, _that.movie, _that.passingUrl, _that.passingEpisode);
+        return $default(_that.status, _that.movie, _that.passingUrl,
+            _that.passingEpisode, _that.passingSlug);
       case _:
         return orElse();
     }
@@ -226,14 +235,14 @@ extension DetailMovieStatePatterns on DetailMovieState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
     TResult Function(DetailMovieStatus status, MovieDetailEntity? movie,
-            String passingUrl, String passingEpisode)
+            String passingUrl, String passingEpisode, String passingSlug)
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _DetailMovieState():
-        return $default(
-            _that.status, _that.movie, _that.passingUrl, _that.passingEpisode);
+        return $default(_that.status, _that.movie, _that.passingUrl,
+            _that.passingEpisode, _that.passingSlug);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -254,14 +263,14 @@ extension DetailMovieStatePatterns on DetailMovieState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
     TResult? Function(DetailMovieStatus status, MovieDetailEntity? movie,
-            String passingUrl, String passingEpisode)?
+            String passingUrl, String passingEpisode, String passingSlug)?
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _DetailMovieState() when $default != null:
-        return $default(
-            _that.status, _that.movie, _that.passingUrl, _that.passingEpisode);
+        return $default(_that.status, _that.movie, _that.passingUrl,
+            _that.passingEpisode, _that.passingSlug);
       case _:
         return null;
     }
@@ -275,7 +284,8 @@ class _DetailMovieState extends DetailMovieState {
       [this.status = DetailMovieStatus.init,
       this.movie = null,
       this.passingUrl = "",
-      this.passingEpisode = ""])
+      this.passingEpisode = "",
+      this.passingSlug = ""])
       : super._();
 
   @override
@@ -290,6 +300,9 @@ class _DetailMovieState extends DetailMovieState {
   @override
   @JsonKey()
   final String passingEpisode;
+  @override
+  @JsonKey()
+  final String passingSlug;
 
   /// Create a copy of DetailMovieState
   /// with the given fields replaced by the non-null parameter values.
@@ -309,16 +322,18 @@ class _DetailMovieState extends DetailMovieState {
             (identical(other.passingUrl, passingUrl) ||
                 other.passingUrl == passingUrl) &&
             (identical(other.passingEpisode, passingEpisode) ||
-                other.passingEpisode == passingEpisode));
+                other.passingEpisode == passingEpisode) &&
+            (identical(other.passingSlug, passingSlug) ||
+                other.passingSlug == passingSlug));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, status, movie, passingUrl, passingEpisode);
+  int get hashCode => Object.hash(
+      runtimeType, status, movie, passingUrl, passingEpisode, passingSlug);
 
   @override
   String toString() {
-    return 'DetailMovieState(status: $status, movie: $movie, passingUrl: $passingUrl, passingEpisode: $passingEpisode)';
+    return 'DetailMovieState(status: $status, movie: $movie, passingUrl: $passingUrl, passingEpisode: $passingEpisode, passingSlug: $passingSlug)';
   }
 }
 
@@ -334,7 +349,8 @@ abstract mixin class _$DetailMovieStateCopyWith<$Res>
       {DetailMovieStatus status,
       MovieDetailEntity? movie,
       String passingUrl,
-      String passingEpisode});
+      String passingEpisode,
+      String passingSlug});
 }
 
 /// @nodoc
@@ -354,6 +370,7 @@ class __$DetailMovieStateCopyWithImpl<$Res>
     Object? movie = freezed,
     Object? passingUrl = null,
     Object? passingEpisode = null,
+    Object? passingSlug = null,
   }) {
     return _then(_DetailMovieState(
       null == status
@@ -371,6 +388,10 @@ class __$DetailMovieStateCopyWithImpl<$Res>
       null == passingEpisode
           ? _self.passingEpisode
           : passingEpisode // ignore: cast_nullable_to_non_nullable
+              as String,
+      null == passingSlug
+          ? _self.passingSlug
+          : passingSlug // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }

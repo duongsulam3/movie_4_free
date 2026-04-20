@@ -13,5 +13,10 @@ class GetMovieDetailEvent extends DetailMovieEvent {
 class UpdateVideoPlayerUrl extends DetailMovieEvent {
   final String url;
   final String episode;
-  const UpdateVideoPlayerUrl({required this.url, required this.episode});
+  final String slug;
+  const UpdateVideoPlayerUrl({
+    required this.url,
+    required this.episode,
+    required this.slug,
+  });
 }
