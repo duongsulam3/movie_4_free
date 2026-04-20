@@ -15,16 +15,20 @@ class TitleGridMoviesScope extends StatelessWidget {
   final int limit;
   final Widget child;
 
+  MoviesBloc _createMoviesBloc() {
+    return serviceLocator()
+      ..add(GetListMovies(
+        path: path,
+        limit: limit,
+        isRefresh: false,
+      ));
+  }
+
   @override
   Widget build(BuildContext context) {
     // Home section grid keeps its own movie state by section path.
     return BlocProvider<MoviesBloc>(
-      create: (_) => serviceLocator()
-        ..add(GetListMovies(
-          path: path,
-          limit: limit,
-          isRefresh: false,
-        )),
+      create: (_) => _createMoviesBloc(),
       child: child,
     );
   }

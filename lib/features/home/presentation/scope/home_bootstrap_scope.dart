@@ -15,27 +15,47 @@ class HomeBootstrapScope extends StatelessWidget {
 
   final Widget child;
 
+  RecentlyUpdateMoviesBloc _createRecentlyUpdateMoviesBloc() {
+    return serviceLocator()..add(GetRecentlyUpdateMovies());
+  }
+
+  HomeShellCubit _createHomeShellCubit() {
+    return HomeShellCubit();
+  }
+
+  CountriesBloc _createCountriesBloc() {
+    return serviceLocator();
+  }
+
+  CategoryListBloc _createCategoryListBloc() {
+    return serviceLocator();
+  }
+
+  KhoPhimPageBloc _createKhoPhimPageBloc(BuildContext context) {
+    return KhoPhimPageBloc(
+      countriesBloc: context.read<CountriesBloc>(),
+      categoryListBloc: context.read<CategoryListBloc>(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider<RecentlyUpdateMoviesBloc>(
-          create: (_) => serviceLocator()..add(GetRecentlyUpdateMovies()),
+          create: (_) => _createRecentlyUpdateMoviesBloc(),
         ),
         BlocProvider<HomeShellCubit>(
-          create: (_) => HomeShellCubit(),
+          create: (_) => _createHomeShellCubit(),
         ),
         BlocProvider<CountriesBloc>(
-          create: (_) => serviceLocator(),
+          create: (_) => _createCountriesBloc(),
         ),
         BlocProvider<CategoryListBloc>(
-          create: (_) => serviceLocator(),
+          create: (_) => _createCategoryListBloc(),
         ),
         BlocProvider<KhoPhimPageBloc>(
-          create: (context) => KhoPhimPageBloc(
-            countriesBloc: context.read<CountriesBloc>(),
-            categoryListBloc: context.read<CategoryListBloc>(),
-          ),
+          create: (context) => _createKhoPhimPageBloc(context),
         ),
       ],
       child: child,

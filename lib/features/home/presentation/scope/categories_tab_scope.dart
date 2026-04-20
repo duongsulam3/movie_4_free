@@ -16,25 +16,33 @@ class CategoriesTabScope extends StatelessWidget {
   final int limit;
   final Widget child;
 
+  MoviesSortByTimeBloc _createMoviesSortByTimeBloc() {
+    return serviceLocator()
+      ..add(GetSortByTimeMovies(
+        cateName: path,
+        page: 1,
+        sortfield: "modified.time",
+      ));
+  }
+
+  MoviesBloc _createMoviesBloc() {
+    return serviceLocator()
+      ..add(GetListMovies(
+        path: path,
+        limit: limit,
+      ));
+  }
+
   @override
   Widget build(BuildContext context) {
     // Category tab data is isolated per tab path.
     return MultiBlocProvider(
       providers: [
         BlocProvider<MoviesSortByTimeBloc>(
-          create: (_) => serviceLocator()
-            ..add(GetSortByTimeMovies(
-              cateName: path,
-              page: 1,
-              sortfield: "modified.time",
-            )),
+          create: (_) => _createMoviesSortByTimeBloc(),
         ),
         BlocProvider<MoviesBloc>(
-          create: (_) => serviceLocator()
-            ..add(GetListMovies(
-              path: path,
-              limit: limit,
-            )),
+          create: (_) => _createMoviesBloc(),
         ),
       ],
       child: child,
