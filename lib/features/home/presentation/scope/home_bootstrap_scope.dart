@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/core/init_dependencies.dart';
-import 'package:smoth_movie_app/features/home/presentation/bloc/home_shell/home_shell_cubit.dart';
-import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/categories/category_list_bloc.dart';
-import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/countries/countries_bloc.dart';
-import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/kho_phim/kho_phim_page_bloc.dart';
-import 'package:smoth_movie_app/features/movies/presentation/bloc/recently_update_movies/recently_update_movies_bloc.dart';
+
+import '../../../kho_phim/presentation/bloc/categories/category_list_bloc.dart';
+import '../../../kho_phim/presentation/bloc/countries/countries_bloc.dart';
+import '../../../kho_phim/presentation/bloc/kho_phim/kho_phim_page_bloc.dart';
+import '../../../kho_phim/presentation/bloc/kho_phim_movies/kho_phim_movies_bloc.dart';
+import '../../../movies/presentation/bloc/recently_update_movies/recently_update_movies_bloc.dart';
+import '../bloc/home_shell/home_shell_cubit.dart';
 
 class HomeBootstrapScope extends StatelessWidget {
   const HomeBootstrapScope({
@@ -38,6 +40,10 @@ class HomeBootstrapScope extends StatelessWidget {
     );
   }
 
+  KhoPhimMoviesBloc _createKhoPhimMoviesBloc() {
+    return serviceLocator();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -56,6 +62,9 @@ class HomeBootstrapScope extends StatelessWidget {
         ),
         BlocProvider<KhoPhimPageBloc>(
           create: (context) => _createKhoPhimPageBloc(context),
+        ),
+        BlocProvider<KhoPhimMoviesBloc>(
+          create: (_) => _createKhoPhimMoviesBloc(),
         ),
       ],
       child: child,
