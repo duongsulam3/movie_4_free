@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/entity/home_main_content_grid_item.dart';
-import 'package:smoth_movie_app/core/init_dependencies.dart';
 
-import '../../../movies/presentation/bloc/recently_update_movies/recently_update_movies_bloc.dart';
 import '../../../movies/presentation/screens/bloc_builder_recently_update_movies.dart';
 import '../../enum/category.dart';
 import '../widgets/title_and_gridview_list.dart';
@@ -59,10 +56,7 @@ class _HomeMainContentState extends State<HomeMainContent> {
       child: Column(
         spacing: sHeight / (sHeight / 10),
         children: [
-          BlocProvider<RecentlyUpdateMoviesBloc>(
-            create: (context) => serviceLocator(),
-            child: const BlocBuilderRecentlyUpdateMovies(),
-          ),
+          const BlocBuilderRecentlyUpdateMovies(),
           ListView.builder(
             padding: EdgeInsets.zero,
             shrinkWrap: true,
