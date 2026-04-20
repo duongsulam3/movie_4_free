@@ -23,6 +23,10 @@ class TitleAndGridViewList extends StatelessWidget {
   final int tabIndex;
   final int limit;
 
+  void _onTap() {
+    tabController.animateTo(tabIndex);
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider<MoviesBloc>(
@@ -39,7 +43,7 @@ class TitleAndGridViewList extends StatelessWidget {
           children: [
             RowTitleAndMore(
               title: title,
-              onTap: () => tabController.animateTo(tabIndex),
+              onTap: _onTap,
             ),
             BlocBuilderGridview(itemCount: limit),
           ],

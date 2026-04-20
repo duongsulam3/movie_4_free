@@ -33,7 +33,7 @@ extension HomeCategoryTabExtension on HomeCategoryTab {
       case HomeCategoryTab.phimBo:
         return 'Phim bộ';
       case HomeCategoryTab.tvShows:
-        return 'Phim truyện hình';
+        return 'Phim truyền hình';
     }
   }
 
@@ -52,50 +52,3 @@ extension HomeCategoryTabExtension on HomeCategoryTab {
     }
   }
 }
-
-// enum HomeTopTab {
-//   home(
-//     tabLabel: 'Trang chủ',
-//     slug: null,
-//     homeGridTitle: null,
-//   ),
-//   anime(
-//     tabLabel: 'Anime',
-//     slug: 'hoat-hinh',
-//     homeGridTitle: 'Anime',
-//   ),
-//   phimLe(
-//     tabLabel: 'Phim lẻ',
-//     slug: 'phim-le',
-//     homeGridTitle: 'Phim lẻ',
-//   ),
-//   phimBo(
-//     tabLabel: 'Phim bộ',
-//     slug: 'phim-bo',
-//     homeGridTitle: 'Phim bộ',
-//   ),
-//   tvShows(
-//     tabLabel: 'Phim truyện hình',
-//     slug: 'tv-shows',
-//     homeGridTitle: 'Chương trình truyền hình',
-//   );
-
-//   const HomeTopTab({
-//     required this.tabLabel,
-//     required this.slug,
-//     required this.homeGridTitle,
-//   });
-
-//   /// Label on the home top [TabBar] / [TabItem.title].
-//   final String tabLabel;
-
-//   /// API path segment for [CategoriesTab]; null for [home].
-//   final String? slug;
-
-//   /// Row title on [HomeMainContent] grid; null when this tab has no grid section.
-//   final String? homeGridTitle;
-
-//   /// Category tabs only (excludes [home]), same order as in [values].
-//   static List<HomeTopTab> get categories =>
-//       HomeTopTab.values.skip(1).toList(growable: false);
-// }

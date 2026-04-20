@@ -64,8 +64,10 @@ class _CategoriesTabState extends State<CategoriesTab> {
             const BlocBuilderMoviesSortByTime(),
             Padding(
               padding: const EdgeInsets.only(left: 5, right: 5),
-              child:
-                  InfiniteGridView(path: widget.path, itemCount: widget.limit),
+              child: InfiniteGridView(
+                path: widget.path,
+                itemCount: widget.limit,
+              ),
             ),
           ],
         ),

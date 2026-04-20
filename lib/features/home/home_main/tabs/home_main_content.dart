@@ -33,10 +33,13 @@ class _HomeMainContentState extends State<HomeMainContent> {
 
   List<HomeMainContentGridItem> buildSection(List<HomeCategoryTab> sections) {
     return List.generate(sections.length, (index) {
+      final category = sections[index];
       return HomeMainContentGridItem(
-        title: sections[index].homeGridTitle ?? "",
-        path: sections[index].slug,
-        tabIndex: index,
+        title: category.homeGridTitle ?? "",
+        path: category.slug,
+        // Use enum index to match the real TabBar order:
+        // home(0), anime(1), phimLe(2), phimBo(3), tvShows(4).
+        tabIndex: category.index,
       );
     });
   }
@@ -66,13 +69,12 @@ class _HomeMainContentState extends State<HomeMainContent> {
             primary: false,
             itemCount: sections.length,
             itemBuilder: (context, index) {
-              final listItems = sections;
               return TitleAndGridViewList(
                 sHeight: sHeight,
                 tabController: widget.tabController,
-                title: listItems[index].title,
-                path: listItems[index].path,
-                tabIndex: listItems[index].tabIndex,
+                title: sections[index].title,
+                path: sections[index].path,
+                tabIndex: sections[index].tabIndex,
               );
             },
           )
