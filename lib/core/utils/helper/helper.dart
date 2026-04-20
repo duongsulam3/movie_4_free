@@ -25,7 +25,6 @@ import 'package:smoth_movie_app/features/nguonc_search_movies/data/model/nguonc_
 import 'package:smoth_movie_app/features/nguonc_search_movies/presentation/bloc/nguonc_search_bloc.dart';
 import 'package:smoth_movie_app/features/search/data/models/search_suggestion_model.dart';
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
-import 'package:smoth_movie_app/features/home/presentation/bloc/bottom_nav/bottom_nav_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies/movies_bloc.dart';
 import 'package:smoth_movie_app/core/utils/helper/http_override.dart';
 
@@ -33,11 +32,6 @@ class Helper {
   // ===== Core =====
   // Keep the existing global override entrypoint unchanged.
   static final myHttpOverrides = MyHttpOverrides();
-
-  // ===== Feature: Home / Bottom Navigation =====
-  static void changeBottomNavIndex(BuildContext context, int index) {
-    context.read<BottomNavBloc>().add(HomeChangeBottomNavStateEvent(index));
-  }
 
   // ===== Feature: Search =====
   static void onSubmitSearch({
