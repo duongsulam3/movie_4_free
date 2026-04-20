@@ -12,6 +12,7 @@ import 'package:smoth_movie_app/features/profile/page.dart';
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
 import 'package:smoth_movie_app/features/search/presentation/page.dart';
 import 'package:smoth_movie_app/features/home/presentation/home_page.dart';
+import 'package:smoth_movie_app/features/home/presentation/scope/home_bootstrap_scope.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/detail_page.dart';
 import 'package:smoth_movie_app/features/splash/bloc/splash_bloc.dart';
 import 'package:smoth_movie_app/features/splash/presentation/splash_page.dart';
@@ -38,7 +39,7 @@ class AppRouter {
         );
       case homePage:
         return SlideBottomToTopTransition(
-          page: const HomePage(),
+          page: const HomeBootstrapScope(child: HomePage()),
           routeName: settings.name,
           dx: 1.0,
           dy: 0.0,

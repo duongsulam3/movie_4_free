@@ -65,45 +65,52 @@ import 'package:smoth_movie_app/features/movies/presentation/bloc/recently_updat
 final serviceLocator = GetIt.instance;
 
 Future<void> initDependencies() async {
-  serviceLocator.registerLazySingleton(() => AppService.shared);
-  _initListMovies();
-  _initDetailMovie();
-  _initSearch();
+  _initCoreDependencies();
+  _initMoviesFeature();
+  _initDetailMovieFeature();
+  _initSearchFeature();
   _initKhoPhimFeature();
 }
 
-void _initListMovies() {
-  //** Movies */
+void _initCoreDependencies() {
+  serviceLocator.registerLazySingleton(() => AppService.shared);
+}
+
+// ===== Feature: Movies =====
+void _initMoviesFeature() {
+  _initMoviesListDependencies();
+  _initRecentlyUpdatedMoviesDependencies();
+  _initSimilarMoviesDependencies();
+  _initMoviesSortByTimeDependencies();
+  _initNguoncMoviesByCategoryDependencies();
+}
+
+void _initMoviesListDependencies() {
   serviceLocator.registerFactory<MoviesRemoteDataSource>(
     () => MoviesRemoteDataSourceImpl(client: serviceLocator<AppService>()),
   );
-  //
   serviceLocator.registerFactory<MoviesRepository>(
     () => MoviesRepositoryImpl(moviesRemoteDataSource: serviceLocator()),
   );
-  //
   serviceLocator.registerFactory(
     () => GetMovies(moviesRepository: serviceLocator()),
   );
-
   serviceLocator.registerFactory(
     () => MoviesBloc(usecase: serviceLocator()),
   );
-  //** Movies */
+}
 
-  //** Recently Update Movies */
+void _initRecentlyUpdatedMoviesDependencies() {
   serviceLocator.registerFactory<RecentlyUpdateMoviesRemoteDataSource>(
     () => RecentlyUpdateMoviesRemoteDataSourceImpl(
       client: serviceLocator<AppService>(),
     ),
   );
-  //
   serviceLocator.registerFactory<RecentlyUpdateMoviesRepository>(
     () => RecentlyUpdateMoviesRepositoryImpl(
       recentlyUpdateMoviesRemoteDataSource: serviceLocator(),
     ),
   );
-  //
   serviceLocator.registerFactory(
     () => GetRecentlyMovies(
       recentlyUpdateMoviesRepository: serviceLocator(),
@@ -112,9 +119,9 @@ void _initListMovies() {
   serviceLocator.registerFactory(
     () => RecentlyUpdateMoviesBloc(serviceLocator()),
   );
-  //** Recently Update Movies */
+}
 
-  //** Similar Movies */
+void _initSimilarMoviesDependencies() {
   serviceLocator.registerFactory<SimilarMoviesRemoteDataSource>(
     () => SimilarMoviesRemoteDataSourceImpl(serviceLocator<AppService>()),
   );
@@ -123,9 +130,9 @@ void _initListMovies() {
   );
   serviceLocator.registerFactory(() => GetSimilarMovies(serviceLocator()));
   serviceLocator.registerFactory(() => SimilarMoviesBloc(serviceLocator()));
-  //** Similar Movies */
+}
 
-  //** Movies Sort By Time */
+void _initMoviesSortByTimeDependencies() {
   serviceLocator.registerFactory<MoviesSortbyModifiedTimeRemoteDataSource>(
     () => MoviesSortbyModifiedTimeRemoteDataSourceImpl(
       client: serviceLocator<AppService>(),
@@ -136,9 +143,9 @@ void _initListMovies() {
   );
   serviceLocator.registerFactory(() => GetMoviesSortbyTime(serviceLocator()));
   serviceLocator.registerFactory(() => MoviesSortByTimeBloc(serviceLocator()));
-  //** Movies Sort By Time */
+}
 
-  //** Nguồn C Movies By Category */
+void _initNguoncMoviesByCategoryDependencies() {
   serviceLocator.registerFactory<NguoncMoviesByCategoryRemoteDatasource>(
     () => NguoncMoviesByCategoryRemoteDatasourceImpl(
       client: serviceLocator<AppService>(),
@@ -149,11 +156,15 @@ void _initListMovies() {
   );
   serviceLocator.registerFactory(() => NguoncGetMoviesByCate(serviceLocator()));
   serviceLocator.registerFactory(() => MoviesByCategoryBloc(serviceLocator()));
-  //** Nguồn C Movies By Category */
 }
 
-void _initDetailMovie() {
-  //** KK Phim */
+// ===== Feature: Movie Detail =====
+void _initDetailMovieFeature() {
+  _initMovieDetailDependencies();
+  _initNguoncMovieDetailDependencies();
+}
+
+void _initMovieDetailDependencies() {
   serviceLocator.registerFactory<DetailMovieRemoteDataSource>(
     // Use Dio singleton for movie_detail after HTTP->Dio migration.
     () => DetailMovieRemoteDataSourceImpl(client: serviceLocator<AppService>()),
@@ -169,9 +180,9 @@ void _initDetailMovie() {
   serviceLocator.registerFactory(
     () => DetailMovieBloc(getDetailMovie: serviceLocator<GetDetailMovie>()),
   );
-  //** KK Phim */
+}
 
-  //** Nguồn C */
+void _initNguoncMovieDetailDependencies() {
   serviceLocator.registerFactory<NguoncMovieDetailRemoteDatasource>(
     () => NguoncMovieDetailRemoteDatasourceImpl(
       client: serviceLocator<AppService>(),
@@ -184,11 +195,15 @@ void _initDetailMovie() {
   serviceLocator.registerFactory(
     () => NguoncMovieDetailBloc(serviceLocator<GetNguoncMovieDetail>()),
   );
-  //** Nguồn C */
 }
 
-void _initSearch() {
-  //** KK Phim Search */
+// ===== Feature: Search =====
+void _initSearchFeature() {
+  _initSearchMovieDependencies();
+  _initNguoncSearchDependencies();
+}
+
+void _initSearchMovieDependencies() {
   serviceLocator.registerFactory<SearchMovieRemoteDataSource>(
     () => SearchMovieRemoteDatasourceImpl(client: serviceLocator<AppService>()),
   );
@@ -207,9 +222,9 @@ void _initSearch() {
       getSearchSuggestions: serviceLocator<GetSearchSuggestions>(),
     ),
   );
-  //** KK Phim Search */
+}
 
-  //** Nguồn C Search */
+void _initNguoncSearchDependencies() {
   serviceLocator.registerFactory<NguonCSearchMoviesRemoteDataSource>(
     () => NguonCSearchMoviesRemoteDataSourceImpl(
       client: serviceLocator<AppService>(),
@@ -220,11 +235,16 @@ void _initSearch() {
   );
   serviceLocator.registerFactory(() => NguoncGetSearchFilms(serviceLocator()));
   serviceLocator.registerFactory(() => NguoncSearchBloc(serviceLocator()));
-  //** Nguồn C Search */
 }
 
+// ===== Feature: Kho Phim =====
 void _initKhoPhimFeature() {
-  //** Categories */
+  _initKhoPhimCategoriesDependencies();
+  _initKhoPhimCountriesDependencies();
+  _initKhoPhimMoviesDependencies();
+}
+
+void _initKhoPhimCategoriesDependencies() {
   serviceLocator.registerFactory<CategoriesRemoteDataSource>(
     () => CategoriesRemoteDataSourceImpl(client: serviceLocator<AppService>()),
   );
@@ -233,9 +253,9 @@ void _initKhoPhimFeature() {
   );
   serviceLocator.registerFactory(() => GetCategories(serviceLocator()));
   serviceLocator.registerFactory(() => CategoryListBloc(serviceLocator()));
-  //** Categories */
+}
 
-  //** Countries */
+void _initKhoPhimCountriesDependencies() {
   serviceLocator.registerFactory<CountriesRemoteDataSource>(
     () => CountriesRemoteDataSourceImpl(client: serviceLocator<AppService>()),
   );
@@ -244,9 +264,9 @@ void _initKhoPhimFeature() {
   );
   serviceLocator.registerFactory(() => GetCountries(serviceLocator()));
   serviceLocator.registerFactory(() => CountriesBloc(serviceLocator()));
-  //** Countries */
+}
 
-  //** Kho Phim Movies */
+void _initKhoPhimMoviesDependencies() {
   serviceLocator.registerFactory<KhoPhimMoviesRemoteDataSource>(
     () => KhoPhimMoviesRemoteDataSourceImpl(serviceLocator<AppService>()),
   );
@@ -255,5 +275,4 @@ void _initKhoPhimFeature() {
   );
   serviceLocator.registerFactory(() => GetKhoPhimMovies(serviceLocator()));
   serviceLocator.registerFactory(() => KhoPhimMoviesBloc(serviceLocator()));
-  //** Kho Phim Movies */
 }

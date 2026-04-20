@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -42,7 +40,6 @@ class _WebviewVideoPlayerWidgetState extends State<WebviewVideoPlayerWidget> {
 
   void initWebViewController(String url) {
     final uri = Uri.parse(url);
-    log("Phát video: $url");
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(

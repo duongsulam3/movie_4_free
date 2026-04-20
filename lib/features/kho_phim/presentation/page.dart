@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smoth_movie_app/common/screens/error_page.dart';
 import 'package:smoth_movie_app/common/screens/loading_page.dart';
 import 'package:smoth_movie_app/core/utils/enum/kho_phim/page_status.dart';
-import 'package:smoth_movie_app/common/screens/error_page.dart';
-import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/categories/category_list_bloc.dart';
-import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/countries/countries_bloc.dart';
-import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/kho_phim/kho_phim_page_bloc.dart';
-import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/kho_phim_movies/kho_phim_movies_bloc.dart';
-import 'package:smoth_movie_app/features/kho_phim/presentation/widget/kho_phim_categories_widget.dart';
-import 'package:smoth_movie_app/features/kho_phim/presentation/widget/kho_phim_countries_widget.dart';
-import 'package:smoth_movie_app/features/kho_phim/presentation/widget/kho_phim_infinite_gridview_widget.dart';
-import 'package:smoth_movie_app/features/kho_phim/presentation/widget/kho_phim_language_sub_widget.dart';
-import 'package:smoth_movie_app/features/kho_phim/presentation/widget/kho_phim_years_widget.dart';
-import 'package:smoth_movie_app/features/kho_phim/presentation/widget/title_and_search_icon.dart';
-import 'package:smoth_movie_app/core/init_dependencies.dart';
+
+import 'bloc/categories/category_list_bloc.dart';
+import 'bloc/countries/countries_bloc.dart';
+import 'bloc/kho_phim/kho_phim_page_bloc.dart';
+import 'widget/kho_phim_categories_widget.dart';
+import 'widget/kho_phim_countries_widget.dart';
+import 'widget/kho_phim_infinite_gridview_widget.dart';
+import 'widget/kho_phim_language_sub_widget.dart';
+import 'widget/kho_phim_years_widget.dart';
+import 'widget/title_and_search_icon.dart';
 
 class KhoPhimPage extends StatefulWidget {
   const KhoPhimPage({super.key});
@@ -101,15 +100,11 @@ class _KhoPhimPageState extends State<KhoPhimPage> {
                       },
                     ),
                     if (countrySlug.isNotEmpty)
-                      BlocProvider(
-                        create: (context) =>
-                            serviceLocator<KhoPhimMoviesBloc>(),
-                        child: InfiniteGridViewMovies(
-                          categorySlug: categorySlug,
-                          countrySlug: countrySlug,
-                          yearSlug: yearSlug,
-                          languageSlug: languageSlug,
-                        ),
+                      InfiniteGridViewMovies(
+                        categorySlug: categorySlug,
+                        countrySlug: countrySlug,
+                        yearSlug: yearSlug,
+                        languageSlug: languageSlug,
                       ),
                   ],
                 ),
