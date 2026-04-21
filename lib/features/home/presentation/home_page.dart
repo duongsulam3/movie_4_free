@@ -1,14 +1,16 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/entity/nav_item.dart';
 import 'package:smoth_movie_app/common/entity/page_item.dart';
 import 'package:smoth_movie_app/common/entity/tab_item.dart';
+import 'package:smoth_movie_app/features/home/presentation/widgets/custom_animation_bottom_nav.dart';
 
 import '../../../common/widgets/custom_appbar_widget.dart';
 import '../../kho_phim/presentation/page.dart';
 import '../../profile/page.dart';
-import '../enum/category.dart';
+import '../enum/home_category.dart';
+import '../enum/bottom_navigation_tab.dart';
+import '../enum/home_shell_page.dart';
 import '../home_main/page.dart';
 import '../home_main/tabs/categories_tab.dart';
 import '../home_main/tabs/home_main_content.dart';
@@ -26,25 +28,86 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
+  // Layout constants.
   static const appBarHeight = 90.0;
   static const tabBarHeight = 30.0;
-  static const _tabCount = 5;
-  //** CONTROLLERS */
+  static final int _tabCount = HomeCategoryTab.values.length;
+
+  // Controllers and static view models.
   late final TabController tabController;
   late final List<ScrollController> scrollControllers;
   late final List<TabItem> tabs;
   late final List<PageItem> pages;
   late final List<NavItem> navs;
+
+  // Prevent duplicate emits when the same top tab is re-selected.
   int _lastHandledTabIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    _initializeControllers();
-    _initializeTabs();
-    _initializePages();
-    _initializeNavs();
+    _initializeHomeView();
   }
+
+  // ----------------------------
+  // Initialization
+  // ----------------------------
+
+  void _initializeHomeView() {
+    _initializeControllers();
+    _initializeTopTabs();
+    _initializeShellPages();
+    _initializeBottomNavItems();
+  }
+
+  void _initializeTopTabs() {
+    tabs = List.generate(HomeCategoryTab.values.length, (i) {
+      final category = HomeCategoryTab.values[i];
+      return TabItem(
+        title: category.tabLabel,
+        widget: _buildTopTabContent(index: i, category: category),
+      );
+    });
+  }
+
+  void _initializeShellPages() {
+    pages = List.generate(
+      HomeShellPage.values.length,
+      (i) => PageItem(
+        hasAppBar: HomeShellPage.values[i].hasAppBar,
+        widget: _buildShellPageContent(HomeShellPage.values[i]),
+      ),
+    );
+  }
+
+  void _initializeBottomNavItems() {
+    navs = List.generate(
+      HomeBottomNav.values.length,
+      (i) => NavItem(
+        icon: HomeBottomNav.values[i].icon,
+        activeIcon: HomeBottomNav.values[i].activeIcon,
+        title: HomeBottomNav.values[i].title,
+      ),
+    );
+  }
+
+  void _initializeControllers() {
+    tabController = TabController(length: _tabCount, vsync: this);
+    tabController.addListener(_handleTopTabChange);
+    scrollControllers = List.generate(_tabCount, (index) => ScrollController());
+  }
+
+  void _disposeControllers() {
+    for (final controller in scrollControllers) {
+      controller.dispose();
+    }
+    tabController.removeListener(_handleTopTabChange);
+    tabController.dispose();
+  }
+
+  // ----------------------------
+  // Event handlers
+  // ----------------------------
 
   void _handleTopTabChange() {
     if (tabController.index == _lastHandledTabIndex) return;
@@ -52,7 +115,15 @@ class _HomePageState extends State<HomePage>
     context.read<HomeShellCubit>().markTopTabInitialized(tabController.index);
   }
 
-  Widget _buildTopTabWidget({
+  void _onChangeBottomNav(int index) {
+    context.read<HomeShellCubit>().changeBottomIndex(index);
+  }
+
+  // ----------------------------
+  // Builders
+  // ----------------------------
+
+  Widget _buildTopTabContent({
     required int index,
     required HomeCategoryTab category,
   }) {
@@ -76,62 +147,65 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-  void _initializeTabs() {
-    tabs = List.generate(HomeCategoryTab.values.length, (i) {
-      final category = HomeCategoryTab.values[i];
-      return TabItem(
-        title: category.tabLabel,
-        widget: _buildTopTabWidget(index: i, category: category),
-      );
-    });
-  }
-
-  void _initializePages() {
-    pages = [
-      PageItem(
-        hasAppBar: true,
-        widget: HomeMain(tabs: tabs, tabController: tabController),
-      ),
-      const PageItem(
-        hasAppBar: false,
-        widget: KhoPhimPage(),
-      ),
-      const PageItem(hasAppBar: false, widget: ProfilePage()),
-    ];
-  }
-
-  void _initializeNavs() {
-    navs = [
-      const NavItem(
-        icon: Icon(CupertinoIcons.house),
-        activeIcon: Icon(CupertinoIcons.house_fill),
-        title: "Trang chủ",
-      ),
-      const NavItem(
-        icon: Icon(CupertinoIcons.arrowtriangle_right_square),
-        activeIcon: Icon(CupertinoIcons.arrowtriangle_right_square_fill),
-        title: "Kho phim",
-      ),
-      const NavItem(
-        icon: Icon(CupertinoIcons.hand_thumbsup),
-        activeIcon: Icon(CupertinoIcons.hand_thumbsup_fill),
-        title: "Donate",
-      ),
-    ];
-  }
-
-  void _initializeControllers() {
-    tabController = TabController(length: _tabCount, vsync: this);
-    tabController.addListener(_handleTopTabChange);
-    scrollControllers = List.generate(_tabCount, (index) => ScrollController());
-  }
-
-  void _disposeControllers() {
-    for (final controller in scrollControllers) {
-      controller.dispose();
+  Widget _buildShellPageContent(HomeShellPage page) {
+    switch (page) {
+      case HomeShellPage.home:
+        return HomeMain(tabs: tabs, tabController: tabController);
+      case HomeShellPage.khoPhim:
+        return const KhoPhimPage();
+      case HomeShellPage.profile:
+        return const ProfilePage();
     }
-    tabController.removeListener(_handleTopTabChange);
-    tabController.dispose();
+  }
+
+  PreferredSizeWidget? _buildAppBar(PageItem currentPage) {
+    if (currentPage.hasAppBar == false) return null;
+    return CustomAppbarWidget(
+      scrollControllers: scrollControllers,
+      tabController: tabController,
+      appBarHeight: appBarHeight,
+      backgroundColor: Colors.black,
+      titleWidget: const LogoAndWidget(),
+      appBarBottomWidget: PreferredSize(
+        preferredSize: const Size.fromHeight(tabBarHeight),
+        child: HomeTabBar(
+          tabs: tabs,
+          tabController: tabController,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBottomNavigationByIndex(int currentBottomIndex) {
+    return CustomAnimatedBottomBar(
+      currentIndex: currentBottomIndex,
+      onTap: _onChangeBottomNav,
+      navs: navs,
+    );
+    // return BottomNavigationBar(
+    //   currentIndex: currentBottomIndex,
+    //   onTap: _onChangeBottomNav,
+    //   selectedFontSize: 12,
+    //   unselectedFontSize: 12,
+    //   iconSize: 26,
+    //   items: List.generate(
+    //     navs.length,
+    //     (i) => BottomNavigationBarItem(
+    //       icon: navs[i].icon,
+    //       activeIcon: navs[i].activeIcon,
+    //       label: navs[i].title,
+    //     ),
+    //   ),
+    // );
+  }
+
+  Widget _buildBody(int currentBottomIndex) {
+    // Keep pages alive to preserve scroll positions and nested bloc states.
+    return IndexedStack(
+      index: currentBottomIndex,
+      sizing: StackFit.expand,
+      children: List.generate(pages.length, (i) => pages[i].widget),
+    );
   }
 
   @override
@@ -142,61 +216,30 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeShellCubit, HomeShellState>(
-      buildWhen: (p, c) => p.currentBottomIndex != c.currentBottomIndex,
-      builder: (context, state) {
-        final currentPage = pages[state.currentBottomIndex];
-        return SafeArea(
-          bottom: false,
-          right: false,
-          left: false,
-          child: DefaultTabController(
-            length: _tabCount,
-            child: Scaffold(
-              extendBodyBehindAppBar: true,
-              appBar: currentPage.hasAppBar == true
-                  ? CustomAppbarWidget(
-                      scrollControllers: scrollControllers,
-                      tabController: tabController,
-                      appBarHeight: appBarHeight,
-                      backgroundColor: Colors.black,
-                      titleWidget: const LogoAndWidget(),
-                      appBarBottomWidget: PreferredSize(
-                        preferredSize: const Size.fromHeight(tabBarHeight),
-                        child: HomeTabBar(
-                          tabs: tabs,
-                          tabController: tabController,
-                        ),
-                      ),
-                    )
-                  : null,
-              bottomNavigationBar: BottomNavigationBar(
-                currentIndex: state.currentBottomIndex,
-                onTap: (int i) =>
-                    context.read<HomeShellCubit>().changeBottomIndex(i),
-                selectedFontSize: 12,
-                unselectedFontSize: 12,
-                iconSize: 26,
-                items: List.generate(
-                  navs.length,
-                  (i) => BottomNavigationBarItem(
-                    icon: navs[i].icon,
-                    activeIcon: navs[i].activeIcon,
-                    label: navs[i].title,
-                  ),
-                ),
-              ),
-              // Keeps all bottom-nav pages mounted so switching tabs does not
-              // dispose/recreate their state (scroll, blocs below each page).
-              body: IndexedStack(
-                index: state.currentBottomIndex,
-                sizing: StackFit.expand,
-                children: List.generate(pages.length, (i) => pages[i].widget),
-              ),
-            ),
+    final currentBottomIndex = context.select<HomeShellCubit, int>(
+      (cubit) => cubit.state.currentBottomIndex,
+    );
+    final currentPage = pages[currentBottomIndex];
+    return SafeArea(
+      bottom: false,
+      right: false,
+      left: false,
+      child: DefaultTabController(
+        length: _tabCount,
+        child: Scaffold(
+          extendBodyBehindAppBar: true,
+          appBar: _buildAppBar(currentPage),
+          floatingActionButton: _buildBottomNavigationByIndex(
+            currentBottomIndex,
           ),
-        );
-      },
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          // bottomNavigationBar: _buildBottomNavigationByIndex(
+          //   currentBottomIndex,
+          // ),
+          body: _buildBody(currentBottomIndex),
+        ),
+      ),
     );
   }
 }

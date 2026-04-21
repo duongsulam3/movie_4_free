@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smoth_movie_app/common/entity/home_main_content_grid_item.dart';
 
 import '../../../movies/presentation/screens/bloc_builder_recently_update_movies.dart';
-import '../../enum/category.dart';
+import '../../enum/home_category.dart';
 import '../widgets/title_and_gridview_list.dart';
 
 class HomeMainContent extends StatefulWidget {

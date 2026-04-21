@@ -39,6 +39,7 @@ class _KhoPhimPageState extends State<KhoPhimPage> {
   Widget build(BuildContext context) {
     final sHeight = MediaQuery.of(context).size.height;
     return BlocBuilder<KhoPhimPageBloc, KhoPhimPageState>(
+      buildWhen: (p, c) => p.status != c.status,
       builder: (context, state) {
         switch (state.status) {
           case KhoPhimPageStatus.init:
