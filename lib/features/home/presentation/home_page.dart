@@ -175,9 +175,9 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-  Widget _buildBottomNavigation(HomeShellState state) {
+  Widget _buildBottomNavigationByIndex(int currentBottomIndex) {
     return BottomNavigationBar(
-      currentIndex: state.currentBottomIndex,
+      currentIndex: currentBottomIndex,
       onTap: _onChangeBottomNav,
       selectedFontSize: 12,
       unselectedFontSize: 12,
@@ -193,10 +193,10 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-  Widget _buildBody(HomeShellState state) {
+  Widget _buildBody(int currentBottomIndex) {
     // Keep pages alive to preserve scroll positions and nested bloc states.
     return IndexedStack(
-      index: state.currentBottomIndex,
+      index: currentBottomIndex,
       sizing: StackFit.expand,
       children: List.generate(pages.length, (i) => pages[i].widget),
     );
@@ -210,25 +210,24 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeShellCubit, HomeShellState>(
-      buildWhen: (p, c) => p.currentBottomIndex != c.currentBottomIndex,
-      builder: (context, state) {
-        final currentPage = pages[state.currentBottomIndex];
-        return SafeArea(
-          bottom: false,
-          right: false,
-          left: false,
-          child: DefaultTabController(
-            length: _tabCount,
-            child: Scaffold(
-              extendBodyBehindAppBar: true,
-              appBar: _buildAppBar(currentPage),
-              bottomNavigationBar: _buildBottomNavigation(state),
-              body: _buildBody(state),
-            ),
-          ),
-        );
-      },
+    final currentBottomIndex = context.select<HomeShellCubit, int>(
+      (cubit) => cubit.state.currentBottomIndex,
+    );
+    final currentPage = pages[currentBottomIndex];
+    return SafeArea(
+      bottom: false,
+      right: false,
+      left: false,
+      child: DefaultTabController(
+        length: _tabCount,
+        child: Scaffold(
+          extendBodyBehindAppBar: true,
+          appBar: _buildAppBar(currentPage),
+          bottomNavigationBar:
+              _buildBottomNavigationByIndex(currentBottomIndex),
+          body: _buildBody(currentBottomIndex),
+        ),
+      ),
     );
   }
 }
