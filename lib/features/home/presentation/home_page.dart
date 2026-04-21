@@ -100,6 +100,10 @@ class _HomePageState extends State<HomePage>
     ];
   }
 
+  void _onChangeBottomNav(int index) {
+    context.read<HomeShellCubit>().changeBottomIndex(index);
+  }
+
   void _initializeNavs() {
     navs = [
       const NavItem(
@@ -154,8 +158,9 @@ class _HomePageState extends State<HomePage>
             length: _tabCount,
             child: Scaffold(
               extendBodyBehindAppBar: true,
-              appBar: currentPage.hasAppBar == true
-                  ? CustomAppbarWidget(
+              appBar: currentPage.hasAppBar == false
+                  ? null
+                  : CustomAppbarWidget(
                       scrollControllers: scrollControllers,
                       tabController: tabController,
                       appBarHeight: appBarHeight,
@@ -168,12 +173,10 @@ class _HomePageState extends State<HomePage>
                           tabController: tabController,
                         ),
                       ),
-                    )
-                  : null,
+                    ),
               bottomNavigationBar: BottomNavigationBar(
                 currentIndex: state.currentBottomIndex,
-                onTap: (int i) =>
-                    context.read<HomeShellCubit>().changeBottomIndex(i),
+                onTap: _onChangeBottomNav,
                 selectedFontSize: 12,
                 unselectedFontSize: 12,
                 iconSize: 26,
