@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/entity/nav_item.dart';
 import 'package:smoth_movie_app/common/entity/page_item.dart';
 import 'package:smoth_movie_app/common/entity/tab_item.dart';
+import 'package:smoth_movie_app/features/home/presentation/widgets/custom_animation_bottom_nav.dart';
 
 import '../../../common/widgets/custom_appbar_widget.dart';
 import '../../kho_phim/presentation/page.dart';
@@ -83,8 +84,8 @@ class _HomePageState extends State<HomePage>
     navs = List.generate(
       HomeBottomNav.values.length,
       (i) => NavItem(
-        icon: Icon(HomeBottomNav.values[i].icon),
-        activeIcon: Icon(HomeBottomNav.values[i].activeIcon),
+        icon: HomeBottomNav.values[i].icon,
+        activeIcon: HomeBottomNav.values[i].activeIcon,
         title: HomeBottomNav.values[i].title,
       ),
     );
@@ -176,21 +177,26 @@ class _HomePageState extends State<HomePage>
   }
 
   Widget _buildBottomNavigationByIndex(int currentBottomIndex) {
-    return BottomNavigationBar(
+    return CustomAnimatedBottomBar(
       currentIndex: currentBottomIndex,
       onTap: _onChangeBottomNav,
-      selectedFontSize: 12,
-      unselectedFontSize: 12,
-      iconSize: 26,
-      items: List.generate(
-        navs.length,
-        (i) => BottomNavigationBarItem(
-          icon: navs[i].icon,
-          activeIcon: navs[i].activeIcon,
-          label: navs[i].title,
-        ),
-      ),
+      navs: navs,
     );
+    // return BottomNavigationBar(
+    //   currentIndex: currentBottomIndex,
+    //   onTap: _onChangeBottomNav,
+    //   selectedFontSize: 12,
+    //   unselectedFontSize: 12,
+    //   iconSize: 26,
+    //   items: List.generate(
+    //     navs.length,
+    //     (i) => BottomNavigationBarItem(
+    //       icon: navs[i].icon,
+    //       activeIcon: navs[i].activeIcon,
+    //       label: navs[i].title,
+    //     ),
+    //   ),
+    // );
   }
 
   Widget _buildBody(int currentBottomIndex) {
@@ -223,8 +229,14 @@ class _HomePageState extends State<HomePage>
         child: Scaffold(
           extendBodyBehindAppBar: true,
           appBar: _buildAppBar(currentPage),
-          bottomNavigationBar:
-              _buildBottomNavigationByIndex(currentBottomIndex),
+          floatingActionButton: _buildBottomNavigationByIndex(
+            currentBottomIndex,
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          // bottomNavigationBar: _buildBottomNavigationByIndex(
+          //   currentBottomIndex,
+          // ),
           body: _buildBody(currentBottomIndex),
         ),
       ),

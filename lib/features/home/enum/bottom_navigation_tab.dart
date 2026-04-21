@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 enum HomeBottomNav {
   home,
@@ -18,25 +19,43 @@ extension HomeBottomNavExtension on HomeBottomNav {
     }
   }
 
-  IconData get icon {
+  Icon get icon {
     switch (this) {
       case HomeBottomNav.home:
-        return CupertinoIcons.house;
+        return const Icon(
+          CupertinoIcons.house,
+          color: Colors.black,
+        );
       case HomeBottomNav.khoPhim:
-        return CupertinoIcons.arrowtriangle_right_square;
+        return const Icon(
+          CupertinoIcons.arrowtriangle_right_square,
+          color: Colors.black,
+        );
       case HomeBottomNav.donate:
-        return CupertinoIcons.hand_thumbsup;
+        return const Icon(
+          CupertinoIcons.hand_thumbsup,
+          color: Colors.black,
+        );
     }
   }
 
-  IconData get activeIcon {
+  Icon get activeIcon {
     switch (this) {
       case HomeBottomNav.home:
-        return CupertinoIcons.house_fill;
+        return const Icon(
+          CupertinoIcons.house_fill,
+          color: Colors.white,
+        );
       case HomeBottomNav.khoPhim:
-        return CupertinoIcons.arrowtriangle_right_square_fill;
+        return const Icon(
+          CupertinoIcons.arrowtriangle_right_square_fill,
+          color: Colors.white,
+        );
       case HomeBottomNav.donate:
-        return CupertinoIcons.hand_thumbsup_fill;
+        return const Icon(
+          CupertinoIcons.hand_thumbsup_fill,
+          color: Colors.white,
+        );
     }
   }
 }
