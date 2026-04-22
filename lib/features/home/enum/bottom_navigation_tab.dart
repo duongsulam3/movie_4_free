@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_native/style/sf_symbol.dart';
 import 'package:flutter/material.dart';
 
 enum HomeBottomNav {
@@ -19,41 +19,41 @@ extension HomeBottomNavExtension on HomeBottomNav {
     }
   }
 
-  Icon get icon {
+  CNSymbol get icon {
     switch (this) {
       case HomeBottomNav.home:
-        return const Icon(
-          CupertinoIcons.house,
+        return const CNSymbol(
+          "house",
           color: Colors.black,
         );
       case HomeBottomNav.khoPhim:
-        return const Icon(
-          CupertinoIcons.arrowtriangle_right_square,
+        return const CNSymbol(
+          "arrowtriangle.right.square",
           color: Colors.black,
         );
       case HomeBottomNav.donate:
-        return const Icon(
-          CupertinoIcons.hand_thumbsup,
+        return const CNSymbol(
+          "hand.thumbsup",
           color: Colors.black,
         );
     }
   }
 
-  Icon get activeIcon {
+  CNSymbol get activeIcon {
     switch (this) {
       case HomeBottomNav.home:
-        return const Icon(
-          CupertinoIcons.house_fill,
+        return const CNSymbol(
+          "house.fill",
           color: Colors.white,
         );
       case HomeBottomNav.khoPhim:
-        return const Icon(
-          CupertinoIcons.arrowtriangle_right_square_fill,
+        return const CNSymbol(
+          "arrowtriangle.right.square.fill",
           color: Colors.white,
         );
       case HomeBottomNav.donate:
-        return const Icon(
-          CupertinoIcons.hand_thumbsup_fill,
+        return const CNSymbol(
+          "hand.thumbsup.fill",
           color: Colors.white,
         );
     }

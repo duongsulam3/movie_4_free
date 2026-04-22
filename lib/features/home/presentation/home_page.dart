@@ -1,9 +1,8 @@
+import 'package:cupertino_native/components/tab_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smoth_movie_app/common/entity/nav_item.dart';
 import 'package:smoth_movie_app/common/entity/page_item.dart';
 import 'package:smoth_movie_app/common/entity/tab_item.dart';
-import 'package:smoth_movie_app/features/home/presentation/widgets/custom_animation_bottom_nav.dart';
 
 import '../../../common/widgets/custom_appbar_widget.dart';
 import '../../kho_phim/presentation/page.dart';
@@ -38,7 +37,7 @@ class _HomePageState extends State<HomePage>
   late final List<ScrollController> scrollControllers;
   late final List<TabItem> tabs;
   late final List<PageItem> pages;
-  late final List<NavItem> navs;
+  late final List<CNTabBarItem> navs;
 
   // Prevent duplicate emits when the same top tab is re-selected.
   int _lastHandledTabIndex = 0;
@@ -83,10 +82,9 @@ class _HomePageState extends State<HomePage>
   void _initializeBottomNavItems() {
     navs = List.generate(
       HomeBottomNav.values.length,
-      (i) => NavItem(
+      (i) => CNTabBarItem(
+        label: HomeBottomNav.values[i].title,
         icon: HomeBottomNav.values[i].icon,
-        activeIcon: HomeBottomNav.values[i].activeIcon,
-        title: HomeBottomNav.values[i].title,
       ),
     );
   }
@@ -177,26 +175,15 @@ class _HomePageState extends State<HomePage>
   }
 
   Widget _buildBottomNavigationByIndex(int currentBottomIndex) {
-    return CustomAnimatedBottomBar(
+    return CNTabBar(
+      items: navs,
       currentIndex: currentBottomIndex,
       onTap: _onChangeBottomNav,
-      navs: navs,
+      backgroundColor: Colors.white,
+      tint: Colors.white,
+      split: true,
+      splitSpacing: 30.0,
     );
-    // return BottomNavigationBar(
-    //   currentIndex: currentBottomIndex,
-    //   onTap: _onChangeBottomNav,
-    //   selectedFontSize: 12,
-    //   unselectedFontSize: 12,
-    //   iconSize: 26,
-    //   items: List.generate(
-    //     navs.length,
-    //     (i) => BottomNavigationBarItem(
-    //       icon: navs[i].icon,
-    //       activeIcon: navs[i].activeIcon,
-    //       label: navs[i].title,
-    //     ),
-    //   ),
-    // );
   }
 
   Widget _buildBody(int currentBottomIndex) {
@@ -234,9 +221,6 @@ class _HomePageState extends State<HomePage>
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
-          // bottomNavigationBar: _buildBottomNavigationByIndex(
-          //   currentBottomIndex,
-          // ),
           body: _buildBody(currentBottomIndex),
         ),
       ),
