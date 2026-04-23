@@ -1,4 +1,3 @@
-import 'package:cupertino_native/style/sf_symbol.dart';
 import 'package:flutter/material.dart';
 
 enum HomeBottomNav {
@@ -19,41 +18,41 @@ extension HomeBottomNavExtension on HomeBottomNav {
     }
   }
 
-  CNSymbol get icon {
+  Icon get icon {
     switch (this) {
       case HomeBottomNav.home:
-        return const CNSymbol(
-          "house",
-          color: Colors.black,
+        return const Icon(
+          Icons.home,
+          color: Colors.white,
         );
       case HomeBottomNav.khoPhim:
-        return const CNSymbol(
-          "arrowtriangle.right.square",
-          color: Colors.black,
+        return const Icon(
+          Icons.movie,
+          color: Colors.white,
         );
       case HomeBottomNav.donate:
-        return const CNSymbol(
-          "hand.thumbsup",
-          color: Colors.black,
+        return const Icon(
+          Icons.thumb_up,
+          color: Colors.white,
         );
     }
   }
 
-  CNSymbol get activeIcon {
+  Icon get activeIcon {
     switch (this) {
       case HomeBottomNav.home:
-        return const CNSymbol(
-          "house.fill",
+        return const Icon(
+          Icons.home_filled,
           color: Colors.white,
         );
       case HomeBottomNav.khoPhim:
-        return const CNSymbol(
-          "arrowtriangle.right.square.fill",
+        return const Icon(
+          Icons.movie_rounded,
           color: Colors.white,
         );
       case HomeBottomNav.donate:
-        return const CNSymbol(
-          "hand.thumbsup.fill",
+        return const Icon(
+          Icons.thumb_up_alt_rounded,
           color: Colors.white,
         );
     }

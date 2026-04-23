@@ -1,4 +1,3 @@
-import 'package:cupertino_native/components/tab_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/entity/page_item.dart';
@@ -15,6 +14,7 @@ import '../home_main/tabs/categories_tab.dart';
 import '../home_main/tabs/home_main_content.dart';
 import 'bloc/home_shell/home_shell_cubit.dart';
 import 'bloc/home_shell/home_shell_state.dart';
+import 'widgets/custom_bottom_navigation_bar.dart';
 import 'widgets/home_tab_bar.dart';
 import 'widgets/logo_and_widget.dart';
 
@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage>
   late final List<ScrollController> scrollControllers;
   late final List<TabItem> tabs;
   late final List<PageItem> pages;
-  late final List<CNTabBarItem> navs;
+  late final List<BottomNavigationBarItem> navs;
 
   // Prevent duplicate emits when the same top tab is re-selected.
   int _lastHandledTabIndex = 0;
@@ -82,9 +82,10 @@ class _HomePageState extends State<HomePage>
   void _initializeBottomNavItems() {
     navs = List.generate(
       HomeBottomNav.values.length,
-      (i) => CNTabBarItem(
+      (i) => BottomNavigationBarItem(
         label: HomeBottomNav.values[i].title,
         icon: HomeBottomNav.values[i].icon,
+        activeIcon: HomeBottomNav.values[i].activeIcon,
       ),
     );
   }
@@ -174,15 +175,13 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-  Widget _buildBottomNavigationByIndex(int currentBottomIndex) {
-    return CNTabBar(
-      items: navs,
-      currentIndex: currentBottomIndex,
-      onTap: _onChangeBottomNav,
-      backgroundColor: Colors.white,
-      tint: Colors.white,
-      split: true,
-      splitSpacing: 30.0,
+  Widget _buildBottomNavigationOverlay() {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: CustomBottomNavigationBar(
+        items: navs,
+        onItemSelected: _onChangeBottomNav,
+      ),
     );
   }
 
@@ -203,25 +202,35 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    final currentBottomIndex = context.select<HomeShellCubit, int>(
-      (cubit) => cubit.state.currentBottomIndex,
-    );
-    final currentPage = pages[currentBottomIndex];
     return SafeArea(
       bottom: false,
       right: false,
       left: false,
       child: DefaultTabController(
         length: _tabCount,
-        child: Scaffold(
-          extendBodyBehindAppBar: true,
-          appBar: _buildAppBar(currentPage),
-          floatingActionButton: _buildBottomNavigationByIndex(
-            currentBottomIndex,
-          ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
-          body: _buildBody(currentBottomIndex),
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: BlocSelector<HomeShellCubit, HomeShellState, int>(
+                selector: (state) => state.currentBottomIndex,
+                builder: (context, currentBottomIndex) {
+                  final currentPage = pages[currentBottomIndex];
+                  return Scaffold(
+                    extendBodyBehindAppBar: true,
+                    appBar: _buildAppBar(currentPage),
+                    body: _buildBody(currentBottomIndex),
+                  );
+                },
+              ),
+            ),
+            // Keep bottom navigation on a stable overlay layer to preserve animation state.
+            Positioned(
+              left: 20,
+              right: 20,
+              bottom: 20,
+              child: _buildBottomNavigationOverlay(),
+            )
+          ],
         ),
       ),
     );

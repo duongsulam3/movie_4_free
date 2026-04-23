@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smoth_movie_app/common/entity/home_main_content_grid_item.dart';
+import 'package:smoth_movie_app/common/widgets/responsive_sized_box.dart';
 
 import '../../../movies/presentation/screens/bloc_builder_recently_update_movies.dart';
 import '../../enum/home_category.dart';
@@ -71,7 +72,10 @@ class _HomeMainContentState extends State<HomeMainContent> {
                 tabIndex: sections[index].tabIndex,
               );
             },
-          )
+          ),
+
+          // Extra spacing for the bottom navigation bar.
+          const ResponsiveSizedBox(height: 90)
         ],
       ),
     );
