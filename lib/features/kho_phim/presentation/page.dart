@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/screens/error_page.dart';
 import 'package:smoth_movie_app/common/screens/loading_page.dart';
+import 'package:smoth_movie_app/common/widgets/responsive_sized_box.dart';
 import 'package:smoth_movie_app/core/utils/enum/kho_phim/page_status.dart';
 
 import 'bloc/categories/category_list_bloc.dart';
@@ -107,6 +108,9 @@ class _KhoPhimPageState extends State<KhoPhimPage> {
                         yearSlug: yearSlug,
                         languageSlug: languageSlug,
                       ),
+
+                    // Extra spacing for the bottom navigation bar.
+                    const ResponsiveSizedBox(height: 80)
                   ],
                 ),
               ),

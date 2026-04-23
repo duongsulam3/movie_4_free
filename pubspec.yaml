@@ -47,7 +47,6 @@ dependencies:
   webview_flutter: ^4.10.0
   dio: ^5.9.2
   flutter_secure_storage: ^10.0.0
-  cupertino_native: ^0.1.1
 
 dev_dependencies:
   flutter_test:

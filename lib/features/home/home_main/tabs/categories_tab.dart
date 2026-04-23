@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smoth_movie_app/common/widgets/responsive_sized_box.dart';
 import 'package:smoth_movie_app/features/movies/presentation/screens/bloc_builder_movies_sort_by_time.dart';
 import 'package:smoth_movie_app/features/movies/presentation/screens/infinite_gridview_widget.dart';
 import 'package:smoth_movie_app/features/home/presentation/scope/categories_tab_scope.dart';
@@ -41,6 +42,9 @@ class _CategoriesTabState extends State<CategoriesTab>
                 itemCount: widget.limit,
               ),
             ),
+
+            // Extra spacing for the bottom navigation bar.
+            const ResponsiveSizedBox(height: 80)
           ],
         ),
       ),
