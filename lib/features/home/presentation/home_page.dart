@@ -175,8 +175,14 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-  Widget _buildBottomNavigationByIndex(int currentBottomIndex) {
-    return CustomBottomNavigationBar(items: navs);
+  Widget _buildBottomNavigationOverlay() {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: CustomBottomNavigationBar(
+        items: navs,
+        onItemSelected: _onChangeBottomNav,
+      ),
+    );
   }
 
   Widget _buildBody(int currentBottomIndex) {
@@ -196,25 +202,35 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    final currentBottomIndex = context.select<HomeShellCubit, int>(
-      (cubit) => cubit.state.currentBottomIndex,
-    );
-    final currentPage = pages[currentBottomIndex];
     return SafeArea(
       bottom: false,
       right: false,
       left: false,
       child: DefaultTabController(
         length: _tabCount,
-        child: Scaffold(
-          extendBodyBehindAppBar: true,
-          appBar: _buildAppBar(currentPage),
-          floatingActionButton: _buildBottomNavigationByIndex(
-            currentBottomIndex,
-          ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
-          body: _buildBody(currentBottomIndex),
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: BlocSelector<HomeShellCubit, HomeShellState, int>(
+                selector: (state) => state.currentBottomIndex,
+                builder: (context, currentBottomIndex) {
+                  final currentPage = pages[currentBottomIndex];
+                  return Scaffold(
+                    extendBodyBehindAppBar: true,
+                    appBar: _buildAppBar(currentPage),
+                    body: _buildBody(currentBottomIndex),
+                  );
+                },
+              ),
+            ),
+            // Keep bottom navigation on a stable overlay layer to preserve animation state.
+            Positioned(
+              left: 20,
+              right: 20,
+              bottom: 20,
+              child: _buildBottomNavigationOverlay(),
+            )
+          ],
         ),
       ),
     );

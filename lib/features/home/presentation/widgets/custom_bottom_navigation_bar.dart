@@ -4,12 +4,12 @@ class CustomBottomNavigationBar extends StatefulWidget {
   const CustomBottomNavigationBar({
     super.key,
     required this.items,
-    required this.currentIndex,
+    this.currentIndex,
     this.onItemSelected,
   });
 
   final List<BottomNavigationBarItem> items;
-  final int currentIndex;
+  final int? currentIndex;
   final ValueChanged<int>? onItemSelected;
 
   @override
@@ -79,22 +79,24 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar>
 
   @override
   void didChangeDependencies() {
+    final initialIndex = widget.currentIndex ?? 0;
     _animation = _buildPositionAnimation(
-      begin: getEndpointPosition(widget.currentIndex),
-      end: getEndpointPosition(widget.currentIndex),
+      begin: getEndpointPosition(initialIndex),
+      end: getEndpointPosition(initialIndex),
     );
 
-    _selectedIndex = widget.currentIndex;
-    position = getEndpointPosition(widget.currentIndex);
+    _selectedIndex = initialIndex;
+    position = getEndpointPosition(initialIndex);
     super.didChangeDependencies();
   }
 
   @override
   void didUpdateWidget(covariant CustomBottomNavigationBar oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.currentIndex == widget.currentIndex) return;
-    _selectedIndex = widget.currentIndex;
-    position = getEndpointPosition(widget.currentIndex);
+    final nextIndex = widget.currentIndex;
+    if (nextIndex == null || oldWidget.currentIndex == nextIndex) return;
+    _selectedIndex = nextIndex;
+    position = getEndpointPosition(nextIndex);
     _animation = _buildPositionAnimation(
       begin: position,
       end: position,
@@ -205,12 +207,12 @@ class _Painter extends CustomPainter {
 
   static const double _startY = 40.0;
   static const double _endY = 100.0;
-  static const double _leftRadius = 20.0;
+  static const double _barCornerRadius = 25.0;
   static const double _activeCircleRadius = 30.0;
+  static const double _activeCircleGap = 8.0;
   static const double _activeCircleCenterY = 50.0;
   static const double _activeCircleXOffset = 70.0;
 
-  static const Color _deepShadowColor = Color(0xCC000000);
   static const Color _glowColor = Color(0x33FFFFFF);
 
   Paint _fillPaint() {
@@ -226,51 +228,6 @@ class _Painter extends CustomPainter {
       ..strokeWidth = 1.0;
   }
 
-  Path _buildBarPath(Size size) {
-    final path = Path()..moveTo(_leftRadius, _startY);
-
-    path.lineTo(position < _leftRadius ? _leftRadius : position, _startY);
-    // Use cubic segments so the notch border keeps a smooth tangent.
-    path.cubicTo(
-      40.0 + position,
-      _startY,
-      30.0 + position,
-      _startY + 24.0,
-      52.0 + position,
-      _startY + 42.0,
-    );
-    path.cubicTo(
-      60.0 + position,
-      _startY + 50.0,
-      80.0 + position,
-      _startY + 50.0,
-      90.0 + position,
-      _startY + 42.0,
-    );
-    path.cubicTo(
-      110.0 + position,
-      _startY + 24.0,
-      100.0 + position,
-      _startY,
-      (128.0 + position) > (size.width - _leftRadius)
-          ? size.width - _leftRadius
-          : 140.0 + position,
-      _startY,
-    );
-    path.lineTo(size.width - _leftRadius, _startY);
-
-    // Box with Border Radius
-    path.quadraticBezierTo(size.width, _startY, size.width, _startY + 25.0);
-    path.lineTo(size.width, _endY - 25.0);
-    path.quadraticBezierTo(size.width, _endY, size.width - 25.0, _endY);
-    path.lineTo(25.0, _endY);
-    path.quadraticBezierTo(0.0, _endY, 0.0, _endY - 25.0);
-    path.lineTo(0.0, _startY + 25.0);
-    path.quadraticBezierTo(0.0, _startY, _leftRadius, _startY);
-    path.close();
-    return path;
-  }
-
   Offset _activeCircleCenter() {
     return const Offset(0, _activeCircleCenterY).translate(
       _activeCircleXOffset + position,
@@ -278,26 +235,40 @@ class _Painter extends CustomPainter {
     );
   }
 
+  Path _buildBarPath(Size size, Offset activeCircleCenter) {
+    final barRect = Rect.fromLTWH(0, _startY, size.width, _endY - _startY);
+    final barPath = Path()
+      ..addRRect(
+        RRect.fromRectAndRadius(
+          barRect,
+          const Radius.circular(_barCornerRadius),
+        ),
+      );
+
+    // Keep a uniform floating gap around the active circle.
+    final notchPath = Path()
+      ..addOval(
+        Rect.fromCircle(
+          center: activeCircleCenter,
+          radius: _activeCircleRadius + _activeCircleGap,
+        ),
+      );
+
+    return Path.combine(PathOperation.difference, barPath, notchPath);
+  }
+
   @override
   void paint(Canvas canvas, Size size) {
     final fillPaint = _fillPaint();
-    final barPath = _buildBarPath(size);
     final activeCircleCenter = _activeCircleCenter();
-    final activeCirclePath = Path()
-      ..addOval(
-        Rect.fromCircle(
-            center: activeCircleCenter, radius: _activeCircleRadius),
-      );
+    final barPath = _buildBarPath(size, activeCircleCenter);
 
-    // Layered shadow + subtle edge glow to separate from dark background.
-    canvas.drawShadow(barPath, _deepShadowColor, 18.0, true);
-    canvas.drawShadow(barPath, _glowColor, 6.0, false);
     canvas.drawPath(barPath, fillPaint);
     canvas.drawPath(barPath, _edgePaint());
 
-    canvas.drawShadow(activeCirclePath, _deepShadowColor, 14.0, true);
-    canvas.drawShadow(activeCirclePath, _glowColor, 5.0, false);
     canvas.drawCircle(activeCircleCenter, _activeCircleRadius, fillPaint);
+    // Match the bar's glow treatment so the active circle reads as one surface.
+    canvas.drawCircle(activeCircleCenter, _activeCircleRadius, _edgePaint());
   }
 
   @override
