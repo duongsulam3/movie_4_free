@@ -176,12 +176,10 @@ class _HomePageState extends State<HomePage>
   }
 
   Widget _buildBottomNavigationOverlay() {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: CustomBottomNavigationBar(
-        items: navs,
-        onItemSelected: _onChangeBottomNav,
-      ),
+    return CustomBottomNavigationBar(
+      items: navs,
+      onItemSelected: _onChangeBottomNav,
+      currentIndex: context.watch<HomeShellCubit>().state.currentBottomIndex,
     );
   }
 
