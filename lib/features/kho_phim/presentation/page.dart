@@ -110,7 +110,7 @@ class _KhoPhimPageState extends State<KhoPhimPage> {
                       ),
 
                     // Extra spacing for the bottom navigation bar.
-                    const ResponsiveSizedBox(height: 80)
+                    const ResponsiveSizedBox(height: 70)
                   ],
                 ),
               ),
