@@ -18,13 +18,19 @@ class CustomBottomNavigationBar extends StatefulWidget {
 }
 
 class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
+  static const double borderRadius = 30.0;
+
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
     return Container(
-      height: 60,
+      height: screenHeight * 0.08,
       decoration: BoxDecoration(
-        color: Colors.black.withValues(alpha: 0.9),
-        borderRadius: const BorderRadius.all(Radius.circular(30)),
+        color: Colors.black.withValues(alpha: 0.8),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(borderRadius),
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.white.withValues(alpha: 0.2),
@@ -41,13 +47,15 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
             child: GestureDetector(
               onTap: () => widget.onItemSelected?.call(index),
               child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 5),
-                padding: const EdgeInsets.symmetric(vertical: 12),
+                margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.012),
+                padding: EdgeInsets.symmetric(vertical: screenHeight * 0.018),
                 decoration: BoxDecoration(
                   color: isSelected
-                      ? Colors.white.withValues(alpha: 0.3)
+                      ? Colors.white.withValues(alpha: 0.5)
                       : Colors.transparent,
-                  borderRadius: const BorderRadius.all(Radius.circular(30)),
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(borderRadius),
+                  ),
                 ),
                 child: item.icon,
               ),
