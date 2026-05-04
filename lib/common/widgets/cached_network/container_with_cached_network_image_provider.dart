@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:smoth_movie_app/common/widgets/error_image_widget.dart';
+import 'package:smoth_movie_core/core.dart';
+
+import '../error_image_widget.dart';
 
 class ContainerWithCachedNetworkImageProvider extends StatelessWidget {
   const ContainerWithCachedNetworkImageProvider({
@@ -15,11 +17,9 @@ class ContainerWithCachedNetworkImageProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sHeight = MediaQuery.of(context).size.height;
-    final sWidth = MediaQuery.of(context).size.width;
     return Container(
-      height: height == null ? null : sHeight / (sHeight / height!),
-      width: width == null ? null : sWidth / (sWidth / width!),
+      height: height?.v,
+      width: width?.h,
       decoration: BoxDecoration(
         color: Colors.blueGrey,
         image: DecorationImage(

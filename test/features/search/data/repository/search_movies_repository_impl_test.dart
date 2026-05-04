@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:smoth_movie_app/core/error/exception.dart';
+import 'package:smoth_movie_app/common/error/exception.dart';
 import 'package:smoth_movie_app/features/search/data/repository/search_movies_repository_impl.dart';
 import 'package:smoth_movie_app/features/search/data/source/remote/search_movie_remote_datasource.dart';
 

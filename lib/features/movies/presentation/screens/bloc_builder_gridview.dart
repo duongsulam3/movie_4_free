@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/widgets/movie_item_skeleton_loading.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
-import 'package:smoth_movie_app/core/router/app_router.dart';
-import 'package:smoth_movie_app/core/router/params/movie_detail_param_model.dart';
-import 'package:smoth_movie_app/core/utils/enum/movies_state_status.dart';
+import 'package:smoth_movie_app/common/router/app_router.dart';
+import 'package:smoth_movie_app/common/router/params/movie_detail_param_model.dart';
+import 'package:smoth_movie_app/common/utils/enum/movies_state_status.dart';
 import 'package:smoth_movie_app/common/widgets/list_movie_item_widget.dart';
-import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
+import 'package:smoth_movie_app/common/utils/secret/app_secret.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies/movies_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/movies_gridview_builder.dart';
 

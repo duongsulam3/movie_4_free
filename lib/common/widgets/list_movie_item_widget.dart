@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:smoth_movie_app/common/widgets/cached_network/cached_network_image.dart';
-import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
+import 'package:smoth_movie_core/core.dart';
+
+import 'cached_network/cached_network_image.dart';
+import 'responsive_small_text.dart';
 
 class ListMovieItemWidget extends StatelessWidget {
   const ListMovieItemWidget({
@@ -22,7 +24,7 @@ class ListMovieItemWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Column(
-        spacing: 5,
+        spacing: 6.v,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
@@ -30,7 +32,7 @@ class ListMovieItemWidget extends StatelessWidget {
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
             child: CachedNetworkImageWidget(
               url: movieUrl,
-              height: 180,
+              height: 168,
               width: double.infinity,
               memCacheHeight: memCacheHeight,
               memCacheWidth: memCacheWidth,

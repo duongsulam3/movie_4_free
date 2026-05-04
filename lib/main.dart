@@ -1,5 +1,5 @@
 import 'dart:async';
-import './core/bootstrap.dart';
+import 'bootstrap.dart';
 
 void main() {
   unawaited(bootstrap());

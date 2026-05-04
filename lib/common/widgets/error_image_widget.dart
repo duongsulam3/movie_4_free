@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
+
+import 'responsive_small_text.dart';
 
 class ErrorImage extends StatelessWidget {
   const ErrorImage({super.key});

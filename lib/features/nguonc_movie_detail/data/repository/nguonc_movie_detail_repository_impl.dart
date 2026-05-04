@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:smoth_movie_app/core/error/exception.dart';
-import 'package:smoth_movie_app/core/error/failure.dart';
+import 'package:smoth_movie_app/common/error/exception.dart';
+import 'package:smoth_movie_app/common/error/failure.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/data/model/nguonc_movie_model.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/data/source/remote/nguonc_movie_detail_remote_datasource.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/domain/repository/nguonc_movie_detail_repository.dart';

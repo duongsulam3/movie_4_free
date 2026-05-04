@@ -1,13 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:smoth_movie_app/core/utils/enum/kho_phim/categories_state_status.dart';
-import 'package:smoth_movie_app/core/utils/enum/kho_phim/countries_state_status.dart';
-import 'package:smoth_movie_app/core/utils/enum/kho_phim/page_status.dart';
+import 'package:smoth_movie_app/common/utils/enum/kho_phim/categories_state_status.dart';
+import 'package:smoth_movie_app/common/utils/enum/kho_phim/countries_state_status.dart';
+import 'package:smoth_movie_app/common/utils/enum/kho_phim/page_status.dart';
 import 'package:smoth_movie_app/features/kho_phim/domain/entity/kho_phim_category_entity.dart';
 import 'package:smoth_movie_app/features/kho_phim/domain/entity/kho_phim_country_entity.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/categories/category_list_bloc.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/countries/countries_bloc.dart';
-import 'package:smoth_movie_app/core/utils/helper/helper.dart';
+import 'package:smoth_movie_app/common/utils/helper/helper.dart';
 
 part 'kho_phim_page_event.dart';
 part 'kho_phim_page_state.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:smoth_movie_app/core/utils/enum/movies_sortby_time/movies_sortby_time_status.dart';
+import 'package:smoth_movie_app/common/utils/enum/movies_sortby_time/movies_sortby_time_status.dart';
 import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_item.dart';
 import 'package:smoth_movie_app/features/movies/domain/usecase/get_movies_sortby_time.dart';
 
