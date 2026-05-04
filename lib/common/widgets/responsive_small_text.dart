@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../core/utils/responsive/responsive.dart';
+
 class ResponsiveText extends StatelessWidget {
   const ResponsiveText({
     super.key,
@@ -22,12 +24,11 @@ class ResponsiveText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Text(
       text,
       maxLines: maxLines,
       style: TextStyle(
-        fontSize: size.width / (size.width / fontSize),
+        fontSize: fontSize.fSize,
         fontWeight: fontWeight,
         fontStyle: fontStyle,
         overflow: textOverflow,
