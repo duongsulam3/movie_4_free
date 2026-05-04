@@ -1,6 +1,6 @@
-import 'package:smoth_movie_app/core/utils/network/app_service.dart';
-import 'package:smoth_movie_app/core/utils/network/types.dart';
-import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
+import 'package:smoth_movie_app/common/core/utils/network/app_service.dart';
+import 'package:smoth_movie_app/common/core/utils/network/types.dart';
+import 'package:smoth_movie_app/common/core/utils/secret/app_secret.dart';
 
 final class NguonCMovieDetailGETAPI {
   static Future<DioJsonResponse> apiNguonCGETMovieDetail({

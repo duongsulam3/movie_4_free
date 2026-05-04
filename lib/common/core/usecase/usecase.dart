@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:smoth_movie_app/core/error/failure.dart';
+import 'package:smoth_movie_app/common/core/error/failure.dart';
 
 abstract interface class Usecase<SuccessType, Params> {
   Future<Either<Failure, SuccessType>> call(Params params);

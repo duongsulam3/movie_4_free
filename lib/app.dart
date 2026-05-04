@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:smoth_movie_core/core.dart';
 
-import 'router/app_router.dart';
-import 'utils/theme/theme.dart';
+import 'common/core/router/app_router.dart';
+import 'common/core/utils/theme/theme.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

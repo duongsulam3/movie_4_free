@@ -1,11 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:smoth_movie_app/core/app.dart';
-import 'package:smoth_movie_app/core/utils/helper/helper.dart';
-import 'package:smoth_movie_app/core/init_dependencies.dart';
-import 'package:smoth_movie_app/core/utils/network/app_service.dart';
-import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
+
+import 'app.dart';
+import 'common/core/utils/helper/helper.dart';
+import 'common/core/utils/network/app_service.dart';
+import 'common/core/utils/secret/app_secret.dart';
+import 'common/di/init_dependencies.dart';
 
 Future<void> bootstrap() async {
   // Initialize dependencies

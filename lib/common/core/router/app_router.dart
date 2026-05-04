@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smoth_movie_app/core/router/params/movie_detail_param_model.dart';
-import 'package:smoth_movie_app/core/router/params/nguonc_movie_detail_params_model.dart';
-import 'package:smoth_movie_app/core/router/params/search_textfield_param_model.dart';
+import 'package:smoth_movie_app/common/core/router/params/movie_detail_param_model.dart';
+import 'package:smoth_movie_app/common/core/router/params/nguonc_movie_detail_params_model.dart';
+import 'package:smoth_movie_app/common/core/router/params/search_textfield_param_model.dart';
 import 'package:smoth_movie_app/common/screens/error_page.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/bloc/detail_movie/detail_movie_bloc.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/presentation/bloc/nguonc_movie_detail_bloc.dart';
@@ -16,9 +16,9 @@ import 'package:smoth_movie_app/features/home/presentation/scope/home_bootstrap_
 import 'package:smoth_movie_app/features/movie_detail/presentation/detail_page.dart';
 import 'package:smoth_movie_app/features/splash/bloc/splash_bloc.dart';
 import 'package:smoth_movie_app/features/splash/presentation/splash_page.dart';
-import 'package:smoth_movie_app/core/init_dependencies.dart';
-import 'package:smoth_movie_app/core/router/custom_transitions/fade_in_transition.dart';
-import 'package:smoth_movie_app/core/router/custom_transitions/slide_bottom_to_top_transition.dart';
+import 'package:smoth_movie_app/common/di/init_dependencies.dart';
+import 'package:smoth_movie_app/common/core/router/custom_transitions/fade_in_transition.dart';
+import 'package:smoth_movie_app/common/core/router/custom_transitions/slide_bottom_to_top_transition.dart';
 
 class AppRouter {
   static const String splash = '/';

@@ -1,7 +1,7 @@
-import 'package:smoth_movie_app/core/utils/network/app_service.dart';
-import 'package:smoth_movie_app/core/utils/network/types.dart';
-import 'package:smoth_movie_app/core/utils/secret/api_end_point.dart';
-import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
+import 'package:smoth_movie_app/common/core/utils/network/app_service.dart';
+import 'package:smoth_movie_app/common/core/utils/network/types.dart';
+import 'package:smoth_movie_app/common/core/utils/secret/api_end_point.dart';
+import 'package:smoth_movie_app/common/core/utils/secret/app_secret.dart';
 
 /// API layer for Kho Phim feature.
 ///

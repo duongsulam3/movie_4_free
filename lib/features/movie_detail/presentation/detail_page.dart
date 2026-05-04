@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/screens/error_page.dart';
 import 'package:smoth_movie_app/common/widgets/movie_detail_page_widget.dart';
 
-import '../../../core/utils/enum/detail_movie/detail_movie_status.dart';
+import '../../../common/core/utils/enum/detail_movie/detail_movie_status.dart';
 import '../../movies/domain/entities/movies_page/movie_item.dart';
 import 'bloc/detail_movie/detail_movie_bloc.dart';
 import 'widgets/movie_detail_page_init.dart';

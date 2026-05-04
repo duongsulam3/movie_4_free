@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smoth_movie_app/common/widgets/nested_scroll_view_detail_movie_widget.dart';
-import 'package:smoth_movie_app/core/utils/helper/helper.dart';
+import 'package:smoth_movie_app/common/core/utils/helper/helper.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/movie_detail.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/movie_description.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/movie_detail_bloc_builder_episode_name.dart';

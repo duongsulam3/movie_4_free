@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:smoth_movie_app/core/constants/app_constants.dart';
+import 'package:smoth_movie_app/common/core/constants/app_constants.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_asset_image.dart';
 import 'package:smoth_movie_app/features/home/presentation/widgets/text_field_change_hint_widget.dart';
 

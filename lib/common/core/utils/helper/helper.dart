@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
-import 'package:smoth_movie_app/core/constants/app_constants.dart';
+import 'package:smoth_movie_app/common/core/constants/app_constants.dart';
 import 'package:smoth_movie_app/features/kho_phim/data/model/kho_phim_category_model.dart';
 import 'package:smoth_movie_app/features/kho_phim/data/model/kho_phim_country_model.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/categories/category_list_bloc.dart';
@@ -26,7 +26,7 @@ import 'package:smoth_movie_app/features/nguonc_search_movies/presentation/bloc/
 import 'package:smoth_movie_app/features/search/data/models/search_suggestion_model.dart';
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies/movies_bloc.dart';
-import 'package:smoth_movie_app/core/utils/helper/http_override.dart';
+import 'package:smoth_movie_app/common/core/utils/helper/http_override.dart';
 
 class Helper {
   // ===== Core =====

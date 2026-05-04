@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smoth_movie_app/core/init_dependencies.dart';
+import 'package:smoth_movie_app/common/di/init_dependencies.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies/movies_bloc.dart';
 
 class TitleGridMoviesScope extends StatelessWidget {

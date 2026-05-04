@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:smoth_movie_app/common/widgets/lottie_asset_widget.dart';
-import 'package:smoth_movie_app/core/constants/app_constants.dart';
+import 'package:smoth_movie_app/common/core/constants/app_constants.dart';
 import 'package:smoth_movie_app/features/splash/bloc/splash_bloc.dart';
-import 'package:smoth_movie_app/core/router/app_router.dart';
+import 'package:smoth_movie_app/common/core/router/app_router.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({super.key});

@@ -4,8 +4,8 @@ import 'package:smoth_movie_app/common/widgets/cached_network/container_with_cac
 import 'package:smoth_movie_app/common/widgets/lottie_asset_widget.dart';
 import 'package:smoth_movie_app/common/widgets/movie_detail_page_widget.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_sized_box.dart';
-import 'package:smoth_movie_app/core/constants/app_constants.dart';
-import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
+import 'package:smoth_movie_app/common/core/constants/app_constants.dart';
+import 'package:smoth_movie_app/common/core/utils/secret/app_secret.dart';
 import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_item.dart';
 
 class MovieDetailPageInit extends StatelessWidget {

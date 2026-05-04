@@ -1,7 +1,7 @@
 import 'package:smoth_movie_app/api/nguonc/nguonc_movies_by_category_get.dart';
-import 'package:smoth_movie_app/core/error/exception.dart';
-import 'package:smoth_movie_app/core/utils/helper/helper.dart';
-import 'package:smoth_movie_app/core/utils/network/app_service.dart';
+import 'package:smoth_movie_app/common/core/error/exception.dart';
+import 'package:smoth_movie_app/common/core/utils/helper/helper.dart';
+import 'package:smoth_movie_app/common/core/utils/network/app_service.dart';
 import 'package:smoth_movie_app/features/nguonc_categories/data/model/nguonc_movies_by_category_item_model.dart';
 
 abstract interface class NguoncMoviesByCategoryRemoteDatasource {
