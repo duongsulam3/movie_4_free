@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:smoth_movie_app/core/utils/network/abstract_client/abtract_dio_client.dart';
-import 'package:smoth_movie_app/core/utils/network/types.dart';
+
+import 'abstract_dio_client.dart';
 
 mixin TokenManagementMixin on AbstractDioClient {
   String accessToken = "";
@@ -34,12 +34,13 @@ mixin TokenManagementMixin on AbstractDioClient {
   Future<void> getToken() async {
     String? storedToken = await _storage.read(key: _storageKey);
     if (storedToken != null) {
-      final tokenJson = jsonDecode(storedToken) as Json;
+      final tokenJson = jsonDecode(storedToken) as Map<String, dynamic>;
 
       accessToken = tokenJson['accessToken'] ?? '';
       refreshToken = tokenJson['refreshToken'] ?? '';
       accessTokenExpired = DateTime.fromMillisecondsSinceEpoch(
-          tokenJson['accessTokenExpired'] ?? DateTime.now().millisecondsSinceEpoch);
+          tokenJson['accessTokenExpired'] ??
+              DateTime.now().millisecondsSinceEpoch);
     }
   }
 
@@ -66,6 +67,7 @@ mixin TokenManagementMixin on AbstractDioClient {
   Future<void> refreshTokenCall();
 
   bool isLoggedIn() {
-    return accessToken.isNotEmpty && DateTime.now().isBefore(accessTokenExpired);
+    return accessToken.isNotEmpty &&
+        DateTime.now().isBefore(accessTokenExpired);
   }
 }

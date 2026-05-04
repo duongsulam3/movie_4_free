@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:smoth_movie_app/core/utils/enum/movies_state_status.dart';
+import 'package:smoth_movie_app/common/utils/enum/movies_state_status.dart';
 import 'package:smoth_movie_app/features/nguonc_categories/domain/entity/nguonc_movies_by_category_item_entity.dart';
 import 'package:smoth_movie_app/features/nguonc_categories/domain/usecase/nguonc_get_movies_by_cate.dart';
 

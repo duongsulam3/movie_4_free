@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:smoth_movie_core/core.dart';
 
 import '../../error/exception.dart';
 import '../helper/dev_logger.dart';
-import 'abstract_client/restful_api_client.dart';
 
 class AppService extends RestfulApiClient {
   AppService({required super.baseUrl});

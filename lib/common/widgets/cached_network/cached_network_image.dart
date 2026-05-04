@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:smoth_movie_app/common/widgets/error_image_widget.dart';
+import 'package:smoth_movie_core/core.dart';
+
+import '../error_image_widget.dart';
 
 class CachedNetworkImageWidget extends StatelessWidget {
   final String url;
@@ -22,12 +24,10 @@ class CachedNetworkImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sHeight = MediaQuery.of(context).size.height;
-    final sWidth = MediaQuery.of(context).size.width;
     return CachedNetworkImage(
       imageUrl: url,
-      height: height == null ? null : sHeight / (sHeight / height!),
-      width: width == null ? null : sWidth / (sWidth / width!),
+      height: height?.v,
+      width: width?.h,
       memCacheHeight: memCacheHeight,
       memCacheWidth: memCacheWidth,
       fit: BoxFit.fill,

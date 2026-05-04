@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:smoth_movie_app/core/error/exception.dart';
-import 'package:smoth_movie_app/core/error/failure.dart';
+import 'package:smoth_movie_app/common/error/exception.dart';
+import 'package:smoth_movie_app/common/error/failure.dart';
 import 'package:smoth_movie_app/features/kho_phim/data/model/kho_phim_category_model.dart';
 import 'package:smoth_movie_app/features/kho_phim/domain/repository/categories_repository.dart';
 import 'package:smoth_movie_app/features/kho_phim/data/source/remote/categories_remote_data_source.dart';

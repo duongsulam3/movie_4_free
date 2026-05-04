@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:smoth_movie_app/common/widgets/cached_network/container_with_cached_network_image_provider.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_sized_box.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
-import 'package:smoth_movie_app/core/utils/secret/app_secret.dart';
+import 'package:smoth_movie_app/common/utils/secret/app_secret.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});

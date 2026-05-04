@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:smoth_movie_app/core/router/params/movie_detail_param_model.dart';
+import 'package:smoth_movie_app/common/router/params/movie_detail_param_model.dart';
 import 'package:smoth_movie_app/common/widgets/cached_network/container_with_cached_network_image_provider.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
 import 'package:smoth_movie_app/features/movies/domain/entities/currently_update_movies/recently_update_list_item.dart';
-import 'package:smoth_movie_app/core/router/app_router.dart';
+import 'package:smoth_movie_app/common/router/app_router.dart';
 
 class CarouselSliderItem extends StatelessWidget {
   const CarouselSliderItem({super.key, required this.item});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smoth_movie_app/common/widgets/nested_scroll_view_detail_movie_widget.dart';
-import 'package:smoth_movie_app/core/constants/app_constants.dart';
-import 'package:smoth_movie_app/core/utils/helper/helper.dart';
+import 'package:smoth_movie_app/common/constants/app_constants.dart';
+import 'package:smoth_movie_app/common/utils/helper/helper.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/widgets/movie_description.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/domain/entity/nguonc_movie_entity.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/presentation/widget/nguonc_episode_bloc_builder_name.dart';
