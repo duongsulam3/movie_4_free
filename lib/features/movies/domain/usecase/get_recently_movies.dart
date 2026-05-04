@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:smoth_movie_app/common/core/error/failure.dart';
-import 'package:smoth_movie_app/common/core/usecase/usecase.dart';
+import 'package:smoth_movie_app/common/error/failure.dart';
+import 'package:smoth_movie_app/common/usecase/usecase.dart';
 import 'package:smoth_movie_app/features/movies/domain/entities/currently_update_movies/recently_update_list_item.dart';
 import 'package:smoth_movie_app/features/movies/domain/repository/recently_update_movies_repository.dart';
 

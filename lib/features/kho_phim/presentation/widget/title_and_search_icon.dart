@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:smoth_movie_app/common/core/router/params/search_textfield_param_model.dart';
+import 'package:smoth_movie_app/common/router/params/search_textfield_param_model.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
-import 'package:smoth_movie_app/common/core/router/app_router.dart';
+import 'package:smoth_movie_app/common/router/app_router.dart';
 
 class TitleAndSearchIcon extends StatelessWidget {
   const TitleAndSearchIcon({super.key, this.hint});

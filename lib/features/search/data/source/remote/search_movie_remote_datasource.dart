@@ -1,9 +1,9 @@
 import 'dart:developer';
 
 import 'package:smoth_movie_app/api/search/search_get.dart';
-import 'package:smoth_movie_app/common/core/error/exception.dart';
-import 'package:smoth_movie_app/common/core/utils/helper/helper.dart';
-import 'package:smoth_movie_app/common/core/utils/network/app_service.dart';
+import 'package:smoth_movie_app/common/error/exception.dart';
+import 'package:smoth_movie_app/common/utils/helper/helper.dart';
+import 'package:smoth_movie_app/common/utils/network/app_service.dart';
 import 'package:smoth_movie_app/features/movies/data/model/single_movies/movie_item_model.dart';
 import 'package:smoth_movie_app/features/search/data/models/search_suggestion_model.dart';
 

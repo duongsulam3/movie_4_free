@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smoth_movie_app/common/core/utils/helper/helper.dart';
-import 'package:smoth_movie_app/common/core/utils/secret/app_secret.dart';
+import 'package:smoth_movie_app/common/utils/helper/helper.dart';
+import 'package:smoth_movie_app/common/utils/secret/app_secret.dart';
 import 'package:smoth_movie_app/features/nguonc_categories/domain/entity/nguonc_category_item_entity.dart';
 import 'package:smoth_movie_app/features/nguonc_categories/presentation/bloc/movies_by_category_bloc.dart';
 import 'package:smoth_movie_app/features/nguonc_categories/presentation/widget/nguonc_movies_by_cate.dart';

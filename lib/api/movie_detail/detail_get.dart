@@ -1,6 +1,6 @@
-import 'package:smoth_movie_app/common/core/utils/network/app_service.dart';
-import 'package:smoth_movie_app/common/core/utils/network/types.dart';
-import 'package:smoth_movie_app/common/core/utils/secret/api_end_point.dart';
+import 'package:smoth_movie_app/common/utils/network/app_service.dart';
+import 'package:smoth_movie_app/common/utils/network/types.dart';
+import 'package:smoth_movie_app/common/utils/secret/api_end_point.dart';
 
 final class DetailMovieGETAPI {
   static const String endpoint = ApiEndPoint.detailMovieEndpoint;

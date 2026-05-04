@@ -5,7 +5,7 @@ import 'package:smoth_movie_app/common/widgets/search_textfield_widget.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/presentation/widget/list_search_nguonc_blocbuilder.dart';
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
 import 'package:smoth_movie_app/features/search/presentation/widgets/list_search_content.dart';
-import 'package:smoth_movie_app/common/core/utils/helper/helper.dart';
+import 'package:smoth_movie_app/common/utils/helper/helper.dart';
 import 'package:smoth_movie_app/features/search/presentation/widgets/search_page_tabs_content.dart';
 import 'package:smoth_movie_app/features/search/presentation/widgets/search_tabbar.dart';
 

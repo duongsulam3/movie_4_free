@@ -4,7 +4,7 @@ import 'package:smoth_movie_app/common/widgets/cached_network/container_with_cac
 import 'package:smoth_movie_app/common/widgets/lottie_asset_widget.dart';
 import 'package:smoth_movie_app/common/widgets/movie_detail_page_widget.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_sized_box.dart';
-import 'package:smoth_movie_app/common/core/constants/app_constants.dart';
+import 'package:smoth_movie_app/common/constants/app_constants.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/domain/entity/nguonc_movie_item_entity.dart';
 
 class NguoncMovieDetailPageInit extends StatelessWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
 import 'package:smoth_movie_app/common/widgets/search_play_icon_widget.dart';
-import 'package:smoth_movie_app/common/core/constants/app_constants.dart';
+import 'package:smoth_movie_app/common/constants/app_constants.dart';
 import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_item.dart';
 
 class SearchItemContent extends StatelessWidget {

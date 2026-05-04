@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:smoth_movie_app/common/core/error/failure.dart';
+import 'package:smoth_movie_app/common/error/failure.dart';
 import 'package:smoth_movie_app/features/search/domain/repository/search_movies_repository.dart';
 import 'package:smoth_movie_app/features/search/domain/usecase/get_search_movies.dart';
 

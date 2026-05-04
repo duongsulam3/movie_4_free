@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:smoth_movie_app/common/core/error/exception.dart';
-import 'package:smoth_movie_app/common/core/error/failure.dart';
+import 'package:smoth_movie_app/common/error/exception.dart';
+import 'package:smoth_movie_app/common/error/failure.dart';
 import 'package:smoth_movie_app/features/search/data/source/remote/search_movie_remote_datasource.dart';
 import 'package:smoth_movie_app/features/search/domain/repository/search_movies_repository.dart';
 import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_item.dart';

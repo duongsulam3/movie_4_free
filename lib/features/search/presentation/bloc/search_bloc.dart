@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:smoth_movie_app/common/core/utils/enum/search/search_page_status.dart';
+import 'package:smoth_movie_app/common/utils/enum/search/search_page_status.dart';
 import 'package:smoth_movie_app/features/search/domain/usecase/get_search_movies.dart';
 import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_item.dart';
 import 'package:smoth_movie_app/features/search/domain/entities/search_suggestion_entity.dart';

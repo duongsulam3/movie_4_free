@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/screens/error_page.dart';
 import 'package:smoth_movie_app/common/widgets/list_movie_item_widget.dart';
 import 'package:smoth_movie_app/common/widgets/movie_item_skeleton_loading.dart';
-import 'package:smoth_movie_app/common/core/router/app_router.dart';
-import 'package:smoth_movie_app/common/core/router/params/movie_detail_param_model.dart';
-import 'package:smoth_movie_app/common/core/utils/helper/helper.dart';
-import 'package:smoth_movie_app/common/core/utils/secret/app_secret.dart';
+import 'package:smoth_movie_app/common/router/app_router.dart';
+import 'package:smoth_movie_app/common/router/params/movie_detail_param_model.dart';
+import 'package:smoth_movie_app/common/utils/helper/helper.dart';
+import 'package:smoth_movie_app/common/utils/secret/app_secret.dart';
 
-import '../../../../common/core/utils/enum/kho_phim/kho_phim_movies_state_status.dart';
+import '../../../../common/utils/enum/kho_phim/kho_phim_movies_state_status.dart';
 import '../../../movies/presentation/screens/widgets/load_more_container.dart';
 import '../../../movies/presentation/screens/widgets/movies_gridview_builder.dart';
 import '../../../movies/presentation/screens/widgets/movies_silver_gridview_builder.dart';

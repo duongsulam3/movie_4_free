@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:smoth_movie_app/common/core/error/failure.dart';
+import 'package:smoth_movie_app/common/error/failure.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/domain/entity/nguonc_movie_item_entity.dart';
 
 abstract interface class NguoncSearchMoviesRepository {

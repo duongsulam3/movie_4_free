@@ -1,7 +1,7 @@
 import 'package:smoth_movie_app/api/movie_detail/detail_get.dart';
-import 'package:smoth_movie_app/common/core/error/exception.dart';
-import 'package:smoth_movie_app/common/core/utils/helper/helper.dart';
-import 'package:smoth_movie_app/common/core/utils/network/app_service.dart';
+import 'package:smoth_movie_app/common/error/exception.dart';
+import 'package:smoth_movie_app/common/utils/helper/helper.dart';
+import 'package:smoth_movie_app/common/utils/network/app_service.dart';
 import 'package:smoth_movie_app/features/movie_detail/data/model/movie_detail.dart';
 
 abstract interface class DetailMovieRemoteDataSource {

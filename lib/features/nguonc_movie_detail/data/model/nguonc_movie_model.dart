@@ -1,4 +1,4 @@
-import 'package:smoth_movie_app/common/core/constants/app_constants.dart';
+import 'package:smoth_movie_app/common/constants/app_constants.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/data/model/nguonc_category_model.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/data/model/nguonc_episodes_model.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/domain/entity/nguonc_movie_entity.dart';

@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:smoth_movie_app/common/core/error/failure.dart';
-import 'package:smoth_movie_app/common/core/usecase/usecase.dart';
+import 'package:smoth_movie_app/common/error/failure.dart';
+import 'package:smoth_movie_app/common/usecase/usecase.dart';
 import 'package:smoth_movie_app/features/nguonc_categories/domain/entity/nguonc_movies_by_category_item_entity.dart';
 import 'package:smoth_movie_app/features/nguonc_categories/domain/repository/nguonc_movies_by_cate_repository.dart';
 

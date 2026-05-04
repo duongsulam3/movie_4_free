@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/screens/error_page.dart';
-import 'package:smoth_movie_app/common/core/utils/enum/detail_movie/detail_movie_status.dart';
+import 'package:smoth_movie_app/common/utils/enum/detail_movie/detail_movie_status.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/presentation/bloc/nguonc_movie_detail_bloc.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/presentation/widget/nguonc_movie_page.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/presentation/widget/nguonc_movie_detail_page_init.dart';

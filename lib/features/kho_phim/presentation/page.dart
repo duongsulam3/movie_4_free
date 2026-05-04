@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/screens/error_page.dart';
 import 'package:smoth_movie_app/common/screens/loading_page.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_sized_box.dart';
-import 'package:smoth_movie_app/common/core/utils/enum/kho_phim/page_status.dart';
+import 'package:smoth_movie_app/common/utils/enum/kho_phim/page_status.dart';
 
 import 'bloc/categories/category_list_bloc.dart';
 import 'bloc/countries/countries_bloc.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/widgets/tab_listview_episodes_widget.dart';
-import 'package:smoth_movie_app/common/core/utils/helper/helper.dart';
+import 'package:smoth_movie_app/common/utils/helper/helper.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/category.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/movie_detail.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/bloc/detail_movie/detail_movie_bloc.dart';
