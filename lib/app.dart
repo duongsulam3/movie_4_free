@@ -4,8 +4,15 @@ import 'package:smoth_movie_core/core.dart';
 import 'common/router/app_router.dart';
 import 'common/utils/theme/theme.dart';
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final AppRouter route = AppRouter();
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +23,8 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: AppTheme.blackTheme,
           initialRoute: AppRouter.splash,
-          onGenerateRoute: (settings) => AppRouter().onGenerateRoute(settings),
+          onGenerateRoute: route.onGenerateRoute,
+          onUnknownRoute: route.unknownRoute,
         );
       },
     );
