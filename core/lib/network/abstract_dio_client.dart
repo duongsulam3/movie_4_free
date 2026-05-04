@@ -45,7 +45,6 @@ abstract class AbstractDioClient {
     try {
       return await request();
     } on DioException catch (e) {
-      // Handle errors
       throw handleErrors(e);
     }
   }

@@ -1,29 +1,28 @@
 import 'package:dio/dio.dart';
 
-import '../types.dart';
-import 'abtract_dio_client.dart';
+import 'abstract_dio_client.dart';
 
 abstract class GraphqlApiClient extends AbstractDioClient {
   GraphqlApiClient({required super.baseUrl});
 
-  Future<DioJsonResponse> query(
+  Future<Response<dynamic>> query(
     String query, {
-    Json? variables,
+    Map<String, dynamic>? variables,
     Options? options,
   }) async {
-    return await executeRequest(() => client.post(
+    return executeRequest(() => client.post(
           baseUrl,
           data: {'query': query, 'variables': variables},
           options: options,
         ));
   }
 
-  Future<DioJsonResponse> mutate(
+  Future<Response<dynamic>> mutate(
     String mutation, {
-    Json? variables,
+    Map<String, dynamic>? variables,
     Options? options,
   }) async {
-    return await executeRequest(() => client.post(
+    return executeRequest(() => client.post(
           baseUrl,
           data: {'query': mutation, 'variables': variables},
           options: options,

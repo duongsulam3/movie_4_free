@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:smoth_movie_core/core.dart';
 
 import 'router/app_router.dart';
-import 'utils/responsive/responsive.dart';
 import 'utils/theme/theme.dart';
 
 class MyApp extends StatelessWidget {

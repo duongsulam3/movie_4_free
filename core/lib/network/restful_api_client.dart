@@ -1,14 +1,13 @@
 import 'package:dio/dio.dart';
 
-import '../types.dart';
-import 'abtract_dio_client.dart';
+import 'abstract_dio_client.dart';
 
 abstract class RestfulApiClient extends AbstractDioClient {
   RestfulApiClient({required super.baseUrl});
 
   Future<Response<T>> getRequest<T>(
     String endpoint, {
-    Json? queryParameters,
+    Map<String, dynamic>? queryParameters,
     Options? options,
   }) async {
     return executeRequest(() => client.get(
@@ -20,8 +19,8 @@ abstract class RestfulApiClient extends AbstractDioClient {
 
   Future<Response<T>> postRequest<T>(
     String endpoint, {
-    Json? data,
-    Json? queryParameters,
+    Map<String, dynamic>? data,
+    Map<String, dynamic>? queryParameters,
     Options? options,
   }) async {
     return executeRequest(() => client.post(
@@ -34,8 +33,8 @@ abstract class RestfulApiClient extends AbstractDioClient {
 
   Future<Response<T>> putRequest<T>(
     String endpoint, {
-    Json? data,
-    Json? queryParameters,
+    Map<String, dynamic>? data,
+    Map<String, dynamic>? queryParameters,
     Options? options,
   }) async {
     return executeRequest(() => client.put(
@@ -48,8 +47,8 @@ abstract class RestfulApiClient extends AbstractDioClient {
 
   Future<Response<T>> deleteRequest<T>(
     String endpoint, {
-    Json? data,
-    Json? queryParameters,
+    Map<String, dynamic>? data,
+    Map<String, dynamic>? queryParameters,
     Options? options,
   }) async {
     return executeRequest(() => client.delete(

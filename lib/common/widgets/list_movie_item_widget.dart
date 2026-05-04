@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
+import 'package:smoth_movie_core/core.dart';
 
-import '../../core/utils/responsive/responsive.dart';
 import 'cached_network/cached_network_image.dart';
+import 'responsive_small_text.dart';
 
 class ListMovieItemWidget extends StatelessWidget {
   const ListMovieItemWidget({
