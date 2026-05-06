@@ -1,4 +1,4 @@
-import 'package:flutter_supper_app_core/core.dart';
+import 'package:dio/dio.dart';
 
 abstract class AbstractDioClient {
   final Dio client;

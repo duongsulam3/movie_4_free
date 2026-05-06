@@ -1,4 +1,6 @@
-import 'package:flutter_supper_app_core/core.dart';
+import 'package:dio/dio.dart';
+
+import 'abstract_dio_client.dart';
 
 abstract class GraphqlApiClient extends AbstractDioClient {
   GraphqlApiClient({required super.baseUrl});

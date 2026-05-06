@@ -1,9 +1,8 @@
-import 'dart:async';
+import 'package:flutter_supper_app_core/core.dart';
 
-import 'package:flutter/material.dart';
-import 'package:smoth_movie_app/common/widgets/search_textfield_widget.dart';
-import 'package:smoth_movie_app/common/router/app_router.dart';
-import 'package:smoth_movie_app/common/router/params/search_textfield_param_model.dart';
+import '../../../../common/router/app_router.dart';
+import '../../../../common/router/params/search_textfield_param_model.dart';
+import '../../../../common/widgets/search_textfield_widget.dart';
 
 class TextFieldChangeHint extends StatefulWidget {
   const TextFieldChangeHint({

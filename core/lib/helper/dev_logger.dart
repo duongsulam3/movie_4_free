@@ -1,6 +1,7 @@
+import 'dart:convert';
 import 'dart:developer';
 
-import 'package:flutter_supper_app_core/core.dart';
+import 'package:flutter/foundation.dart';
 
 class Logger {
   final String className;
