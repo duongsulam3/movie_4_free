@@ -1,6 +1,5 @@
 import 'package:smoth_movie_app/api/movie_detail/detail_get.dart';
 import 'package:smoth_movie_app/common/error/exception.dart';
-import 'package:smoth_movie_app/common/utils/helper/helper.dart';
 import 'package:smoth_movie_app/common/utils/network/app_service.dart';
 import 'package:smoth_movie_app/features/movie_detail/data/model/movie_detail.dart';
 
@@ -19,7 +18,10 @@ class DetailMovieRemoteDataSourceImpl implements DetailMovieRemoteDataSource {
         client: client,
         slug: slug,
       );
-      return Helper.parseMovieDetail(res.toString());
+      final jsonRes = client.decodeJsonResponse(res.data);
+      return client.parseJson<MovieDetailModel>(
+        () => MovieDetailModel.fromJson(jsonRes),
+      );
     } catch (e) {
       throw ServerException(e.toString());
     }

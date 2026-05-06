@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter_supper_app_core/core.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
 import 'package:smoth_movie_app/common/widgets/search_play_icon_widget.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/domain/entity/nguonc_movie_item_entity.dart';
@@ -20,7 +20,7 @@ class NguoncSearchItemContent extends StatelessWidget {
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: screenHeight / (screenHeight / 5),
+        spacing: 5.v,
         children: [
           ResponsiveText(
             text: movie.name,

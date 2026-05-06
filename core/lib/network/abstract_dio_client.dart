@@ -55,6 +55,14 @@ abstract class AbstractDioClient {
 
   Exception handleErrors(DioException e);
 
+  /// Decodes raw Dio response payload into a JSON object/array.
+  dynamic decodeJsonResponse(dynamic data);
+
+  /// Parses decoded JSON into any target model type.
+  // T parseJson<T>(dynamic jsonResponse, T Function(dynamic json) mapper) {
+  //   return mapper(jsonResponse);
+  // }
+
   void debugStatusLog(Response response);
 
   void cancelAllRequests() {

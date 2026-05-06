@@ -1,5 +1,4 @@
 import 'package:smoth_movie_app/common/error/exception.dart';
-import 'package:smoth_movie_app/common/utils/helper/helper.dart';
 import 'package:smoth_movie_app/common/utils/network/app_service.dart';
 import 'package:smoth_movie_app/api/kho_phim/kho_phim_get.dart';
 import 'package:smoth_movie_app/features/movies/data/model/single_movies/movie_item_model.dart';
@@ -44,8 +43,11 @@ class KhoPhimMoviesRemoteDataSourceImpl
         year: year,
         limit: limit,
       );
-
-      return Helper.parseKhoPhimMovies(res.data);
+      final jsonRes = client.decodeJsonResponse(res.data);
+      return client.parseJson<List<MovieItemModel>>(() {
+        final items = jsonRes["data"]["items"] as List<dynamic>;
+        return items.map((e) => MovieItemModel.fromJson(e)).toList();
+      });
     } catch (e) {
       throw ServerException(e.toString());
     }

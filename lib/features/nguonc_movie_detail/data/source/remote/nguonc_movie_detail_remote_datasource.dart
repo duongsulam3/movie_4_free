@@ -1,5 +1,4 @@
 import 'package:smoth_movie_app/common/error/exception.dart';
-import 'package:smoth_movie_app/common/utils/helper/helper.dart';
 import 'package:smoth_movie_app/api/nguonc/nguonc_movie_detail_get.dart';
 import 'package:smoth_movie_app/common/utils/network/app_service.dart';
 import 'package:smoth_movie_app/features/nguonc_movie_detail/data/model/nguonc_movie_model.dart';
@@ -21,8 +20,10 @@ class NguoncMovieDetailRemoteDatasourceImpl
         client: client,
         slug: slug,
       );
-
-      return Helper.parseNguoncMovieDetail(res.data);
+      final jsonRes = client.decodeJsonResponse(res.data);
+      return client.parseJson<NguoncMovieModel>(
+        () => NguoncMovieModel.fromJson(jsonRes["movie"]),
+      );
     } catch (e) {
       throw ServerException(e.toString());
     }

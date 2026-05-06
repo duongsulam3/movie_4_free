@@ -1,5 +1,4 @@
 import 'package:smoth_movie_app/common/error/exception.dart';
-import 'package:smoth_movie_app/common/utils/helper/helper.dart';
 import 'package:smoth_movie_app/common/utils/network/app_service.dart';
 import 'package:smoth_movie_app/api/kho_phim/kho_phim_get.dart';
 import 'package:smoth_movie_app/features/kho_phim/data/model/kho_phim_country_model.dart';
@@ -15,8 +14,11 @@ class CountriesRemoteDataSourceImpl implements CountriesRemoteDataSource {
   Future<List<KhoPhimCountryModel>> getCountries() async {
     try {
       final res = await KhoPhimGETAPI.apiKhoPhimGETCountries(client: client);
-
-      return Helper.parseKhoPhimCoutryJsonToList(res.data);
+      final jsonRes = client.decodeJsonResponse(res.data);
+      return client.parseJson<List<KhoPhimCountryModel>>(() {
+        final items = jsonRes as List<dynamic>;
+        return items.map((e) => KhoPhimCountryModel.fromJson(e)).toList();
+      });
     } catch (e) {
       throw ServerException(e.toString());
     }

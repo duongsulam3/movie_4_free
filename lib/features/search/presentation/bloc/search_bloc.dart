@@ -1,6 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_supper_app_core/core.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:smoth_movie_app/common/utils/enum/search/search_page_status.dart';
 import 'package:smoth_movie_app/features/search/domain/usecase/get_search_movies.dart';

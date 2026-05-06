@@ -1,5 +1,4 @@
 import 'package:smoth_movie_app/common/error/exception.dart';
-import 'package:smoth_movie_app/common/utils/helper/helper.dart';
 import 'package:smoth_movie_app/api/movies/movies_get.dart';
 import 'package:smoth_movie_app/common/utils/network/app_service.dart';
 import 'package:smoth_movie_app/features/movies/data/model/single_movies/movie_item_model.dart';
@@ -29,7 +28,12 @@ class MoviesRemoteDataSourceImpl implements MoviesRemoteDataSource {
         cateName: cateName,
       );
 
-      return Helper.parseMovies(res.data);
+      final jsonRes = client.decodeJsonResponse(res.data);
+      final movies = client.parseJson<List<MovieItemModel>>(() {
+        final items = jsonRes["data"]["items"] as List<dynamic>;
+        return items.map((e) => MovieItemModel.fromJson(e)).toList();
+      });
+      return movies;
     } catch (e) {
       throw ServerException(e.toString());
     }

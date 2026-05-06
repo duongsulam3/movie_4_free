@@ -1,6 +1,6 @@
-// ignore_for_file: avoid_print
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 
 class Logger {
@@ -13,18 +13,16 @@ class Logger {
   }
 
   void info([String? functionName, dynamic message]) {
-    print('[INFO] [$className] [$functionName]');
-    print(_parseJson(message));
+    log('[INFO] [$className] [$functionName]');
+    log(_parseJson(message));
   }
 
   void warning([String? functionName, dynamic message]) {
-    print('[WARNING] [$className] [$functionName]');
-    print(_parseJson(message));
+    log('[WARNING] [$className] [$functionName]');
+    log(_parseJson(message));
   }
 
   void error([String? functionName, dynamic message]) {
-    // print('[ERROR] [$className] [$functionName]');
-    // print(_parseJson(message));
     log('[ERROR] [$className] [$functionName]');
     log(_parseJson(message));
   }
