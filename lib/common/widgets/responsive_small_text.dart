@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smoth_movie_core/core.dart';
+import 'package:flutter_supper_app_core/core.dart';
 
 class ResponsiveText extends StatelessWidget {
   const ResponsiveText({

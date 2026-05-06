@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:smoth_movie_core/core.dart';
+import 'package:flutter_supper_app_core/core.dart';
 
 import '../../error/exception.dart';
 import '../helper/dev_logger.dart';
