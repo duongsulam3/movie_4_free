@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:smoth_movie_app/api/search/search_get.dart';
 import 'package:smoth_movie_app/common/error/exception.dart';
 import 'package:smoth_movie_app/common/utils/helper/helper.dart';
@@ -38,14 +36,17 @@ class SearchMovieRemoteDatasourceImpl implements SearchMovieRemoteDataSource {
         page: page,
         limit: limit,
       );
+      final jsonRes = client.decodeJsonResponse(res.data);
 
-      if (res.data?["status"] == "success") {
-        movies = Helper.parseMovies(res.toString());
+      if (jsonRes["status"] == "success") {
+        movies = client.parseJson<List<MovieItemModel>>(() {
+          final items = jsonRes["data"]["items"] as List<dynamic>;
+          return items.map((e) => MovieItemModel.fromJson(e)).toList();
+        });
       }
 
       return movies;
     } catch (e) {
-      log("Unexpected error on server status 200 ~ 299: $e");
       throw ServerException(e.toString());
     }
   }
@@ -64,14 +65,24 @@ class SearchMovieRemoteDatasourceImpl implements SearchMovieRemoteDataSource {
         page: 1,
         limit: limit,
       );
+      final jsonRes = client.decodeJsonResponse(res.data);
 
-      if (res.data?["status"] == "success") {
-        suggestions = Helper.parseSearchSuggestions(res.toString());
+      if (jsonRes["status"] == "success") {
+        suggestions = client.parseJson<List<SearchSuggestionModel>>(() {
+          final items = jsonRes["data"]["items"] as List<dynamic>;
+          final parsedSuggestions = items
+              .map((e) => SearchSuggestionModel.fromJson(e))
+              .where((e) => e.name.trim().isNotEmpty)
+              .toList();
+
+          // Keep only first occurrence by case-insensitive name.
+          final listed = Helper.deduplicateSearchSuggestions(parsedSuggestions);
+          return listed;
+        });
       }
 
       return suggestions;
     } catch (e) {
-      log("Unexpected error on suggestion status 200 ~ 299: $e");
       throw ServerException(e.toString());
     }
   }
