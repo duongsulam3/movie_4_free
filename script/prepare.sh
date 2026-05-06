@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # File paths
-CONFIG_FILE="lib/core/utils/secret/app_secret.dart"
-ENCRYPTED_FILE="lib/core/utils/secret/ENCRYPTED"
+CONFIG_FILE="lib/common/utils/secret/app_secret.dart"
+ENCRYPTED_FILE="lib/common/utils/secret/ENCRYPTED"
 
 # Encryption key (32 bytes for AES-256, should be securely stored or passed securely)
 # For this example, we'll prompt for a key or use an environment variable
