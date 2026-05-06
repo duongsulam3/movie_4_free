@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter_supper_app_core/core.dart';
 
 /// Default unknown-route screen for super-app shell (no app-specific imports).
 class SuperAppErrorPage extends StatelessWidget {

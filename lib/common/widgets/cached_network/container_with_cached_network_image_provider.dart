@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_supper_app_core/core.dart';
 
 import '../error_image_widget.dart';

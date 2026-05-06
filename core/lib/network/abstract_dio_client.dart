@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart';
+import 'package:flutter_supper_app_core/core.dart';
 
 abstract class AbstractDioClient {
   final Dio client;
@@ -55,7 +55,7 @@ abstract class AbstractDioClient {
 
   Exception handleErrors(DioException e);
 
-   /// Decodes raw Dio response payload into a JSON object/array.
+  /// Decodes raw Dio response payload into a JSON object/array.
   dynamic decodeJsonResponse(dynamic data);
 
   /// Parses decoded JSON into any target model type.

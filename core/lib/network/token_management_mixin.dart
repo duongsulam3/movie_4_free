@@ -1,9 +1,5 @@
-import 'dart:convert';
 
-import 'package:dio/dio.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
-import 'abstract_dio_client.dart';
+import 'package:flutter_supper_app_core/core.dart';
 
 mixin TokenManagementMixin on AbstractDioClient {
   String accessToken = "";

@@ -1,5 +1,4 @@
-import 'dart:async';
-import 'dart:ui';
+import 'package:flutter_supper_app_core/core.dart';
 
 class Debouncer {
   final int milliseconds;

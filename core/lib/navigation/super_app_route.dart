@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-import 'super_app_error_page.dart';
+import 'package:flutter_supper_app_core/core.dart';
 
 /// Base routing for super-app: shared transition + template [onGenerateRoute].
 ///

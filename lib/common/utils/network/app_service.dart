@@ -1,10 +1,6 @@
-import 'dart:convert';
-
-import 'package:dio/dio.dart';
 import 'package:flutter_supper_app_core/core.dart';
 
 import '../../error/exception.dart';
-import '../helper/dev_logger.dart';
 
 class AppService extends RestfulApiClient {
   AppService({required super.baseUrl});
