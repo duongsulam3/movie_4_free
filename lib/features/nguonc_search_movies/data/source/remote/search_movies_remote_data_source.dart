@@ -1,5 +1,4 @@
 import 'package:smoth_movie_app/common/error/exception.dart';
-import 'package:smoth_movie_app/common/utils/helper/helper.dart';
 import 'package:smoth_movie_app/api/nguonc/nguonc_search_get.dart';
 import 'package:smoth_movie_app/common/utils/network/app_service.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/data/model/nguonc_movie_item_model.dart';
@@ -26,8 +25,11 @@ class NguonCSearchMoviesRemoteDataSourceImpl
         query: query,
         page: page,
       );
-
-      return Helper.parseNguoncSearchMovies(res.data);
+      final jsonRes = client.decodeJsonResponse(res.data);
+      return client.parseJson<List<NguoncMovieItemModel>>(() {
+        final items = jsonRes["items"] as List<dynamic>;
+        return items.map((e) => NguoncMovieItemModel.fromJson(e)).toList();
+      });
     } catch (e) {
       throw ServerException(e.toString());
     }

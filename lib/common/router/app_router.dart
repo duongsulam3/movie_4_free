@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smoth_movie_core/core.dart';
+import 'package:flutter_supper_app_core/core.dart';
 
 import '../../features/home/presentation/home_page.dart';
 import '../../features/home/presentation/scope/home_bootstrap_scope.dart';
