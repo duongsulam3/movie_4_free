@@ -156,4 +156,4 @@ app.*.symbols
 .gclient_previous_sync_commits
 
 # Secrets
-lib/core/utils/secret/app_secret.dart
+lib/common/utils/secret/app_secret.dart

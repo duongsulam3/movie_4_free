@@ -4,6 +4,7 @@ import 'package:smoth_movie_app/common/error/failure.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/data/model/nguonc_movie_item_model.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/data/source/remote/search_movies_remote_data_source.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/domain/repository/nguonc_search_movies_repository.dart';
+import 'package:smoth_movie_app/features/nguonc_search_movies/domain/entity/nguonc_search_suggestion_entity.dart';
 
 class NguoncSearchMoviesRepositoryImpl implements NguoncSearchMoviesRepository {
   final NguonCSearchMoviesRemoteDataSource source;
@@ -15,6 +16,20 @@ class NguoncSearchMoviesRepositoryImpl implements NguoncSearchMoviesRepository {
   }) async {
     try {
       final res = await source.searchFilms(query: query, page: page);
+      return Right(res);
+    } on ServerException catch (e) {
+      return Left(Failure(e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<NguoncSearchSuggestionEntity>>>
+      getSearchSuggestions({
+    required String query,
+    required int limit,
+  }) async {
+    try {
+      final res = await source.getSearchSuggestions(query: query, limit: limit);
       return Right(res);
     } on ServerException catch (e) {
       return Left(Failure(e.message));

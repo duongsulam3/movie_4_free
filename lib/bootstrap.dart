@@ -3,12 +3,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'app.dart';
+import 'common/local/hive_manager.dart';
 import 'common/utils/helper/helper.dart';
 import 'common/utils/network/app_service.dart';
 import 'common/utils/secret/app_secret.dart';
 import 'common/di/init_dependencies.dart';
 
 Future<void> bootstrap() async {
+  await HiveManager.init();
+
   // Initialize dependencies
   await initDependencies();
 

@@ -1,7 +1,8 @@
+import 'package:equatable/equatable.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/category.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/country.dart';
 
-class MovieItemEntity {
+class MovieItemEntity extends Equatable {
   final String sId;
   final String name;
   final String slug;
@@ -32,4 +33,22 @@ class MovieItemEntity {
     required this.categories,
     required this.countries,
   });
+
+  @override
+  List<Object?> get props => [
+        sId,
+        name,
+        slug,
+        originName,
+        posterUrl,
+        thumbUrl,
+        quality,
+        lang,
+        episodeCurrent,
+        time,
+        year,
+        type,
+        categories,
+        countries,
+      ];
 }

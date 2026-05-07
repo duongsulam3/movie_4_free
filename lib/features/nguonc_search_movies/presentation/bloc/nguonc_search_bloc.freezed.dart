@@ -19,6 +19,9 @@ mixin _$NguoncSearchState {
   String get query;
   List<NguoncMovieItemEntity> get movies;
   bool get isEnd;
+  String get typingQuery;
+  List<NguoncSearchSuggestionEntity> get suggestions;
+  bool get isSuggestionLoading;
 
   /// Create a copy of NguoncSearchState
   /// with the given fields replaced by the non-null parameter values.
@@ -37,16 +40,30 @@ mixin _$NguoncSearchState {
             (identical(other.page, page) || other.page == page) &&
             (identical(other.query, query) || other.query == query) &&
             const DeepCollectionEquality().equals(other.movies, movies) &&
-            (identical(other.isEnd, isEnd) || other.isEnd == isEnd));
+            (identical(other.isEnd, isEnd) || other.isEnd == isEnd) &&
+            (identical(other.typingQuery, typingQuery) ||
+                other.typingQuery == typingQuery) &&
+            const DeepCollectionEquality()
+                .equals(other.suggestions, suggestions) &&
+            (identical(other.isSuggestionLoading, isSuggestionLoading) ||
+                other.isSuggestionLoading == isSuggestionLoading));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, status, page, query,
-      const DeepCollectionEquality().hash(movies), isEnd);
+  int get hashCode => Object.hash(
+      runtimeType,
+      status,
+      page,
+      query,
+      const DeepCollectionEquality().hash(movies),
+      isEnd,
+      typingQuery,
+      const DeepCollectionEquality().hash(suggestions),
+      isSuggestionLoading);
 
   @override
   String toString() {
-    return 'NguoncSearchState(status: $status, page: $page, query: $query, movies: $movies, isEnd: $isEnd)';
+    return 'NguoncSearchState(status: $status, page: $page, query: $query, movies: $movies, isEnd: $isEnd, typingQuery: $typingQuery, suggestions: $suggestions, isSuggestionLoading: $isSuggestionLoading)';
   }
 }
 
@@ -61,7 +78,10 @@ abstract mixin class $NguoncSearchStateCopyWith<$Res> {
       int page,
       String query,
       List<NguoncMovieItemEntity> movies,
-      bool isEnd});
+      bool isEnd,
+      String typingQuery,
+      List<NguoncSearchSuggestionEntity> suggestions,
+      bool isSuggestionLoading});
 }
 
 /// @nodoc
@@ -82,6 +102,9 @@ class _$NguoncSearchStateCopyWithImpl<$Res>
     Object? query = null,
     Object? movies = null,
     Object? isEnd = null,
+    Object? typingQuery = null,
+    Object? suggestions = null,
+    Object? isSuggestionLoading = null,
   }) {
     return _then(_self.copyWith(
       status: null == status
@@ -103,6 +126,18 @@ class _$NguoncSearchStateCopyWithImpl<$Res>
       isEnd: null == isEnd
           ? _self.isEnd
           : isEnd // ignore: cast_nullable_to_non_nullable
+              as bool,
+      typingQuery: null == typingQuery
+          ? _self.typingQuery
+          : typingQuery // ignore: cast_nullable_to_non_nullable
+              as String,
+      suggestions: null == suggestions
+          ? _self.suggestions
+          : suggestions // ignore: cast_nullable_to_non_nullable
+              as List<NguoncSearchSuggestionEntity>,
+      isSuggestionLoading: null == isSuggestionLoading
+          ? _self.isSuggestionLoading
+          : isSuggestionLoading // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }
@@ -201,8 +236,15 @@ extension NguoncSearchStatePatterns on NguoncSearchState {
 
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(SearchPageStatus status, int page, String query,
-            List<NguoncMovieItemEntity> movies, bool isEnd)?
+    TResult Function(
+            SearchPageStatus status,
+            int page,
+            String query,
+            List<NguoncMovieItemEntity> movies,
+            bool isEnd,
+            String typingQuery,
+            List<NguoncSearchSuggestionEntity> suggestions,
+            bool isSuggestionLoading)?
         $default, {
     required TResult orElse(),
   }) {
@@ -210,7 +252,14 @@ extension NguoncSearchStatePatterns on NguoncSearchState {
     switch (_that) {
       case _NguoncSearchState() when $default != null:
         return $default(
-            _that.status, _that.page, _that.query, _that.movies, _that.isEnd);
+            _that.status,
+            _that.page,
+            _that.query,
+            _that.movies,
+            _that.isEnd,
+            _that.typingQuery,
+            _that.suggestions,
+            _that.isSuggestionLoading);
       case _:
         return orElse();
     }
@@ -231,15 +280,29 @@ extension NguoncSearchStatePatterns on NguoncSearchState {
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(SearchPageStatus status, int page, String query,
-            List<NguoncMovieItemEntity> movies, bool isEnd)
+    TResult Function(
+            SearchPageStatus status,
+            int page,
+            String query,
+            List<NguoncMovieItemEntity> movies,
+            bool isEnd,
+            String typingQuery,
+            List<NguoncSearchSuggestionEntity> suggestions,
+            bool isSuggestionLoading)
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _NguoncSearchState():
         return $default(
-            _that.status, _that.page, _that.query, _that.movies, _that.isEnd);
+            _that.status,
+            _that.page,
+            _that.query,
+            _that.movies,
+            _that.isEnd,
+            _that.typingQuery,
+            _that.suggestions,
+            _that.isSuggestionLoading);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -259,15 +322,29 @@ extension NguoncSearchStatePatterns on NguoncSearchState {
 
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(SearchPageStatus status, int page, String query,
-            List<NguoncMovieItemEntity> movies, bool isEnd)?
+    TResult? Function(
+            SearchPageStatus status,
+            int page,
+            String query,
+            List<NguoncMovieItemEntity> movies,
+            bool isEnd,
+            String typingQuery,
+            List<NguoncSearchSuggestionEntity> suggestions,
+            bool isSuggestionLoading)?
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _NguoncSearchState() when $default != null:
         return $default(
-            _that.status, _that.page, _that.query, _that.movies, _that.isEnd);
+            _that.status,
+            _that.page,
+            _that.query,
+            _that.movies,
+            _that.isEnd,
+            _that.typingQuery,
+            _that.suggestions,
+            _that.isSuggestionLoading);
       case _:
         return null;
     }
@@ -282,8 +359,12 @@ class _NguoncSearchState extends NguoncSearchState {
       this.page = 1,
       this.query = "",
       final List<NguoncMovieItemEntity> movies = const [],
-      this.isEnd = false])
+      this.isEnd = false,
+      this.typingQuery = "",
+      final List<NguoncSearchSuggestionEntity> suggestions = const [],
+      this.isSuggestionLoading = false])
       : _movies = movies,
+        _suggestions = suggestions,
         super._();
 
   @override
@@ -307,6 +388,21 @@ class _NguoncSearchState extends NguoncSearchState {
   @override
   @JsonKey()
   final bool isEnd;
+  @override
+  @JsonKey()
+  final String typingQuery;
+  final List<NguoncSearchSuggestionEntity> _suggestions;
+  @override
+  @JsonKey()
+  List<NguoncSearchSuggestionEntity> get suggestions {
+    if (_suggestions is EqualUnmodifiableListView) return _suggestions;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_suggestions);
+  }
+
+  @override
+  @JsonKey()
+  final bool isSuggestionLoading;
 
   /// Create a copy of NguoncSearchState
   /// with the given fields replaced by the non-null parameter values.
@@ -325,16 +421,30 @@ class _NguoncSearchState extends NguoncSearchState {
             (identical(other.page, page) || other.page == page) &&
             (identical(other.query, query) || other.query == query) &&
             const DeepCollectionEquality().equals(other._movies, _movies) &&
-            (identical(other.isEnd, isEnd) || other.isEnd == isEnd));
+            (identical(other.isEnd, isEnd) || other.isEnd == isEnd) &&
+            (identical(other.typingQuery, typingQuery) ||
+                other.typingQuery == typingQuery) &&
+            const DeepCollectionEquality()
+                .equals(other._suggestions, _suggestions) &&
+            (identical(other.isSuggestionLoading, isSuggestionLoading) ||
+                other.isSuggestionLoading == isSuggestionLoading));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, status, page, query,
-      const DeepCollectionEquality().hash(_movies), isEnd);
+  int get hashCode => Object.hash(
+      runtimeType,
+      status,
+      page,
+      query,
+      const DeepCollectionEquality().hash(_movies),
+      isEnd,
+      typingQuery,
+      const DeepCollectionEquality().hash(_suggestions),
+      isSuggestionLoading);
 
   @override
   String toString() {
-    return 'NguoncSearchState(status: $status, page: $page, query: $query, movies: $movies, isEnd: $isEnd)';
+    return 'NguoncSearchState(status: $status, page: $page, query: $query, movies: $movies, isEnd: $isEnd, typingQuery: $typingQuery, suggestions: $suggestions, isSuggestionLoading: $isSuggestionLoading)';
   }
 }
 
@@ -351,7 +461,10 @@ abstract mixin class _$NguoncSearchStateCopyWith<$Res>
       int page,
       String query,
       List<NguoncMovieItemEntity> movies,
-      bool isEnd});
+      bool isEnd,
+      String typingQuery,
+      List<NguoncSearchSuggestionEntity> suggestions,
+      bool isSuggestionLoading});
 }
 
 /// @nodoc
@@ -372,6 +485,9 @@ class __$NguoncSearchStateCopyWithImpl<$Res>
     Object? query = null,
     Object? movies = null,
     Object? isEnd = null,
+    Object? typingQuery = null,
+    Object? suggestions = null,
+    Object? isSuggestionLoading = null,
   }) {
     return _then(_NguoncSearchState(
       null == status
@@ -393,6 +509,18 @@ class __$NguoncSearchStateCopyWithImpl<$Res>
       null == isEnd
           ? _self.isEnd
           : isEnd // ignore: cast_nullable_to_non_nullable
+              as bool,
+      null == typingQuery
+          ? _self.typingQuery
+          : typingQuery // ignore: cast_nullable_to_non_nullable
+              as String,
+      null == suggestions
+          ? _self._suggestions
+          : suggestions // ignore: cast_nullable_to_non_nullable
+              as List<NguoncSearchSuggestionEntity>,
+      null == isSuggestionLoading
+          ? _self.isSuggestionLoading
+          : isSuggestionLoading // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }

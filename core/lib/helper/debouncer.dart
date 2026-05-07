@@ -1,19 +1,19 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
-
 class Debouncer {
-  final int milliseconds;
+  final Duration delay;
   Timer? _timer;
 
-  Debouncer({required this.milliseconds});
+  Debouncer({this.delay = const Duration(milliseconds: 300)});
 
-  run(VoidCallback action) {
+  /// Chấp nhận bất kỳ hàm nào, tăng tính tái sử dụng
+  void run(void Function() action) {
     _timer?.cancel();
-    _timer = Timer(Duration(milliseconds: milliseconds), action);
+    _timer = Timer(delay, action);
   }
 
   void dispose() {
     _timer?.cancel();
+    _timer = null;
   }
 }

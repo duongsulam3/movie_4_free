@@ -1,1 +1,1 @@
-enum SearchPageStatus { init, loading, success, error }
+enum SearchPageStatus { init, loading, suggestions, success, error }
