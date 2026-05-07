@@ -36,18 +36,6 @@ class ListSearchContent extends StatelessWidget {
           previous.suggestions != current.suggestions ||
           previous.isSuggestionLoading != current.isSuggestionLoading,
       builder: (context, state) {
-        final shouldShowSuggestions = state.typingQuery.trim().isNotEmpty &&
-            state.typingQuery.trim() != state.query.trim();
-
-        if (shouldShowSuggestions) {
-          // Replace the init content with suggestions while the user is typing.
-          return SearchSuggestionDropdown(
-            suggestions: state.suggestions,
-            isLoading: state.isSuggestionLoading,
-            onSelected: onSuggestionSelected,
-          );
-        }
-
         switch (state.status) {
           case SearchPageStatus.init:
             return SearchInitWidget(
@@ -62,6 +50,12 @@ class ListSearchContent extends StatelessWidget {
             return const ErrorPage();
           case SearchPageStatus.loading:
             return const Center(child: ProgressIndicatorCustom());
+          case SearchPageStatus.suggestions:
+            return SearchSuggestionDropdown(
+              suggestions: state.suggestions,
+              isLoading: state.isSuggestionLoading,
+              onSelected: onSuggestionSelected,
+            );
           default:
             return ListView.separated(
               shrinkWrap: true,

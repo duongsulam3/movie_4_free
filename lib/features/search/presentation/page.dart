@@ -115,7 +115,10 @@ class _SearchPageState extends State<SearchPage> {
         ),
         body: SearchPageTabsContent(
           searchTabsLength: searchTabsLength,
-          searchTabsView: searchTabsView.map((e) => e.tabWidget).toList(),
+          searchTabsView: List.generate(
+            searchTabsLength,
+            (index) => searchTabsView[index].tabWidget,
+          ),
         ),
       ),
     );

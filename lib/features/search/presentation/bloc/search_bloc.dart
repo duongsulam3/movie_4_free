@@ -104,6 +104,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
     // Keep typing state separate from submitted search results.
     emit(state.copyWith(
+      status: SearchPageStatus.suggestions,
       typingQuery: query,
       isSuggestionLoading: true,
       showSuggestions: true,
@@ -121,6 +122,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     final requestQuery = event.query.trim();
     if (requestQuery.isEmpty) {
       emit(state.copyWith(
+        status: SearchPageStatus.init,
         suggestions: const [],
         isSuggestionLoading: false,
         showSuggestions: false,
@@ -136,11 +138,13 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
     res.fold(
       (_) => emit(state.copyWith(
+        status: SearchPageStatus.suggestions,
         suggestions: const [],
         isSuggestionLoading: false,
         showSuggestions: false,
       )),
       (data) => emit(state.copyWith(
+        status: SearchPageStatus.suggestions,
         suggestions: data,
         isSuggestionLoading: false,
         showSuggestions: data.isNotEmpty,
