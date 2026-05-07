@@ -1,5 +1,5 @@
 import 'package:get_it/get_it.dart';
-import 'package:hive/hive.dart';
+import 'package:smoth_movie_app/common/local/hive_manager.dart';
 import 'package:smoth_movie_app/common/utils/network/app_service.dart';
 import 'package:smoth_movie_app/features/kho_phim/data/repository/categories_repository_impl.dart';
 import 'package:smoth_movie_app/features/kho_phim/data/repository/countries_repository_impl.dart';
@@ -91,7 +91,7 @@ void _initMoviesFeature() {
 void _initMoviesListDependencies() {
   serviceLocator.registerLazySingleton<HomeMoviesLocalDataSource>(
     () => HomeMoviesLocalDataSourceImpl(
-      Hive.box<dynamic>(HomeMoviesLocalDataSourceImpl.boxName),
+      HiveManager.homeMoviesBox,
     ),
   );
   serviceLocator.registerFactory<MoviesRemoteDataSource>(

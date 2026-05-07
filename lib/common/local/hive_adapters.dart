@@ -1,8 +1,9 @@
 import 'package:hive/hive.dart';
-import 'package:smoth_movie_app/features/movie_detail/data/model/category.dart';
-import 'package:smoth_movie_app/features/movie_detail/data/model/country.dart';
-import 'package:smoth_movie_app/features/movies/data/model/recently_update_movies/recently_update_list_item_model.dart';
-import 'package:smoth_movie_app/features/movies/data/model/single_movies/movie_item_model.dart';
+
+import '../../features/movie_detail/data/model/category.dart';
+import '../../features/movie_detail/data/model/country.dart';
+import '../../features/movies/data/model/recently_update_movies/recently_update_list_item_model.dart';
+import '../../features/movies/data/model/single_movies/movie_item_model.dart';
 
 class CategoryModelAdapter extends TypeAdapter<CategoryModel> {
   @override
@@ -134,5 +135,20 @@ class RecentlyUpdateListItemModelAdapter
       ..writeString(obj.type)
       ..writeList(obj.categories)
       ..writeList(obj.countries);
+  }
+}
+
+void registerHiveAdapters() {
+  if (!Hive.isAdapterRegistered(10)) {
+    Hive.registerAdapter(CategoryModelAdapter());
+  }
+  if (!Hive.isAdapterRegistered(11)) {
+    Hive.registerAdapter(CountryModelAdapter());
+  }
+  if (!Hive.isAdapterRegistered(12)) {
+    Hive.registerAdapter(MovieItemModelAdapter());
+  }
+  if (!Hive.isAdapterRegistered(13)) {
+    Hive.registerAdapter(RecentlyUpdateListItemModelAdapter());
   }
 }
