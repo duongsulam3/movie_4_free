@@ -10,6 +10,10 @@ class GetRecentlyMovies
   final RecentlyUpdateMoviesRepository recentlyUpdateMoviesRepository;
   const GetRecentlyMovies({required this.recentlyUpdateMoviesRepository});
 
+  Future<List<RecentlyUpdateListItemEntity>> getCachedRecentlyMovies() {
+    return recentlyUpdateMoviesRepository.getCachedRecentlyUpdateMovies();
+  }
+
   @override
   Future<Either<Failure, List<RecentlyUpdateListItemEntity>>> call(
     GetRecentlyMoviesParams params,

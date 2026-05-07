@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/entity/search_tabs_item.dart';
 import 'package:smoth_movie_app/common/widgets/search_textfield_widget.dart';
+import 'package:smoth_movie_app/features/nguonc_search_movies/presentation/bloc/nguonc_search_bloc.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/presentation/widget/list_search_nguonc_blocbuilder.dart';
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
 import 'package:smoth_movie_app/features/search/presentation/widgets/list_search_content.dart';
@@ -39,6 +40,9 @@ class _SearchPageState extends State<SearchPage> {
     searchController.addListener(() {
       if (searchController.text.isEmpty) {
         context.read<SearchBloc>().add(ClearSearchSuggestionsEvent());
+        context
+            .read<NguoncSearchBloc>()
+            .add(ClearNguoncSearchSuggestionsEvent());
       }
     });
     initSearchTabsView();
@@ -82,6 +86,7 @@ class _SearchPageState extends State<SearchPage> {
 
     searchController.text = query;
     context.read<SearchBloc>().add(ClearSearchSuggestionsEvent());
+    context.read<NguoncSearchBloc>().add(ClearNguoncSearchSuggestionsEvent());
     Helper.onSubmitSearch(context: context, query: query);
     Helper.nguonCSearchFilms(context: context, query: query);
   }
@@ -109,13 +114,19 @@ class _SearchPageState extends State<SearchPage> {
               context.read<SearchBloc>().add(
                     SearchQueryChangedEvent(query: value),
                   );
+              context.read<NguoncSearchBloc>().add(
+                    SearchNguoncQueryChangedEvent(query: value),
+                  );
             },
             onSubmitted: submitSearch,
           ),
         ),
         body: SearchPageTabsContent(
           searchTabsLength: searchTabsLength,
-          searchTabsView: searchTabsView.map((e) => e.tabWidget).toList(),
+          searchTabsView: List.generate(
+            searchTabsLength,
+            (index) => searchTabsView[index].tabWidget,
+          ),
         ),
       ),
     );

@@ -24,30 +24,21 @@ class ListSearchContent extends StatelessWidget {
   final ValueChanged<String> onSuggestionSelected;
   final List<String> listSearch;
 
+  bool _shouldRebuild(SearchState previous, SearchState current) {
+    return previous.movies != current.movies ||
+        previous.status != current.status ||
+        previous.typingQuery != current.typingQuery ||
+        previous.suggestions != current.suggestions ||
+        previous.isSuggestionLoading != current.isSuggestionLoading;
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     return BlocBuilder<SearchBloc, SearchState>(
-      buildWhen: (previous, current) =>
-          previous.movies != current.movies ||
-          previous.status != current.status ||
-          previous.typingQuery != current.typingQuery ||
-          previous.suggestions != current.suggestions ||
-          previous.isSuggestionLoading != current.isSuggestionLoading,
+      buildWhen: _shouldRebuild,
       builder: (context, state) {
-        final shouldShowSuggestions = state.typingQuery.trim().isNotEmpty &&
-            state.typingQuery.trim() != state.query.trim();
-
-        if (shouldShowSuggestions) {
-          // Replace the init content with suggestions while the user is typing.
-          return SearchSuggestionDropdown(
-            suggestions: state.suggestions,
-            isLoading: state.isSuggestionLoading,
-            onSelected: onSuggestionSelected,
-          );
-        }
-
         switch (state.status) {
           case SearchPageStatus.init:
             return SearchInitWidget(
@@ -62,6 +53,12 @@ class ListSearchContent extends StatelessWidget {
             return const ErrorPage();
           case SearchPageStatus.loading:
             return const Center(child: ProgressIndicatorCustom());
+          case SearchPageStatus.suggestions:
+            return SearchSuggestionDropdown(
+              suggestions: state.suggestions,
+              isLoading: state.isSuggestionLoading,
+              onSelected: onSuggestionSelected,
+            );
           default:
             return ListView.separated(
               shrinkWrap: true,

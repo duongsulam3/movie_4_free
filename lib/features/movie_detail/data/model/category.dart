@@ -1,7 +1,7 @@
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/category.dart';
 
 class CategoryModel extends CategoryEntity {
-  CategoryModel({
+  const CategoryModel({
     required super.id,
     required super.name,
     required super.slug,
@@ -19,11 +19,11 @@ class CategoryModel extends CategoryEntity {
     return list.map(CategoryModel.fromJson).toList();
   }
 
-  // Map<String, dynamic> toJson() {
-  //   final Map<String, dynamic> data = <String, dynamic>{};
-  //   data["id"] = id;
-  //   data["name"] = name;
-  //   data["slug"] = slug;
-  //   return data;
-  // }
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "name": name,
+      "slug": slug,
+    };
+  }
 }

@@ -9,6 +9,7 @@ import 'package:smoth_movie_app/common/router/params/nguonc_movie_detail_params_
 import 'package:smoth_movie_app/common/utils/enum/search/search_page_status.dart';
 import 'package:smoth_movie_app/common/utils/helper/helper.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/presentation/bloc/nguonc_search_bloc.dart';
+import 'package:smoth_movie_app/features/nguonc_search_movies/presentation/widget/nguonc_search_suggestion_dropdown.dart';
 import 'package:smoth_movie_app/features/search/presentation/widgets/nguonc_search_item_widget.dart';
 import 'package:smoth_movie_app/features/search/presentation/widgets/search_init_widget.dart';
 
@@ -22,12 +23,20 @@ class ListSearchNguoncContent extends StatelessWidget {
   final ValueChanged<String> onSelected;
   final List<String> listSearch;
 
+  bool _shouldRebuild(NguoncSearchState previous, NguoncSearchState current) {
+    return previous.movies != current.movies ||
+        previous.status != current.status ||
+        previous.typingQuery != current.typingQuery ||
+        previous.suggestions != current.suggestions ||
+        previous.isSuggestionLoading != current.isSuggestionLoading;
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     return BlocBuilder<NguoncSearchBloc, NguoncSearchState>(
-      buildWhen: (previous, current) => previous.movies != current.movies,
+      buildWhen: _shouldRebuild,
       builder: (context, state) {
         switch (state.status) {
           case SearchPageStatus.init:
@@ -43,6 +52,12 @@ class ListSearchNguoncContent extends StatelessWidget {
             return const ErrorPage();
           case SearchPageStatus.loading:
             return const Center(child: ProgressIndicatorCustom());
+          case SearchPageStatus.suggestions:
+            return NguoncSearchSuggestionDropdown(
+              suggestions: state.suggestions,
+              isLoading: state.isSuggestionLoading,
+              onSelected: onSelected,
+            );
           default:
             return ListView.separated(
               shrinkWrap: true,

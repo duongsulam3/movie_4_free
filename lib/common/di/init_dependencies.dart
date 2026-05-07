@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:smoth_movie_app/common/local/hive_manager.dart';
 import 'package:smoth_movie_app/common/utils/network/app_service.dart';
 import 'package:smoth_movie_app/features/kho_phim/data/repository/categories_repository_impl.dart';
 import 'package:smoth_movie_app/features/kho_phim/data/repository/countries_repository_impl.dart';
@@ -39,6 +40,7 @@ import 'package:smoth_movie_app/features/nguonc_search_movies/data/repository/ng
 import 'package:smoth_movie_app/features/nguonc_search_movies/data/source/remote/search_movies_remote_data_source.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/domain/repository/nguonc_search_movies_repository.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/domain/usecase/nguonc_get_search_films.dart';
+import 'package:smoth_movie_app/features/nguonc_search_movies/domain/usecase/nguonc_get_search_suggestions.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/presentation/bloc/nguonc_search_bloc.dart';
 import 'package:smoth_movie_app/features/search/data/repository/search_movies_repository_impl.dart';
 import 'package:smoth_movie_app/features/search/data/source/remote/search_movie_remote_datasource.dart';
@@ -52,6 +54,7 @@ import 'package:smoth_movie_app/features/movie_detail/domain/repository/detail_m
 import 'package:smoth_movie_app/features/movie_detail/domain/usecase/get_detail_movie.dart';
 import 'package:smoth_movie_app/features/movies/data/repository/movies_repository_impl.dart';
 import 'package:smoth_movie_app/features/movies/data/repository/recently_update_movies_repository_impl.dart';
+import 'package:smoth_movie_app/features/movies/data/source/local/home_movies_local_data_source.dart';
 import 'package:smoth_movie_app/features/movies/data/source/remote/movies_remote_data_source.dart';
 import 'package:smoth_movie_app/features/movies/data/source/remote/recently_update_movies_remote_data_source.dart';
 import 'package:smoth_movie_app/features/movies/domain/repository/movies_repository.dart';
@@ -86,11 +89,19 @@ void _initMoviesFeature() {
 }
 
 void _initMoviesListDependencies() {
+  serviceLocator.registerLazySingleton<HomeMoviesLocalDataSource>(
+    () => HomeMoviesLocalDataSourceImpl(
+      HiveManager.homeMoviesBox,
+    ),
+  );
   serviceLocator.registerFactory<MoviesRemoteDataSource>(
     () => MoviesRemoteDataSourceImpl(client: serviceLocator<AppService>()),
   );
   serviceLocator.registerFactory<MoviesRepository>(
-    () => MoviesRepositoryImpl(moviesRemoteDataSource: serviceLocator()),
+    () => MoviesRepositoryImpl(
+      moviesRemoteDataSource: serviceLocator(),
+      homeMoviesLocalDataSource: serviceLocator(),
+    ),
   );
   serviceLocator.registerFactory(
     () => GetMovies(moviesRepository: serviceLocator()),
@@ -109,6 +120,7 @@ void _initRecentlyUpdatedMoviesDependencies() {
   serviceLocator.registerFactory<RecentlyUpdateMoviesRepository>(
     () => RecentlyUpdateMoviesRepositoryImpl(
       recentlyUpdateMoviesRemoteDataSource: serviceLocator(),
+      homeMoviesLocalDataSource: serviceLocator(),
     ),
   );
   serviceLocator.registerFactory(
@@ -234,7 +246,15 @@ void _initNguoncSearchDependencies() {
     () => NguoncSearchMoviesRepositoryImpl(serviceLocator()),
   );
   serviceLocator.registerFactory(() => NguoncGetSearchFilms(serviceLocator()));
-  serviceLocator.registerFactory(() => NguoncSearchBloc(serviceLocator()));
+  serviceLocator.registerFactory(
+    () => NguoncGetSearchSuggestions(serviceLocator()),
+  );
+  serviceLocator.registerFactory(
+    () => NguoncSearchBloc(
+      getSearchFilms: serviceLocator<NguoncGetSearchFilms>(),
+      getSearchSuggestions: serviceLocator<NguoncGetSearchSuggestions>(),
+    ),
+  );
 }
 
 // ===== Feature: Kho Phim =====

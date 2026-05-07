@@ -14,7 +14,8 @@ part 'search_state.dart';
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
   final GetSearchMovies getSearchMovies;
   final GetSearchSuggestions getSearchSuggestions;
-  Timer? _suggestionDebounce;
+  final Debouncer _suggestionDebouncer =
+      Debouncer(delay: const Duration(seconds: 1));
 
   SearchBloc({
     required this.getSearchMovies,
@@ -30,7 +31,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     GetSearchMoviesEvent event,
     Emitter<SearchState> emit,
   ) async {
-    _suggestionDebounce?.cancel();
+    _suggestionDebouncer.dispose();
     if (state.isEnd) {
       emit(state.copyWith(status: SearchPageStatus.success, isEnd: false));
     }
@@ -86,7 +87,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     Emitter<SearchState> emit,
   ) async {
     final query = event.query.trim();
-    _suggestionDebounce?.cancel();
+    _suggestionDebouncer.dispose();
 
     if (query.isEmpty) {
       emit(
@@ -104,12 +105,13 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
     // Keep typing state separate from submitted search results.
     emit(state.copyWith(
+      status: SearchPageStatus.suggestions,
       typingQuery: query,
       isSuggestionLoading: true,
       showSuggestions: true,
     ));
 
-    _suggestionDebounce = Timer(const Duration(seconds: 1), () {
+    _suggestionDebouncer.run(() {
       add(FetchSearchSuggestionsEvent(query: query));
     });
   }
@@ -121,6 +123,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     final requestQuery = event.query.trim();
     if (requestQuery.isEmpty) {
       emit(state.copyWith(
+        status: SearchPageStatus.init,
         suggestions: const [],
         isSuggestionLoading: false,
         showSuggestions: false,
@@ -136,11 +139,13 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
     res.fold(
       (_) => emit(state.copyWith(
+        status: SearchPageStatus.suggestions,
         suggestions: const [],
         isSuggestionLoading: false,
         showSuggestions: false,
       )),
       (data) => emit(state.copyWith(
+        status: SearchPageStatus.suggestions,
         suggestions: data,
         isSuggestionLoading: false,
         showSuggestions: data.isNotEmpty,
@@ -152,7 +157,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     ClearSearchSuggestionsEvent event,
     Emitter<SearchState> emit,
   ) {
-    _suggestionDebounce?.cancel();
+    _suggestionDebouncer.dispose();
     emit(state.copyWith(
       status: SearchPageStatus.init,
       typingQuery: "",
@@ -164,7 +169,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
   @override
   Future<void> close() {
-    _suggestionDebounce?.cancel();
+    _suggestionDebouncer.dispose();
     return super.close();
   }
 }

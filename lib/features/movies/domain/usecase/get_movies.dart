@@ -7,6 +7,14 @@ import 'package:smoth_movie_app/features/movies/domain/repository/movies_reposit
 class GetMovies implements Usecase<List<MovieItemEntity>, GetMoviesParams> {
   final MoviesRepository moviesRepository;
   const GetMovies({required this.moviesRepository});
+
+  Future<List<MovieItemEntity>> getCachedMovies({
+    required int limit,
+    required String cateName,
+  }) {
+    return moviesRepository.getCachedMovies(limit: limit, cateName: cateName);
+  }
+
   @override
   Future<Either<Failure, List<MovieItemEntity>>> call(
     GetMoviesParams params,
