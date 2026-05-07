@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:smoth_movie_app/common/utils/enum/movies_state_status.dart';
@@ -101,7 +102,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     Emitter<MoviesState> emit,
     List<MovieItemEntity> movies,
   ) {
-    if (_sameMovies(state.movies, movies)) return;
+    if (listEquals(state.movies, movies)) return;
     emit(state.copyWith(
       status: MoviesStateStatus.success,
       movies: movies,
@@ -117,7 +118,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     List<MovieItemEntity> movies,
   ) {
     final merged = [...state.movies, ...movies];
-    if (_sameMovies(state.movies, merged)) return;
+    if (listEquals(state.movies, merged)) return;
 
     if (movies.length < event.limit) {
       emit(state.copyWith(
@@ -134,19 +135,5 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
       isEnd: event.isRefresh ? false : true,
       page: state.page + 1,
     ));
-  }
-
-  bool _sameMovies(
-      List<MovieItemEntity> oldData, List<MovieItemEntity> newData) {
-    if (oldData.length != newData.length) return false;
-    for (int i = 0; i < oldData.length; i++) {
-      if (oldData[i].sId != newData[i].sId) return false;
-      if (oldData[i].episodeCurrent != newData[i].episodeCurrent) return false;
-      if (oldData[i].posterUrl != newData[i].posterUrl) return false;
-      if (oldData[i].quality != newData[i].quality) return false;
-      if (oldData[i].lang != newData[i].lang) return false;
-      if (oldData[i].year != newData[i].year) return false;
-    }
-    return true;
   }
 }

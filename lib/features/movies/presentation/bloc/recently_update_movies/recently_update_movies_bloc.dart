@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -56,6 +57,7 @@ class RecentlyUpdateMoviesBloc
       // Keep cached carousel data visible when offline refresh fails.
       return;
     }
+
     emit(state.copyWith(status: MoviesStateStatus.error));
   }
 
@@ -64,29 +66,14 @@ class RecentlyUpdateMoviesBloc
     Emitter<RecentlyUpdateMoviesState> emit,
     List<RecentlyUpdateListItemEntity> movies,
   ) {
-    if (_sameMovies(state.movies, movies)) {
+    if (listEquals(state.movies, movies)) {
       // Keep current UI state when remote payload equals cached data.
       return;
     }
+
     emit(state.copyWith(
       status: MoviesStateStatus.success,
       movies: movies,
     ));
-  }
-
-  bool _sameMovies(
-    List<RecentlyUpdateListItemEntity> oldData,
-    List<RecentlyUpdateListItemEntity> newData,
-  ) {
-    if (oldData.length != newData.length) return false;
-    for (int i = 0; i < oldData.length; i++) {
-      if (oldData[i].sId != newData[i].sId) return false;
-      if (oldData[i].episodeCurrent != newData[i].episodeCurrent) return false;
-      if (oldData[i].posterUrl != newData[i].posterUrl) return false;
-      if (oldData[i].quality != newData[i].quality) return false;
-      if (oldData[i].lang != newData[i].lang) return false;
-      if (oldData[i].year != newData[i].year) return false;
-    }
-    return true;
   }
 }

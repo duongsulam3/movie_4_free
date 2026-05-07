@@ -5,24 +5,24 @@ import 'package:smoth_movie_app/features/movie_detail/domain/entities/tmdb.dart'
 import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_item.dart';
 
 class MovieInfoEntity extends MovieItemEntity {
-  TmdbEntity tmdb;
-  ImdbEntity imdb;
-  CreatedEntity created;
-  ModifiedEnity modified;
-  String content;
-  String status;
-  bool isCopyright;
-  bool subDocquyen;
-  bool chieurap;
-  String trailerUrl;
-  String episodeTotal;
-  String notify;
-  String showtimes;
-  int view;
-  List<String> actor;
-  List<String> director;
+  final TmdbEntity tmdb;
+  final ImdbEntity imdb;
+  final CreatedEntity created;
+  final ModifiedEnity modified;
+  final String content;
+  final String status;
+  final bool isCopyright;
+  final bool subDocquyen;
+  final bool chieurap;
+  final String trailerUrl;
+  final String episodeTotal;
+  final String notify;
+  final String showtimes;
+  final int view;
+  final List<String> actor;
+  final List<String> director;
 
-  MovieInfoEntity({
+  const MovieInfoEntity({
     required super.sId,
     required super.name,
     required super.slug,

@@ -1,7 +1,7 @@
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/category.dart';
 
 class CategoryModel extends CategoryEntity {
-  CategoryModel({
+  const CategoryModel({
     required super.id,
     required super.name,
     required super.slug,

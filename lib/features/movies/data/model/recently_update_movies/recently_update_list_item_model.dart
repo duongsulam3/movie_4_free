@@ -3,7 +3,7 @@ import 'package:smoth_movie_app/features/movie_detail/data/model/country.dart';
 import 'package:smoth_movie_app/features/movies/domain/entities/currently_update_movies/recently_update_list_item.dart';
 
 class RecentlyUpdateListItemModel extends RecentlyUpdateListItemEntity {
-  RecentlyUpdateListItemModel({
+  const RecentlyUpdateListItemModel({
     required super.sId,
     required super.name,
     required super.slug,
@@ -58,10 +58,12 @@ class RecentlyUpdateListItemModel extends RecentlyUpdateListItemEntity {
       "lang": lang,
       "type": type,
       "category": categories
-          .map((e) => CategoryModel(id: e.id, name: e.name, slug: e.slug).toJson())
+          .map((e) =>
+              CategoryModel(id: e.id, name: e.name, slug: e.slug).toJson())
           .toList(),
       "country": countries
-          .map((e) => CountryModel(id: e.id, name: e.name, slug: e.slug).toJson())
+          .map((e) =>
+              CountryModel(id: e.id, name: e.name, slug: e.slug).toJson())
           .toList(),
     };
   }

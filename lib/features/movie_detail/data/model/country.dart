@@ -1,7 +1,7 @@
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/country.dart';
 
 class CountryModel extends CountryEnity {
-  CountryModel({
+  const CountryModel({
     required super.id,
     required super.name,
     required super.slug,
