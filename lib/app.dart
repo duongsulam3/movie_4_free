@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_supper_app_core/core.dart';
 
 import 'common/router/app_router.dart';
