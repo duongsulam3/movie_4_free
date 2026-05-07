@@ -39,6 +39,7 @@ import 'package:smoth_movie_app/features/nguonc_search_movies/data/repository/ng
 import 'package:smoth_movie_app/features/nguonc_search_movies/data/source/remote/search_movies_remote_data_source.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/domain/repository/nguonc_search_movies_repository.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/domain/usecase/nguonc_get_search_films.dart';
+import 'package:smoth_movie_app/features/nguonc_search_movies/domain/usecase/nguonc_get_search_suggestions.dart';
 import 'package:smoth_movie_app/features/nguonc_search_movies/presentation/bloc/nguonc_search_bloc.dart';
 import 'package:smoth_movie_app/features/search/data/repository/search_movies_repository_impl.dart';
 import 'package:smoth_movie_app/features/search/data/source/remote/search_movie_remote_datasource.dart';
@@ -234,7 +235,15 @@ void _initNguoncSearchDependencies() {
     () => NguoncSearchMoviesRepositoryImpl(serviceLocator()),
   );
   serviceLocator.registerFactory(() => NguoncGetSearchFilms(serviceLocator()));
-  serviceLocator.registerFactory(() => NguoncSearchBloc(serviceLocator()));
+  serviceLocator.registerFactory(
+    () => NguoncGetSearchSuggestions(serviceLocator()),
+  );
+  serviceLocator.registerFactory(
+    () => NguoncSearchBloc(
+      getSearchFilms: serviceLocator<NguoncGetSearchFilms>(),
+      getSearchSuggestions: serviceLocator<NguoncGetSearchSuggestions>(),
+    ),
+  );
 }
 
 // ===== Feature: Kho Phim =====

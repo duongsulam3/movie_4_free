@@ -9,5 +9,8 @@ abstract class NguoncSearchState with _$NguoncSearchState {
     @Default("") String query,
     @Default([]) List<NguoncMovieItemEntity> movies,
     @Default(false) bool isEnd,
+    @Default("") String typingQuery,
+    @Default([]) List<NguoncSearchSuggestionEntity> suggestions,
+    @Default(false) bool isSuggestionLoading,
   ]) = _NguoncSearchState;
 }

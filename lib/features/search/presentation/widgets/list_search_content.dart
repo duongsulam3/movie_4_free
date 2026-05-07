@@ -24,17 +24,20 @@ class ListSearchContent extends StatelessWidget {
   final ValueChanged<String> onSuggestionSelected;
   final List<String> listSearch;
 
+  bool _shouldRebuild(SearchState previous, SearchState current) {
+    return previous.movies != current.movies ||
+        previous.status != current.status ||
+        previous.typingQuery != current.typingQuery ||
+        previous.suggestions != current.suggestions ||
+        previous.isSuggestionLoading != current.isSuggestionLoading;
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     return BlocBuilder<SearchBloc, SearchState>(
-      buildWhen: (previous, current) =>
-          previous.movies != current.movies ||
-          previous.status != current.status ||
-          previous.typingQuery != current.typingQuery ||
-          previous.suggestions != current.suggestions ||
-          previous.isSuggestionLoading != current.isSuggestionLoading,
+      buildWhen: _shouldRebuild,
       builder: (context, state) {
         switch (state.status) {
           case SearchPageStatus.init:
