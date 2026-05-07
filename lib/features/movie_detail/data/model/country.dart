@@ -19,11 +19,11 @@ class CountryModel extends CountryEnity {
     return list.map(CountryModel.fromJson).toList();
   }
 
-  // Map<String, dynamic> toJson() {
-  //   final Map<String, dynamic> data = <String, dynamic>{};
-  //   data["id"] = id;
-  //   data["name"] = name;
-  //   data["slug"] = slug;
-  //   return data;
-  // }
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "name": name,
+      "slug": slug,
+    };
+  }
 }

@@ -21,6 +21,7 @@ class TitleGridMoviesScope extends StatelessWidget {
         path: path,
         limit: limit,
         isRefresh: false,
+        preferCacheFirst: true,
       ));
   }
 

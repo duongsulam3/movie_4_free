@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:hive/hive.dart';
 import 'package:smoth_movie_app/common/utils/network/app_service.dart';
 import 'package:smoth_movie_app/features/kho_phim/data/repository/categories_repository_impl.dart';
 import 'package:smoth_movie_app/features/kho_phim/data/repository/countries_repository_impl.dart';
@@ -53,6 +54,7 @@ import 'package:smoth_movie_app/features/movie_detail/domain/repository/detail_m
 import 'package:smoth_movie_app/features/movie_detail/domain/usecase/get_detail_movie.dart';
 import 'package:smoth_movie_app/features/movies/data/repository/movies_repository_impl.dart';
 import 'package:smoth_movie_app/features/movies/data/repository/recently_update_movies_repository_impl.dart';
+import 'package:smoth_movie_app/features/movies/data/source/local/home_movies_local_data_source.dart';
 import 'package:smoth_movie_app/features/movies/data/source/remote/movies_remote_data_source.dart';
 import 'package:smoth_movie_app/features/movies/data/source/remote/recently_update_movies_remote_data_source.dart';
 import 'package:smoth_movie_app/features/movies/domain/repository/movies_repository.dart';
@@ -87,11 +89,19 @@ void _initMoviesFeature() {
 }
 
 void _initMoviesListDependencies() {
+  serviceLocator.registerLazySingleton<HomeMoviesLocalDataSource>(
+    () => HomeMoviesLocalDataSourceImpl(
+      Hive.box<dynamic>(HomeMoviesLocalDataSourceImpl.boxName),
+    ),
+  );
   serviceLocator.registerFactory<MoviesRemoteDataSource>(
     () => MoviesRemoteDataSourceImpl(client: serviceLocator<AppService>()),
   );
   serviceLocator.registerFactory<MoviesRepository>(
-    () => MoviesRepositoryImpl(moviesRemoteDataSource: serviceLocator()),
+    () => MoviesRepositoryImpl(
+      moviesRemoteDataSource: serviceLocator(),
+      homeMoviesLocalDataSource: serviceLocator(),
+    ),
   );
   serviceLocator.registerFactory(
     () => GetMovies(moviesRepository: serviceLocator()),
@@ -110,6 +120,7 @@ void _initRecentlyUpdatedMoviesDependencies() {
   serviceLocator.registerFactory<RecentlyUpdateMoviesRepository>(
     () => RecentlyUpdateMoviesRepositoryImpl(
       recentlyUpdateMoviesRemoteDataSource: serviceLocator(),
+      homeMoviesLocalDataSource: serviceLocator(),
     ),
   );
   serviceLocator.registerFactory(

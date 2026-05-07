@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart';
+import 'package:flutter_supper_app_core/core.dart';
 
 class ServerException implements Exception {
   final String message;

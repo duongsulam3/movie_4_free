@@ -42,4 +42,27 @@ class RecentlyUpdateListItemModel extends RecentlyUpdateListItemEntity {
       ),
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "_id": sId,
+      "name": name,
+      "slug": slug,
+      "origin_name": originName,
+      "poster_url": posterUrl,
+      "thumb_url": thumbUrl,
+      "year": year,
+      "time": time,
+      "episode_current": episodeCurrent,
+      "quality": quality,
+      "lang": lang,
+      "type": type,
+      "category": categories
+          .map((e) => CategoryModel(id: e.id, name: e.name, slug: e.slug).toJson())
+          .toList(),
+      "country": countries
+          .map((e) => CountryModel(id: e.id, name: e.name, slug: e.slug).toJson())
+          .toList(),
+    };
+  }
 }
