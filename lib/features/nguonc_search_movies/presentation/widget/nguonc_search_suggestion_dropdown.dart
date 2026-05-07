@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:smoth_movie_app/common/widgets/progress_indicator_custom.dart';
-import 'package:smoth_movie_app/features/nguonc_search_movies/domain/entity/nguonc_search_suggestion_entity.dart';
-import 'package:smoth_movie_app/features/search/presentation/widgets/top_search_list_item.dart';
+import 'package:flutter_supper_app_core/core.dart';
+
+import '../../../../common/widgets/progress_indicator_custom.dart';
+import '../../../search/presentation/widgets/top_search_list_item.dart';
+import '../../domain/entity/nguonc_search_suggestion_entity.dart';
 
 class NguoncSearchSuggestionDropdown extends StatelessWidget {
   const NguoncSearchSuggestionDropdown({
@@ -18,19 +19,19 @@ class NguoncSearchSuggestionDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      return const Padding(
-        padding: EdgeInsets.symmetric(vertical: 12),
-        child: Center(child: ProgressIndicatorCustom()),
+      return Padding(
+        padding: EdgeInsets.symmetric(vertical: 12.v),
+        child: const Center(child: ProgressIndicatorCustom()),
       );
     }
 
     if (suggestions.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.symmetric(vertical: 12),
+      return Padding(
+        padding: EdgeInsets.symmetric(vertical: 12.v),
         child: Center(
           child: Text(
             "Không có gợi ý phù hợp",
-            style: TextStyle(color: Colors.white70, fontSize: 14),
+            style: TextStyle(color: Colors.white70, fontSize: 14.fSize),
           ),
         ),
       );
@@ -47,7 +48,7 @@ class NguoncSearchSuggestionDropdown extends StatelessWidget {
           onTap: () => onSelected(suggestion.name),
           child: SizedBox(
             width: double.infinity,
-            height: 50,
+            height: 50.v,
             child: TopSearchListItem(itemName: suggestion.name),
           ),
         );

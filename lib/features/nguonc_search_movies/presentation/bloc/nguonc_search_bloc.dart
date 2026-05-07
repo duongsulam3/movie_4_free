@@ -1,11 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_supper_app_core/core.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:smoth_movie_app/common/utils/enum/search/search_page_status.dart';
-import 'package:smoth_movie_app/features/nguonc_search_movies/domain/entity/nguonc_movie_item_entity.dart';
-import 'package:smoth_movie_app/features/nguonc_search_movies/domain/entity/nguonc_search_suggestion_entity.dart';
-import 'package:smoth_movie_app/features/nguonc_search_movies/domain/usecase/nguonc_get_search_films.dart';
-import 'package:smoth_movie_app/features/nguonc_search_movies/domain/usecase/nguonc_get_search_suggestions.dart';
+
+import '../../../../common/utils/enum/search/search_page_status.dart';
+import '../../domain/entity/nguonc_movie_item_entity.dart';
+import '../../domain/entity/nguonc_search_suggestion_entity.dart';
+import '../../domain/usecase/nguonc_get_search_films.dart';
+import '../../domain/usecase/nguonc_get_search_suggestions.dart';
 
 part 'nguonc_search_event.dart';
 part 'nguonc_search_state.dart';
@@ -15,7 +16,7 @@ class NguoncSearchBloc extends Bloc<NguoncSearchEvent, NguoncSearchState> {
   final NguoncGetSearchFilms getSearchFilms;
   final NguoncGetSearchSuggestions getSearchSuggestions;
   final Debouncer _suggestionDebouncer = Debouncer(
-    delay: const Duration(seconds: 1),
+    delay: const Duration(milliseconds: 800),
   );
 
   NguoncSearchBloc({
@@ -43,38 +44,44 @@ class NguoncSearchBloc extends Bloc<NguoncSearchEvent, NguoncSearchState> {
         movies: const [],
       ));
     }
+
     List<NguoncMovieItemEntity> movies = const [];
     final res = await getSearchFilms.call(
       NguoncGetSearchFilmsParams(query: event.query, page: state.page),
     );
+
     res.fold(
       (err) => emit(state.copyWith(status: SearchPageStatus.error)),
       (data) {
         movies = data;
         if (movies.length < 10) {
-          emit(state.copyWith(
-            status: SearchPageStatus.success,
-            movies: state.query == event.query
-                ? [...state.movies, ...movies]
-                : movies,
-            query: event.query,
-            typingQuery: event.query,
-            suggestions: const [],
-            isSuggestionLoading: false,
-            isEnd: true,
-          ));
+          emit(
+            state.copyWith(
+              status: SearchPageStatus.success,
+              movies: state.query == event.query
+                  ? [...state.movies, ...movies]
+                  : movies,
+              query: event.query,
+              typingQuery: event.query,
+              suggestions: const [],
+              isSuggestionLoading: false,
+              isEnd: true,
+            ),
+          );
         } else {
-          emit(state.copyWith(
-            status: SearchPageStatus.success,
-            movies: state.query == event.query
-                ? [...state.movies, ...movies]
-                : movies,
-            query: event.query,
-            typingQuery: event.query,
-            suggestions: const [],
-            isSuggestionLoading: false,
-            page: state.page + 1,
-          ));
+          emit(
+            state.copyWith(
+              status: SearchPageStatus.success,
+              movies: state.query == event.query
+                  ? [...state.movies, ...movies]
+                  : movies,
+              query: event.query,
+              typingQuery: event.query,
+              suggestions: const [],
+              isSuggestionLoading: false,
+              page: state.page + 1,
+            ),
+          );
         }
       },
     );
