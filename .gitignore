@@ -69,7 +69,7 @@ linked_*.ds
 unlinked.ds
 unlinked_spec.ds
 
-# Cursor
+# RULES FOR AGENTS
 .cursor/
 
 # Android related
