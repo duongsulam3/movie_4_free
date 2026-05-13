@@ -36,14 +36,14 @@ class AppService extends RestfulApiClient {
     return const ServerException("Error message");
   }
 
-  @override
-  void debugStatusLog(Response<dynamic> response) {
-    final method = response.requestOptions.method;
-    final uri = response.requestOptions.uri;
-    final statusCode = response.statusCode;
+  // @override
+  // void debugStatusLog(Response<dynamic> response) {
+  //   final method = response.requestOptions.method;
+  //   final uri = response.requestOptions.uri;
+  //   final statusCode = response.statusCode;
 
-    logger.debug('DIO RESPONSE', '$method Status Code: $statusCode' '\n$uri');
-  }
+  //   logger.debug('DIO RESPONSE', '$method Status Code: $statusCode' '\n$uri');
+  // }
 
   @override
   dynamic decodeJsonResponse(data) {

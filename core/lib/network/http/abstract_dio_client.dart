@@ -53,6 +53,7 @@ abstract class AbstractDioClient {
     return statusCode == 403 || statusCode == 401;
   }
 
+  /// Handles Dio errors.
   Exception handleErrors(DioException e);
 
   /// Decodes raw Dio response payload into a JSON object/array.
@@ -61,7 +62,10 @@ abstract class AbstractDioClient {
   /// Parses decoded JSON into any target model type.
   T parseJson<T>(T Function() mapper);
 
-  void debugStatusLog(Response response);
+  /// Logs raw Dio response payload to the console.
+  void debugStatusLog(Response response) {
+    return;
+  }
 
   void cancelAllRequests() {
     cancelToken.cancel();
