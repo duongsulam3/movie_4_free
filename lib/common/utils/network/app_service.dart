@@ -62,7 +62,7 @@ class AppService extends RestfulApiClient {
     }
   }
 
-  // Generic method to parse JSON using a provided mapper function.
+  @override
   T parseJson<T>(T Function() mapper) {
     try {
       return mapper();

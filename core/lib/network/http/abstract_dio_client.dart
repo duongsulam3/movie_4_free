@@ -59,9 +59,7 @@ abstract class AbstractDioClient {
   dynamic decodeJsonResponse(dynamic data);
 
   /// Parses decoded JSON into any target model type.
-  // T parseJson<T>(dynamic jsonResponse, T Function(dynamic json) mapper) {
-  //   return mapper(jsonResponse);
-  // }
+  T parseJson<T>(T Function() mapper);
 
   void debugStatusLog(Response response);
 
