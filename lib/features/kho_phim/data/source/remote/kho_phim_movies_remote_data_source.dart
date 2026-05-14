@@ -44,10 +44,13 @@ class KhoPhimMoviesRemoteDataSourceImpl
         limit: limit,
       );
       final jsonRes = client.decodeJsonResponse(res.data);
-      return await client.parseJson<List<MovieItemModel>>(() {
+
+      final parsed = await client.parseJson<List<MovieItemModel>>(() {
         final items = jsonRes["data"]["items"] as List<dynamic>;
         return items.map((e) => MovieItemModel.fromJson(e)).toList();
       });
+
+      return parsed;
     } catch (e) {
       throw ServerException(e.toString());
     }

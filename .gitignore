@@ -157,3 +157,8 @@ app.*.symbols
 
 # Secrets
 lib/common/utils/secret/app_secret.dart
+
+# all generated dart files
+**/*.g.dart
+**/*.freezed.dart
+**/*.gen.dart
