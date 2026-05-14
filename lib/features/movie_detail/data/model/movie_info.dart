@@ -8,7 +8,7 @@ import 'package:smoth_movie_app/features/movie_detail/data/model/tmdb.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/movie_info.dart';
 
 class MovieInfoModel extends MovieInfoEntity {
-  MovieInfoModel({
+  const MovieInfoModel({
     required super.sId,
     required super.name,
     required super.slug,

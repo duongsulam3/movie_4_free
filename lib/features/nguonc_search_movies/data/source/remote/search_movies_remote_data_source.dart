@@ -32,7 +32,7 @@ class NguonCSearchMoviesRemoteDataSourceImpl
         page: page,
       );
       final jsonRes = client.decodeJsonResponse(res.data);
-      return client.parseJson<List<NguoncMovieItemModel>>(() {
+      return await client.parseJson<List<NguoncMovieItemModel>>(() {
         final items = jsonRes["items"] as List<dynamic>;
         return items.map((e) => NguoncMovieItemModel.fromJson(e)).toList();
       });
@@ -53,7 +53,7 @@ class NguonCSearchMoviesRemoteDataSourceImpl
         page: 1,
       );
       final jsonRes = client.decodeJsonResponse(res.data);
-      return client.parseJson<List<NguoncSearchSuggestionModel>>(() {
+      return await client.parseJson<List<NguoncSearchSuggestionModel>>(() {
         final items = (jsonRes["items"] as List<dynamic>).take(limit);
         final suggestions = items
             .map((e) => NguoncSearchSuggestionModel.fromJson(e))

@@ -1,9 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:smoth_movie_app/common/utils/enum/movies_state_status.dart';
-import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_item.dart';
-import 'package:smoth_movie_app/features/movies/domain/usecase/get_movies.dart';
+
+import '../../../../../common/utils/enum/movies_state_status.dart';
+import '../../../domain/entities/movies_page/movie_item.dart';
+import '../../../domain/usecase/get_movies.dart';
 
 part 'movies_bloc.freezed.dart';
 part 'movies_event.dart';
@@ -22,6 +23,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     Emitter<MoviesState> emit,
   ) async {
     if (_shouldSkipFetch()) return;
+    emit(state.copyWith(status: MoviesStateStatus.loading));
 
     final requestPage = state.page;
     await _emitCachedMoviesIfNeeded(event, emit);
@@ -43,6 +45,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
       limit: event.limit,
       cateName: event.path,
     );
+
     if (cached.isEmpty) return;
 
     emit(state.copyWith(
@@ -80,6 +83,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
       // Keep cached movies visible when offline refresh fails.
       return;
     }
+
     emit(state.copyWith(status: MoviesStateStatus.error));
   }
 

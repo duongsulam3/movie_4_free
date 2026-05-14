@@ -21,7 +21,7 @@ class NguoncMovieDetailRemoteDatasourceImpl
         slug: slug,
       );
       final jsonRes = client.decodeJsonResponse(res.data);
-      return client.parseJson<NguoncMovieModel>(
+      return await client.parseJson<NguoncMovieModel>(
         () => NguoncMovieModel.fromJson(jsonRes["movie"]),
       );
     } catch (e) {

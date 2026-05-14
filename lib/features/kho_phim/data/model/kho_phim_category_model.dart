@@ -1,7 +1,7 @@
 import 'package:smoth_movie_app/features/kho_phim/domain/entity/kho_phim_category_entity.dart';
 
 class KhoPhimCategoryModel extends KhoPhimCategoryEntity {
-  KhoPhimCategoryModel({
+  const KhoPhimCategoryModel({
     required super.id,
     required super.name,
     required super.slug,

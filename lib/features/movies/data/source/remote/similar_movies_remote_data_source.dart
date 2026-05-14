@@ -21,7 +21,7 @@ class SimilarMoviesRemoteDataSourceImpl
         categorySlug: categorySlug,
       );
       final jsonRes = client.decodeJsonResponse(res.data);
-      return client.parseJson<List<MovieItemModel>>(() {
+      return await client.parseJson<List<MovieItemModel>>(() {
         final items = jsonRes["data"]["items"] as List<dynamic>;
         return items.map((e) => MovieItemModel.fromJson(e)).toList();
       });

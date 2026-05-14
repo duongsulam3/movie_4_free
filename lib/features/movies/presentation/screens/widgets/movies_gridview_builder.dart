@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter_supper_app_core/core.dart';
 
 class MoviesGridBuilder extends StatelessWidget {
   const MoviesGridBuilder({
@@ -21,11 +21,10 @@ class MoviesGridBuilder extends StatelessWidget {
       padding: EdgeInsets.zero,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
-        mainAxisSpacing: 10,
-        crossAxisSpacing: 10,
-        mainAxisExtent: 220,
+        crossAxisSpacing: 10.h,
+        mainAxisExtent: 220.v,
       ),
     );
   }

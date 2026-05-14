@@ -13,8 +13,6 @@ final class MoviesGETAPI {
     required int limit,
     required String cateName,
   }) {
-    // kkPhimUrl = https://phimapi.com/v1/api
-    // AppSecret.apiv1Url = /v1/api
     final endpoint =
         "${AppSecret.apiv1Url}/danh-sach/$cateName?page=$page&limit=$limit";
     return client.getRequest(endpoint);
