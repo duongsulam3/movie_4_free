@@ -19,7 +19,7 @@ class DetailMovieRemoteDataSourceImpl implements DetailMovieRemoteDataSource {
         slug: slug,
       );
       final jsonRes = client.decodeJsonResponse(res.data);
-      return client.parseJson<MovieDetailModel>(
+      return await client.parseJson<MovieDetailModel>(
         () => MovieDetailModel.fromJson(jsonRes),
       );
     } catch (e) {

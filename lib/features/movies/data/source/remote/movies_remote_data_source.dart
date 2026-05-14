@@ -31,7 +31,7 @@ class MoviesRemoteDataSourceImpl implements MoviesRemoteDataSource {
 
       final jsonRes = client.decodeJsonResponse(res.data);
 
-      final parsed = client.parseJson<List<MovieItemModel>>(() {
+      final parsed = await client.parseJson<List<MovieItemModel>>(() {
         final items = jsonRes['data']['items'] as List<dynamic>;
         return List.generate(
           items.length,

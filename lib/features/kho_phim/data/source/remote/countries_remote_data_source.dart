@@ -15,7 +15,7 @@ class CountriesRemoteDataSourceImpl implements CountriesRemoteDataSource {
     try {
       final res = await KhoPhimGETAPI.apiKhoPhimGETCountries(client: client);
       final jsonRes = client.decodeJsonResponse(res.data);
-      return client.parseJson<List<KhoPhimCountryModel>>(() {
+      return await client.parseJson<List<KhoPhimCountryModel>>(() {
         final items = jsonRes as List<dynamic>;
         return items.map((e) => KhoPhimCountryModel.fromJson(e)).toList();
       });

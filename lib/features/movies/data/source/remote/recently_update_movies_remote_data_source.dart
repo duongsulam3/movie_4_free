@@ -20,7 +20,7 @@ class RecentlyUpdateMoviesRemoteDataSourceImpl
       );
       final jsonRes = client.decodeJsonResponse(res.data);
 
-      return client.parseJson<List<RecentlyUpdateListItemModel>>(() {
+      return await client.parseJson<List<RecentlyUpdateListItemModel>>(() {
         final items = jsonRes['items'] as List<dynamic>;
         return List.generate(
           items.length,

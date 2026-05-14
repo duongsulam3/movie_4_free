@@ -15,9 +15,10 @@ class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
     try {
       final res = await KhoPhimGETAPI.apiKhoPhimGETCategories(client: client);
       final jsonRes = client.decodeJsonResponse(res.data);
-      return client.parseJson<List<KhoPhimCategoryModel>>(() {
+      return await client.parseJson<List<KhoPhimCategoryModel>>(() {
         final items = jsonRes as List<dynamic>;
-        final cate = items.map((e) => KhoPhimCategoryModel.fromJson(e)).toList();
+        final cate =
+            items.map((e) => KhoPhimCategoryModel.fromJson(e)).toList();
         cate.insert(
           0,
           KhoPhimCategoryModel(
