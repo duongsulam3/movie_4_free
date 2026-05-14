@@ -21,7 +21,7 @@ class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
             items.map((e) => KhoPhimCategoryModel.fromJson(e)).toList();
         cate.insert(
           0,
-          KhoPhimCategoryModel(
+          const KhoPhimCategoryModel(
             id: "0",
             name: "Tất cả thể loại",
             slug: "",

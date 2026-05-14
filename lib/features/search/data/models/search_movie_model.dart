@@ -3,7 +3,7 @@ import 'package:smoth_movie_app/features/movie_detail/data/model/category.dart';
 import 'package:smoth_movie_app/features/movie_detail/data/model/country.dart';
 
 class SearchMovieModel extends SearchMovieEntity {
-  SearchMovieModel({
+  const SearchMovieModel({
     required super.sId,
     required super.name,
     required super.slug,
