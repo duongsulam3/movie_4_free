@@ -20,13 +20,14 @@ class NguoncMoviesByCategoryRemoteDatasourceImpl
     int page,
   ) async {
     try {
-      final res = await NguonCMoviesByCategoryGETAPI.apiNguonCGETMoviesByCategory(
+      final res =
+          await NguonCMoviesByCategoryGETAPI.apiNguonCGETMoviesByCategory(
         client: client,
         slug: slug,
         page: page,
       );
       final jsonRes = client.decodeJsonResponse(res.data);
-      return client.parseJson<List<NguoncMoviesByCategoryItemModel>>(() {
+      return await client.parseJson<List<NguoncMoviesByCategoryItemModel>>(() {
         final items = jsonRes["items"] as List<dynamic>;
         return items
             .map((e) => NguoncMoviesByCategoryItemModel.fromJson(e))

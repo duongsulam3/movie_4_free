@@ -39,7 +39,7 @@ class SearchMovieRemoteDatasourceImpl implements SearchMovieRemoteDataSource {
       final jsonRes = client.decodeJsonResponse(res.data);
 
       if (jsonRes["status"] == "success") {
-        movies = client.parseJson<List<MovieItemModel>>(() {
+        movies = await client.parseJson<List<MovieItemModel>>(() {
           final items = jsonRes["data"]["items"] as List<dynamic>;
           return items.map((e) => MovieItemModel.fromJson(e)).toList();
         });
@@ -68,7 +68,7 @@ class SearchMovieRemoteDatasourceImpl implements SearchMovieRemoteDataSource {
       final jsonRes = client.decodeJsonResponse(res.data);
 
       if (jsonRes["status"] == "success") {
-        suggestions = client.parseJson<List<SearchSuggestionModel>>(() {
+        suggestions = await client.parseJson<List<SearchSuggestionModel>>(() {
           final items = jsonRes["data"]["items"] as List<dynamic>;
           final parsedSuggestions = items
               .map((e) => SearchSuggestionModel.fromJson(e))
