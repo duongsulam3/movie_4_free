@@ -27,12 +27,14 @@ jobs:
           channel: 'stable'
           cache: true
 
+      - name: Generate Files & Delete Conflicting Outputs
+        run: dart run build_runner watch -d --delete-conflicting-outputs
+
       - name: Decrypt Key
         shell: bash
         env:
           ENCRYPTION_KEY: ${{ secrets.ENV_DECRYPT_KEY }}
-        run: |
-          bash script/prepare.sh decrypt <<< "$ENCRYPTION_KEY"
+        run: bash script/prepare.sh decrypt <<< "$ENCRYPTION_KEY"
 
       - name: Clean and Fetch Dependencies
         run: |
@@ -62,12 +64,14 @@ jobs:
           channel: 'stable'
           cache: true
 
+      - name: Generate Files & Delete Conflicting Outputs
+        run: dart run build_runner watch -d --delete-conflicting-outputs
+
       - name: Decrypt Key
         shell: bash
         env:
           ENCRYPTION_KEY: ${{ secrets.ENV_DECRYPT_KEY }}
-        run: |
-          bash script/prepare.sh decrypt <<< "$ENCRYPTION_KEY"
+        run: bash script/prepare.sh decrypt <<< "$ENCRYPTION_KEY"
 
       - name: Clean and Fetch Dependencies
         run: |

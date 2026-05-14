@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_supper_app_core/core.dart';
 
 import '../../error/exception.dart';
@@ -36,39 +37,44 @@ class AppService extends RestfulApiClient {
     return const ServerException("Error message");
   }
 
-  @override
-  void debugStatusLog(Response<dynamic> response) {
-    final method = response.requestOptions.method;
-    final uri = response.requestOptions.uri;
-    final statusCode = response.statusCode;
+  // TODO: Turn ON/OFF For Debugging Requests
+  // @override
+  // void debugStatusLog(Response<dynamic> response) {
+  //   final method = response.requestOptions.method;
+  //   final uri = response.requestOptions.uri;
+  //   final statusCode = response.statusCode;
 
-    logger.debug('DIO RESPONSE', '$method Status Code: $statusCode' '\n$uri');
-  }
+  //   logger.debug('DIO RESPONSE', '$method Status Code: $statusCode' '\n$uri');
+  // }
 
   @override
   dynamic decodeJsonResponse(data) {
     try {
-      if (data is! String) {
-        // If data is not a String, encode it to String JSON.
-        final encoded = jsonEncode(data);
-        return jsonDecode(encoded);
+      if (data is String) {
+        // If data is already a String, we can directly decode it.
+        return jsonDecode(data);
       }
 
-      // If data is already a String, we can directly decode it.
-      return jsonDecode(data);
+      // If data is not a String, encode it to String JSON.
+      final encoded = jsonEncode(data);
+      return jsonDecode(encoded);
     } catch (e) {
       logger.error('Error decoding JSON response', e);
       throw const ServerException("Failed to decode JSON response");
     }
   }
 
-  // Generic method to parse JSON using a provided mapper function.
-  T parseJson<T>(T Function() mapper) {
+  @override
+  Future<T> parseJson<T>(T Function() mapper) async {
     try {
-      return mapper();
+      return await compute(_runMapper<T>, mapper);
     } catch (e) {
       logger.error('Error parsing JSON to model', e);
       throw const ServerException("Failed to parse JSON to model");
     }
+  }
+
+  static T _runMapper<T>(T Function() mapper) {
+    return mapper();
   }
 }

@@ -25,9 +25,12 @@ class _BlocBuilderGridviewState extends State<BlocBuilderGridview>
   Widget build(BuildContext context) {
     super.build(context);
     return BlocBuilder<MoviesBloc, MoviesState>(
+      buildWhen: (p, c) => p.status != c.status,
       builder: (context, state) {
         switch (state.status) {
           case MoviesStateStatus.init:
+            return const SizedBox.shrink();
+          case MoviesStateStatus.loading:
             return MoviesGridBuilder(
               itemCount: widget.itemCount,
               itemBuilder: (_, i) => const MovieItemSkeletonLoading(),

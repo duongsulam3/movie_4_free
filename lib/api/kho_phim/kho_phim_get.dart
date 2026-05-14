@@ -6,7 +6,7 @@ import 'package:smoth_movie_app/common/utils/secret/app_secret.dart';
 /// API layer for Kho Phim feature.
 ///
 /// This file keeps all HTTP request/URL building out of the data layer.
-final class KhoPhimGETAPI {
+class KhoPhimGETAPI {
   static Future<DioJsonResponse> apiKhoPhimGETCategories({
     required AppService client,
   }) {

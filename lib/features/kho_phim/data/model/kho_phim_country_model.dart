@@ -1,7 +1,7 @@
 import 'package:smoth_movie_app/features/kho_phim/domain/entity/kho_phim_country_entity.dart';
 
 class KhoPhimCountryModel extends KhoPhimCountryEntity {
-  KhoPhimCountryModel({
+  const KhoPhimCountryModel({
     required super.id,
     required super.name,
     required super.slug,

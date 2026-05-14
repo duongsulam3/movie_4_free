@@ -1,7 +1,7 @@
 import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_item.dart';
 
 class SearchMovieEntity extends MovieItemEntity {
-  SearchMovieEntity({
+  const SearchMovieEntity({
     required super.sId,
     required super.name,
     required super.slug,

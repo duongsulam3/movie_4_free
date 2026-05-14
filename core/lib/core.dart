@@ -16,10 +16,10 @@ export 'navigation/super_app_route.dart';
 
 /** NETWORK **/
 export 'package:dio/dio.dart';
-export 'network/abstract_dio_client.dart';
-export 'network/graphql_api_client.dart';
-export 'network/restful_api_client.dart';
-export 'network/token_management_mixin.dart';
+export 'network/http/abstract_dio_client.dart';
+export 'network/http/graphql_api_client.dart';
+export 'network/http/restful_api_client.dart';
+export 'network/http/token_management_mixin.dart';
 
 /** UTILS **/
 /*** RESPONSIVE ***/
