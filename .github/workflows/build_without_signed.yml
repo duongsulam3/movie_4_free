@@ -28,7 +28,7 @@ jobs:
           cache: true
 
       - name: Generate Files & Delete Conflicting Outputs
-        run: dart run build_runner watch -d --delete-conflicting-outputs
+        run: dart run build_runner build -d --delete-conflicting-outputs
 
       - name: Decrypt Key
         shell: bash
@@ -65,7 +65,7 @@ jobs:
           cache: true
 
       - name: Generate Files & Delete Conflicting Outputs
-        run: dart run build_runner watch -d --delete-conflicting-outputs
+        run: dart run build_runner build -d --delete-conflicting-outputs
 
       - name: Decrypt Key
         shell: bash
