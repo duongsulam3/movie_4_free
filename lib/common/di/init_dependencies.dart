@@ -64,12 +64,18 @@ import 'package:smoth_movie_app/features/movies/domain/usecase/get_recently_movi
 import 'package:smoth_movie_app/features/movie_detail/presentation/bloc/detail_movie/detail_movie_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies/movies_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/recently_update_movies/recently_update_movies_bloc.dart';
+import 'package:smoth_movie_app/features/recommend_movies/data/repository/recommend_movies_repository_impl.dart';
+import 'package:smoth_movie_app/features/recommend_movies/data/source/remote/recommend_movies_remote_data_source.dart';
+import 'package:smoth_movie_app/features/recommend_movies/domain/repository/recommend_movies_repository.dart';
+import 'package:smoth_movie_app/features/recommend_movies/domain/usecase/get_recommend_movies.dart';
+import 'package:smoth_movie_app/features/recommend_movies/presentation/bloc/recommend_movies/recommend_movies_bloc.dart';
 
 final serviceLocator = GetIt.instance;
 
 Future<void> initDependencies() async {
   _initCoreDependencies();
   _initMoviesFeature();
+  _initRecommendMoviesDependencies();
   _initDetailMovieFeature();
   _initSearchFeature();
   _initKhoPhimFeature();
@@ -295,4 +301,24 @@ void _initKhoPhimMoviesDependencies() {
   );
   serviceLocator.registerFactory(() => GetKhoPhimMovies(serviceLocator()));
   serviceLocator.registerFactory(() => KhoPhimMoviesBloc(serviceLocator()));
+}
+
+// ===== Feature: Recommend Movies =====
+void _initRecommendMoviesDependencies() {
+  serviceLocator.registerFactory<RecommendMoviesRemoteDataSource>(
+    () => RecommendMoviesRemoteDataSourceImpl(
+      client: serviceLocator<AppService>(),
+    ),
+  );
+  serviceLocator.registerFactory<RecommendMoviesRepository>(
+    () => RecommendMoviesRepositoryImpl(
+      remoteDataSource: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => GetRecommendMovies(repository: serviceLocator()),
+  );
+  serviceLocator.registerFactory(
+    () => RecommendMoviesBloc(usecase: serviceLocator()),
+  );
 }
