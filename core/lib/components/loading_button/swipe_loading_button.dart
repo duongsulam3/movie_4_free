@@ -31,7 +31,7 @@ class SwipeLoadingButton extends StatelessWidget {
     final screenWidth = MediaQuery.sizeOf(context).width;
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        // Responsive: width = 85% screen width, height = 52 if not provided
+        // Responsive: width = 85% screen width, height = 52 as default
         minimumSize: Size(
           width ?? screenWidth * 0.85,
           height ?? 52,
@@ -43,15 +43,22 @@ class SwipeLoadingButton extends StatelessWidget {
         ),
       ),
 
-      // Vô hiệu hóa click khi đang trong trạng thái loading nhằm ngăn chặn Double-Submit
+      // Disable button when loading
       onPressed: isLoading ? null : onPressed,
+
+      // AnimatedSwitcher: Chuyển trực Y
       child: AnimatedSwitcher(
         duration: const Duration(milliseconds: 300),
         switchInCurve: Curves.easeOutCubic,
         switchOutCurve: Curves.easeInCubic,
 
-        // Custom kiến trúc dịch chuyển trục Y
-        transitionBuilder: SwipeUpAnimation.transitionBuilder,
+        // Transition Animation with FadeTransition
+        transitionBuilder: (child, animation) => FadeTransition(
+          opacity: animation,
+
+          // Custom kiến trúc dịch chuyển trục Y
+          child: SwipeUpAnimation.transitionBuilder(child, animation),
+        ),
 
         // BẮT BUỘC: Phải có ValueKey khác nhau để AnimatedSwitcher nhận biết và kích hoạt Animation
         child: isLoading

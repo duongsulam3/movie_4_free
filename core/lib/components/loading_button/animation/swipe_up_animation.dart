@@ -17,12 +17,9 @@ class SwipeUpAnimation {
             end: Offset.zero,
           );
 
-    return FadeTransition(
-      opacity: animation,
-      child: SlideTransition(
-        position: slideTween.animate(animation),
-        child: child,
-      ),
+    return SlideTransition(
+      position: slideTween.animate(animation),
+      child: child,
     );
   }
 }
