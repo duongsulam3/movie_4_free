@@ -7,6 +7,7 @@ class SwipeLoadingButton extends StatelessWidget {
   final String title;
   final Color backgroundColor;
   final Color disabledBackgroundColor;
+  final Color loadingIndicatorColor;
 
   // OPTIONAL CONTRUCTORS
   final VoidCallback? onPressed;
@@ -20,6 +21,7 @@ class SwipeLoadingButton extends StatelessWidget {
     this.title = "Title",
     this.backgroundColor = Colors.white,
     this.disabledBackgroundColor = Colors.white,
+    this.loadingIndicatorColor = Colors.black,
     this.onPressed,
     this.width,
     this.height,
@@ -66,7 +68,7 @@ class SwipeLoadingButton extends StatelessWidget {
           child: isLoading
 
               // Loading Widget
-              ? const _LoadingIndicator()
+              ? _LoadingIndicator(loadingColor: loadingIndicatorColor)
 
               // Title Widget
               : _ButtonTitle(
@@ -80,17 +82,18 @@ class SwipeLoadingButton extends StatelessWidget {
 }
 
 class _LoadingIndicator extends StatelessWidget {
-  const _LoadingIndicator();
+  final Color loadingColor;
+  const _LoadingIndicator({required this.loadingColor});
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
+    return SizedBox(
       key: ValueKey('button_loading_indicator'),
       width: 24,
       height: 24,
       child: CircularProgressIndicator(
         strokeWidth: 2.5,
-        valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+        valueColor: AlwaysStoppedAnimation<Color>(loadingColor),
       ),
     );
   }
