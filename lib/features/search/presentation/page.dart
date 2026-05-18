@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smoth_movie_app/common/entity/search_tabs_item.dart';
-import 'package:smoth_movie_app/common/widgets/search_textfield_widget.dart';
-import 'package:smoth_movie_app/features/nguonc_search_movies/presentation/bloc/nguonc_search_bloc.dart';
-import 'package:smoth_movie_app/features/nguonc_search_movies/presentation/widget/list_search_nguonc_blocbuilder.dart';
-import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
-import 'package:smoth_movie_app/features/search/presentation/widgets/list_search_content.dart';
-import 'package:smoth_movie_app/common/utils/helper/helper.dart';
-import 'package:smoth_movie_app/features/search/presentation/widgets/search_page_tabs_content.dart';
-import 'package:smoth_movie_app/features/search/presentation/widgets/search_tabbar.dart';
+
+import '../../../common/entity/search_tabs_item.dart';
+import '../../../common/widgets/search_textfield_widget.dart';
+import '../../nguonc_search_movies/presentation/bloc/nguonc_search_bloc.dart';
+import '../../nguonc_search_movies/presentation/widget/list_search_nguonc_blocbuilder.dart';
+import 'bloc/search_bloc.dart';
+import 'widgets/list_search_content.dart';
+import 'widgets/search_page_tabs_content.dart';
+import 'widgets/search_tabbar.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({
@@ -36,17 +36,21 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   void initState() {
+    /// Auto Focus On Search field
     searchFocusNode.requestFocus();
-    searchController.addListener(() {
-      if (searchController.text.isEmpty) {
-        context.read<SearchBloc>().add(ClearSearchSuggestionsEvent());
-        context
-            .read<NguoncSearchBloc>()
-            .add(ClearNguoncSearchSuggestionsEvent());
-      }
-    });
+
+    /// Add Listeners
+    searchController.addListener(_onSearchControllerChanged);
+
+    /// Initialize Search Tabs
     initSearchTabsView();
     super.initState();
+  }
+
+  void _onSearchControllerChanged() {
+    if (searchController.text.isEmpty) {
+      onClearSuggestions();
+    }
   }
 
   @override
@@ -80,15 +84,31 @@ class _SearchPageState extends State<SearchPage> {
     searchController.dispose();
   }
 
-  void submitSearch(String value) {
-    final query = value.trim();
-    if (query.isEmpty) return;
-
-    searchController.text = query;
+  void onClearSuggestions() {
     context.read<SearchBloc>().add(ClearSearchSuggestionsEvent());
     context.read<NguoncSearchBloc>().add(ClearNguoncSearchSuggestionsEvent());
-    Helper.onSubmitSearch(context: context, query: query);
-    Helper.nguonCSearchFilms(context: context, query: query);
+  }
+
+  void submitSearch(String value) {
+    if (value.isEmpty) return;
+    final query = value.trim();
+
+    /// Clear suggestions
+    onClearSuggestions();
+
+    /// Call API search
+    searchController.text = query;
+    context.read<SearchBloc>().add(GetSearchMoviesEvent(
+          query: query,
+          limit: 10,
+        ));
+  }
+
+  void onSearchTextChanged(String value) {
+    if (value.isEmpty) return;
+
+    /// Update search query
+    context.read<SearchBloc>().add(SearchQueryChangedEvent(query: value));
   }
 
   @override
@@ -110,14 +130,7 @@ class _SearchPageState extends State<SearchPage> {
             focusNode: searchFocusNode,
             hintText: widget.searchHint,
             controller: searchController,
-            onChanged: (value) {
-              context.read<SearchBloc>().add(
-                    SearchQueryChangedEvent(query: value),
-                  );
-              context.read<NguoncSearchBloc>().add(
-                    SearchNguoncQueryChangedEvent(query: value),
-                  );
-            },
+            onChanged: onSearchTextChanged,
             onSubmitted: submitSearch,
           ),
         ),
