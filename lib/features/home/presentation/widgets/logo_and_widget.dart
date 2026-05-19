@@ -1,20 +1,18 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:smoth_movie_app/common/constants/app_constants.dart';
-import 'package:smoth_movie_app/common/widgets/responsive_asset_image.dart';
-import 'package:smoth_movie_app/features/home/presentation/widgets/text_field_change_hint_widget.dart';
+import 'package:flutter_supper_app_core/core.dart';
+
+import '../../../../common/constants/app_constants.dart';
+import '../../../../common/widgets/responsive_asset_image.dart';
+import 'text_field_change_hint_widget.dart';
 
 class LogoAndWidget extends StatelessWidget {
   const LogoAndWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final sHeight = MediaQuery.of(context).size.height;
-    final sWidth = MediaQuery.of(context).size.width;
     return Padding(
-      padding: EdgeInsets.only(top: sHeight / (sHeight / 10)),
+      padding: EdgeInsets.only(top: 10.v),
       child: Row(
-        spacing: sWidth / (sWidth / 10),
+        spacing: 10.v,
         children: [
           const Expanded(
             flex: 1,

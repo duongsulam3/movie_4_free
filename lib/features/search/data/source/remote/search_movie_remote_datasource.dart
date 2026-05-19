@@ -1,9 +1,9 @@
-import 'package:smoth_movie_app/api/search/search_get.dart';
-import 'package:smoth_movie_app/common/error/exception.dart';
-import 'package:smoth_movie_app/common/utils/helper/helper.dart';
-import 'package:smoth_movie_app/common/utils/network/app_service.dart';
-import 'package:smoth_movie_app/features/movies/data/model/single_movies/movie_item_model.dart';
-import 'package:smoth_movie_app/features/search/data/models/search_suggestion_model.dart';
+import '../../../../../api/search/search_get.dart';
+import '../../../../../common/error/exception.dart';
+import '../../../../../common/utils/helper/helper.dart';
+import '../../../../../common/utils/network/app_service.dart';
+import '../../../../movies/data/model/single_movies/movie_item_model.dart';
+import '../../models/search_suggestion_model.dart';
 
 abstract class SearchMovieRemoteDataSource {
   Future<List<MovieItemModel>> getSearchMovies({
@@ -36,15 +36,24 @@ class SearchMovieRemoteDatasourceImpl implements SearchMovieRemoteDataSource {
         page: page,
         limit: limit,
       );
+
+      /// Decode JSON response
       final jsonRes = client.decodeJsonResponse(res.data);
 
-      if (jsonRes["status"] == "success") {
-        movies = await client.parseJson<List<MovieItemModel>>(() {
-          final items = jsonRes["data"]["items"] as List<dynamic>;
-          return items.map((e) => MovieItemModel.fromJson(e)).toList();
-        });
-      }
+      /// Check if data is null return without parsing
+      if (jsonRes["data"]["items"] == null) return movies;
 
+      /// Parse JSON to List<MovieItemModel>
+      final parsed = await client.parseJson(() {
+        final items = jsonRes["data"]["items"] as List<dynamic>;
+        return List.generate(
+          items.length,
+          (e) => MovieItemModel.fromJson(items[e]),
+        );
+      });
+
+      /// Set parsed movies to variable
+      movies = parsed;
       return movies;
     } catch (e) {
       throw ServerException(e.toString());
@@ -65,22 +74,27 @@ class SearchMovieRemoteDatasourceImpl implements SearchMovieRemoteDataSource {
         page: 1,
         limit: limit,
       );
+
+      /// Decode JSON response
       final jsonRes = client.decodeJsonResponse(res.data);
 
-      if (jsonRes["status"] == "success") {
-        suggestions = await client.parseJson<List<SearchSuggestionModel>>(() {
-          final items = jsonRes["data"]["items"] as List<dynamic>;
-          final parsedSuggestions = items
-              .map((e) => SearchSuggestionModel.fromJson(e))
-              .where((e) => e.name.trim().isNotEmpty)
-              .toList();
+      /// Check if data is null return without parsing
+      if (jsonRes["data"]["items"] == null) return suggestions;
 
-          // Keep only first occurrence by case-insensitive name.
-          final listed = Helper.deduplicateSearchSuggestions(parsedSuggestions);
-          return listed;
-        });
-      }
+      /// Parse JSON to List<SearchSuggestionModel>
+      final parsed = await client.parseJson<List<SearchSuggestionModel>>(() {
+        final items = jsonRes["data"]["items"] as List<dynamic>;
+        return List.generate(
+          items.length,
+          (e) => SearchSuggestionModel.fromJson(items[e]),
+        );
+      });
 
+      // Keep only first occurrence by case-insensitive name.
+      final listed = Helper.deduplicateSearchSuggestions(parsed);
+
+      /// Set parsed movies to variable
+      suggestions = listed;
       return suggestions;
     } catch (e) {
       throw ServerException(e.toString());

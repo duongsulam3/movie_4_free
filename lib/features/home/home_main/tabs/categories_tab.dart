@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:smoth_movie_app/common/widgets/responsive_sized_box.dart';
-import 'package:smoth_movie_app/features/movies/presentation/screens/bloc_builder_movies_sort_by_time.dart';
-import 'package:smoth_movie_app/features/movies/presentation/screens/infinite_gridview_widget.dart';
-import 'package:smoth_movie_app/features/home/presentation/scope/categories_tab_scope.dart';
+import 'package:flutter_supper_app_core/core.dart';
+
+import '../../../../common/widgets/responsive_sized_box.dart';
+import '../../../movies/presentation/screens/bloc_builder_movies_sort_by_time.dart';
+import '../../../movies/presentation/screens/infinite_gridview_widget.dart';
+import '../../presentation/scope/categories_tab_scope.dart';
 
 class CategoriesTab extends StatefulWidget {
   const CategoriesTab({
@@ -25,18 +26,17 @@ class _CategoriesTabState extends State<CategoriesTab>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final sHeight = MediaQuery.of(context).size.height;
     return CategoriesTabScope(
       path: widget.path,
       limit: widget.limit,
       child: SingleChildScrollView(
         controller: widget.scrollController,
         child: Column(
-          spacing: sHeight / (sHeight / 20),
+          spacing: 20.v,
           children: [
             const BlocBuilderMoviesSortByTime(),
             Padding(
-              padding: const EdgeInsets.only(left: 5, right: 5),
+              padding: EdgeInsets.only(left: 5.h, right: 5.h),
               child: InfiniteGridView(
                 path: widget.path,
                 itemCount: widget.limit,

@@ -10,10 +10,15 @@ class HiveManager {
     await Hive.initFlutter();
     registerHiveAdapters();
     await Hive.openBox<dynamic>(HiveBoxes.homeMoviesCache);
+    await Hive.openBox<dynamic>(HiveBoxes.searchHistoryCache);
   }
 
   static Box<dynamic> get homeMoviesBox => Hive.box<dynamic>(
         HiveBoxes.homeMoviesCache,
+      );
+
+  static Box<dynamic> get searchHistoryBox => Hive.box<dynamic>(
+        HiveBoxes.searchHistoryCache,
       );
 
   static Future<void> dispose() async {

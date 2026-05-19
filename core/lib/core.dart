@@ -28,3 +28,6 @@ export 'responsive/responsive.dart';
 /*** HELPER ***/
 export 'helper/dev_logger.dart';
 export 'helper/debouncer.dart';
+
+/** COMPONENTS **/
+export 'components/loading_button/swipe_loading_button.dart';
