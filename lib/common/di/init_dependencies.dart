@@ -26,22 +26,6 @@ import 'package:smoth_movie_app/features/movies/domain/usecase/get_movies_sortby
 import 'package:smoth_movie_app/features/movies/domain/usecase/get_similar_movies.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies_sortby_time/movies_sort_by_time_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/similar_movies/similar_movies_bloc.dart';
-import 'package:smoth_movie_app/features/nguonc_categories/data/repository/nguonc_movies_by_cate_repository_impl.dart';
-import 'package:smoth_movie_app/features/nguonc_categories/data/source/remote/nguonc_movies_by_category_remote_datasource.dart';
-import 'package:smoth_movie_app/features/nguonc_categories/domain/repository/nguonc_movies_by_cate_repository.dart';
-import 'package:smoth_movie_app/features/nguonc_categories/domain/usecase/nguonc_get_movies_by_cate.dart';
-import 'package:smoth_movie_app/features/nguonc_categories/presentation/bloc/movies_by_category_bloc.dart';
-import 'package:smoth_movie_app/features/nguonc_movie_detail/data/repository/nguonc_movie_detail_repository_impl.dart';
-import 'package:smoth_movie_app/features/nguonc_movie_detail/data/source/remote/nguonc_movie_detail_remote_datasource.dart';
-import 'package:smoth_movie_app/features/nguonc_movie_detail/domain/repository/nguonc_movie_detail_repository.dart';
-import 'package:smoth_movie_app/features/nguonc_movie_detail/domain/usecase/get_nguonc_movie_detail.dart';
-import 'package:smoth_movie_app/features/nguonc_movie_detail/presentation/bloc/nguonc_movie_detail_bloc.dart';
-import 'package:smoth_movie_app/features/nguonc_search_movies/data/repository/nguonc_search_movies_repository_impl.dart';
-import 'package:smoth_movie_app/features/nguonc_search_movies/data/source/remote/search_movies_remote_data_source.dart';
-import 'package:smoth_movie_app/features/nguonc_search_movies/domain/repository/nguonc_search_movies_repository.dart';
-import 'package:smoth_movie_app/features/nguonc_search_movies/domain/usecase/nguonc_get_search_films.dart';
-import 'package:smoth_movie_app/features/nguonc_search_movies/domain/usecase/nguonc_get_search_suggestions.dart';
-import 'package:smoth_movie_app/features/nguonc_search_movies/presentation/bloc/nguonc_search_bloc.dart';
 import 'package:smoth_movie_app/features/search/data/repository/search_movies_repository_impl.dart';
 import 'package:smoth_movie_app/features/search/data/source/remote/search_movie_remote_datasource.dart';
 import 'package:smoth_movie_app/features/search/domain/repository/search_movies_repository.dart';
@@ -91,7 +75,6 @@ void _initMoviesFeature() {
   _initRecentlyUpdatedMoviesDependencies();
   _initSimilarMoviesDependencies();
   _initMoviesSortByTimeDependencies();
-  _initNguoncMoviesByCategoryDependencies();
 }
 
 void _initMoviesListDependencies() {
@@ -163,23 +146,9 @@ void _initMoviesSortByTimeDependencies() {
   serviceLocator.registerFactory(() => MoviesSortByTimeBloc(serviceLocator()));
 }
 
-void _initNguoncMoviesByCategoryDependencies() {
-  serviceLocator.registerFactory<NguoncMoviesByCategoryRemoteDatasource>(
-    () => NguoncMoviesByCategoryRemoteDatasourceImpl(
-      client: serviceLocator<AppService>(),
-    ),
-  );
-  serviceLocator.registerFactory<NguoncMoviesByCateRepository>(
-    () => NguoncMoviesByCateRepositoryImpl(serviceLocator()),
-  );
-  serviceLocator.registerFactory(() => NguoncGetMoviesByCate(serviceLocator()));
-  serviceLocator.registerFactory(() => MoviesByCategoryBloc(serviceLocator()));
-}
-
 // ===== Feature: Movie Detail =====
 void _initDetailMovieFeature() {
   _initMovieDetailDependencies();
-  _initNguoncMovieDetailDependencies();
 }
 
 void _initMovieDetailDependencies() {
@@ -200,25 +169,9 @@ void _initMovieDetailDependencies() {
   );
 }
 
-void _initNguoncMovieDetailDependencies() {
-  serviceLocator.registerFactory<NguoncMovieDetailRemoteDatasource>(
-    () => NguoncMovieDetailRemoteDatasourceImpl(
-      client: serviceLocator<AppService>(),
-    ),
-  );
-  serviceLocator.registerFactory<NguoncMovieDetailRepository>(
-    () => NguoncMovieDetailRepositoryImpl(serviceLocator()),
-  );
-  serviceLocator.registerFactory(() => GetNguoncMovieDetail(serviceLocator()));
-  serviceLocator.registerFactory(
-    () => NguoncMovieDetailBloc(serviceLocator<GetNguoncMovieDetail>()),
-  );
-}
-
 // ===== Feature: Search =====
 void _initSearchFeature() {
   _initSearchMovieDependencies();
-  _initNguoncSearchDependencies();
 }
 
 void _initSearchMovieDependencies() {
@@ -238,27 +191,6 @@ void _initSearchMovieDependencies() {
     () => SearchBloc(
       getSearchMovies: serviceLocator<GetSearchMovies>(),
       getSearchSuggestions: serviceLocator<GetSearchSuggestions>(),
-    ),
-  );
-}
-
-void _initNguoncSearchDependencies() {
-  serviceLocator.registerFactory<NguonCSearchMoviesRemoteDataSource>(
-    () => NguonCSearchMoviesRemoteDataSourceImpl(
-      client: serviceLocator<AppService>(),
-    ),
-  );
-  serviceLocator.registerFactory<NguoncSearchMoviesRepository>(
-    () => NguoncSearchMoviesRepositoryImpl(serviceLocator()),
-  );
-  serviceLocator.registerFactory(() => NguoncGetSearchFilms(serviceLocator()));
-  serviceLocator.registerFactory(
-    () => NguoncGetSearchSuggestions(serviceLocator()),
-  );
-  serviceLocator.registerFactory(
-    () => NguoncSearchBloc(
-      getSearchFilms: serviceLocator<NguoncGetSearchFilms>(),
-      getSearchSuggestions: serviceLocator<NguoncGetSearchSuggestions>(),
     ),
   );
 }

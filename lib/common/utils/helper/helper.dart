@@ -1,20 +1,13 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
-import 'package:smoth_movie_app/common/constants/app_constants.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/categories/category_list_bloc.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/kho_phim_movies/kho_phim_movies_bloc.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/category.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/country.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/bloc/detail_movie/detail_movie_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/similar_movies/similar_movies_bloc.dart';
-import 'package:smoth_movie_app/features/nguonc_categories/data/model/nguonc_category_item_model.dart';
-import 'package:smoth_movie_app/features/nguonc_movie_detail/domain/entity/nguonc_category_entity.dart';
-import 'package:smoth_movie_app/features/nguonc_movie_detail/presentation/bloc/nguonc_movie_detail_bloc.dart';
-import 'package:smoth_movie_app/features/nguonc_search_movies/presentation/bloc/nguonc_search_bloc.dart';
 import 'package:smoth_movie_app/features/search/data/models/search_suggestion_model.dart';
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies/movies_bloc.dart';
@@ -44,15 +37,6 @@ class Helper {
           query: query,
           limit: limit,
         ));
-  }
-
-  // ===== Feature: NguonC Search =====
-  static void nguonCSearchFilms({
-    required BuildContext context,
-    required String query,
-  }) {
-    if (query.isEmpty) return;
-    context.read<NguoncSearchBloc>().add(GetSearchFilmsEvent(query: query));
   }
 
   // ===== Feature: Movies (Infinite / Similar) =====
@@ -102,18 +86,6 @@ class Helper {
         ));
   }
 
-  // ===== Feature: NguonC Movie Detail =====
-  static void nguoncUpdateUrlEvent(
-    BuildContext context,
-    String url,
-    String episode,
-  ) {
-    context.read<NguoncMovieDetailBloc>().add(UpdateWebViewPlayerUrlEvent(
-          url: url,
-          episode: episode,
-        ));
-  }
-
   // ===== Shared UI / Utility =====
   static List<String> getYears() {
     List<String> list = List.empty(growable: true);
@@ -152,15 +124,6 @@ class Helper {
   }
 
   // ===== Display Mapping: Movie Detail / NguonC =====
-  static String getNguoncCategories(NguoncCategoryEntity category) {
-    if (category.list.isEmpty) return AppConstants.noData;
-    return category.list.map((e) => e.name).toList().join(", ");
-  }
-
-  static String getNguoncCountries(List<NguoncTypeItem> countries) {
-    if (countries.isEmpty) return AppConstants.noData;
-    return countries.map((e) => e.name).toList().join(", ");
-  }
 
   static String getCategories(List<CategoryEntity> categories) {
     return categories.map((e) => e.name).toList().join(", ");
@@ -171,14 +134,6 @@ class Helper {
   }
 
   // ===== Parsing: NguonC =====
-  static Future<List<NguoncCategoryItemModel>> parseNguoncCategories(
-    String json,
-  ) async {
-    final jsonResponse = jsonDecode(json) as List;
-    return jsonResponse
-        .map((e) => NguoncCategoryItemModel.fromJson(e))
-        .toList();
-  }
 
   static List<SearchSuggestionModel> deduplicateSearchSuggestions(
     List<SearchSuggestionModel> suggestions,
