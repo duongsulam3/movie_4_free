@@ -6,8 +6,8 @@ import '../../features/home/presentation/scope/home_bootstrap_scope.dart';
 import '../../features/movie_detail/presentation/bloc/detail_movie/detail_movie_bloc.dart';
 import '../../features/movie_detail/presentation/detail_page.dart';
 import '../../features/profile/page.dart';
-import '../../features/search/presentation/bloc/search_bloc.dart';
 import '../../features/search/presentation/page.dart';
+import '../../features/search/presentation/scope/search_bootstrap_scope.dart';
 import '../../features/splash/bloc/splash_bloc.dart';
 import '../../features/splash/presentation/splash_page.dart';
 import '../di/init_dependencies.dart';
@@ -63,12 +63,8 @@ class AppRouter extends SuperAppRoute {
 
   Route<dynamic> _buildSearchRoute(Object? arguments) {
     final params = arguments as SearchTextfieldParamModel;
-    final providers = <BlocProvider>[
-      BlocProvider<SearchBloc>(create: (context) => serviceLocator()),
-    ];
     return FadeInTransition(
-      page: MultiBlocProvider(
-        providers: providers,
+      page: SearchBootstrapScope(
         child: SearchPage(
           searchHint: params.searchHint,
           listSearch: params.listSearch,
