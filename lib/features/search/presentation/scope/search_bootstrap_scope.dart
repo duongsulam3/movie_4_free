@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../common/di/init_dependencies.dart';
 import '../bloc/search_bloc.dart';
+import '../cubit/search_history_cubit.dart';
 
 class SearchBootstrapScope extends StatelessWidget {
   const SearchBootstrapScope({
@@ -13,6 +14,8 @@ class SearchBootstrapScope extends StatelessWidget {
   final Widget child;
 
   SearchBloc _createSearchBloc() => serviceLocator<SearchBloc>();
+  SearchHistoryCubit _createSearchHistoryCubit() =>
+      serviceLocator<SearchHistoryCubit>();
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +23,9 @@ class SearchBootstrapScope extends StatelessWidget {
       providers: [
         BlocProvider<SearchBloc>(
           create: (_) => _createSearchBloc(),
+        ),
+        BlocProvider<SearchHistoryCubit>(
+          create: (_) => _createSearchHistoryCubit(),
         ),
       ],
       child: child,

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/entity/search_tabs_item.dart';
 import '../../../common/widgets/search_textfield_widget.dart';
 import 'bloc/search_bloc.dart';
+import 'cubit/search_history_cubit.dart';
 import 'enum/search_tab.dart';
 import 'widgets/list_search_content.dart';
 import 'widgets/search_page_tabs_content.dart';
@@ -73,6 +74,9 @@ class _SearchPageState extends State<SearchPage> {
     /// Clear suggestions
     onClearSuggestions();
 
+    /// Save search history
+    context.read<SearchHistoryCubit>().addKeyword(query);
+
     /// Call API search
     searchController.text = query;
     context.read<SearchBloc>().add(GetSearchMoviesEvent(
@@ -91,10 +95,19 @@ class _SearchPageState extends State<SearchPage> {
   Widget _buildTabWidget(SearchTabEnum tab) {
     switch (tab) {
       case SearchTabEnum.main:
-        return ListSearchContent(
-          onSelected: (value) => searchController.text = value,
-          onSuggestionSelected: submitSearch,
-          listSearch: widget.listSearch,
+        return BlocBuilder<SearchHistoryCubit, List<String>>(
+          builder: (context, history) {
+            return ListSearchContent(
+              onSelected: (value) => searchController.text = value,
+              onSuggestionSelected: submitSearch,
+              listSearch: widget.listSearch,
+              searchHistory: history,
+              onDeleteKeyword: (keyword) =>
+                  context.read<SearchHistoryCubit>().removeKeyword(keyword),
+              onClearHistory: () =>
+                  context.read<SearchHistoryCubit>().clearAll(),
+            );
+          },
         );
     }
   }

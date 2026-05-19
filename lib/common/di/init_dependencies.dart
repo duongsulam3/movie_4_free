@@ -26,12 +26,20 @@ import 'package:smoth_movie_app/features/movies/domain/usecase/get_movies_sortby
 import 'package:smoth_movie_app/features/movies/domain/usecase/get_similar_movies.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies_sortby_time/movies_sort_by_time_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/similar_movies/similar_movies_bloc.dart';
+import 'package:smoth_movie_app/features/search/data/repository/search_history_repository_impl.dart';
 import 'package:smoth_movie_app/features/search/data/repository/search_movies_repository_impl.dart';
+import 'package:smoth_movie_app/features/search/data/source/local/search_history_local_data_source.dart';
 import 'package:smoth_movie_app/features/search/data/source/remote/search_movie_remote_datasource.dart';
+import 'package:smoth_movie_app/features/search/domain/repository/search_history_repository.dart';
 import 'package:smoth_movie_app/features/search/domain/repository/search_movies_repository.dart';
+import 'package:smoth_movie_app/features/search/domain/usecase/clear_search_history.dart';
+import 'package:smoth_movie_app/features/search/domain/usecase/delete_search_keyword.dart';
+import 'package:smoth_movie_app/features/search/domain/usecase/get_search_history.dart';
 import 'package:smoth_movie_app/features/search/domain/usecase/get_search_movies.dart';
 import 'package:smoth_movie_app/features/search/domain/usecase/get_search_suggestions.dart';
+import 'package:smoth_movie_app/features/search/domain/usecase/save_search_keyword.dart';
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
+import 'package:smoth_movie_app/features/search/presentation/cubit/search_history_cubit.dart';
 import 'package:smoth_movie_app/features/movie_detail/data/repository/detail_movie_repository_impl.dart';
 import 'package:smoth_movie_app/features/movie_detail/data/source/remote/detail_movie_remote_data_source.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/repository/detail_movie_repository.dart';
@@ -175,6 +183,36 @@ void _initSearchFeature() {
 }
 
 void _initSearchMovieDependencies() {
+  serviceLocator.registerLazySingleton<SearchHistoryLocalDataSource>(
+    () => SearchHistoryLocalDataSourceImpl(
+      HiveManager.searchHistoryBox,
+    ),
+  );
+  serviceLocator.registerFactory<SearchHistoryRepository>(
+    () => SearchHistoryRepositoryImpl(
+      localDataSource: serviceLocator<SearchHistoryLocalDataSource>(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => GetSearchHistory(repository: serviceLocator()),
+  );
+  serviceLocator.registerFactory(
+    () => SaveSearchKeyword(repository: serviceLocator()),
+  );
+  serviceLocator.registerFactory(
+    () => DeleteSearchKeyword(repository: serviceLocator()),
+  );
+  serviceLocator.registerFactory(
+    () => ClearSearchHistory(repository: serviceLocator()),
+  );
+  serviceLocator.registerFactory(
+    () => SearchHistoryCubit(
+      getSearchHistory: serviceLocator(),
+      saveSearchKeyword: serviceLocator(),
+      deleteSearchKeyword: serviceLocator(),
+      clearSearchHistory: serviceLocator(),
+    ),
+  );
   serviceLocator.registerFactory<SearchMovieRemoteDataSource>(
     () => SearchMovieRemoteDatasourceImpl(client: serviceLocator<AppService>()),
   );
