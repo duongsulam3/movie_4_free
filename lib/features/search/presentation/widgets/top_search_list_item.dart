@@ -1,19 +1,26 @@
 import 'package:flutter/cupertino.dart';
-import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
+import 'package:flutter_supper_app_core/core.dart';
+
+import '../../../../common/widgets/responsive_small_text.dart';
 
 class TopSearchListItem extends StatelessWidget {
-  const TopSearchListItem({super.key, required this.itemName});
+  const TopSearchListItem({
+    super.key,
+    required this.itemName,
+    this.icon = CupertinoIcons.flame,
+  });
 
   final String itemName;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      spacing: 10,
+      spacing: 10.h,
       children: [
-        const Icon(
-          CupertinoIcons.bolt_horizontal_circle,
-          size: 14,
+        Icon(
+          icon,
+          size: 14.adaptSize,
           color: CupertinoColors.systemGrey,
         ),
         Expanded(

@@ -19,10 +19,16 @@ class ListSearchContent extends StatelessWidget {
     required this.onSelected,
     required this.onSuggestionSelected,
     required this.listSearch,
+    required this.searchHistory,
+    required this.onDeleteKeyword,
+    required this.onClearHistory,
   });
   final ValueChanged<String> onSelected;
   final ValueChanged<String> onSuggestionSelected;
   final List<String> listSearch;
+  final List<String> searchHistory;
+  final ValueChanged<String> onDeleteKeyword;
+  final VoidCallback onClearHistory;
 
   bool _shouldRebuild(SearchState previous, SearchState current) {
     return previous.movies != current.movies ||
@@ -48,6 +54,9 @@ class ListSearchContent extends StatelessWidget {
               topSearchList: listSearch,
               introduceSource:
                   'Nguồn chính (Khuyên dùng): Được tài trở bởi KKPhim.\nDữ liệu phim miễn phí mãi mãi. Luôn được cập nhật nhanh chóng, chất lượng cao và ổn định trong thời gian dài. Tốc độ phát cực nhanh nhờ đường truyền băng thông cao, đảm bảo phục vụ lượng lớn người xem phim trực tuyến.',
+              searchHistory: searchHistory,
+              onDeleteKeyword: onDeleteKeyword,
+              onClearHistory: onClearHistory,
             );
           case SearchPageStatus.error:
             return const ErrorPage();

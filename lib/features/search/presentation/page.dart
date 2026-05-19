@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smoth_movie_app/common/entity/search_tabs_item.dart';
-import 'package:smoth_movie_app/common/widgets/search_textfield_widget.dart';
-import 'package:smoth_movie_app/features/nguonc_search_movies/presentation/bloc/nguonc_search_bloc.dart';
-import 'package:smoth_movie_app/features/nguonc_search_movies/presentation/widget/list_search_nguonc_blocbuilder.dart';
-import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
-import 'package:smoth_movie_app/features/search/presentation/widgets/list_search_content.dart';
-import 'package:smoth_movie_app/common/utils/helper/helper.dart';
-import 'package:smoth_movie_app/features/search/presentation/widgets/search_page_tabs_content.dart';
-import 'package:smoth_movie_app/features/search/presentation/widgets/search_tabbar.dart';
+
+import '../../../common/entity/search_tabs_item.dart';
+import '../../../common/widgets/search_textfield_widget.dart';
+import 'bloc/search_bloc.dart';
+import 'cubit/search_history_cubit.dart';
+import 'enum/search_tab.dart';
+import 'widgets/list_search_content.dart';
+import 'widgets/search_page_tabs_content.dart';
+import 'widgets/search_tabbar.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({
@@ -29,24 +29,27 @@ class _SearchPageState extends State<SearchPage> {
   final searchFocusNode = FocusNode();
   final scrollController = ScrollController();
 
-  static const int searchTabsLength = 2;
   static const double appBarHeight = 90.0;
   static const double appBarBottomHeight = 10.0;
-  late final List<SearchTabsItem> searchTabsView;
+  late final List<SearchTabsItem> searchTabViews;
 
   @override
   void initState() {
+    /// Auto Focus On Search field
     searchFocusNode.requestFocus();
-    searchController.addListener(() {
-      if (searchController.text.isEmpty) {
-        context.read<SearchBloc>().add(ClearSearchSuggestionsEvent());
-        context
-            .read<NguoncSearchBloc>()
-            .add(ClearNguoncSearchSuggestionsEvent());
-      }
-    });
-    initSearchTabsView();
+
+    /// Add Listeners
+    searchController.addListener(_onSearchControllerChanged);
+
+    /// Initialize Search Tabs
+    _initializeSearchTabs();
     super.initState();
+  }
+
+  void _onSearchControllerChanged() {
+    if (searchController.text.isEmpty) {
+      onClearSuggestions();
+    }
   }
 
   @override
@@ -55,46 +58,74 @@ class _SearchPageState extends State<SearchPage> {
     super.dispose();
   }
 
-  void initSearchTabsView() {
-    searchTabsView = [
-      SearchTabsItem(
-        title: "Nguồn chính",
-        tabWidget: ListSearchContent(
-          onSelected: (value) => searchController.text = value,
-          onSuggestionSelected: submitSearch,
-          listSearch: widget.listSearch,
-        ),
-      ),
-      SearchTabsItem(
-        title: "Nguồn phụ",
-        tabWidget: ListSearchNguoncContent(
-          onSelected: (value) => searchController.text = value,
-          listSearch: widget.listSearch,
-        ),
-      )
-    ];
-  }
-
   void pageDispose() {
     searchFocusNode.unfocus();
     searchController.dispose();
   }
 
-  void submitSearch(String value) {
-    final query = value.trim();
-    if (query.isEmpty) return;
-
-    searchController.text = query;
+  void onClearSuggestions() {
     context.read<SearchBloc>().add(ClearSearchSuggestionsEvent());
-    context.read<NguoncSearchBloc>().add(ClearNguoncSearchSuggestionsEvent());
-    Helper.onSubmitSearch(context: context, query: query);
-    Helper.nguonCSearchFilms(context: context, query: query);
+  }
+
+  void submitSearch(String value) {
+    if (value.isEmpty) return;
+    final query = value.trim();
+
+    /// Clear suggestions
+    onClearSuggestions();
+
+    /// Save search history
+    context.read<SearchHistoryCubit>().addKeyword(query);
+
+    /// Call API search
+    searchController.text = query;
+    context.read<SearchBloc>().add(GetSearchMoviesEvent(
+          query: query,
+          limit: 10,
+        ));
+  }
+
+  void onSearchTextChanged(String value) {
+    if (value.isEmpty) return;
+
+    /// Update search query
+    context.read<SearchBloc>().add(SearchQueryChangedEvent(query: value));
+  }
+
+  Widget _buildTabWidget(SearchTabEnum tab) {
+    switch (tab) {
+      case SearchTabEnum.main:
+        return BlocBuilder<SearchHistoryCubit, List<String>>(
+          builder: (context, history) {
+            return ListSearchContent(
+              onSelected: (value) => searchController.text = value,
+              onSuggestionSelected: submitSearch,
+              listSearch: widget.listSearch,
+              searchHistory: history,
+              onDeleteKeyword: (keyword) =>
+                  context.read<SearchHistoryCubit>().removeKeyword(keyword),
+              onClearHistory: () =>
+                  context.read<SearchHistoryCubit>().clearAll(),
+            );
+          },
+        );
+    }
+  }
+
+  void _initializeSearchTabs() {
+    searchTabViews = List.generate(
+      SearchTabEnum.values.length,
+      (i) => SearchTabsItem(
+        title: SearchTabEnum.values[i].tabTitle,
+        tabWidget: _buildTabWidget(SearchTabEnum.values[i]),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: searchTabsLength,
+      length: SearchTabEnum.values.length,
       child: Scaffold(
         appBar: AppBar(
           toolbarHeight: appBarHeight,
@@ -102,30 +133,26 @@ class _SearchPageState extends State<SearchPage> {
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(appBarBottomHeight),
             child: SearchTabBar(
-              searchTabsLength: searchTabsLength,
-              searchTabsBar: searchTabsView.map((e) => e.title).toList(),
+              searchTabsLength: SearchTabEnum.values.length,
+              searchTabsBar: List.generate(
+                SearchTabEnum.values.length,
+                (index) => SearchTabEnum.values[index].tabTitle,
+              ),
             ),
           ),
           title: SearchTextField(
             focusNode: searchFocusNode,
             hintText: widget.searchHint,
             controller: searchController,
-            onChanged: (value) {
-              context.read<SearchBloc>().add(
-                    SearchQueryChangedEvent(query: value),
-                  );
-              context.read<NguoncSearchBloc>().add(
-                    SearchNguoncQueryChangedEvent(query: value),
-                  );
-            },
+            onChanged: onSearchTextChanged,
             onSubmitted: submitSearch,
           ),
         ),
         body: SearchPageTabsContent(
-          searchTabsLength: searchTabsLength,
+          searchTabsLength: SearchTabEnum.values.length,
           searchTabsView: List.generate(
-            searchTabsLength,
-            (index) => searchTabsView[index].tabWidget,
+            searchTabViews.length,
+            (index) => searchTabViews[index].tabWidget,
           ),
         ),
       ),
