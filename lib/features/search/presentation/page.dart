@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../common/entity/search_tabs_item.dart';
 import '../../../common/widgets/search_textfield_widget.dart';
-import 'bloc/search_bloc.dart';
-import 'cubit/search_history_cubit.dart';
+import 'bloc/search_main_bloc/search_bloc.dart';
+import 'bloc/search_history_bloc/search_history_bloc.dart';
 import 'enum/search_tab.dart';
 import 'widgets/list_search_content.dart';
 import 'widgets/search_page_tabs_content.dart';
@@ -75,7 +75,7 @@ class _SearchPageState extends State<SearchPage> {
     onClearSuggestions();
 
     /// Save search history
-    context.read<SearchHistoryCubit>().addKeyword(query);
+    context.read<SearchHistoryBloc>().add(SearchHistoryEvent.add(query));
 
     /// Call API search
     searchController.text = query;
@@ -95,17 +95,17 @@ class _SearchPageState extends State<SearchPage> {
   Widget _buildTabWidget(SearchTabEnum tab) {
     switch (tab) {
       case SearchTabEnum.main:
-        return BlocBuilder<SearchHistoryCubit, List<String>>(
-          builder: (context, history) {
+        return BlocBuilder<SearchHistoryBloc, SearchHistoryState>(
+          builder: (context, state) {
             return ListSearchContent(
               onSelected: (value) => searchController.text = value,
               onSuggestionSelected: submitSearch,
               listSearch: widget.listSearch,
-              searchHistory: history,
+              searchHistory: state.history,
               onDeleteKeyword: (keyword) =>
-                  context.read<SearchHistoryCubit>().removeKeyword(keyword),
+                  context.read<SearchHistoryBloc>().add(SearchHistoryEvent.delete(keyword)),
               onClearHistory: () =>
-                  context.read<SearchHistoryCubit>().clearAll(),
+                  context.read<SearchHistoryBloc>().add(const SearchHistoryEvent.clearAll()),
             );
           },
         );
