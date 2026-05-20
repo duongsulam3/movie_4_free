@@ -38,8 +38,8 @@ import 'package:smoth_movie_app/features/search/domain/usecase/get_search_histor
 import 'package:smoth_movie_app/features/search/domain/usecase/get_search_movies.dart';
 import 'package:smoth_movie_app/features/search/domain/usecase/get_search_suggestions.dart';
 import 'package:smoth_movie_app/features/search/domain/usecase/save_search_keyword.dart';
-import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
-import 'package:smoth_movie_app/features/search/presentation/cubit/search_history_cubit.dart';
+import 'package:smoth_movie_app/features/search/presentation/bloc/search_main_bloc/search_bloc.dart';
+import 'package:smoth_movie_app/features/search/presentation/bloc/search_history_bloc/search_history_bloc.dart';
 import 'package:smoth_movie_app/features/movie_detail/data/repository/detail_movie_repository_impl.dart';
 import 'package:smoth_movie_app/features/movie_detail/data/source/remote/detail_movie_remote_data_source.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/repository/detail_movie_repository.dart';
@@ -206,7 +206,7 @@ void _initSearchMovieDependencies() {
     () => ClearSearchHistory(repository: serviceLocator()),
   );
   serviceLocator.registerFactory(
-    () => SearchHistoryCubit(
+    () => SearchHistoryBloc(
       getSearchHistory: serviceLocator(),
       saveSearchKeyword: serviceLocator(),
       deleteSearchKeyword: serviceLocator(),
