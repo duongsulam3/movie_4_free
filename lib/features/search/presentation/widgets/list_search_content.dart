@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
-import 'package:smoth_movie_app/common/router/params/movie_detail_param_model.dart';
-import 'package:smoth_movie_app/common/widgets/progress_indicator_custom.dart';
-import 'package:smoth_movie_app/common/widgets/responsive_sized_box.dart';
-import 'package:smoth_movie_app/common/screens/error_page.dart';
-import 'package:smoth_movie_app/common/utils/enum/search/search_page_status.dart';
-import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
-import 'package:smoth_movie_app/features/search/presentation/widgets/search_init_widget.dart';
-import 'package:smoth_movie_app/features/search/presentation/widgets/search_item_widget.dart';
-import 'package:smoth_movie_app/features/search/presentation/widgets/search_suggestion_dropdown.dart';
-import 'package:smoth_movie_app/common/utils/helper/helper.dart';
-import 'package:smoth_movie_app/common/router/app_router.dart';
+
+import '../../../../common/router/app_router.dart';
+import '../../../../common/router/params/movie_detail_param_model.dart';
+import '../../../../common/screens/error_page.dart';
+import '../../../../common/utils/enum/search/search_page_status.dart';
+import '../../../../common/utils/helper/helper.dart';
+import '../../../../common/widgets/progress_indicator_custom.dart';
+import '../../../../common/widgets/responsive_sized_box.dart';
+import '../../../../common/widgets/responsive_small_text.dart';
+import '../bloc/search_main_bloc/search_bloc.dart';
+import 'search_init_widget.dart';
+import 'search_item_widget.dart';
+import 'search_suggestion_dropdown.dart';
 
 class ListSearchContent extends StatelessWidget {
   const ListSearchContent({
