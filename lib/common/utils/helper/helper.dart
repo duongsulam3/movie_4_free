@@ -9,7 +9,7 @@ import 'package:smoth_movie_app/features/movie_detail/domain/entities/country.da
 import 'package:smoth_movie_app/features/movie_detail/presentation/bloc/detail_movie/detail_movie_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/similar_movies/similar_movies_bloc.dart';
 import 'package:smoth_movie_app/features/search/data/models/search_suggestion_model.dart';
-import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
+import 'package:smoth_movie_app/features/search/presentation/bloc/search_main_bloc/search_bloc.dart';
 import 'package:smoth_movie_app/features/movies/presentation/bloc/movies/movies_bloc.dart';
 import 'package:smoth_movie_app/common/utils/helper/http_override.dart';
 

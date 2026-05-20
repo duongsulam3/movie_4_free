@@ -6,8 +6,8 @@ import 'package:smoth_movie_app/features/search/domain/usecase/get_search_movies
 import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_item.dart';
 import 'package:smoth_movie_app/features/search/domain/entities/search_suggestion_entity.dart';
 import 'package:smoth_movie_app/features/search/domain/usecase/get_search_suggestions.dart';
-part 'search_bloc.freezed.dart';
 
+part 'search_bloc.freezed.dart';
 part 'search_event.dart';
 part 'search_state.dart';
 

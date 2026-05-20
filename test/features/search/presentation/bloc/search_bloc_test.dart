@@ -7,7 +7,7 @@ import 'package:smoth_movie_app/common/utils/enum/search/search_page_status.dart
 import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_item.dart';
 import 'package:smoth_movie_app/features/search/domain/usecase/get_search_movies.dart';
 import 'package:smoth_movie_app/features/search/domain/usecase/get_search_suggestions.dart';
-import 'package:smoth_movie_app/features/search/presentation/bloc/search_bloc.dart';
+import 'package:smoth_movie_app/features/search/presentation/bloc/search_main_bloc/search_bloc.dart';
 
 import '../../fixtures/movie_item_fixtures.dart';
 
