@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 enum HomeBottomNav {
   home,
   khoPhim,
-  donate,
+  profile,
 }
 
 extension HomeBottomNavExtension on HomeBottomNav {
@@ -13,8 +13,8 @@ extension HomeBottomNavExtension on HomeBottomNav {
         return "Trang chủ";
       case HomeBottomNav.khoPhim:
         return "Kho phim";
-      case HomeBottomNav.donate:
-        return "Donate";
+      case HomeBottomNav.profile:
+        return "Profile";
     }
   }
 
@@ -27,32 +27,12 @@ extension HomeBottomNavExtension on HomeBottomNav {
         );
       case HomeBottomNav.khoPhim:
         return const Icon(
-          Icons.movie,
+          Icons.widgets_rounded,
           color: Colors.white,
         );
-      case HomeBottomNav.donate:
+      case HomeBottomNav.profile:
         return const Icon(
-          Icons.thumb_up,
-          color: Colors.white,
-        );
-    }
-  }
-
-  Icon get activeIcon {
-    switch (this) {
-      case HomeBottomNav.home:
-        return const Icon(
-          Icons.home_filled,
-          color: Colors.white,
-        );
-      case HomeBottomNav.khoPhim:
-        return const Icon(
-          Icons.movie_rounded,
-          color: Colors.white,
-        );
-      case HomeBottomNav.donate:
-        return const Icon(
-          Icons.thumb_up_alt_rounded,
+          Icons.person,
           color: Colors.white,
         );
     }

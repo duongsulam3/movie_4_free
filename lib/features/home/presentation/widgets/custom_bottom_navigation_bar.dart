@@ -41,26 +41,29 @@ class CustomBottomNavigationBar extends StatelessWidget {
   final List<BottomNavigationBarItem> items;
   final int currentIndex;
   final ValueChanged<int> onItemSelected;
+  final double height;
+  final Color iconColor;
 
   const CustomBottomNavigationBar({
     super.key,
     required this.items,
     required this.currentIndex,
     required this.onItemSelected,
+    this.height = 56.0,
+    this.iconColor = Colors.white,
   });
 
   static const double borderRadius = 999;
   static const Duration _pillDuration = Duration(milliseconds: 250);
 
+  // verticalInset and iconSize are calculated relative to height to maintain layout proportions.
+  double get verticalInset => height * 0.075;
+  double get iconSize => (height / 3).roundToDouble();
+
   @override
   Widget build(BuildContext context) {
-    // Best Practice: Hạn chế dùng MediaQuery cho padding/margin cứng vì dễ vỡ layout trên iPad/Fold.
-    // Tạm thời tôi giữ lại logic của bạn nhưng khuyên nên dùng SafeArea và hằng số cố định.
-    final screenHeight = MediaQuery.sizeOf(context).height;
-    final verticalInset = screenHeight * 0.006;
-
     return Container(
-      height: screenHeight * 0.08,
+      height: height,
       decoration: BoxDecoration(
         color: Colors.black.withValues(alpha: 0.8),
         borderRadius: const BorderRadius.all(Radius.circular(borderRadius)),
@@ -72,51 +75,54 @@ class CustomBottomNavigationBar extends StatelessWidget {
           ),
         ],
       ),
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final itemCount = items.length;
-          final pill = _BottomNavPillLayout.maybeFrom(
-            trackWidth: constraints.maxWidth,
-            itemCount: itemCount,
-            currentIndex: currentIndex,
-            textDirection: Directionality.of(context),
-          );
-          if (pill == null) {
-            return const SizedBox.shrink();
-          }
+      child: IconTheme(
+        data: IconThemeData(size: iconSize, color: iconColor),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final itemCount = items.length;
+            final pill = _BottomNavPillLayout.maybeFrom(
+              trackWidth: constraints.maxWidth,
+              itemCount: itemCount,
+              currentIndex: currentIndex,
+              textDirection: Directionality.of(context),
+            );
+            if (pill == null) {
+              return const SizedBox.shrink();
+            }
 
-          return Stack(
-            children: [
-              AnimatedPositioned(
-                duration: _pillDuration,
-                curve: Curves.easeInOut,
-                top: verticalInset,
-                bottom: verticalInset,
-                left: pill.left,
-                width: pill.width,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.5),
-                    borderRadius: BorderRadius.circular(borderRadius),
+            return Stack(
+              children: [
+                AnimatedPositioned(
+                  duration: _pillDuration,
+                  curve: Curves.easeInOut,
+                  top: verticalInset,
+                  bottom: verticalInset,
+                  left: pill.left,
+                  width: pill.width,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.5),
+                      borderRadius: BorderRadius.circular(borderRadius),
+                    ),
                   ),
                 ),
-              ),
-              Row(
-                children: List.generate(itemCount, (index) {
-                  final item = items[index];
-                  final isSelected = index == currentIndex;
-                  return Expanded(
-                    child: _BottomNavSlot(
-                      item: item,
-                      isSelected: isSelected,
-                      onTap: () => onItemSelected(index),
-                    ),
-                  );
-                }),
-              ),
-            ],
-          );
-        },
+                Row(
+                  children: List.generate(itemCount, (index) {
+                    final item = items[index];
+                    final isSelected = index == currentIndex;
+                    return Expanded(
+                      child: _BottomNavSlot(
+                        item: item,
+                        isSelected: isSelected,
+                        onTap: () => onItemSelected(index),
+                      ),
+                    );
+                  }),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
