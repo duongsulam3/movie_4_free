@@ -27,27 +27,7 @@ extension HomeBottomNavExtension on HomeBottomNav {
         );
       case HomeBottomNav.khoPhim:
         return const Icon(
-          Icons.movie,
-          color: Colors.white,
-        );
-      case HomeBottomNav.profile:
-        return const Icon(
-          Icons.person,
-          color: Colors.white,
-        );
-    }
-  }
-
-  Icon get activeIcon {
-    switch (this) {
-      case HomeBottomNav.home:
-        return const Icon(
-          Icons.home_filled,
-          color: Colors.white,
-        );
-      case HomeBottomNav.khoPhim:
-        return const Icon(
-          Icons.movie_rounded,
+          Icons.widgets_rounded,
           color: Colors.white,
         );
       case HomeBottomNav.profile:

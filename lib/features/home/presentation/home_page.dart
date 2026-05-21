@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smoth_movie_app/common/entity/page_item.dart';
-import 'package:smoth_movie_app/common/entity/tab_item.dart';
+import 'package:flutter_supper_app_core/core.dart';
 
+import '../../../common/entity/page_item.dart';
+import '../../../common/entity/tab_item.dart';
 import '../../../common/widgets/custom_appbar_widget.dart';
 import '../../kho_phim/presentation/page.dart';
 import '../../profile/page.dart';
@@ -30,6 +30,7 @@ class _HomePageState extends State<HomePage>
   // Layout constants.
   static const appBarHeight = 90.0;
   static const tabBarHeight = 30.0;
+  static const bottomNavHeight = 56.0;
   static final int _tabCount = HomeCategoryTab.values.length;
 
   // Controllers and static view models.
@@ -85,7 +86,6 @@ class _HomePageState extends State<HomePage>
       (i) => BottomNavigationBarItem(
         label: HomeBottomNav.values[i].title,
         icon: HomeBottomNav.values[i].icon,
-        activeIcon: HomeBottomNav.values[i].activeIcon,
       ),
     );
   }
@@ -180,6 +180,8 @@ class _HomePageState extends State<HomePage>
       items: navs,
       onItemSelected: _onChangeBottomNav,
       currentIndex: context.watch<HomeShellCubit>().state.currentBottomIndex,
+      height: bottomNavHeight.v,
+      iconColor: Colors.red.withValues(alpha: 0.8),
     );
   }
 
