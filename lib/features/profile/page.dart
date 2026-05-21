@@ -1,9 +1,11 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:smoth_movie_app/common/widgets/cached_network/container_with_cached_network_image_provider.dart';
-import 'package:smoth_movie_app/common/widgets/responsive_sized_box.dart';
-import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
-import 'package:smoth_movie_app/common/utils/secret/app_secret.dart';
+import 'package:flutter_supper_app_core/core.dart';
+
+import '../../common/widgets/responsive_sized_box.dart';
+import '../../common/widgets/responsive_small_text.dart';
+import 'widgets/asset_cards.dart';
+import 'widgets/profile_header.dart';
+import 'widgets/profile_menu_item.dart';
+import 'widgets/vip_banner.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -13,57 +15,63 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  static const String _qrCode = AppSecret.qrCode;
-
-  @override
-  void didChangeDependencies() {
-    precacheImage(const CachedNetworkImageProvider(_qrCode), context);
-    super.didChangeDependencies();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ContainerWithCachedNetworkImageProvider(
-            path: _qrCode,
-            width: 200,
-            height: 200,
+    return const Scaffold(
+      backgroundColor: Color(0xFF0F0F0F), // Deep dark background
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ProfileHeader(),
+              VipBanner(),
+              AssetCards(),
+              ProfileMenuItem(
+                icon: Icons.add,
+                label: 'Danh sách phim của tôi',
+              ),
+              ProfileMenuItem(
+                icon: Icons.access_time,
+                label: 'Lịch sử xem',
+              ),
+              ProfileMenuItem(
+                icon: Icons.tablet_mac_outlined,
+                label: 'Tải TV APP',
+                trailingText: 'Free trial',
+              ),
+              ProfileMenuItem(
+                icon: Icons.language,
+                label: 'Ngôn ngữ',
+              ),
+              ProfileMenuItem(
+                icon: Icons.subtitles_outlined,
+                label: 'Bản dịch phụ đề',
+              ),
+              ProfileMenuItem(
+                icon: Icons.settings_outlined,
+                label: 'Cài đặt',
+              ),
+              ProfileMenuItem(
+                icon: Icons.chat_bubble_outline,
+                label: 'Phản ánh ý kiến',
+              ),
+              ResponsiveSizedBox(height: 40),
+              Center(
+                child: Opacity(
+                  opacity: 0.3,
+                  child: ResponsiveText(
+                    text: 'IQIYI V8.4.0(726952)',
+                    fontSize: 12,
+                    textColor: Colors.grey,
+                  ),
+                ),
+              ),
+              ResponsiveSizedBox(height: 20),
+            ],
           ),
-          ResponsiveSizedBox(height: 20),
-          ResponsiveText(
-            text: 'Cảm ơn vì đã ủng hộ các nhà phát triển!',
-            fontSize: 16,
-            textColor: Colors.grey,
-          ),
-        ],
+        ),
       ),
-    );
-  }
-}
-
-class IconAndTextRowWidget extends StatelessWidget {
-  final IconData iconData;
-  final double spacing;
-  final String text;
-  const IconAndTextRowWidget({
-    super.key,
-    required this.iconData,
-    required this.text,
-    this.spacing = 10,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Icon(iconData, color: Colors.grey),
-        ResponsiveSizedBox(width: spacing),
-        ResponsiveText(text: text, fontSize: 20),
-      ],
     );
   }
 }
