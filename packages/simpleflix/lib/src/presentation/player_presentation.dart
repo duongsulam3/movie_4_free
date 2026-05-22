@@ -8,15 +8,37 @@ import 'widgets/progress_bar.dart';
 /// [SimpleFlix] là Entry Point của tầng UI.
 /// Widget này nhận vào Controller đã được khởi tạo từ phía Client.
 class SimpleFlix extends StatefulWidget {
-  const SimpleFlix({super.key, required this.controller});
+  const SimpleFlix({
+    super.key,
+    required this.controller,
+    this.alwaysOnDisplay = true,
+  });
 
   final SimpleFlixController controller;
+  final bool alwaysOnDisplay;
 
   @override
   State<SimpleFlix> createState() => _SimpleFlixState();
 }
 
 class _SimpleFlixState extends State<SimpleFlix> {
+  @override
+  void initState() {
+    super.initState();
+    // Đồng bộ cấu hình từ UI xuống Controller ngay khi khởi tạo State
+    widget.controller.updateAlwaysOnDisplay(widget.alwaysOnDisplay);
+  }
+
+  @override
+  void didUpdateWidget(covariant SimpleFlix oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Best Practice: Nếu Widget cha Re-build và thay đổi giá trị cấu hình,
+    // chúng ta phải cập nhật ngay xuống Controller để thay đổi hành vi Native
+    if (widget.alwaysOnDisplay != oldWidget.alwaysOnDisplay) {
+      widget.controller.updateAlwaysOnDisplay(widget.alwaysOnDisplay);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<void>(

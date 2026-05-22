@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/services.dart';
 
+import '../internal/helpers/wakelock.dart';
 import '../presentation/player_presentation.dart';
 
 /// [SimpleFlixController] đóng vai trò là một Adapter quản lý State
@@ -11,6 +12,7 @@ class SimpleFlixController extends ChangeNotifier {
     required this.controller,
     this.autoPlay = false,
     this.looping = false,
+    this.alwaysOnDisplay = true,
   }) {
     _initialize();
   }
@@ -18,6 +20,9 @@ class SimpleFlixController extends ChangeNotifier {
   final VideoPlayerController controller;
   final bool autoPlay;
   final bool looping;
+
+  // Thuộc tính cấu hình quyền kiểm soát màn hình sáng/tối
+  bool alwaysOnDisplay;
 
   // Cache lại Future khởi tạo để tránh việc tái khởi tạo khi đổi Route
   Future<void>? _initializeFuture;
@@ -48,6 +53,32 @@ class SimpleFlixController extends ChangeNotifier {
   void _videoListener() {
     // Cập nhật vị trí video hiện tại
     videoPosition.value = controller.value.position;
+    _handleWakelock();
+  }
+
+  /// Quản lý trạng thái WakeLock kết hợp điều kiện cấu hình từ UI
+  void _handleWakelock() {
+    // Nếu Client chủ động tắt tính năng này, lập tức giải phóng Wake Lock để tiết kiệm pin
+    if (!alwaysOnDisplay) {
+      NativeWakelock.disable();
+      return;
+    }
+
+    final isPlaying = controller.value.isPlaying;
+    if (isPlaying) {
+      NativeWakelock.enable();
+    } else {
+      NativeWakelock.disable();
+    }
+  }
+
+  /// Cung cấp API công khai để UI cập nhật cấu hình theo thời gian thực (Runtime Dynamic Update)
+  void updateAlwaysOnDisplay(bool value) {
+    if (alwaysOnDisplay == value) return;
+    alwaysOnDisplay = value;
+    // Kích hoạt tính toán lại trạng thái phần cứng ngay lập tức
+    _handleWakelock();
+    notifyListeners();
   }
 
   void togglePlay() {
@@ -69,6 +100,7 @@ class SimpleFlixController extends ChangeNotifier {
     controller.removeListener(_videoListener);
     videoPosition.dispose();
     isControlsVisible.dispose();
+    NativeWakelock.disable();
     super.dispose();
   }
 
@@ -108,9 +140,7 @@ class SimpleFlixController extends ChangeNotifier {
         return Scaffold(
           backgroundColor: Colors.black,
           body: SizedBox.expand(
-            child: SafeArea(
-              child: SimpleFlix(controller: this),
-            ),
+            child: SafeArea(child: SimpleFlix(controller: this)),
           ),
         );
       },
@@ -135,8 +165,6 @@ class SimpleFlixController extends ChangeNotifier {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
     // 2. Trả màn hình về trạng thái mặc định (Dọc)
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   }
 }
