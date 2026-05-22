@@ -1,11 +1,12 @@
 import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:chewie/chewie.dart';
+// import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 import '../utils/helper/helper.dart';
+import 'simpleflix_player/simpleflix.dart';
 
 enum _MoviePlayerViewState {
   initializing,
@@ -30,7 +31,8 @@ class MoviePlayerWidget extends StatefulWidget {
 
 class _MoviePlayerWidgetState extends State<MoviePlayerWidget> {
   VideoPlayerController? _controller;
-  ChewieController? chewieController;
+  SimpleFlixController? simpleFlixController;
+  // ChewieController? chewieController;
   bool _isInitializing = false;
   bool _hasInitError = false;
   int _initRequestId = 0;
@@ -76,11 +78,7 @@ class _MoviePlayerWidgetState extends State<MoviePlayerWidget> {
       }
 
       _controller = controller;
-      chewieController = ChewieController(
-        videoPlayerController: controller,
-        autoPlay: true,
-        allowedScreenSleep: false,
-      );
+      simpleFlixController = SimpleFlixController(controller: controller);
 
       setState(() {
         _isInitializing = false;
@@ -102,8 +100,10 @@ class _MoviePlayerWidgetState extends State<MoviePlayerWidget> {
   void _playerDispose() {
     _controller?.dispose();
     _controller = null;
-    chewieController?.dispose();
-    chewieController = null;
+    simpleFlixController?.dispose();
+    simpleFlixController = null;
+    // chewieController?.dispose();
+    // chewieController = null;
   }
 
   void buildNewVideoPlayer(String newUrl) {
@@ -130,7 +130,7 @@ class _MoviePlayerWidgetState extends State<MoviePlayerWidget> {
           isLoading: true,
         );
       case _MoviePlayerViewState.ready:
-        return Chewie(controller: chewieController!);
+        return SimpleFlix(controller: simpleFlixController!);
       case _MoviePlayerViewState.error:
         return _MoviePlayerFallbackPoster(
           posterUrl: widget.posterUrl,
@@ -144,7 +144,7 @@ class _MoviePlayerWidgetState extends State<MoviePlayerWidget> {
     final controller = _controller;
     final hasReadyController = controller != null &&
         controller.value.isInitialized &&
-        chewieController != null;
+        simpleFlixController != null;
     final viewState = _resolveViewState(hasReadyController);
 
     return AspectRatio(
