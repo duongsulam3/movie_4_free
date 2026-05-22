@@ -83,7 +83,10 @@ class SimpleFlixController extends ChangeNotifier {
     notifyListeners();
 
     // 1. Ẩn thanh trạng thái và thanh điều hướng hệ thống
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.immersiveSticky,
+      overlays: [], // Ẩn tất cả các overlay (status bar, navigation bar)
+    );
 
     // 2. Ép buộc thiết bị xoay ngang
     SystemChrome.setPreferredOrientations([
@@ -104,8 +107,10 @@ class SimpleFlixController extends ChangeNotifier {
         // Trả về chính Widget CustomVideoPlayer nhưng nhận diện ngữ cảnh Fullscreen
         return Scaffold(
           backgroundColor: Colors.black,
-          body: SafeArea(
-            child: SimpleFlix(controller: this),
+          body: SizedBox.expand(
+            child: SafeArea(
+              child: SimpleFlix(controller: this),
+            ),
           ),
         );
       },
