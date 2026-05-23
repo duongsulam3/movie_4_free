@@ -95,6 +95,31 @@ class SimpleFlixController extends ChangeNotifier {
     isControlsVisible.value = !isControlsVisible.value;
   }
 
+  /// Tua tới 5 giây
+  void seekForward() {
+    final currentPosition = controller.value.position;
+    final duration = controller.value.duration;
+    final targetPosition = currentPosition + const Duration(seconds: 5);
+
+    if (targetPosition > duration) {
+      controller.seekTo(duration);
+    } else {
+      controller.seekTo(targetPosition);
+    }
+  }
+
+  /// Tua lùi 5 giây
+  void seekBackward() {
+    final currentPosition = controller.value.position;
+    final targetPosition = currentPosition - const Duration(seconds: 5);
+
+    if (targetPosition < Duration.zero) {
+      controller.seekTo(Duration.zero);
+    } else {
+      controller.seekTo(targetPosition);
+    }
+  }
+
   @override
   void dispose() {
     controller.removeListener(_videoListener);

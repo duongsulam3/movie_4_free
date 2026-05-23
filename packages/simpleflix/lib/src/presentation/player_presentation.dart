@@ -4,6 +4,7 @@ import 'package:video_player/video_player.dart';
 import '../controller/controller.dart';
 import 'widgets/play_pause_button.dart';
 import 'widgets/progress_bar.dart';
+import 'widgets/seek_buttons.dart';
 
 /// [SimpleFlix] là Entry Point của tầng UI.
 /// Widget này nhận vào Controller đã được khởi tạo từ phía Client.
@@ -99,8 +100,17 @@ class _SimpleFlixState extends State<SimpleFlix> {
         color: Colors.black.withValues(alpha: 0.3),
         child: Stack(
           children: [
-            // Đặt nút Play/Pause ở trung tâm của video
-            Center(child: PlayPauseButton(controller: widget.controller)),
+            // Đặt các nút điều khiển chính ở trung tâm
+            Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  SeekBackwardButton(controller: widget.controller),
+                  PlayPauseButton(controller: widget.controller),
+                  SeekForwardButton(controller: widget.controller),
+                ],
+              ),
+            ),
 
             // Tầng 3: Progress Bar (Luồng dữ liệu riêng biệt, tối ưu re-render)
             Positioned(
