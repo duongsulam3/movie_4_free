@@ -13,6 +13,11 @@ class ProgressBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final coreController = controller.controller;
 
+    // Responsive size của ProgressBar sẽ được tính toán dựa trên kích thước của video player, đảm bảo hiển thị tốt trên cả điện thoại và tablet
+    final size = MediaQuery.sizeOf(context);
+    final width = size.width;
+    final height = size.height;
+
     // Thiết kế nguyên lý Atomic Re-build: Chỉ lắng nghe sự thay đổi của tiến trình video
     return ListenableBuilder(
       listenable: controller.videoPosition,
@@ -26,9 +31,12 @@ class ProgressBar extends StatelessWidget {
         // Tránh lỗi chia cho 0 hoặc giá trị âm khi video chưa load xong Metadata
         final double progress = (durMs > 0 && posMs >= 0) ? posMs / durMs : 0.0;
 
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6.0),
+        return Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.only(left: width * 0.026, right: width * 0.020),
           child: Row(
+            // Khoảng cách giữa các phần tử trong Row
+            spacing: height * 0.008,
             children: [
               Expanded(
                 child: CustomSlider(
@@ -44,7 +52,7 @@ class ProgressBar extends StatelessWidget {
               // Hiển thị thời gian hiện tại và tổng thời lượng của video
               Text(
                 "${_formatDuration(position)} / ${_formatDuration(duration)}",
-                style: const TextStyle(color: Colors.white, fontSize: 10.0),
+                style: TextStyle(color: Colors.white, fontSize: 11.0),
               ),
 
               // Tích hợp nút Fullscreen kế bên thời gian tổng của video
