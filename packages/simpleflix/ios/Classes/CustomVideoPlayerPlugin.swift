@@ -8,7 +8,7 @@ public class CustomVideoPlayerPlugin: NSObject, FlutterPlugin {
     // 1. Khởi tạo một MethodChannel độc lập
     // Cần truyền binaryMessenger lấy từ registrar để làm kênh truyền dữ liệu nhị phân
     let channel = FlutterMethodChannel(
-        name: "com.custom.videoplayer/wakelock", 
+        name: "com.simpleflix.videoplayer/wakelock", 
         binaryMessenger: registrar.messenger()
     )
     
