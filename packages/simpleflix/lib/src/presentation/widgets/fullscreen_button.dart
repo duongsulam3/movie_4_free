@@ -23,6 +23,7 @@ class FullScreenButton extends StatelessWidget {
   }
 
   void _onPressed(BuildContext context, bool isFullscreen) {
+    controller.resetHideTimer();
     if (isFullscreen) {
       controller.exitFullscreen(context);
     } else {

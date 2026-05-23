@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/services.dart';
+import 'dart:async';
 
 import '../internal/helpers/wakelock.dart';
 import '../presentation/player_presentation.dart';
@@ -32,6 +33,8 @@ class SimpleFlixController extends ChangeNotifier {
   final ValueNotifier<Duration> videoPosition = ValueNotifier(Duration.zero);
   final ValueNotifier<bool> isControlsVisible = ValueNotifier(true);
 
+  Timer? _hideTimer;
+
   void _initialize() {
     controller.addListener(_videoListener);
     if (looping) {
@@ -46,8 +49,26 @@ class SimpleFlixController extends ChangeNotifier {
       if (autoPlay && !controller.value.isPlaying) {
         controller.play();
       }
+      // Bắt đầu đếm ngược ẩn controls ngay sau khi khởi tạo xong nếu đang autoPlay
+      if (autoPlay) {
+        _startHideTimer();
+      }
       notifyListeners();
     });
+  }
+
+  void _startHideTimer() {
+    _hideTimer?.cancel();
+    _hideTimer = Timer(const Duration(seconds: 5), () {
+      isControlsVisible.value = false;
+    });
+  }
+
+  /// Reset lại timer khi có tương tác từ người dùng
+  void resetHideTimer() {
+    if (isControlsVisible.value) {
+      _startHideTimer();
+    }
   }
 
   void _videoListener() {
@@ -84,8 +105,11 @@ class SimpleFlixController extends ChangeNotifier {
   void togglePlay() {
     if (controller.value.isPlaying) {
       controller.pause();
+      // Khi dừng video, có thể giữ controls hiện (tùy UX), ở đây ta reset timer
+      _hideTimer?.cancel();
     } else {
       controller.play();
+      _startHideTimer();
     }
     // Chỉ thông báo cho các Widget lắng nghe trạng thái Play/Pause
     notifyListeners();
@@ -93,10 +117,16 @@ class SimpleFlixController extends ChangeNotifier {
 
   void toggleControlsVisibility() {
     isControlsVisible.value = !isControlsVisible.value;
+    if (isControlsVisible.value) {
+      _startHideTimer();
+    } else {
+      _hideTimer?.cancel();
+    }
   }
 
   /// Tua tới 5 giây
   void seekForward() {
+    resetHideTimer();
     final currentPosition = controller.value.position;
     final duration = controller.value.duration;
     final targetPosition = currentPosition + const Duration(seconds: 5);
@@ -110,6 +140,7 @@ class SimpleFlixController extends ChangeNotifier {
 
   /// Tua lùi 5 giây
   void seekBackward() {
+    resetHideTimer();
     final currentPosition = controller.value.position;
     final targetPosition = currentPosition - const Duration(seconds: 5);
 
@@ -122,6 +153,7 @@ class SimpleFlixController extends ChangeNotifier {
 
   @override
   void dispose() {
+    _hideTimer?.cancel();
     controller.removeListener(_videoListener);
     videoPosition.dispose();
     isControlsVisible.dispose();

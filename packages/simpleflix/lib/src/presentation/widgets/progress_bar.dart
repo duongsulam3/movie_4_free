@@ -42,6 +42,7 @@ class ProgressBar extends StatelessWidget {
                 child: CustomSlider(
                   value: progress,
                   onChanged: (value) {
+                    controller.resetHideTimer();
                     final targetMs = (value * durMs).toInt();
                     // Gọi hàm seek thông qua Adapter Controller, không gọi trực tiếp xuống Driver
                     coreController.seekTo(Duration(milliseconds: targetMs));
