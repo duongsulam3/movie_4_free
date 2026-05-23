@@ -13,7 +13,7 @@ import io.flutter.plugin.common.MethodChannel.Result
 class CustomVideoPlayerPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
     private lateinit var channel : MethodChannel
     private var activity: Activity? = null
-    private val CHANNEL_NAME = "com.custom.videoplayer/wakelock"
+    private val CHANNEL_NAME = "com.simpleflix.videoplayer/wakelock"
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, CHANNEL_NAME)
