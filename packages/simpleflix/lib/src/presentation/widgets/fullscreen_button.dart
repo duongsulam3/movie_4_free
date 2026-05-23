@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import '../../controller/controller.dart';
 
 class FullScreenButton extends StatelessWidget {
-  const FullScreenButton({
-    super.key,
-    required this.controller,
-  });
+  const FullScreenButton({super.key, required this.controller});
 
   final SimpleFlixController controller;
 
@@ -16,24 +13,27 @@ class FullScreenButton extends StatelessWidget {
       listenable: controller,
       builder: (context, _) {
         final isFullscreen = controller.isFullscreen;
-
-        return IconButton(
-          icon: Icon(
-            isFullscreen
-                ? Icons.close_fullscreen_rounded
-                : Icons.fullscreen_rounded,
-            color: Colors.white,
-            size: 24.0,
-          ),
-          onPressed: () {
-            if (isFullscreen) {
-              controller.exitFullscreen(context);
-            } else {
-              controller.enterFullscreen(context);
-            }
-          },
+        return GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () => _onPressed(context, isFullscreen),
+          child: Icon(_getIconShowUp(), color: Colors.white, size: 24.0),
         );
       },
     );
+  }
+
+  void _onPressed(BuildContext context, bool isFullscreen) {
+    controller.resetHideTimer();
+    if (isFullscreen) {
+      controller.exitFullscreen(context);
+    } else {
+      controller.enterFullscreen(context);
+    }
+  }
+
+  IconData _getIconShowUp() {
+    return controller.isFullscreen
+        ? Icons.fullscreen_exit_rounded
+        : Icons.fullscreen_rounded;
   }
 }

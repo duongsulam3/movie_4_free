@@ -32,8 +32,20 @@ to `/example` folder.
 const like = 'sample';
 ```
 
-## Additional information
+## Development
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+### Pigeon (MethodChannel Generation)
+
+This package uses [Pigeon](https://pub.dev/packages/pigeon) to generate type-safe MethodChannel code for communication between Dart and Native (Android/iOS).
+
+If you modify `pigeons/messages.dart`, you must regenerate the bridge code by running:
+
+```bash
+dart run pigeon --input pigeons/messages.dart
+```
+
+This will update:
+- `lib/src/internal/messages.g.dart`
+- `android/src/main/kotlin/com/custom/simpleflix/Messages.g.kt`
+- `ios/Classes/Messages.g.swift`
+
