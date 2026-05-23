@@ -1,7 +1,7 @@
 import Flutter
 import UIKit
 
-public class CustomVideoPlayerPlugin: NSObject, FlutterPlugin, NativeWakelockApi {
+@objc public class CustomVideoPlayerPlugin: NSObject, FlutterPlugin, NativeWakelockApi {
   
   public static func register(with registrar: FlutterPluginRegistrar) {
     let instance = CustomVideoPlayerPlugin()
