@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/services.dart';
+import 'dart:async';
 
 import '../internal/helpers/wakelock.dart';
+import '../internal/helpers/brightness.dart';
 import '../presentation/player_presentation.dart';
 
 /// [SimpleFlixController] đóng vai trò là một Adapter quản lý State
@@ -32,11 +34,26 @@ class SimpleFlixController extends ChangeNotifier {
   final ValueNotifier<Duration> videoPosition = ValueNotifier(Duration.zero);
   final ValueNotifier<bool> isControlsVisible = ValueNotifier(true);
 
+  // Quản lý độ sáng màn hình
+  final ValueNotifier<double> brightness = ValueNotifier(0.5);
+  final ValueNotifier<bool> isBrightnessIndicatorVisible = ValueNotifier(false);
+  Timer? _brightnessTimer;
+
+  Timer? _hideTimer;
+
   void _initialize() {
     controller.addListener(_videoListener);
+    // Khởi tạo độ sáng từ hệ thống
+    NativeBrightness.getBrightness().then((value) {
+      brightness.value = value;
+    });
+
+    // Cấu hình looping
     if (looping) {
       controller.setLooping(true);
     }
+
+    // Nếu autoPlay được bật, chúng ta sẽ tự động play sau khi khởi tạo xong
     if (autoPlay && !controller.value.isPlaying) {
       controller.play();
     }
@@ -46,8 +63,28 @@ class SimpleFlixController extends ChangeNotifier {
       if (autoPlay && !controller.value.isPlaying) {
         controller.play();
       }
+      // Bắt đầu đếm ngược ẩn controls ngay sau khi khởi tạo xong nếu đang autoPlay
+      if (autoPlay) {
+        _startHideTimer();
+      }
+
+      // Thông báo cho UI biết rằng video đã sẵn sàng để hiển thị
       notifyListeners();
     });
+  }
+
+  void _startHideTimer() {
+    _hideTimer?.cancel();
+    _hideTimer = Timer(const Duration(seconds: 5), () {
+      isControlsVisible.value = false;
+    });
+  }
+
+  /// Reset lại timer khi có tương tác từ người dùng
+  void resetHideTimer() {
+    if (isControlsVisible.value) {
+      _startHideTimer();
+    }
   }
 
   void _videoListener() {
@@ -84,8 +121,11 @@ class SimpleFlixController extends ChangeNotifier {
   void togglePlay() {
     if (controller.value.isPlaying) {
       controller.pause();
+      // Khi dừng video, có thể giữ controls hiện (tùy UX), ở đây ta reset timer
+      _hideTimer?.cancel();
     } else {
       controller.play();
+      _startHideTimer();
     }
     // Chỉ thông báo cho các Widget lắng nghe trạng thái Play/Pause
     notifyListeners();
@@ -93,13 +133,68 @@ class SimpleFlixController extends ChangeNotifier {
 
   void toggleControlsVisibility() {
     isControlsVisible.value = !isControlsVisible.value;
+    if (isControlsVisible.value) {
+      _startHideTimer();
+    } else {
+      _hideTimer?.cancel();
+    }
+  }
+
+  /// Tua tới 5 giây
+  void seekForward() {
+    resetHideTimer();
+    final currentPosition = controller.value.position;
+    final duration = controller.value.duration;
+    final targetPosition = currentPosition + const Duration(seconds: 5);
+
+    if (targetPosition > duration) {
+      controller.seekTo(duration);
+    } else {
+      controller.seekTo(targetPosition);
+    }
+  }
+
+  /// Tua lùi 5 giây
+  void seekBackward() {
+    resetHideTimer();
+    final currentPosition = controller.value.position;
+    final targetPosition = currentPosition - const Duration(seconds: 5);
+
+    if (targetPosition < Duration.zero) {
+      controller.seekTo(Duration.zero);
+    } else {
+      controller.seekTo(targetPosition);
+    }
+  }
+
+  /// Cập nhật độ sáng màn hình dựa trên delta vuốt
+  void updateBrightness(double delta) {
+    double newValue = brightness.value + delta;
+    if (newValue < 0.0) newValue = 0.0;
+    if (newValue > 1.0) newValue = 1.0;
+
+    if (brightness.value != newValue) {
+      brightness.value = newValue;
+      NativeBrightness.setBrightness(newValue);
+
+      // Hiển thị indicator
+      isBrightnessIndicatorVisible.value = true;
+      _brightnessTimer?.cancel();
+      _brightnessTimer = Timer(const Duration(seconds: 2), () {
+        isBrightnessIndicatorVisible.value = false;
+      });
+    }
   }
 
   @override
   void dispose() {
+    _hideTimer?.cancel();
+    _brightnessTimer?.cancel();
     controller.removeListener(_videoListener);
     videoPosition.dispose();
     isControlsVisible.dispose();
+    brightness.dispose();
+    isBrightnessIndicatorVisible.dispose();
     NativeWakelock.disable();
     super.dispose();
   }

@@ -5,32 +5,16 @@ import android.app.Activity
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
-import io.flutter.plugin.common.MethodCall
-import io.flutter.plugin.common.MethodChannel
-import io.flutter.plugin.common.MethodChannel.MethodCallHandler
-import io.flutter.plugin.common.MethodChannel.Result
 
-class CustomVideoPlayerPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
-    private lateinit var channel : MethodChannel
+class CustomVideoPlayerPlugin: FlutterPlugin, NativeWakelockApi, NativeBrightnessApi, ActivityAware {
     private var activity: Activity? = null
-    private val CHANNEL_NAME = "com.simpleflix.videoplayer/wakelock"
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-        channel = MethodChannel(flutterPluginBinding.binaryMessenger, CHANNEL_NAME)
-        channel.setMethodCallHandler(this)
+        NativeWakelockApi.setUp(flutterPluginBinding.binaryMessenger, this)
+        NativeBrightnessApi.setUp(flutterPluginBinding.binaryMessenger, this)
     }
 
-    override fun onMethodCall(call: MethodCall, result: Result) {
-        if (call.method == "toggleWakelock") {
-            val enable = call.argument<Boolean>("enable") ?: false
-            toggleWakelock(enable)
-            result.success(null)
-        } else {
-            result.notImplemented()
-        }
-    }
-
-    private fun toggleWakelock(enable: Boolean) {
+    override fun toggleWakelock(enable: Boolean) {
         activity?.let { act ->
             if (enable) {
                 act.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -40,8 +24,30 @@ class CustomVideoPlayerPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
         }
     }
 
+    override fun setBrightness(brightness: Double) {
+        activity?.let { act ->
+            val layoutParams = act.window.attributes
+            layoutParams.screenBrightness = brightness.toFloat()
+            act.window.attributes = layoutParams
+        }
+    }
+
+    override fun getBrightness(): Double {
+        return activity?.let { act ->
+            val brightness = act.window.attributes.screenBrightness
+            if (brightness < 0) {
+                // Nếu là giá trị mặc định hệ thống (-1), trả về giá trị xấp xỉ từ System Settings nếu cần
+                // Tuy nhiên trong video player thường chỉ cần quản lý tương đối
+                0.5 
+            } else {
+                brightness.toDouble()
+            }
+        } ?: 0.5
+    }
+
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-        channel.setMethodCallHandler(null)
+        NativeWakelockApi.setUp(binding.binaryMessenger, null)
+        NativeBrightnessApi.setUp(binding.binaryMessenger, null)
     }
 
     // Các hàm bắt buộc từ ActivityAware để lấy ngữ cảnh Activity an toàn, tránh Memory Leak

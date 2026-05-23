@@ -16,7 +16,7 @@ class PlayPauseButton extends StatelessWidget {
         final isPlaying = controller.controller.value.isPlaying;
 
         return IconButton(
-          iconSize: 48.0,
+          iconSize: 56.0,
           icon: Icon(
             isPlaying
                 ? Icons.pause_circle_outline_rounded
