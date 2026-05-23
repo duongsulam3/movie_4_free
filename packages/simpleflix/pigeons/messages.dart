@@ -5,7 +5,7 @@ import 'package:pigeon/pigeon.dart';
     dartOut: 'lib/src/internal/messages.g.dart',
     dartOptions: DartOptions(),
     kotlinOut: 'android/src/main/kotlin/com/custom/simpleflix/Messages.g.kt',
-    kotlinOptions: KotlinOptions(),
+    kotlinOptions: KotlinOptions(package: 'com.custom.simpleflix'),
     swiftOut: 'ios/Classes/Messages.g.swift',
     swiftOptions: SwiftOptions(),
   ),
