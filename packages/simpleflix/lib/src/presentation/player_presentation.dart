@@ -5,6 +5,7 @@ import '../controller/controller.dart';
 import 'widgets/play_pause_button.dart';
 import 'widgets/progress_bar.dart';
 import 'widgets/seek_buttons.dart';
+import 'widgets/brightness_indicator.dart';
 
 /// [SimpleFlix] là Entry Point của tầng UI.
 /// Widget này nhận vào Controller đã được khởi tạo từ phía Client.
@@ -70,7 +71,31 @@ class _SimpleFlixState extends State<SimpleFlix> {
           // Tầng 1: Render Video Texture từ Native Layer
           VideoPlayer(coreController),
 
-          // Tầng 2: Overlay Controls (Giao diện điều khiển)
+          // Tầng 2: Gesture Layer (Điều chỉnh độ sáng)
+          if (widget.controller.isFullscreen)
+            Positioned.fill(
+              child: GestureDetector(
+                onVerticalDragUpdate: (details) {
+                  final width = MediaQuery.sizeOf(context).width;
+                  final isRightSide = details.localPosition.dx > width / 2;
+
+                  if (isRightSide) {
+                    // Vuốt lên chi tiết âm, vuốt xuống dương -> đảo ngược để vuốt lên tăng
+                    final delta = -details.primaryDelta! / 200;
+                    widget.controller.updateBrightness(delta);
+                  }
+                },
+              ),
+            ),
+
+          // Tầng 3: Brightness Indicator (Hiển thị khi đang chỉnh)
+          Positioned.fill(
+            child: IgnorePointer(
+              child: BrightnessIndicator(controller: widget.controller),
+            ),
+          ),
+
+          // Tầng 4: Overlay Controls (Giao diện điều khiển)
           _buildOverlayControls(),
         ],
       ),

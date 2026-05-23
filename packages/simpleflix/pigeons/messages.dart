@@ -14,3 +14,9 @@ import 'package:pigeon/pigeon.dart';
 abstract class NativeWakelockApi {
   void toggleWakelock(bool enable);
 }
+
+@HostApi()
+abstract class NativeBrightnessApi {
+  void setBrightness(double brightness);
+  double getBrightness();
+}

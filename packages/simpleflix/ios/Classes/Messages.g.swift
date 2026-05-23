@@ -112,3 +112,45 @@ class NativeWakelockApiSetup {
     }
   }
 }
+/// Generated protocol from Pigeon that represents a handler of messages from Flutter.
+protocol NativeBrightnessApi {
+  func setBrightness(brightness: Double) throws
+  func getBrightness() throws -> Double
+}
+
+/// Generated setup class from Pigeon to handle messages through the `binaryMessenger`.
+class NativeBrightnessApiSetup {
+  static var codec: FlutterStandardMessageCodec { MessagesPigeonCodec.shared }
+  /// Sets up an instance of `NativeBrightnessApi` to handle messages through the `binaryMessenger`.
+  static func setUp(binaryMessenger: FlutterBinaryMessenger, api: NativeBrightnessApi?, messageChannelSuffix: String = "") {
+    let channelSuffix = messageChannelSuffix.count > 0 ? ".\(messageChannelSuffix)" : ""
+    let setBrightnessChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.simpleflix.NativeBrightnessApi.setBrightness\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    if let api = api {
+      setBrightnessChannel.setMessageHandler { message, reply in
+        let args = message as! [Any?]
+        let brightnessArg = args[0] as! Double
+        do {
+          try api.setBrightness(brightness: brightnessArg)
+          reply(wrapResult(nil))
+        } catch {
+          reply(wrapError(error))
+        }
+      }
+    } else {
+      setBrightnessChannel.setMessageHandler(nil)
+    }
+    let getBrightnessChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.simpleflix.NativeBrightnessApi.getBrightness\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    if let api = api {
+      getBrightnessChannel.setMessageHandler { _, reply in
+        do {
+          let result = try api.getBrightness()
+          reply(wrapResult(result))
+        } catch {
+          reply(wrapError(error))
+        }
+      }
+    } else {
+      getBrightnessChannel.setMessageHandler(nil)
+    }
+  }
+}
