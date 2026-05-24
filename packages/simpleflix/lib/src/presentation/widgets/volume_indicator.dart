@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
 import '../../controller/controller.dart';
 
-class BrightnessIndicator extends StatelessWidget {
-  const BrightnessIndicator({super.key, required this.controller});
+class VolumeIndicator extends StatelessWidget {
+  const VolumeIndicator({super.key, required this.controller});
 
   final SimpleFlixController controller;
 
   @override
   Widget build(BuildContext context) {
-    // Responsive Design cho Brightness Indicator with sizeOfMediaQuery
     final sizeOfMediaQuery = MediaQuery.sizeOf(context);
     final width = sizeOfMediaQuery.width;
     final height = sizeOfMediaQuery.height;
 
-    IconData getBrightnessIcon(double brightness) {
-      if (brightness == 0) return Icons.brightness_low_rounded;
-      if (brightness < 0.5) return Icons.brightness_medium_rounded;
-      return Icons.brightness_high_rounded;
+    IconData getVolumeIcon(double volume) {
+      if (volume == 0) return Icons.volume_off_rounded;
+      if (volume < 0.5) return Icons.volume_down_rounded;
+      return Icons.volume_up_rounded;
     }
 
     return ValueListenableBuilder<bool>(
-      valueListenable: controller.isBrightnessIndicatorVisible,
+      valueListenable: controller.isVolumeIndicatorVisible,
       builder: (context, isVisible, child) {
         return AnimatedOpacity(
           opacity: isVisible ? 1.0 : 0.0,
@@ -31,36 +30,36 @@ class BrightnessIndicator extends StatelessWidget {
       child: Center(
         child: Container(
           padding: EdgeInsets.symmetric(
-            horizontal: width * 0.02, // Responsive 2% chiều rộng
-            vertical: height * 0.03, // Responsive 3% chiều cao
-          ), // Responsive padding
+            horizontal: width * 0.02,
+            vertical: height * 0.03,
+          ),
           decoration: BoxDecoration(
             color: Colors.black.withValues(alpha: 0.7),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
-            spacing: width * 0.02, // spacing giữa icon và progress
+            spacing: width * 0.02,
             children: [
-              // Biểu tượng độ sáng thay đổi theo giá trị brightness
+              // Biểu tượng âm lượng thay đổi theo giá trị volume
               ValueListenableBuilder<double>(
-                valueListenable: controller.brightness,
-                builder: (context, brightness, _) => Icon(
-                  getBrightnessIcon(brightness),
+                valueListenable: controller.volume,
+                builder: (context, volume, _) => Icon(
+                  getVolumeIcon(volume),
                   color: Colors.white,
                   size: 24.0,
                 ),
               ),
 
-              // Thanh progress thể hiện mức độ sáng hiện tại
+              // Thanh progress thể hiện mức âm lượng hiện tại
               ValueListenableBuilder<double>(
-                valueListenable: controller.brightness,
-                builder: (context, brightness, _) {
+                valueListenable: controller.volume,
+                builder: (context, volume, _) {
                   return SizedBox(
-                    width: width * 0.2, // Chiếm 20% chiều rộng
-                    height: height * 0.008, // Chiếm 0.8% chiều cao
+                    width: width * 0.2,
+                    height: height * 0.008,
                     child: LinearProgressIndicator(
-                      value: brightness,
+                      value: volume,
                       backgroundColor: Colors.white.withValues(alpha: 0.3),
                       valueColor: const AlwaysStoppedAnimation<Color>(
                         Colors.white,

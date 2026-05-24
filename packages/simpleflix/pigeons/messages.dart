@@ -20,3 +20,9 @@ abstract class NativeBrightnessApi {
   void setBrightness(double brightness);
   double getBrightness();
 }
+
+@HostApi()
+abstract class NativeVolumeApi {
+  void setVolume(double volume);
+  double getVolume();
+}
