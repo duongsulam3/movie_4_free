@@ -154,3 +154,45 @@ class NativeBrightnessApiSetup {
     }
   }
 }
+/// Generated protocol from Pigeon that represents a handler of messages from Flutter.
+protocol NativeVolumeApi {
+  func setVolume(volume: Double) throws
+  func getVolume() throws -> Double
+}
+
+/// Generated setup class from Pigeon to handle messages through the `binaryMessenger`.
+class NativeVolumeApiSetup {
+  static var codec: FlutterStandardMessageCodec { MessagesPigeonCodec.shared }
+  /// Sets up an instance of `NativeVolumeApi` to handle messages through the `binaryMessenger`.
+  static func setUp(binaryMessenger: FlutterBinaryMessenger, api: NativeVolumeApi?, messageChannelSuffix: String = "") {
+    let channelSuffix = messageChannelSuffix.count > 0 ? ".\(messageChannelSuffix)" : ""
+    let setVolumeChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.simpleflix.NativeVolumeApi.setVolume\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    if let api = api {
+      setVolumeChannel.setMessageHandler { message, reply in
+        let args = message as! [Any?]
+        let volumeArg = args[0] as! Double
+        do {
+          try api.setVolume(volume: volumeArg)
+          reply(wrapResult(nil))
+        } catch {
+          reply(wrapError(error))
+        }
+      }
+    } else {
+      setVolumeChannel.setMessageHandler(nil)
+    }
+    let getVolumeChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.simpleflix.NativeVolumeApi.getVolume\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    if let api = api {
+      getVolumeChannel.setMessageHandler { _, reply in
+        do {
+          let result = try api.getVolume()
+          reply(wrapResult(result))
+        } catch {
+          reply(wrapError(error))
+        }
+      }
+    } else {
+      getVolumeChannel.setMessageHandler(nil)
+    }
+  }
+}

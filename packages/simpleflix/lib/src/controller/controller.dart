@@ -5,6 +5,7 @@ import 'dart:async';
 
 import '../internal/helpers/wakelock.dart';
 import '../internal/helpers/brightness.dart';
+import '../internal/helpers/volume.dart';
 import '../presentation/player_presentation.dart';
 
 /// [SimpleFlixController] đóng vai trò là một Adapter quản lý State
@@ -39,6 +40,11 @@ class SimpleFlixController extends ChangeNotifier {
   final ValueNotifier<bool> isBrightnessIndicatorVisible = ValueNotifier(false);
   Timer? _brightnessTimer;
 
+  // Quản lý âm lượng hệ thống
+  final ValueNotifier<double> volume = ValueNotifier(0.5);
+  final ValueNotifier<bool> isVolumeIndicatorVisible = ValueNotifier(false);
+  Timer? _volumeTimer;
+
   Timer? _hideTimer;
 
   void _initialize() {
@@ -46,6 +52,11 @@ class SimpleFlixController extends ChangeNotifier {
     // Khởi tạo độ sáng từ hệ thống
     NativeBrightness.getBrightness().then((value) {
       brightness.value = value;
+    });
+
+    // Khởi tạo âm lượng từ hệ thống
+    NativeVolume.getVolume().then((value) {
+      volume.value = value;
     });
 
     // Cấu hình looping
@@ -186,15 +197,37 @@ class SimpleFlixController extends ChangeNotifier {
     }
   }
 
+  /// Cập nhật âm lượng hệ thống dựa trên delta vuốt
+  void updateVolume(double delta) {
+    double newValue = volume.value + delta;
+    if (newValue < 0.0) newValue = 0.0;
+    if (newValue > 1.0) newValue = 1.0;
+
+    if (volume.value != newValue) {
+      volume.value = newValue;
+      NativeVolume.setVolume(newValue);
+
+      // Hiển thị indicator
+      isVolumeIndicatorVisible.value = true;
+      _volumeTimer?.cancel();
+      _volumeTimer = Timer(const Duration(seconds: 2), () {
+        isVolumeIndicatorVisible.value = false;
+      });
+    }
+  }
+
   @override
   void dispose() {
     _hideTimer?.cancel();
     _brightnessTimer?.cancel();
+    _volumeTimer?.cancel();
     controller.removeListener(_videoListener);
     videoPosition.dispose();
     isControlsVisible.dispose();
     brightness.dispose();
     isBrightnessIndicatorVisible.dispose();
+    volume.dispose();
+    isVolumeIndicatorVisible.dispose();
     NativeWakelock.disable();
     super.dispose();
   }

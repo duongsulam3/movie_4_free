@@ -2,16 +2,21 @@ package com.custom.simpleflix
 
 import android.view.WindowManager
 import android.app.Activity
+import android.content.Context
+import android.media.AudioManager
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 
-class CustomVideoPlayerPlugin: FlutterPlugin, NativeWakelockApi, NativeBrightnessApi, ActivityAware {
+class CustomVideoPlayerPlugin: FlutterPlugin, NativeWakelockApi, NativeBrightnessApi, NativeVolumeApi, ActivityAware {
     private var activity: Activity? = null
+    private var context: Context? = null
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+        context = flutterPluginBinding.applicationContext
         NativeWakelockApi.setUp(flutterPluginBinding.binaryMessenger, this)
         NativeBrightnessApi.setUp(flutterPluginBinding.binaryMessenger, this)
+        NativeVolumeApi.setUp(flutterPluginBinding.binaryMessenger, this)
     }
 
     override fun toggleWakelock(enable: Boolean) {
@@ -45,9 +50,29 @@ class CustomVideoPlayerPlugin: FlutterPlugin, NativeWakelockApi, NativeBrightnes
         } ?: 0.5
     }
 
+    override fun setVolume(volume: Double) {
+        val audioManager = context?.getSystemService(Context.AUDIO_SERVICE) as? AudioManager
+        audioManager?.let { am ->
+            val maxVolume = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+            val index = (volume * maxVolume).toInt()
+            am.setStreamVolume(AudioManager.STREAM_MUSIC, index, 0)
+        }
+    }
+
+    override fun getVolume(): Double {
+        val audioManager = context?.getSystemService(Context.AUDIO_SERVICE) as? AudioManager
+        return audioManager?.let { am ->
+            val maxVolume = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+            val currentVolume = am.getStreamVolume(AudioManager.STREAM_MUSIC)
+            currentVolume.toDouble() / maxVolume.toDouble()
+        } ?: 0.5
+    }
+
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         NativeWakelockApi.setUp(binding.binaryMessenger, null)
         NativeBrightnessApi.setUp(binding.binaryMessenger, null)
+        NativeVolumeApi.setUp(binding.binaryMessenger, null)
+        context = null
     }
 
     // Các hàm bắt buộc từ ActivityAware để lấy ngữ cảnh Activity an toàn, tránh Memory Leak
