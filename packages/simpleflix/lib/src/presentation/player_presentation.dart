@@ -71,7 +71,18 @@ class _SimpleFlixState extends State<SimpleFlix> {
           // Tầng 1: Render Video Texture từ Native Layer
           VideoPlayer(coreController),
 
-          // Tầng 2: Gesture Layer (Điều chỉnh độ sáng)
+          // Tầng 2: Brightness Indicator (Hiển thị khi đang chỉnh)
+          Positioned(
+            top: 20,
+            child: IgnorePointer(
+              child: BrightnessIndicator(controller: widget.controller),
+            ),
+          ),
+
+          // Tầng 3: Overlay Controls (Giao diện điều khiển)
+          _buildOverlayControls(),
+
+          // Tầng 4: Gesture Layer ( Ignore Pointer )
           if (widget.controller.isFullscreen)
             Positioned.fill(
               child: GestureDetector(
@@ -87,16 +98,6 @@ class _SimpleFlixState extends State<SimpleFlix> {
                 },
               ),
             ),
-
-          // Tầng 3: Brightness Indicator (Hiển thị khi đang chỉnh)
-          Positioned.fill(
-            child: IgnorePointer(
-              child: BrightnessIndicator(controller: widget.controller),
-            ),
-          ),
-
-          // Tầng 4: Overlay Controls (Giao diện điều khiển)
-          _buildOverlayControls(),
         ],
       ),
     );
