@@ -8,6 +8,11 @@ class BrightnessIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Responsive Design cho Brightness Indicator with sizeOfMediaQuery
+    final sizeOfMediaQuery = MediaQuery.sizeOf(context);
+    final width = sizeOfMediaQuery.width;
+    final height = sizeOfMediaQuery.height;
+
     return ValueListenableBuilder<bool>(
       valueListenable: controller.isBrightnessIndicatorVisible,
       builder: (context, isVisible, child) {
@@ -21,7 +26,10 @@ class BrightnessIndicator extends StatelessWidget {
       //
       child: Center(
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: EdgeInsets.symmetric(
+            horizontal: width * 0.02, // Responsive 2% chiều rộng
+            vertical: height * 0.03, // Responsive 3% chiều cao
+          ), // Responsive padding
           decoration: BoxDecoration(
             color: Colors.black.withValues(alpha: 0.7),
             borderRadius: BorderRadius.circular(20),
@@ -39,8 +47,8 @@ class BrightnessIndicator extends StatelessWidget {
                 valueListenable: controller.brightness,
                 builder: (context, brightness, _) {
                   return SizedBox(
-                    width: 100,
-                    height: 4,
+                    width: width * 0.2, // Chiếm 20% chiều rộng
+                    height: height * 0.008, // Chiếm 0.8% chiều cao
                     child: LinearProgressIndicator(
                       value: brightness,
                       backgroundColor: Colors.white.withValues(alpha: 0.3),
