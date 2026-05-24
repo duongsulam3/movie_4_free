@@ -6,6 +6,7 @@ import 'widgets/play_pause_button.dart';
 import 'widgets/progress_bar.dart';
 import 'widgets/seek_buttons.dart';
 import 'widgets/brightness_indicator.dart';
+import 'utils/enums.dart';
 
 /// [SimpleFlix] là Entry Point của tầng UI.
 /// Widget này nhận vào Controller đã được khởi tạo từ phía Client.
@@ -85,18 +86,7 @@ class _SimpleFlixState extends State<SimpleFlix> {
           // Tầng 4: Gesture Layer ( Ignore Pointer )
           if (widget.controller.isFullscreen)
             Positioned.fill(
-              child: GestureDetector(
-                onVerticalDragUpdate: (details) {
-                  final width = MediaQuery.sizeOf(context).width;
-                  final isRightSide = details.localPosition.dx > width / 2;
-
-                  if (isRightSide) {
-                    // Vuốt lên chi tiết âm, vuốt xuống dương -> đảo ngược để vuốt lên tăng
-                    final delta = -details.primaryDelta! / 200;
-                    widget.controller.updateBrightness(delta);
-                  }
-                },
-              ),
+              child: GestureDetector(onVerticalDragUpdate: _onVerticalDrag),
             ),
         ],
       ),
@@ -149,6 +139,36 @@ class _SimpleFlixState extends State<SimpleFlix> {
         ),
       ),
     );
+  }
+
+  void _onVerticalDrag(DragUpdateDetails details) {
+    final side = _getScreenSide(details);
+
+    switch (side) {
+      case ScreenSide.left:
+        _onUpdateVolume(details);
+      case ScreenSide.right:
+        _onUpdateBrightness(details);
+    }
+  }
+
+  void _onUpdateBrightness(DragUpdateDetails details) {
+    // Vuốt lên chi tiết âm, vuốt xuống dương -> đảo ngược để vuốt lên tăng
+    final delta = -details.primaryDelta! / 200;
+
+    // Cập nhật độ sáng thông qua Controller
+    widget.controller.updateBrightness(delta);
+  }
+
+  void _onUpdateVolume(DragUpdateDetails details) {
+    // TODO: Implement volume control
+  }
+
+  ScreenSide _getScreenSide(DragUpdateDetails details) {
+    final width = MediaQuery.sizeOf(context).width;
+    return details.localPosition.dx > width / 2
+        ? ScreenSide.right
+        : ScreenSide.left;
   }
 
   Widget _buildLoadingWidget() {
