@@ -90,11 +90,16 @@ class _SimpleFlixState extends State<SimpleFlix> {
           // Tầng 3: Overlay Controls (Giao diện điều khiển)
           _buildOverlayControls(),
 
-          // Tầng 4: Gesture Layer ( Ignore Pointer )
-          if (widget.controller.isFullscreen)
-            Positioned.fill(
-              child: GestureDetector(onVerticalDragUpdate: _onVerticalDrag),
-            ),
+          // Tầng 4: Gesture Layer (Chỉ hiển thị khi ở chế độ Fullscreen)
+          ValueListenableBuilder<bool>(
+            valueListenable: widget.controller.isFullscreen,
+            builder: (context, isFullscreen, _) {
+              if (!isFullscreen) return const SizedBox.shrink();
+              return Positioned.fill(
+                child: GestureDetector(onVerticalDragUpdate: _onVerticalDrag),
+              );
+            },
+          ),
         ],
       ),
     );

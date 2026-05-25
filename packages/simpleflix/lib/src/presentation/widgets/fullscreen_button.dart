@@ -9,14 +9,17 @@ class FullScreenButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListenableBuilder(
-      listenable: controller,
-      builder: (context, _) {
-        final isFullscreen = controller.isFullscreen;
+    return ValueListenableBuilder<bool>(
+      valueListenable: controller.isFullscreen,
+      builder: (context, isFullscreen, _) {
         return GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () => _onPressed(context, isFullscreen),
-          child: Icon(_getIconShowUp(), color: Colors.white, size: 24.0),
+          child: Icon(
+            _getIconShowUp(isFullscreen),
+            color: Colors.white,
+            size: 24.0,
+          ),
         );
       },
     );
@@ -31,8 +34,8 @@ class FullScreenButton extends StatelessWidget {
     }
   }
 
-  IconData _getIconShowUp() {
-    return controller.isFullscreen
+  IconData _getIconShowUp(bool isFullscreen) {
+    return isFullscreen
         ? Icons.fullscreen_exit_rounded
         : Icons.fullscreen_rounded;
   }
