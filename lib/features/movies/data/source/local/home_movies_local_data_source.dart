@@ -28,9 +28,9 @@ class HomeMoviesLocalDataSourceImpl implements HomeMoviesLocalDataSource {
     required String cateName,
     required int limit,
   }) async {
-    final raw = box.get(HiveKeys.getKeyMoviesByCategory());
+    final raw = box.get(HiveKeys.getKeyMoviesByCategory(cateName));
     if (raw is! List) return const [];
-    return raw.whereType<MovieItemModel>().toList();
+    return List.generate(raw.length, (index) => raw[index] as MovieItemModel);
   }
 
   @override
@@ -39,14 +39,17 @@ class HomeMoviesLocalDataSourceImpl implements HomeMoviesLocalDataSource {
     required int limit,
     required List<MovieItemModel> movies,
   }) async {
-    await box.put(HiveKeys.getKeyMoviesByCategory(), movies);
+    await box.put(HiveKeys.getKeyMoviesByCategory(cateName), movies);
   }
 
   @override
   Future<List<RecentlyUpdateListItemModel>> getRecentlyUpdated() async {
     final raw = box.get(HiveKeys.recentlyUpdated);
     if (raw is! List) return const [];
-    return raw.whereType<RecentlyUpdateListItemModel>().toList();
+    return List.generate(
+      raw.length,
+      (index) => raw[index] as RecentlyUpdateListItemModel,
+    );
   }
 
   @override
