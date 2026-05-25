@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 import '../controller/controller.dart';
+import '../ui/components/adaptive_loading_indicator.dart';
 import 'widgets/play_pause_button.dart';
 import 'widgets/progress_bar.dart';
 import 'widgets/seek_buttons.dart';
@@ -174,12 +175,7 @@ class _SimpleFlixState extends State<SimpleFlix> {
   }
 
   Widget _buildLoadingWidget() {
-    return const Center(
-      child: CircularProgressIndicator(
-        valueColor: AlwaysStoppedAnimation<Color>(Colors.redAccent),
-        strokeWidth: 0.8,
-      ),
-    );
+    return const Center(child: AdaptiveLoadingIndicator());
   }
 
   Widget _buildErrorWidget(String error) {
