@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_supper_app_core/core.dart';
-import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
-import 'package:smoth_movie_app/common/widgets/responsive_sized_box.dart';
+
+import '../../../common/widgets/responsive_sized_box.dart';
+import '../../../common/widgets/responsive_small_text.dart';
 
 class ProfileMenuItem extends StatelessWidget {
   final Widget? leading;
