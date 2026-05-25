@@ -126,7 +126,6 @@ class SimpleFlixController extends ChangeNotifier {
     alwaysOnDisplay = value;
     // Kích hoạt tính toán lại trạng thái phần cứng ngay lập tức
     _handleWakelock();
-    notifyListeners();
   }
 
   void togglePlay() {
@@ -138,8 +137,6 @@ class SimpleFlixController extends ChangeNotifier {
       controller.play();
       _startHideTimer();
     }
-    // Chỉ thông báo cho các Widget lắng nghe trạng thái Play/Pause
-    notifyListeners();
   }
 
   void toggleControlsVisibility() {
