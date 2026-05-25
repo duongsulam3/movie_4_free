@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import '../../controller/controller.dart';
+import '../../ui/components/adaptive_icon.dart';
 
 class BrightnessIndicator extends StatelessWidget {
   const BrightnessIndicator({super.key, required this.controller});
@@ -12,12 +14,6 @@ class BrightnessIndicator extends StatelessWidget {
     final sizeOfMediaQuery = MediaQuery.sizeOf(context);
     final width = sizeOfMediaQuery.width;
     final height = sizeOfMediaQuery.height;
-
-    IconData getBrightnessIcon(double brightness) {
-      if (brightness == 0) return Icons.brightness_low_rounded;
-      if (brightness < 0.5) return Icons.brightness_medium_rounded;
-      return Icons.brightness_high_rounded;
-    }
 
     return ValueListenableBuilder<bool>(
       valueListenable: controller.isBrightnessIndicatorVisible,
@@ -42,14 +38,17 @@ class BrightnessIndicator extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             spacing: width * 0.02, // spacing giữa icon và progress
             children: [
-              // Biểu tượng độ sáng thay đổi theo giá trị brightness
               ValueListenableBuilder<double>(
                 valueListenable: controller.brightness,
-                builder: (context, brightness, _) => Icon(
-                  getBrightnessIcon(brightness),
-                  color: Colors.white,
-                  size: 24.0,
-                ),
+                builder: (context, brightness, _) {
+                  final icons = getBrightnessIcons(brightness);
+                  return AdaptiveIcon(
+                    androidIcon: icons.$1,
+                    iosIcon: icons.$2,
+                    color: Colors.white,
+                    size: 24.0,
+                  );
+                },
               ),
 
               // Thanh progress thể hiện mức độ sáng hiện tại
@@ -74,5 +73,17 @@ class BrightnessIndicator extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  // Hàm để lấy icon tương ứng với mức độ sáng
+  (IconData, IconData) getBrightnessIcons(double brightness) {
+    switch (brightness) {
+      case 0:
+        return (Icons.brightness_low_rounded, CupertinoIcons.sun_min_fill);
+      case < 0.5:
+        return (Icons.brightness_medium_rounded, CupertinoIcons.sun_min_fill);
+      default:
+        return (Icons.brightness_high_rounded, CupertinoIcons.sun_max_fill);
+    }
   }
 }

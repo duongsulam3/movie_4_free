@@ -13,7 +13,7 @@ class HiveKeys {
   static const String recentlyUpdated = 'recently_updated';
   static const String searchHistory = 'search_history';
 
-  static String getKeyMoviesByCategory() {
-    return AppSecret.moviesByCategoryKey;
+  static String getKeyMoviesByCategory(String cateName) {
+    return "${AppSecret.moviesByCategoryKey}_$cateName";
   }
 }

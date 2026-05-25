@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 import '../controller/controller.dart';
+import '../ui/components/adaptive_loading_indicator.dart';
 import 'widgets/play_pause_button.dart';
 import 'widgets/progress_bar.dart';
 import 'widgets/seek_buttons.dart';
@@ -70,10 +71,10 @@ class _SimpleFlixState extends State<SimpleFlix> {
         fit: StackFit.expand,
         alignment: Alignment.bottomCenter,
         children: <Widget>[
-          // Tầng 1: Render Video Texture từ Native Layer
-          VideoPlayer(coreController),
+          // Tầng 1: Render Video Texture (Sử dụng RepaintBoundary để tách biệt lớp vẽ video)
+          RepaintBoundary(child: VideoPlayer(coreController)),
 
-          // Tầng 2: Brightness/Volume Indicator (Hiển thị khi đang chỉnh)
+          // Tầng 2: Brightness/Volume Indicator
           Positioned(
             top: 20,
             child: IgnorePointer(
@@ -90,61 +91,52 @@ class _SimpleFlixState extends State<SimpleFlix> {
           // Tầng 3: Overlay Controls (Giao diện điều khiển)
           _buildOverlayControls(),
 
-          // Tầng 4: Gesture Layer ( Ignore Pointer )
-          if (widget.controller.isFullscreen)
-            Positioned.fill(
-              child: GestureDetector(onVerticalDragUpdate: _onVerticalDrag),
-            ),
+          // Tầng 4: Gesture Layer (Chỉ hiển thị khi ở chế độ Fullscreen)
+          ValueListenableBuilder<bool>(
+            valueListenable: widget.controller.isFullscreen,
+            builder: (context, isFullscreen, _) {
+              if (!isFullscreen) return const SizedBox.shrink();
+              return Positioned.fill(
+                child: GestureDetector(onVerticalDragUpdate: _onVerticalDrag),
+              );
+            },
+          ),
         ],
       ),
     );
   }
 
   Widget _buildOverlayControls() {
-    return ValueListenableBuilder<bool>(
-      valueListenable: widget.controller.isControlsVisible,
-      builder: (context, isVisible, child) {
-        return Positioned.fill(
+    return Stack(
+      children: [
+        /// Lớp 1: GestureDetector "Vĩnh cửu" - Zero re-build, chỉ bắt Tap
+        /// để ẩn/hiện
+        Positioned.fill(
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: widget.controller.toggleControlsVisibility,
-            child: AnimatedOpacity(
-              opacity: isVisible ? 1.0 : 0.0,
-              duration: const Duration(milliseconds: 300),
-              child: IgnorePointer(ignoring: !isVisible, child: child),
+          ),
+        ),
+
+        /// Lớp 2: UI Controls với RepaintBoundary để tối ưu vẽ
+        Positioned.fill(
+          child: RepaintBoundary(
+            child: ValueListenableBuilder<bool>(
+              valueListenable: widget.controller.isControlsVisible,
+              builder: (context, isVisible, child) {
+                return AnimatedOpacity(
+                  opacity: isVisible ? 1.0 : 0.0,
+                  duration: const Duration(milliseconds: 300),
+                  child: IgnorePointer(ignoring: !isVisible, child: child),
+                );
+              },
+
+              /// Lớp 3: Nội dung controls được cache trong 'child' của Builder
+              child: _SimpleFlixControlPanel(controller: widget.controller),
             ),
           ),
-        );
-      },
-
-      // Sử dụng thuộc tính child của ValueListenableBuilder để tránh re-build các nút tĩnh
-      child: Container(
-        // Làm tối background để nổi bật nút điều khiển
-        color: Colors.black.withValues(alpha: 0.3),
-        child: Stack(
-          children: [
-            // Đặt các nút điều khiển chính ở trung tâm
-            Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  SeekBackwardButton(controller: widget.controller),
-                  PlayPauseButton(controller: widget.controller),
-                  SeekForwardButton(controller: widget.controller),
-                ],
-              ),
-            ),
-
-            // Tầng 3: Progress Bar (Luồng dữ liệu riêng biệt, tối ưu re-render)
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 10,
-              child: ProgressBar(controller: widget.controller),
-            ),
-          ],
         ),
-      ),
+      ],
     );
   }
 
@@ -183,12 +175,7 @@ class _SimpleFlixState extends State<SimpleFlix> {
   }
 
   Widget _buildLoadingWidget() {
-    return const Center(
-      child: CircularProgressIndicator(
-        valueColor: AlwaysStoppedAnimation<Color>(Colors.redAccent),
-        strokeWidth: 0.8,
-      ),
-    );
+    return const Center(child: AdaptiveLoadingIndicator());
   }
 
   Widget _buildErrorWidget(String error) {
@@ -204,6 +191,49 @@ class _SimpleFlixState extends State<SimpleFlix> {
             textAlign: TextAlign.center,
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// [_SimpleFlixControlPanel] chứa các thành phần UI của Overlay.
+/// Tách ra thành StatelessWidget để tối ưu hóa việc so sánh Widget Tree và Re-paint.
+class _SimpleFlixControlPanel extends StatelessWidget {
+  const _SimpleFlixControlPanel({required this.controller});
+
+  final SimpleFlixController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: controller.toggleControlsVisibility,
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        // Làm tối background để nổi bật nút điều khiển
+        color: Colors.black.withValues(alpha: 0.3),
+        child: Stack(
+          children: [
+            // Đặt các nút điều khiển chính ở trung tâm
+            Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  SeekBackwardButton(controller: controller),
+                  PlayPauseButton(controller: controller),
+                  SeekForwardButton(controller: controller),
+                ],
+              ),
+            ),
+
+            // Progress Bar (Sử dụng luồng tín hiệu riêng biệt bên trong)
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 10,
+              child: ProgressBar(controller: controller),
+            ),
+          ],
+        ),
       ),
     );
   }

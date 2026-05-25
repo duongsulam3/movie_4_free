@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../controller/controller.dart';
+import '../../ui/components/adaptive_icon_button.dart';
 
 class FullScreenButton extends StatelessWidget {
   const FullScreenButton({super.key, required this.controller});
@@ -9,14 +11,15 @@ class FullScreenButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListenableBuilder(
-      listenable: controller,
-      builder: (context, _) {
-        final isFullscreen = controller.isFullscreen;
-        return GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: () => _onPressed(context, isFullscreen),
-          child: Icon(_getIconShowUp(), color: Colors.white, size: 24.0),
+    return ValueListenableBuilder<bool>(
+      valueListenable: controller.isFullscreen,
+      builder: (context, isFullscreen, _) {
+        return AdaptiveIconButton(
+          androidIcon: _getIconShowUpAndroid(isFullscreen),
+          iosIcon: _getIconShowUp(isFullscreen),
+          color: Colors.white,
+          size: 20.0,
+          onPressed: () => _onPressed(context, isFullscreen),
         );
       },
     );
@@ -31,9 +34,15 @@ class FullScreenButton extends StatelessWidget {
     }
   }
 
-  IconData _getIconShowUp() {
-    return controller.isFullscreen
+  IconData _getIconShowUpAndroid(bool isFullscreen) {
+    return isFullscreen
         ? Icons.fullscreen_exit_rounded
         : Icons.fullscreen_rounded;
+  }
+
+  IconData _getIconShowUp(bool isFullscreen) {
+    return isFullscreen
+        ? CupertinoIcons.fullscreen_exit
+        : CupertinoIcons.fullscreen;
   }
 }

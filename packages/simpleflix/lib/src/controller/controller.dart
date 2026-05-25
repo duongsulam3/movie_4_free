@@ -10,7 +10,7 @@ import '../presentation/player_presentation.dart';
 
 /// [SimpleFlixController] đóng vai trò là một Adapter quản lý State
 /// và điều khiển [VideoPlayerController] gốc.
-class SimpleFlixController extends ChangeNotifier {
+class SimpleFlixController {
   SimpleFlixController({
     required this.controller,
     this.autoPlay = false,
@@ -78,9 +78,6 @@ class SimpleFlixController extends ChangeNotifier {
       if (autoPlay) {
         _startHideTimer();
       }
-
-      // Thông báo cho UI biết rằng video đã sẵn sàng để hiển thị
-      notifyListeners();
     });
   }
 
@@ -126,7 +123,6 @@ class SimpleFlixController extends ChangeNotifier {
     alwaysOnDisplay = value;
     // Kích hoạt tính toán lại trạng thái phần cứng ngay lập tức
     _handleWakelock();
-    notifyListeners();
   }
 
   void togglePlay() {
@@ -138,8 +134,6 @@ class SimpleFlixController extends ChangeNotifier {
       controller.play();
       _startHideTimer();
     }
-    // Chỉ thông báo cho các Widget lắng nghe trạng thái Play/Pause
-    notifyListeners();
   }
 
   void toggleControlsVisibility() {
@@ -216,7 +210,6 @@ class SimpleFlixController extends ChangeNotifier {
     }
   }
 
-  @override
   void dispose() {
     _hideTimer?.cancel();
     _brightnessTimer?.cancel();
@@ -228,19 +221,17 @@ class SimpleFlixController extends ChangeNotifier {
     isBrightnessIndicatorVisible.dispose();
     volume.dispose();
     isVolumeIndicatorVisible.dispose();
+    isFullscreen.dispose();
     NativeWakelock.disable();
-    super.dispose();
   }
 
-  // Quản lý trạng thái Fullscreen độc lập
-  bool _isFullscreen = false;
-  bool get isFullscreen => _isFullscreen;
+  // Quản lý trạng thái Fullscreen độc lập thông qua ValueNotifier
+  final ValueNotifier<bool> isFullscreen = ValueNotifier(false);
 
   /// Hàm kích hoạt chế độ Toàn màn hình
   void enterFullscreen(BuildContext context) {
-    if (_isFullscreen) return;
-    _isFullscreen = true;
-    notifyListeners();
+    if (isFullscreen.value) return;
+    isFullscreen.value = true;
 
     // 1. Ẩn thanh trạng thái và thanh điều hướng hệ thống
     SystemChrome.setEnabledSystemUIMode(
@@ -280,14 +271,13 @@ class SimpleFlixController extends ChangeNotifier {
 
   /// Hàm thoát chế độ Toàn màn hình chủ động từ UI
   void exitFullscreen(BuildContext context) {
-    if (!_isFullscreen) return;
+    if (!isFullscreen.value) return;
     // Đóng Route Fullscreen, luồng xử lý sẽ rơi vào block .then() ở trên
     Navigator.of(context).pop();
   }
 
   void _exitFullscreenLogic() {
-    _isFullscreen = false;
-    notifyListeners();
+    isFullscreen.value = false;
 
     // 1. Hiển thị lại thanh hệ thống
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
