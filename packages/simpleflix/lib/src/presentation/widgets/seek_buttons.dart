@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../controller/controller.dart';
+import '../../ui/components/adaptive_icon_button.dart';
 
 class SeekBackwardButton extends StatelessWidget {
   const SeekBackwardButton({super.key, required this.controller});
@@ -8,9 +9,9 @@ class SeekBackwardButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      iconSize: 24.0,
-      icon: const Icon(Icons.replay_5_rounded, color: Colors.white),
+    return AdaptiveIconButton(
+      androidIcon: Icons.replay_5_rounded,
+      iosIcon: Icons.replay_5_rounded,
       onPressed: controller.seekBackward,
     );
   }
@@ -23,9 +24,9 @@ class SeekForwardButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      iconSize: 24.0,
-      icon: const Icon(Icons.forward_5_rounded, color: Colors.white),
+    return AdaptiveIconButton(
+      androidIcon: Icons.forward_5_rounded,
+      iosIcon: Icons.forward_5_rounded,
       onPressed: controller.seekForward,
     );
   }

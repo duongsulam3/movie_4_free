@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import '../../controller/controller.dart';
+import '../../ui/components/adaptive_icon.dart';
 
 class VolumeIndicator extends StatelessWidget {
   const VolumeIndicator({super.key, required this.controller});
@@ -11,12 +13,6 @@ class VolumeIndicator extends StatelessWidget {
     final sizeOfMediaQuery = MediaQuery.sizeOf(context);
     final width = sizeOfMediaQuery.width;
     final height = sizeOfMediaQuery.height;
-
-    IconData getVolumeIcon(double volume) {
-      if (volume == 0) return Icons.volume_off_rounded;
-      if (volume < 0.5) return Icons.volume_down_rounded;
-      return Icons.volume_up_rounded;
-    }
 
     return ValueListenableBuilder<bool>(
       valueListenable: controller.isVolumeIndicatorVisible,
@@ -41,14 +37,17 @@ class VolumeIndicator extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             spacing: width * 0.02,
             children: [
-              // Biểu tượng âm lượng thay đổi theo giá trị volume
               ValueListenableBuilder<double>(
                 valueListenable: controller.volume,
-                builder: (context, volume, _) => Icon(
-                  getVolumeIcon(volume),
-                  color: Colors.white,
-                  size: 24.0,
-                ),
+                builder: (context, volume, _) {
+                  final icons = getVolumeIcons(volume);
+                  return AdaptiveIcon(
+                    androidIcon: icons.$1,
+                    iosIcon: icons.$2,
+                    color: Colors.white,
+                    size: 20.0,
+                  );
+                },
               ),
 
               // Thanh progress thể hiện mức âm lượng hiện tại
@@ -73,5 +72,16 @@ class VolumeIndicator extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  (IconData, IconData) getVolumeIcons(double volume) {
+    switch (volume) {
+      case 0.0:
+        return (Icons.volume_off_rounded, CupertinoIcons.speaker_slash_fill);
+      case < 0.5:
+        return (Icons.volume_down_rounded, CupertinoIcons.speaker_1_fill);
+      default:
+        return (Icons.volume_up_rounded, CupertinoIcons.speaker_3_fill);
+    }
   }
 }
