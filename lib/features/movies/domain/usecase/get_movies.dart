@@ -2,9 +2,10 @@ import 'package:dartz/dartz.dart';
 import 'package:smoth_movie_app/common/error/failure.dart';
 import 'package:smoth_movie_app/common/usecase/usecase.dart';
 import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_item.dart';
+import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movies_fetch_result.dart';
 import 'package:smoth_movie_app/features/movies/domain/repository/movies_repository.dart';
 
-class GetMovies implements Usecase<List<MovieItemEntity>, GetMoviesParams> {
+class GetMovies implements Usecase<MoviesFetchResult, GetMoviesParams> {
   final MoviesRepository moviesRepository;
   const GetMovies({required this.moviesRepository});
 
@@ -16,7 +17,7 @@ class GetMovies implements Usecase<List<MovieItemEntity>, GetMoviesParams> {
   }
 
   @override
-  Future<Either<Failure, List<MovieItemEntity>>> call(
+  Future<Either<Failure, MoviesFetchResult>> call(
     GetMoviesParams params,
   ) async {
     return await moviesRepository.getMovies(
