@@ -28,7 +28,6 @@ class _BlocBuilderGridviewState extends State<BlocBuilderGridview>
   Widget build(BuildContext context) {
     super.build(context);
     return BlocBuilder<MoviesBloc, MoviesState>(
-      buildWhen: (p, c) => p.status != c.status,
       builder: (context, state) {
         switch (state.status) {
           case MoviesStateStatus.init:

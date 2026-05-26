@@ -6,6 +6,7 @@ import 'package:smoth_movie_app/features/movies/data/source/local/home_movies_ca
 import 'package:smoth_movie_app/features/movies/data/source/local/home_movies_local_data_source.dart';
 import 'package:smoth_movie_app/features/movies/data/source/remote/movies_remote_data_source.dart';
 import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_item.dart';
+import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movies_fetch_result.dart';
 import 'package:smoth_movie_app/features/movies/domain/repository/movies_repository.dart';
 
 class MoviesRepositoryImpl implements MoviesRepository {
@@ -28,28 +29,29 @@ class MoviesRepositoryImpl implements MoviesRepository {
   }
 
   @override
-  Future<Either<Failure, List<MovieItemEntity>>> getMovies({
+  Future<Either<Failure, MoviesFetchResult>> getMovies({
     required int page,
     required int limit,
     required String cateName,
   }) async {
     try {
-      // Fetch movies from remote data source
       final res = await moviesRemoteDataSource.getMovies(
         page: page,
         limit: limit,
         cateName: cateName,
       );
 
-      // Get old cache for comparison
       final oldCache = await homeMoviesLocalDataSource.getMovies(
         cateName: cateName,
         limit: limit,
       );
 
-      // Compare new data with old cache and persist only if they differ
-      if (!await HomeMoviesCacheCompare.moviesEquals(oldCache, res)) {
-        // Persist only when the fetched data differs from local cache.
+      final isEqual = await HomeMoviesCacheCompare.moviesEquals(
+        oldCache,
+        res,
+      );
+
+      if (!isEqual) {
         await homeMoviesLocalDataSource.saveMovies(
           cateName: cateName,
           limit: limit,
@@ -57,8 +59,12 @@ class MoviesRepositoryImpl implements MoviesRepository {
         );
       }
 
-      // Return the fetched movies wrapped in a Right (success) Either
-      return Right(res);
+      return Right(
+        MoviesFetchResult(
+          movies: res,
+          hasChangedFromCache: !isEqual,
+        ),
+      );
     } on ServerException catch (e) {
       return Left(Failure(e.message));
     }
