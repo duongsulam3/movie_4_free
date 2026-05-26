@@ -1,0 +1,96 @@
+name: Mobile-Build
+
+on:
+  push:
+    branches:
+      - master
+  # workflow_dispatch: # Cho phép bấm chạy thủ công
+
+jobs:
+  # --- JOB BUILD ANDROID ---
+  build-android:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'gradle'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Generate Files & Delete Conflicting Outputs
+        run: dart run build_runner build -d --delete-conflicting-outputs
+
+      - name: Decrypt Key
+        shell: bash
+        env:
+          ENCRYPTION_KEY: ${{ secrets.ENV_DECRYPT_KEY }}
+        run: bash script/prepare.sh decrypt <<< "$ENCRYPTION_KEY"
+
+      - name: Clean and Fetch Dependencies
+        run: |
+          flutter clean
+          flutter pub get
+
+      - name: Build APK
+        # Build release để không cần cấu hình keystore
+        run: flutter build apk --release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+  # --- JOB BUILD IOS (UNSIGNED) ---
+  build-ios:
+    name: Build iOS IPA
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Generate Files & Delete Conflicting Outputs
+        run: dart run build_runner build -d --delete-conflicting-outputs
+
+      - name: Decrypt Key
+        shell: bash
+        env:
+          ENCRYPTION_KEY: ${{ secrets.ENV_DECRYPT_KEY }}
+        run: bash script/prepare.sh decrypt <<< "$ENCRYPTION_KEY"
+
+      - name: Clean and Fetch Dependencies
+        run: |
+          flutter pub get
+          cd ios && pod install && cd ..
+
+      - name: Build iOS Frameworks
+        # Chỉ build ra cấu trúc app, không thực hiện ký danh
+        run: flutter build ios --release --no-codesign
+
+      - name: Package "Fake" IPA
+        # Đây là cách cậu đã làm, dùng để lưu trữ hoặc cài máy Jailbreak
+        run: |
+          mkdir -p Payload
+          mv build/ios/iphoneos/Runner.app Payload/
+          zip -r Flutter-Unsigned.ipa Payload
+
+      - name: Upload Unsigned IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-unsigned-ipa
+          path: release.ipa
