@@ -6,6 +6,7 @@ import 'package:smoth_movie_app/features/movies/data/source/local/home_movies_ca
 import 'package:smoth_movie_app/features/movies/data/source/local/home_movies_local_data_source.dart';
 import 'package:smoth_movie_app/features/movies/data/source/remote/movies_remote_data_source.dart';
 import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_item.dart';
+import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movies_fetch_result.dart';
 import 'package:smoth_movie_app/features/movies/domain/repository/movies_repository.dart';
 
 class MoviesRepositoryImpl implements MoviesRepository {
@@ -28,7 +29,7 @@ class MoviesRepositoryImpl implements MoviesRepository {
   }
 
   @override
-  Future<Either<Failure, List<MovieItemEntity>>> getMovies({
+  Future<Either<Failure, MoviesFetchResult>> getMovies({
     required int page,
     required int limit,
     required String cateName,
@@ -45,15 +46,25 @@ class MoviesRepositoryImpl implements MoviesRepository {
         limit: limit,
       );
 
-      if (!HomeMoviesCacheCompare.moviesEquals(oldCache, res)) {
-        // Persist only when the fetched data differs from local cache.
+      final isEqual = await HomeMoviesCacheCompare.moviesEquals(
+        oldCache,
+        res,
+      );
+
+      if (!isEqual) {
         await homeMoviesLocalDataSource.saveMovies(
           cateName: cateName,
           limit: limit,
           movies: List<MovieItemModel>.from(res),
         );
       }
-      return Right(res);
+
+      return Right(
+        MoviesFetchResult(
+          movies: res,
+          hasChangedFromCache: !isEqual,
+        ),
+      );
     } on ServerException catch (e) {
       return Left(Failure(e.message));
     }

@@ -1,9 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../../common/utils/enum/movies_state_status.dart';
 import '../../../domain/entities/movies_page/movie_item.dart';
+import '../../../domain/entities/movies_page/movies_fetch_result.dart';
 import '../../../domain/usecase/get_movies.dart';
 
 part 'movies_bloc.freezed.dart';
@@ -17,16 +17,32 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   }
 
   // ===== fetchMovie orchestration =====
-  // Scope: high-level flow only (guard -> cache-first -> remote refresh).
-  fetchMovie(
+  Future<void> fetchMovie(
     GetListMovies event,
     Emitter<MoviesState> emit,
   ) async {
     if (_shouldSkipFetch()) return;
-    emit(state.copyWith(status: MoviesStateStatus.loading));
 
     final requestPage = state.page;
+
+    if (event.preferCacheFirst) {
+      await _fetchCacheFirst(event, emit, requestPage);
+      return;
+    }
+
+    emit(state.copyWith(status: MoviesStateStatus.loading));
+    await _fetchAndHandleRemote(event, emit, requestPage);
+  }
+
+  Future<void> _fetchCacheFirst(
+    GetListMovies event,
+    Emitter<MoviesState> emit,
+    int requestPage,
+  ) async {
     await _emitCachedMoviesIfNeeded(event, emit);
+    if (state.movies.isEmpty) {
+      emit(state.copyWith(status: MoviesStateStatus.loading));
+    }
     await _fetchAndHandleRemote(event, emit, requestPage);
   }
 
@@ -34,7 +50,6 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   bool _shouldSkipFetch() => state.isEnd;
 
   // ===== fetchMovie cache-first section =====
-  // Scope: read local cache and emit immediate UI state if available.
   Future<void> _emitCachedMoviesIfNeeded(
     GetListMovies event,
     Emitter<MoviesState> emit,
@@ -57,7 +72,6 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   }
 
   // ===== fetchMovie remote section =====
-  // Scope: call usecase and route to success/error handlers.
   Future<void> _fetchAndHandleRemote(
     GetListMovies event,
     Emitter<MoviesState> emit,
@@ -73,14 +87,13 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
 
     res.fold(
       (_) => _handleRemoteError(emit),
-      (movies) => _handleRemoteSuccess(event, emit, movies),
+      (result) => _handleRemoteSuccess(event, emit, result),
     );
   }
 
   // ===== fetchMovie remote-error section =====
   void _handleRemoteError(Emitter<MoviesState> emit) {
     if (state.movies.isNotEmpty) {
-      // Keep cached movies visible when offline refresh fails.
       return;
     }
 
@@ -88,28 +101,30 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   }
 
   // ===== fetchMovie remote-success section =====
-  // Scope: choose cache-first replacement or paged merge strategy.
   void _handleRemoteSuccess(
     GetListMovies event,
     Emitter<MoviesState> emit,
-    List<MovieItemEntity> movies,
+    MoviesFetchResult result,
   ) {
     if (event.preferCacheFirst) {
-      _emitReplaceForCacheFirst(emit, movies);
+      _emitReplaceForCacheFirst(emit, result);
       return;
     }
-    _emitMergedMovies(event, emit, movies);
+    _emitMergedMovies(event, emit, result);
   }
 
   // ===== fetchMovie cache-first success section =====
   void _emitReplaceForCacheFirst(
     Emitter<MoviesState> emit,
-    List<MovieItemEntity> movies,
+    MoviesFetchResult result,
   ) {
-    if (listEquals(state.movies, movies)) return;
+    if (!result.hasChangedFromCache && state.movies.isNotEmpty) {
+      return;
+    }
+
     emit(state.copyWith(
       status: MoviesStateStatus.success,
-      movies: movies,
+      movies: result.movies,
       isEnd: true,
       page: 2,
     ));
@@ -119,23 +134,27 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   void _emitMergedMovies(
     GetListMovies event,
     Emitter<MoviesState> emit,
-    List<MovieItemEntity> movies,
+    MoviesFetchResult result,
   ) {
-    final merged = [...state.movies, ...movies];
-    if (listEquals(state.movies, merged)) return;
+    if (!result.hasChangedFromCache && state.movies.isNotEmpty) {
+      return;
+    }
 
-    if (movies.length < event.limit) {
+    final merged = [...state.movies, ...result.movies];
+    final limitedMerged = merged.take(event.limit).toList();
+
+    if (result.movies.length < event.limit) {
       emit(state.copyWith(
         status: MoviesStateStatus.success,
         isEnd: true,
-        movies: merged,
+        movies: limitedMerged,
       ));
       return;
     }
 
     emit(state.copyWith(
       status: MoviesStateStatus.success,
-      movies: merged,
+      movies: limitedMerged,
       isEnd: event.isRefresh ? false : true,
       page: state.page + 1,
     ));

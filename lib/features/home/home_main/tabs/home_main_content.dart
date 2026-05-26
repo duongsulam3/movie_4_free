@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:smoth_movie_app/common/entity/home_main_content_grid_item.dart';
-import 'package:smoth_movie_app/common/widgets/responsive_sized_box.dart';
+import 'package:flutter_supper_app_core/core.dart';
 
+import '../../../../common/entity/home_main_content_grid_item.dart';
+import '../../../../common/widgets/responsive_sized_box.dart';
 import '../../../movies/presentation/screens/bloc_builder_recently_update_movies.dart';
 import '../../enum/home_category.dart';
 import '../widgets/title_and_gridview_list.dart';
@@ -50,12 +50,11 @@ class _HomeMainContentState extends State<HomeMainContent> {
 
   @override
   Widget build(BuildContext context) {
-    final sHeight = MediaQuery.of(context).size.height;
     return SingleChildScrollView(
       controller: widget.scrollController,
       scrollDirection: Axis.vertical,
       child: Column(
-        spacing: sHeight / (sHeight / 10),
+        spacing: 10.v,
         children: [
           const BlocBuilderRecentlyUpdateMovies(),
           ListView.builder(
@@ -65,7 +64,7 @@ class _HomeMainContentState extends State<HomeMainContent> {
             itemCount: sections.length,
             itemBuilder: (context, index) {
               return TitleAndGridViewList(
-                sHeight: sHeight,
+                sHeight: 10.v,
                 tabController: widget.tabController,
                 title: sections[index].title,
                 path: sections[index].path,
