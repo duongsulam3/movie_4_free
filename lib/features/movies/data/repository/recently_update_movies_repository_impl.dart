@@ -27,13 +27,20 @@ class RecentlyUpdateMoviesRepositoryImpl
   Future<Either<Failure, List<RecentlyUpdateListItemModel>>>
       getRecentlyUpdateMovies() async {
     try {
+      // Fetch recently updated movies from remote data source
       final result =
           await recentlyUpdateMoviesRemoteDataSource.getRecentlyUpdateMovies();
+
+      // Get old cache for comparison
       final oldCache = await homeMoviesLocalDataSource.getRecentlyUpdated();
-      if (!HomeMoviesCacheCompare.recentlyEquals(oldCache, result)) {
+
+      // Compare new data with old cache and persist only if they differ
+      if (!await HomeMoviesCacheCompare.recentlyEquals(oldCache, result)) {
         // Persist only when the fetched data differs from local cache.
         await homeMoviesLocalDataSource.saveRecentlyUpdated(result);
       }
+
+      // Return the fetched movies wrapped in a Right (success) Either
       return Right(result);
     } on ServerException catch (e) {
       return Left(Failure(e.message));

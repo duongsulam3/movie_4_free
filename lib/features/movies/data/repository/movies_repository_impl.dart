@@ -34,18 +34,21 @@ class MoviesRepositoryImpl implements MoviesRepository {
     required String cateName,
   }) async {
     try {
+      // Fetch movies from remote data source
       final res = await moviesRemoteDataSource.getMovies(
         page: page,
         limit: limit,
         cateName: cateName,
       );
 
+      // Get old cache for comparison
       final oldCache = await homeMoviesLocalDataSource.getMovies(
         cateName: cateName,
         limit: limit,
       );
 
-      if (!HomeMoviesCacheCompare.moviesEquals(oldCache, res)) {
+      // Compare new data with old cache and persist only if they differ
+      if (!await HomeMoviesCacheCompare.moviesEquals(oldCache, res)) {
         // Persist only when the fetched data differs from local cache.
         await homeMoviesLocalDataSource.saveMovies(
           cateName: cateName,
@@ -53,6 +56,8 @@ class MoviesRepositoryImpl implements MoviesRepository {
           movies: List<MovieItemModel>.from(res),
         );
       }
+
+      // Return the fetched movies wrapped in a Right (success) Either
       return Right(res);
     } on ServerException catch (e) {
       return Left(Failure(e.message));
