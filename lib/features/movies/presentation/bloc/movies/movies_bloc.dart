@@ -141,7 +141,11 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     }
 
     final merged = [...state.movies, ...result.movies];
-    final limitedMerged = List.generate(event.limit, (i) => merged[i]);
+    final limitedMerged = List.generate(
+      event.limit,
+      (i) => merged[i],
+      growable: false,
+    );
 
     if (result.movies.length < event.limit) {
       emit(state.copyWith(
