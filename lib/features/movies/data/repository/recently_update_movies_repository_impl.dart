@@ -5,6 +5,7 @@ import 'package:smoth_movie_app/features/movies/data/model/recently_update_movie
 import 'package:smoth_movie_app/features/movies/data/source/local/home_movies_cache_compare.dart';
 import 'package:smoth_movie_app/features/movies/data/source/local/home_movies_local_data_source.dart';
 import 'package:smoth_movie_app/features/movies/data/source/remote/recently_update_movies_remote_data_source.dart';
+import 'package:smoth_movie_app/features/movies/domain/entities/currently_update_movies/recently_update_movies_fetch_result.dart';
 import 'package:smoth_movie_app/features/movies/domain/repository/recently_update_movies_repository.dart';
 
 class RecentlyUpdateMoviesRepositoryImpl
@@ -24,24 +25,26 @@ class RecentlyUpdateMoviesRepositoryImpl
   }
 
   @override
-  Future<Either<Failure, List<RecentlyUpdateListItemModel>>>
+  Future<Either<Failure, RecentlyUpdateMoviesFetchResult>>
       getRecentlyUpdateMovies() async {
     try {
-      // Fetch recently updated movies from remote data source
       final result =
           await recentlyUpdateMoviesRemoteDataSource.getRecentlyUpdateMovies();
 
-      // Get old cache for comparison
       final oldCache = await homeMoviesLocalDataSource.getRecentlyUpdated();
+      final isEqual =
+          await HomeMoviesCacheCompare.recentlyEquals(oldCache, result);
 
-      // Compare new data with old cache and persist only if they differ
-      if (!await HomeMoviesCacheCompare.recentlyEquals(oldCache, result)) {
-        // Persist only when the fetched data differs from local cache.
+      if (!isEqual) {
         await homeMoviesLocalDataSource.saveRecentlyUpdated(result);
       }
 
-      // Return the fetched movies wrapped in a Right (success) Either
-      return Right(result);
+      return Right(
+        RecentlyUpdateMoviesFetchResult(
+          movies: result,
+          hasChangedFromCache: !isEqual,
+        ),
+      );
     } on ServerException catch (e) {
       return Left(Failure(e.message));
     }
