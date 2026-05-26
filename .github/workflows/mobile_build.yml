@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - master
-  # workflow_dispatch: # Cho phép bấm chạy thủ công
+  workflow_dispatch: # Cho phép bấm chạy thủ công
 
 jobs:
   # --- JOB BUILD ANDROID ---
