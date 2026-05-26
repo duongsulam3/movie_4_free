@@ -122,20 +122,22 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     List<MovieItemEntity> movies,
   ) {
     final merged = [...state.movies, ...movies];
-    if (listEquals(state.movies, merged)) return;
+    final limitedMerged = merged.take(event.limit).toList();
+
+    if (listEquals(state.movies, limitedMerged)) return;
 
     if (movies.length < event.limit) {
       emit(state.copyWith(
         status: MoviesStateStatus.success,
         isEnd: true,
-        movies: merged,
+        movies: limitedMerged,
       ));
       return;
     }
 
     emit(state.copyWith(
       status: MoviesStateStatus.success,
-      movies: merged,
+      movies: limitedMerged,
       isEnd: event.isRefresh ? false : true,
       page: state.page + 1,
     ));

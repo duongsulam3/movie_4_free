@@ -21,6 +21,9 @@ class BlocBuilderGridview extends StatefulWidget {
 
 class _BlocBuilderGridviewState extends State<BlocBuilderGridview>
     with AutomaticKeepAliveClientMixin {
+  static const int itemSkeletonCount = 6;
+  static const int itemShowLimit = 9;
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -32,7 +35,7 @@ class _BlocBuilderGridviewState extends State<BlocBuilderGridview>
             return const SizedBox.shrink();
           case MoviesStateStatus.loading:
             return MoviesGridBuilder(
-              itemCount: widget.itemCount,
+              itemCount: itemSkeletonCount,
               itemBuilder: (_, i) => const MovieItemSkeletonLoading(),
             );
           case MoviesStateStatus.error:
@@ -43,8 +46,13 @@ class _BlocBuilderGridviewState extends State<BlocBuilderGridview>
               ),
             );
           default:
+            final itemCount = state.movies.length < itemShowLimit
+                ? state.movies.length
+                : itemShowLimit;
+
+            // Show fewer items if the list is shorter than the limit
             return MoviesGridBuilder(
-                itemCount: state.movies.length,
+                itemCount: itemCount,
                 itemBuilder: (_, i) {
                   final movie = state.movies[i];
                   return ListMovieItemWidget(
