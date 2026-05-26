@@ -70,7 +70,7 @@ unlinked.ds
 unlinked_spec.ds
 
 # RULES FOR AGENTS
-.cursor/
+.cursor
 
 # Android related
 **/android/**/gradle-wrapper.jar
