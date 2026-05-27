@@ -5,7 +5,7 @@ import 'package:smoth_movie_app/features/movies/data/model/recently_update_movie
 import 'package:smoth_movie_app/features/movies/data/source/local/home_movies_cache_compare.dart';
 import 'package:smoth_movie_app/features/movies/data/source/local/home_movies_local_data_source.dart';
 import 'package:smoth_movie_app/features/movies/data/source/remote/recently_update_movies_remote_data_source.dart';
-import 'package:smoth_movie_app/features/movies/domain/entities/currently_update_movies/recently_update_movies_fetch_result.dart';
+import 'package:smoth_movie_app/features/movies/domain/entities/currently_update_movies/recently_update_list_item.dart';
 import 'package:smoth_movie_app/features/movies/domain/repository/recently_update_movies_repository.dart';
 
 class RecentlyUpdateMoviesRepositoryImpl
@@ -25,26 +25,29 @@ class RecentlyUpdateMoviesRepositoryImpl
   }
 
   @override
-  Future<Either<Failure, RecentlyUpdateMoviesFetchResult>>
+  Future<Either<Failure, List<RecentlyUpdateListItemEntity>?>>
       getRecentlyUpdateMovies() async {
     try {
+      // fetch remote data
       final result =
           await recentlyUpdateMoviesRemoteDataSource.getRecentlyUpdateMovies();
 
+      // fetch cached data
       final oldCache = await homeMoviesLocalDataSource.getRecentlyUpdated();
-      final isEqual =
-          await HomeMoviesCacheCompare.recentlyEquals(oldCache, result);
 
-      if (!isEqual) {
-        await homeMoviesLocalDataSource.saveRecentlyUpdated(result);
+      // compare new data with cached data
+      final isEqual = await HomeMoviesCacheCompare.recentlyEquals(
+        oldCache,
+        result,
+      );
+
+      if (isEqual) {
+        return const Right(null);
       }
 
-      return Right(
-        RecentlyUpdateMoviesFetchResult(
-          movies: result,
-          hasChangedFromCache: !isEqual,
-        ),
-      );
+      await homeMoviesLocalDataSource.saveRecentlyUpdated(result);
+
+      return Right(result);
     } on ServerException catch (e) {
       return Left(Failure(e.message));
     }

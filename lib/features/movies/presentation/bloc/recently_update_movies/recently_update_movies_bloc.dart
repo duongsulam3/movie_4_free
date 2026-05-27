@@ -3,7 +3,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../../common/utils/enum/movies_state_status.dart';
 import '../../../domain/entities/currently_update_movies/recently_update_list_item.dart';
-import '../../../domain/entities/currently_update_movies/recently_update_movies_fetch_result.dart';
 import '../../../domain/usecase/get_recently_movies.dart';
 
 part 'recently_update_movies_event.dart';
@@ -18,29 +17,26 @@ class RecentlyUpdateMoviesBloc
     on<GetRecentlyUpdateMovies>(_handleGetRecentlyUpdateMovies);
   }
 
-  // ===== recentlyUpdate orchestration =====
   Future<void> _handleGetRecentlyUpdateMovies(
     GetRecentlyUpdateMovies event,
     Emitter<RecentlyUpdateMoviesState> emit,
   ) async {
     // fetch cached data and render first
-    await _emitCachedMoviesIfNeeded(emit);
-
-    // if movies not exist in cache, show loading state
-    if (state.movies.isEmpty) {
-      emit(state.copyWith(status: MoviesStateStatus.loading));
-    }
+    await _emitCachedMovies(emit);
 
     // fetch remote data and do re-render flow
     await _fetchAndHandleRemote(emit);
   }
 
-  // ===== recentlyUpdate cache-first section =====
-  Future<void> _emitCachedMoviesIfNeeded(
+  Future<void> _emitCachedMovies(
     Emitter<RecentlyUpdateMoviesState> emit,
   ) async {
     final cached = await getRecentlyMovies.getCachedRecentlyMovies();
-    if (cached.isEmpty) return;
+
+    if (cached.isEmpty) {
+      emit(state.copyWith(status: MoviesStateStatus.loading));
+      return;
+    }
 
     emit(state.copyWith(
       status: MoviesStateStatus.success,
@@ -48,39 +44,31 @@ class RecentlyUpdateMoviesBloc
     ));
   }
 
-  // ===== recentlyUpdate remote section =====
   Future<void> _fetchAndHandleRemote(
     Emitter<RecentlyUpdateMoviesState> emit,
   ) async {
     final res = await getRecentlyMovies.call(const GetRecentlyMoviesParams());
     res.fold(
       (_) => _handleRemoteError(emit),
-      (result) => _handleRemoteSuccess(emit, result),
+      (movies) => _handleRemoteSuccess(emit, movies),
     );
   }
 
-  // ===== recentlyUpdate remote-error section =====
   void _handleRemoteError(Emitter<RecentlyUpdateMoviesState> emit) {
-    if (state.movies.isNotEmpty) {
-      // Keep cached carousel data visible when offline refresh fails.
-      return;
-    }
+    if (state.movies.isNotEmpty) return;
 
     emit(state.copyWith(status: MoviesStateStatus.error));
   }
 
-  // ===== recentlyUpdate remote-success section =====
   void _handleRemoteSuccess(
     Emitter<RecentlyUpdateMoviesState> emit,
-    RecentlyUpdateMoviesFetchResult result,
+    List<RecentlyUpdateListItemEntity>? movies,
   ) {
-    if (!result.hasChangedFromCache && state.movies.isNotEmpty) {
-      return;
-    }
+    if (movies == null) return;
 
     emit(state.copyWith(
       status: MoviesStateStatus.success,
-      movies: result.movies,
+      movies: movies,
     ));
   }
 }

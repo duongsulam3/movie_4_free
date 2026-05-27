@@ -1,9 +1,11 @@
-name: Mobile-Build-Unsigned
+name: Mobile-Build
 
 on:
   push:
     branches:
       - master
+    tags:
+      - 'v*'
   # workflow_dispatch: # Cho phép bấm chạy thủ công
 
 jobs:
@@ -93,4 +95,58 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ios-unsigned-ipa
-          path: release.ipa
+          # path: release.ipa
+          path: Flutter-Unsigned.ipa
+
+  # --- JOB ĐẨY FILE VÀO RELEASES ---
+  create-release:
+    name: Deploy to GitHub Release
+    # Chờ cả 2 job build xong thành công
+    needs: [build-android, build-ios] 
+    runs-on: ubuntu-latest
+    permissions:
+      # Quyền tối quan trọng để ghi dữ liệu vào Release
+      contents: write 
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Xem thử cấu trúc thư mục để debug nếu cần (Có thể xóa bước này sau)
+      - name: Display structure of downloaded files
+        run: ls -R
+
+      # Tải file APK đã build từ job trước xuống
+      - name: Download Android Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: android-release-apk
+          path: ./download-apk
+
+      # Tải file IPA đã build từ job trước xuống
+      - name: Download iOS Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ios-unsigned-ipa
+          path: ./download-ios
+
+      # # Đổi lại tên file trong thư mục artifacts cho rõ ràng (tùy chọn)
+      # - name: Rename artifacts for release
+      #   run: |
+      #     mv ./artifacts/app-release.apk ./artifacts/app-release.apk
+      #     mv ./artifacts/Flutter-Unsigned.ipa ./artifacts/ios-unsigned-ipa.ipa
+      #     ls -R ./artifacts
+
+      # Tạo/Cập nhật GitHub Release và đính kèm file
+      - name: Create or Update GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          # Nếu chạy bằng Push Tag (v1.0), nó sẽ lấy luôn tag đó. 
+          # Nếu chạy bằng master/thủ công, nó sẽ tự tạo tag dạng 'latest-master'
+          tag_name: ${{ github.ref_type == 'tag' && github.ref_name || 'latest-build' }}
+          name: ${{ github.ref_type == 'tag' && github.ref_name || 'Latest Automated Build' }}
+          draft: false
+          prerelease: false
+          make_latest: true
+          files: |
+            ./download-apk/app-release.apk
+            ./download-ios/Flutter-Unsigned.ipa

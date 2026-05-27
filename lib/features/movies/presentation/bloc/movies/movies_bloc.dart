@@ -3,7 +3,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../../common/utils/enum/movies_state_status.dart';
 import '../../../domain/entities/movies_page/movie_item.dart';
-import '../../../domain/entities/movies_page/movies_fetch_result.dart';
 import '../../../domain/usecase/get_movies.dart';
 
 part 'movies_bloc.freezed.dart';
@@ -16,7 +15,6 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     on<GetListMovies>(fetchMovie);
   }
 
-  // ===== fetchMovie orchestration =====
   Future<void> fetchMovie(
     GetListMovies event,
     Emitter<MoviesState> emit,
@@ -25,12 +23,10 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
 
     final requestPage = state.page;
 
-    if (event.preferCacheFirst) {
-      await _fetchCacheFirst(event, emit, requestPage);
-      return;
-    }
+    // fetch cached data and render first
+    await _fetchCacheFirst(event, emit, requestPage);
 
-    emit(state.copyWith(status: MoviesStateStatus.loading));
+    // fetch remote data and do re-render flow
     await _fetchAndHandleRemote(event, emit, requestPage);
   }
 
@@ -39,29 +35,26 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     Emitter<MoviesState> emit,
     int requestPage,
   ) async {
-    await _emitCachedMoviesIfNeeded(event, emit);
-    if (state.movies.isEmpty) {
-      emit(state.copyWith(status: MoviesStateStatus.loading));
-    }
+    await _emitCachedMovies(event, emit);
+
     await _fetchAndHandleRemote(event, emit, requestPage);
   }
 
-  // ===== fetchMovie guard section =====
   bool _shouldSkipFetch() => state.isEnd;
 
-  // ===== fetchMovie cache-first section =====
-  Future<void> _emitCachedMoviesIfNeeded(
+  Future<void> _emitCachedMovies(
     GetListMovies event,
     Emitter<MoviesState> emit,
   ) async {
-    if (!event.preferCacheFirst || state.movies.isNotEmpty) return;
-
     final cached = await usecase.getCachedMovies(
       limit: event.limit,
       cateName: event.path,
     );
 
-    if (cached.isEmpty) return;
+    if (cached.isEmpty) {
+      emit(state.copyWith(status: MoviesStateStatus.loading));
+      return;
+    }
 
     emit(state.copyWith(
       status: MoviesStateStatus.success,
@@ -71,7 +64,6 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     ));
   }
 
-  // ===== fetchMovie remote section =====
   Future<void> _fetchAndHandleRemote(
     GetListMovies event,
     Emitter<MoviesState> emit,
@@ -87,76 +79,28 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
 
     res.fold(
       (_) => _handleRemoteError(emit),
-      (result) => _handleRemoteSuccess(event, emit, result),
+      (movies) => _handleRemoteSuccess(event, emit, movies),
     );
   }
 
-  // ===== fetchMovie remote-error section =====
   void _handleRemoteError(Emitter<MoviesState> emit) {
-    if (state.movies.isNotEmpty) {
-      return;
-    }
+    if (state.movies.isNotEmpty) return;
 
     emit(state.copyWith(status: MoviesStateStatus.error));
   }
 
-  // ===== fetchMovie remote-success section =====
   void _handleRemoteSuccess(
     GetListMovies event,
     Emitter<MoviesState> emit,
-    MoviesFetchResult result,
+    List<MovieItemEntity>? movies,
   ) {
-    if (event.preferCacheFirst) {
-      _emitReplaceForCacheFirst(emit, result);
-      return;
-    }
-    _emitMergedMovies(event, emit, result);
-  }
-
-  // ===== fetchMovie cache-first success section =====
-  void _emitReplaceForCacheFirst(
-    Emitter<MoviesState> emit,
-    MoviesFetchResult result,
-  ) {
-    if (!result.hasChangedFromCache && state.movies.isNotEmpty) {
-      return;
-    }
+    if (movies == null) return;
 
     emit(state.copyWith(
       status: MoviesStateStatus.success,
-      movies: result.movies,
+      movies: movies,
       isEnd: true,
       page: 2,
-    ));
-  }
-
-  // ===== fetchMovie pagination success section =====
-  void _emitMergedMovies(
-    GetListMovies event,
-    Emitter<MoviesState> emit,
-    MoviesFetchResult result,
-  ) {
-    if (!result.hasChangedFromCache && state.movies.isNotEmpty) {
-      return;
-    }
-
-    final merged = [...state.movies, ...result.movies];
-    final limitedMerged = merged.take(event.limit).toList();
-
-    if (result.movies.length < event.limit) {
-      emit(state.copyWith(
-        status: MoviesStateStatus.success,
-        isEnd: true,
-        movies: limitedMerged,
-      ));
-      return;
-    }
-
-    emit(state.copyWith(
-      status: MoviesStateStatus.success,
-      movies: limitedMerged,
-      isEnd: event.isRefresh ? false : true,
-      page: state.page + 1,
     ));
   }
 }
