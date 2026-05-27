@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:smoth_movie_app/common/error/failure.dart';
 import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_item.dart';
-import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movies_fetch_result.dart';
 
 abstract interface class MoviesRepository {
   Future<List<MovieItemEntity>> getCachedMovies({
@@ -9,7 +8,8 @@ abstract interface class MoviesRepository {
     required String cateName,
   });
 
-  Future<Either<Failure, MoviesFetchResult>> getMovies({
+  /// Returns [null] when remote data equals Hive cache (no save, no UI update).
+  Future<Either<Failure, List<MovieItemEntity>?>> getMovies({
     required int page,
     required int limit,
     required String cateName,
