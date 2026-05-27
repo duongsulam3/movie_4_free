@@ -5,7 +5,7 @@ on:
     branches:
       - master
     tags:
-      - 'Files and Outputs'
+      - 'v*'
   # workflow_dispatch: # Cho phép bấm chạy thủ công
 
 jobs:
@@ -147,5 +147,5 @@ jobs:
           draft: false
           prerelease: false
           files: |
-            ./artifacts/app-release.apk
-            ./artifacts/ios-unsigned-ipa.ipa
+            ./download-apk/app-release.apk
+            ./download-ios/Flutter-Unsigned.ipa
