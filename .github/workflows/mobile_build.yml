@@ -95,18 +95,25 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ios-unsigned-ipa
-          path: release.ipa
+          # path: release.ipa
+          path: Flutter-Unsigned.ipa
 
   # --- JOB ĐẨY FILE VÀO RELEASES ---
   create-release:
     name: Deploy to GitHub Release
-    needs: [build-android, build-ios] # Chờ cả 2 job build xong thành công
+    # Chờ cả 2 job build xong thành công
+    needs: [build-android, build-ios] 
     runs-on: ubuntu-latest
     permissions:
-      contents: write # Quyền tối quan trọng để ghi dữ liệu vào Release
+      # Quyền tối quan trọng để ghi dữ liệu vào Release
+      contents: write 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      # Xem thử cấu trúc thư mục để debug nếu cần (Có thể xóa bước này sau)
+      - name: Display structure of downloaded files
+        run: ls -R
 
       # Tải file APK đã build từ job trước xuống
       - name: Download Android Artifact
@@ -121,10 +128,6 @@ jobs:
         with:
           name: ios-unsigned-ipa
           path: ./download-ios
-
-      # Xem thử cấu trúc thư mục để debug nếu cần (Có thể xóa bước này sau)
-      - name: Display structure of downloaded files
-        run: ls -R
 
       # # Đổi lại tên file trong thư mục artifacts cho rõ ràng (tùy chọn)
       # - name: Rename artifacts for release
