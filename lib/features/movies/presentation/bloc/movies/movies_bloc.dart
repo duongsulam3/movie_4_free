@@ -84,9 +84,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   }
 
   void _handleRemoteError(Emitter<MoviesState> emit) {
-    if (state.movies.isNotEmpty) {
-      return;
-    }
+    if (state.movies.isNotEmpty) return;
 
     emit(state.copyWith(status: MoviesStateStatus.error));
   }
