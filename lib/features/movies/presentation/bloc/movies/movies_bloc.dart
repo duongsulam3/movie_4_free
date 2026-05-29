@@ -10,97 +10,185 @@ part 'movies_event.dart';
 part 'movies_state.dart';
 
 class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
+  static const int previewItemLimit = 9;
+  static const int feedPageLimit = 30;
+
   final GetMovies usecase;
+
   MoviesBloc({required this.usecase}) : super(const MoviesState()) {
-    on<GetListMovies>(fetchMovie);
+    on<LoadCategoryPreview>(_onLoadCategoryPreview);
+    on<LoadCategoryFeed>(_onLoadCategoryFeed);
+    on<LoadMoreCategoryFeed>(_onLoadMoreCategoryFeed);
   }
 
-  Future<void> fetchMovie(
-    GetListMovies event,
-    Emitter<MoviesState> emit,
-  ) async {
-    if (_shouldSkipFetch()) return;
-
-    final requestPage = state.page;
-
-    // fetch cached data and render first
-    await _fetchCacheFirst(event, emit, requestPage);
-
-    // fetch remote data and do re-render flow
-    await _fetchAndHandleRemote(event, emit, requestPage);
-  }
-
-  Future<void> _fetchCacheFirst(
-    GetListMovies event,
-    Emitter<MoviesState> emit,
-    int requestPage,
-  ) async {
-    await _emitCachedMovies(event, emit);
-
-    await _fetchAndHandleRemote(event, emit, requestPage);
-  }
-
-  bool _shouldSkipFetch() => state.isEnd;
-
-  Future<void> _emitCachedMovies(
-    GetListMovies event,
+  Future<void> _onLoadCategoryPreview(
+    LoadCategoryPreview event,
     Emitter<MoviesState> emit,
   ) async {
     final cached = await usecase.getCachedMovies(
-      limit: event.limit,
+      limit: previewItemLimit,
       cateName: event.path,
     );
+    final previewFromCache = _takeMovies(cached, previewItemLimit);
 
-    if (cached.isEmpty) {
+    if (previewFromCache.isEmpty) {
+      // show skeleton if no cached movies
       emit(state.copyWith(status: MoviesStateStatus.loading));
-      return;
+    } else {
+      // show cached movies
+      emit(state.copyWith(
+        status: MoviesStateStatus.success,
+        movies: previewFromCache,
+        categoryPath: event.path,
+      ));
     }
 
-    emit(state.copyWith(
-      status: MoviesStateStatus.success,
-      movies: cached,
-      isEnd: true,
-      page: 2,
-    ));
-  }
-
-  Future<void> _fetchAndHandleRemote(
-    GetListMovies event,
-    Emitter<MoviesState> emit,
-    int requestPage,
-  ) async {
+    // fetch latest movies for preview
     final res = await usecase.call(
       GetMoviesParams(
-        page: requestPage,
+        page: 1,
         cateName: event.path,
-        limit: event.limit,
+        limit: previewItemLimit,
       ),
     );
 
     res.fold(
-      (_) => _handleRemoteError(emit),
-      (movies) => _handleRemoteSuccess(event, emit, movies),
+      (_) => _emitErrorIfEmpty(emit),
+      (movies) {
+        // if movies is null, remote data is equal to cached data
+        // no need to update the preview
+        if (movies == null) return;
+
+        // if cached movies changed, update the preview
+        emit(state.copyWith(
+          status: MoviesStateStatus.success,
+          movies: _takeMovies(movies, previewItemLimit),
+          categoryPath: event.path,
+        ));
+      },
     );
   }
 
-  void _handleRemoteError(Emitter<MoviesState> emit) {
-    if (state.movies.isNotEmpty) return;
+  Future<void> _onLoadCategoryFeed(
+    LoadCategoryFeed event,
+    Emitter<MoviesState> emit,
+  ) async {
+    final isNewCategory = state.categoryPath != event.path;
 
-    emit(state.copyWith(status: MoviesStateStatus.error));
+    if (isNewCategory) {
+      emit(state.copyWith(
+        status: MoviesStateStatus.loading,
+        movies: const [],
+        page: 1,
+        isEnd: false,
+        categoryPath: event.path,
+      ));
+    }
+
+    // load cached movies for feed
+    final cached = await usecase.getCachedMovies(
+      limit: feedPageLimit,
+      cateName: event.path,
+    );
+
+    // load feed from cache
+    final feedFromCache = _takeMovies(cached, feedPageLimit);
+
+    if (feedFromCache.isEmpty) {
+      // show skeleton if no cached movies for feed
+      emit(state.copyWith(
+        status: MoviesStateStatus.loading,
+        categoryPath: event.path,
+      ));
+    } else {
+      // show cached movies for feed
+      emit(state.copyWith(
+        status: MoviesStateStatus.success,
+        movies: feedFromCache,
+        categoryPath: event.path,
+        page: 1,
+        isEnd: false,
+      ));
+    }
+
+    // fetch latest movies for feed
+    final res = await usecase.call(
+      GetMoviesParams(
+        page: 1,
+        cateName: event.path,
+        limit: feedPageLimit,
+      ),
+    );
+
+    res.fold(
+      (_) => _emitErrorIfEmpty(emit),
+      (movies) => _emitFeedPage(
+        emit: emit,
+        movies: movies,
+        path: event.path,
+        replaceExisting: true,
+      ),
+    );
   }
 
-  void _handleRemoteSuccess(
-    GetListMovies event,
+  Future<void> _onLoadMoreCategoryFeed(
+    LoadMoreCategoryFeed event,
     Emitter<MoviesState> emit,
-    List<MovieItemEntity>? movies,
-  ) {
+  ) async {
+    if (state.isEnd || state.categoryPath != event.path) return;
+
+    final res = await usecase.call(
+      GetMoviesParams(
+        page: state.page,
+        cateName: event.path,
+        limit: feedPageLimit,
+        persistToCache: false,
+      ),
+    );
+
+    res.fold(
+      (_) {},
+      (movies) => _emitFeedPage(
+        emit: emit,
+        movies: movies,
+        path: event.path,
+        replaceExisting: false,
+      ),
+    );
+  }
+
+  void _emitFeedPage({
+    required Emitter<MoviesState> emit,
+    required List<MovieItemEntity>? movies,
+    required String path,
+    required bool replaceExisting,
+  }) {
     if (movies == null) return;
+
+    final isLastPage = movies.isEmpty || movies.length < feedPageLimit;
+    final nextMovies = replaceExisting ? movies : [...state.movies, ...movies];
 
     emit(state.copyWith(
       status: MoviesStateStatus.success,
-      movies: movies,
-      isEnd: true,
-      page: 2,
+      movies: nextMovies,
+      categoryPath: path,
+      isEnd: isLastPage,
+      page: isLastPage ? state.page : state.page + 1,
     ));
+  }
+
+  List<MovieItemEntity> _takeMovies(
+    List<MovieItemEntity> movies,
+    int limit,
+  ) {
+    if (movies.length <= limit) return movies;
+
+    // 
+    return movies.sublist(0, limit);
+  }
+
+  void _emitErrorIfEmpty(Emitter<MoviesState> emit) {
+    if (state.movies.isNotEmpty) return;
+    emit(state.copyWith(status: MoviesStateStatus.error));
   }
 }

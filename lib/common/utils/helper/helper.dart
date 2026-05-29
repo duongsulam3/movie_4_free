@@ -10,7 +10,6 @@ import 'package:smoth_movie_app/features/movie_detail/presentation/bloc/detail_m
 import 'package:smoth_movie_app/features/movies/presentation/bloc/similar_movies/similar_movies_bloc.dart';
 import 'package:smoth_movie_app/features/search/data/models/search_suggestion_model.dart';
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_main_bloc/search_bloc.dart';
-import 'package:smoth_movie_app/features/movies/presentation/bloc/movies/movies_bloc.dart';
 import 'package:smoth_movie_app/common/utils/helper/http_override.dart';
 
 class Helper {
@@ -40,10 +39,6 @@ class Helper {
   }
 
   // ===== Feature: Movies (Infinite / Similar) =====
-  static void loadMoreInfiniteMovies(BuildContext context, String path) {
-    final moviesBloc = context.read<MoviesBloc>();
-    moviesBloc.add(GetListMovies(path: path, limit: 30));
-  }
 
   static void loadSimilarMovies(BuildContext context, String slug) {
     context.read<SimilarMoviesBloc>().add(FetchMovies(categorySlug: slug));

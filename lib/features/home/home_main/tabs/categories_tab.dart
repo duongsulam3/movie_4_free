@@ -28,7 +28,6 @@ class _CategoriesTabState extends State<CategoriesTab>
     super.build(context);
     return CategoriesTabScope(
       path: widget.path,
-      limit: widget.limit,
       child: SingleChildScrollView(
         controller: widget.scrollController,
         child: Column(

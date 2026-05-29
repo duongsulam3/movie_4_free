@@ -9,9 +9,12 @@ abstract interface class MoviesRepository {
   });
 
   /// Returns [null] when remote data equals Hive cache (no save, no UI update).
+  /// When [persistToCache] is false, skips cache read/compare/save and always
+  /// returns the remote list on success.
   Future<Either<Failure, List<MovieItemEntity>?>> getMovies({
     required int page,
     required int limit,
     required String cateName,
+    bool persistToCache = true,
   });
 }

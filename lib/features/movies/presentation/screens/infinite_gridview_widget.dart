@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smoth_movie_app/common/widgets/movie_item_skeleton_loading.dart';
-import 'package:smoth_movie_app/common/router/app_router.dart';
-import 'package:smoth_movie_app/common/router/params/movie_detail_param_model.dart';
-import 'package:smoth_movie_app/common/utils/enum/movies_state_status.dart';
-import 'package:smoth_movie_app/common/screens/error_page.dart';
-import 'package:smoth_movie_app/common/widgets/list_movie_item_widget.dart';
-import 'package:smoth_movie_app/common/utils/helper/helper.dart';
-import 'package:smoth_movie_app/common/utils/secret/app_secret.dart';
-import 'package:smoth_movie_app/features/movies/presentation/bloc/movies/movies_bloc.dart';
-import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/load_more_container.dart';
-import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/movies_gridview_builder.dart';
-import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/movies_silver_gridview_builder.dart';
+
+import '../../../../common/router/app_router.dart';
+import '../../../../common/router/params/movie_detail_param_model.dart';
+import '../../../../common/screens/error_page.dart';
+import '../../../../common/utils/enum/movies_state_status.dart';
+import '../../../../common/utils/secret/app_secret.dart';
+import '../../../../common/widgets/list_movie_item_widget.dart';
+import '../../../../common/widgets/movie_item_skeleton_loading.dart';
+import '../bloc/movies/movies_bloc.dart';
+import 'widgets/load_more_container.dart';
+import 'widgets/movies_gridview_builder.dart';
+import 'widgets/movies_silver_gridview_builder.dart';
 
 class InfiniteGridView extends StatefulWidget {
   const InfiniteGridView({
@@ -34,6 +34,12 @@ class _InfiniteGridViewState extends State<InfiniteGridView>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
+
+  void _onLoadMore(BuildContext context, String path) {
+    context
+        .read<MoviesBloc>()
+        .add(MoviesEvent.loadMoreCategoryFeed(path: path));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,25 +73,18 @@ class _InfiniteGridViewState extends State<InfiniteGridView>
                       movieName: movie.name,
                       onTap: () => Navigator.of(context).pushNamed(
                         AppRouter.movieDetail,
-                        arguments: MovieDetailParamModel(
-                          movie: movie,
-                        ),
+                        arguments: MovieDetailParamModel(movie: movie),
                       ),
                     );
                   },
                 ),
                 SliverList(
-                  delegate: SliverChildListDelegate(
-                    [
-                      GestureDetector(
-                        onTap: () => Helper.loadMoreInfiniteMovies(
-                          context,
-                          widget.path,
-                        ),
-                        child: const LoadMoreContainer(),
-                      ),
-                    ],
-                  ),
+                  delegate: SliverChildListDelegate([
+                    GestureDetector(
+                      onTap: () => _onLoadMore(context, widget.path),
+                      child: const LoadMoreContainer(),
+                    ),
+                  ]),
                 ),
               ],
             );

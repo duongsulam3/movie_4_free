@@ -29,7 +29,6 @@ class TitleAndGridViewList extends StatelessWidget {
   Widget build(BuildContext context) {
     return TitleGridMoviesScope(
       path: path,
-      limit: limit,
       child: Padding(
         padding: EdgeInsets.all(sHeight / (sHeight / 5)),
         child: Column(
