@@ -7,22 +7,14 @@ class TitleGridMoviesScope extends StatelessWidget {
   const TitleGridMoviesScope({
     super.key,
     required this.path,
-    required this.limit,
     required this.child,
   });
 
   final String path;
-  final int limit;
   final Widget child;
 
   MoviesBloc _createMoviesBloc() {
-    return serviceLocator()
-      ..add(GetListMovies(
-        path: path,
-        limit: limit,
-        isRefresh: false,
-        preferCacheFirst: true,
-      ));
+    return serviceLocator()..add(MoviesEvent.loadCategoryPreview(path: path));
   }
 
   @override
