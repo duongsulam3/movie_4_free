@@ -23,6 +23,7 @@ class GetMovies implements Usecase<List<MovieItemEntity>?, GetMoviesParams> {
       page: params.page,
       limit: params.limit,
       cateName: params.cateName,
+      persistToCache: params.persistToCache,
     );
   }
 }
@@ -31,9 +32,11 @@ class GetMoviesParams {
   final int page;
   final int limit;
   final String cateName;
+  final bool persistToCache;
   const GetMoviesParams({
     required this.page,
     required this.cateName,
     required this.limit,
+    this.persistToCache = true,
   });
 }

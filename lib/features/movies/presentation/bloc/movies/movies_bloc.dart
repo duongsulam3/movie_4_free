@@ -142,6 +142,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
         page: state.page,
         cateName: event.path,
         limit: feedPageLimit,
+        persistToCache: false,
       ),
     );
 
