@@ -1,19 +1,19 @@
 part of 'movies_bloc.dart';
 
-@immutable
-sealed class MoviesEvent {
-  const MoviesEvent();
-}
+@freezed
+abstract class MoviesEvent with _$MoviesEvent {
+  /// Home section: cache-first snapshot, first [MoviesBloc.previewItemLimit] items.
+  const factory MoviesEvent.loadCategoryPreview({
+    required String path,
+  }) = LoadCategoryPreview;
 
-class GetListMovies extends MoviesEvent {
-  final String path;
-  final int limit;
-  final bool isRefresh;
-  final bool preferCacheFirst;
-  const GetListMovies({
-    required this.path,
-    this.isRefresh = true,
-    this.limit = 10,
-    this.preferCacheFirst = false,
-  });
+  /// Category tab: initial feed, up to [MoviesBloc.feedPageLimit] items per page.
+  const factory MoviesEvent.loadCategoryFeed({
+    required String path,
+  }) = LoadCategoryFeed;
+
+  /// Category tab: append next page for the same [path].
+  const factory MoviesEvent.loadMoreCategoryFeed({
+    required String path,
+  }) = LoadMoreCategoryFeed;
 }

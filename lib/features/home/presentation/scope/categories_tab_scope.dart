@@ -8,12 +8,10 @@ class CategoriesTabScope extends StatelessWidget {
   const CategoriesTabScope({
     super.key,
     required this.path,
-    required this.limit,
     required this.child,
   });
 
   final String path;
-  final int limit;
   final Widget child;
 
   MoviesSortByTimeBloc _createMoviesSortByTimeBloc() {
@@ -26,11 +24,7 @@ class CategoriesTabScope extends StatelessWidget {
   }
 
   MoviesBloc _createMoviesBloc() {
-    return serviceLocator()
-      ..add(GetListMovies(
-        path: path,
-        limit: limit,
-      ));
+    return serviceLocator()..add(MoviesEvent.loadCategoryFeed(path: path));
   }
 
   @override
