@@ -9,7 +9,7 @@ import '../../../../common/utils/secret/app_secret.dart';
 import '../../../../common/widgets/list_movie_item_widget.dart';
 import '../../../../common/widgets/movie_item_skeleton_loading.dart';
 import '../bloc/movies/movies_bloc.dart';
-import 'widgets/load_more_container.dart';
+import 'widgets/category_feed_footer.dart';
 import 'widgets/movies_gridview_builder.dart';
 import 'widgets/movies_silver_gridview_builder.dart';
 
@@ -21,24 +21,50 @@ class InfiniteGridView extends StatefulWidget {
     this.physics,
     required this.itemCount,
   });
+
   final String path;
   final bool primary;
   final ScrollPhysics? physics;
   final int itemCount;
 
+  static const double loadMoreThreshold = 200;
+
+  static bool isNearScrollEnd(ScrollMetrics metrics) {
+    if (!metrics.hasContentDimensions) return false;
+    return metrics.pixels > metrics.maxScrollExtent - loadMoreThreshold;
+  }
+
   @override
-  State<InfiniteGridView> createState() => _InfiniteGridViewState();
+  State<InfiniteGridView> createState() => InfiniteGridViewState();
 }
 
-class _InfiniteGridViewState extends State<InfiniteGridView>
+class InfiniteGridViewState extends State<InfiniteGridView>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
-  void _onLoadMore(BuildContext context, String path) {
-    context
-        .read<MoviesBloc>()
-        .add(MoviesEvent.loadMoreCategoryFeed(path: path));
+  void handleScrollEnd(ScrollMetrics metrics) {
+    if (!InfiniteGridView.isNearScrollEnd(metrics)) return;
+
+    // Try load more movies when user scrolls near the end of the list
+    _tryLoadMore();
+  }
+
+  void _tryLoadMore() {
+    if (!mounted) return;
+
+    final bloc = context.read<MoviesBloc>();
+    final state = bloc.state;
+    if (state.isEnd || state.isLoadingMore) return;
+
+    bloc.add(MoviesEvent.loadMoreCategoryFeed(path: widget.path));
+  }
+
+  bool _footerBuildWhen(MoviesState previous, MoviesState current) {
+    return previous.isEnd != current.isEnd ||
+        previous.isLoadingMore != current.isLoadingMore ||
+        previous.loadMoreFailed != current.loadMoreFailed ||
+        previous.movies.length != current.movies.length;
   }
 
   @override
@@ -64,6 +90,7 @@ class _InfiniteGridViewState extends State<InfiniteGridView>
               primary: widget.primary,
               physics: widget.physics,
               slivers: [
+                // Movie feed
                 MoviesSilverGridviewBuilder(
                   itemCount: state.movies.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -78,13 +105,20 @@ class _InfiniteGridViewState extends State<InfiniteGridView>
                     );
                   },
                 ),
-                SliverList(
-                  delegate: SliverChildListDelegate([
-                    GestureDetector(
-                      onTap: () => _onLoadMore(context, widget.path),
-                      child: const LoadMoreContainer(),
-                    ),
-                  ]),
+
+                // Footer
+                SliverToBoxAdapter(
+                  child: BlocBuilder<MoviesBloc, MoviesState>(
+                    buildWhen: _footerBuildWhen,
+                    builder: (context, footerState) {
+                      return CategoryFeedFooter(
+                        isEnd: footerState.isEnd,
+                        isLoadingMore: footerState.isLoadingMore,
+                        loadMoreFailed: footerState.loadMoreFailed,
+                        onRetry: _tryLoadMore,
+                      );
+                    },
+                  ),
                 ),
               ],
             );

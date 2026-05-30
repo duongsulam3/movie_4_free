@@ -23,28 +23,40 @@ class CategoriesTab extends StatefulWidget {
 
 class _CategoriesTabState extends State<CategoriesTab>
     with AutomaticKeepAliveClientMixin {
+  final GlobalKey<InfiniteGridViewState> _gridKey = GlobalKey();
+
+  bool _onScrollNotification(ScrollNotification notification) {
+    if (notification.depth != 0) return false;
+    if (notification is ScrollEndNotification) {
+      _gridKey.currentState?.handleScrollEnd(notification.metrics);
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return CategoriesTabScope(
       path: widget.path,
-      child: SingleChildScrollView(
-        controller: widget.scrollController,
-        child: Column(
-          spacing: 20.v,
-          children: [
-            const BlocBuilderMoviesSortByTime(),
-            Padding(
-              padding: EdgeInsets.only(left: 5.h, right: 5.h),
-              child: InfiniteGridView(
-                path: widget.path,
-                itemCount: widget.limit,
+      child: NotificationListener<ScrollNotification>(
+        onNotification: _onScrollNotification,
+        child: SingleChildScrollView(
+          controller: widget.scrollController,
+          child: Column(
+            spacing: 20.v,
+            children: [
+              const BlocBuilderMoviesSortByTime(),
+              Padding(
+                padding: EdgeInsets.only(left: 5.h, right: 5.h),
+                child: InfiniteGridView(
+                  key: _gridKey,
+                  path: widget.path,
+                  itemCount: widget.limit,
+                ),
               ),
-            ),
-
-            // Extra spacing for the bottom navigation bar.
-            const ResponsiveSizedBox(height: 80)
-          ],
+              const ResponsiveSizedBox(height: 80),
+            ],
+          ),
         ),
       ),
     );
