@@ -82,6 +82,8 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
         page: 1,
         isEnd: false,
         categoryPath: event.path,
+        isLoadingMore: false,
+        loadMoreFailed: false,
       ));
     }
 
@@ -99,6 +101,8 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
       emit(state.copyWith(
         status: MoviesStateStatus.loading,
         categoryPath: event.path,
+        isLoadingMore: false,
+        loadMoreFailed: false,
       ));
     } else {
       // show cached movies for feed
@@ -108,6 +112,8 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
         categoryPath: event.path,
         page: 1,
         isEnd: false,
+        isLoadingMore: false,
+        loadMoreFailed: false,
       ));
     }
 
@@ -135,7 +141,11 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     LoadMoreCategoryFeed event,
     Emitter<MoviesState> emit,
   ) async {
-    if (state.isEnd || state.categoryPath != event.path) return;
+    if (state.categoryPath != event.path) return;
+
+    if (state.isEnd || state.isLoadingMore) return;
+
+    emit(state.copyWith(isLoadingMore: true, loadMoreFailed: false));
 
     final res = await usecase.call(
       GetMoviesParams(
@@ -147,13 +157,28 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     );
 
     res.fold(
-      (_) {},
-      (movies) => _emitFeedPage(
-        emit: emit,
-        movies: movies,
-        path: event.path,
-        replaceExisting: false,
-      ),
+      // Load more failed
+      (_) => emit(state.copyWith(
+        isLoadingMore: false,
+        loadMoreFailed: true,
+      )),
+
+      // Load more success
+      (movies) {
+        // Case remote data is equal to cached data, no more movies to load
+        if (movies == null) {
+          emit(state.copyWith(isLoadingMore: false));
+          return;
+        }
+
+        // Case remote data is different from cached data, update the feed
+        _emitFeedPage(
+          emit: emit,
+          movies: movies,
+          path: event.path,
+          replaceExisting: false,
+        );
+      },
     );
   }
 
@@ -174,6 +199,8 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
       categoryPath: path,
       isEnd: isLastPage,
       page: isLastPage ? state.page : state.page + 1,
+      isLoadingMore: false,
+      loadMoreFailed: false,
     ));
   }
 
@@ -182,8 +209,6 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     int limit,
   ) {
     if (movies.length <= limit) return movies;
-
-    // 
     return movies.sublist(0, limit);
   }
 
