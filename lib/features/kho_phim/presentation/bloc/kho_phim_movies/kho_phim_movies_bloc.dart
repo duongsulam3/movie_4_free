@@ -10,65 +10,124 @@ part 'kho_phim_movies_bloc.freezed.dart';
 
 class KhoPhimMoviesBloc extends Bloc<KhoPhimMoviesEvent, KhoPhimMoviesState> {
   final GetKhoPhimMovies usecase;
+
   KhoPhimMoviesBloc(this.usecase) : super(const KhoPhimMoviesState()) {
-    on<GetKhoPhimMoviesEvent>((event, emit) async {
-      List<MovieItemEntity> movies = const [];
-      if (state.categorySlug != event.categorySlug ||
-          state.countrySlug != event.countrySlug ||
-          state.langSlug != event.lang ||
-          state.yearSlug != event.year) {
-        emit(state.copyWith(page: 1, status: KhoPhimMoviesStateStatus.loading));
-      }
-      if (state.isEnd) {
-        emit(state.copyWith(isEnd: false));
-      }
-      final res = await usecase.call(GetKhoPhimMoviesParams(
-        countrySlug: event.countrySlug,
-        page: state.page,
-        sortField: event.sortField,
-        sortType: event.sortType,
-        lang: event.lang,
-        categorySlug: event.categorySlug,
-        year: event.year,
-        limit: event.limit,
+    on<FetchKhoPhimMovies>(_onFetchKhoPhimMovies);
+    on<LoadMoreKhoPhimMovies>(_onLoadMoreKhoPhimMovies);
+  }
+
+  bool _filtersChanged(KhoPhimMoviesQuery query) {
+    return state.categorySlug != query.categorySlug ||
+        state.countrySlug != query.countrySlug ||
+        state.langSlug != query.lang ||
+        state.yearSlug != query.year;
+  }
+
+  GetKhoPhimMoviesParams _paramsFromQuery(
+    KhoPhimMoviesQuery query, {
+    required int page,
+  }) {
+    return GetKhoPhimMoviesParams(
+      countrySlug: query.countrySlug,
+      page: page,
+      sortField: query.sortField,
+      sortType: query.sortType,
+      lang: query.lang,
+      categorySlug: query.categorySlug,
+      year: query.year,
+      limit: query.limit,
+    );
+  }
+
+  Future<void> _onFetchKhoPhimMovies(
+    FetchKhoPhimMovies event,
+    Emitter<KhoPhimMoviesState> emit,
+  ) async {
+    final query = event.query;
+
+    if (_filtersChanged(query)) {
+      emit(state.copyWith(
+        page: 1,
+        status: KhoPhimMoviesStateStatus.loading,
+        isLoadingMore: false,
+        loadMoreFailed: false,
       ));
-      res.fold(
-        (err) => emit(state.copyWith(status: KhoPhimMoviesStateStatus.error)),
-        (data) {
-          movies = data;
-          if (movies.isEmpty || movies.length < event.limit) {
-            emit(state.copyWith(
-              status: KhoPhimMoviesStateStatus.success,
-              movies: (state.categorySlug != event.categorySlug ||
-                      state.countrySlug != event.countrySlug ||
-                      state.langSlug != event.lang ||
-                      state.yearSlug != event.year)
-                  ? movies
-                  : [...state.movies, ...movies],
-              categorySlug: event.categorySlug,
-              countrySlug: event.countrySlug,
-              langSlug: event.lang,
-              yearSlug: event.year,
-              isEnd: true,
-            ));
-          } else {
-            emit(state.copyWith(
-              status: KhoPhimMoviesStateStatus.success,
-              movies: (state.categorySlug != event.categorySlug ||
-                      state.countrySlug != event.countrySlug ||
-                      state.langSlug != event.lang ||
-                      state.yearSlug != event.year)
-                  ? movies
-                  : [...state.movies, ...movies],
-              page: state.page + 1,
-              countrySlug: event.countrySlug,
-              categorySlug: event.categorySlug,
-              langSlug: event.lang,
-              yearSlug: event.year,
-            ));
-          }
-        },
-      );
-    });
+    }
+
+    final res = await usecase.call(_paramsFromQuery(query, page: 1));
+
+    res.fold(
+      (_) => _emitInitialError(emit),
+      (movies) => _emitInitialSuccess(emit, query, movies),
+    );
+  }
+
+  Future<void> _onLoadMoreKhoPhimMovies(
+    LoadMoreKhoPhimMovies event,
+    Emitter<KhoPhimMoviesState> emit,
+  ) async {
+    final query = event.query;
+
+    if (_filtersChanged(query)) return;
+    if (state.isEnd || state.isLoadingMore) return;
+
+    emit(state.copyWith(isLoadingMore: true, loadMoreFailed: false));
+
+    final res = await usecase.call(_paramsFromQuery(query, page: state.page));
+
+    res.fold(
+      (_) => emit(state.copyWith(
+        isLoadingMore: false,
+        loadMoreFailed: true,
+      )),
+      (movies) => _emitLoadMoreSuccess(emit, query, movies),
+    );
+  }
+
+  void _emitInitialSuccess(
+    Emitter<KhoPhimMoviesState> emit,
+    KhoPhimMoviesQuery query,
+    List<MovieItemEntity> movies,
+  ) {
+    final isLastPage = movies.isEmpty || movies.length < query.limit;
+
+    emit(state.copyWith(
+      status: KhoPhimMoviesStateStatus.success,
+      movies: movies,
+      categorySlug: query.categorySlug,
+      countrySlug: query.countrySlug,
+      langSlug: query.lang,
+      yearSlug: query.year,
+      isEnd: isLastPage,
+      page: isLastPage ? 1 : 2,
+      isLoadingMore: false,
+      loadMoreFailed: false,
+    ));
+  }
+
+  void _emitLoadMoreSuccess(
+    Emitter<KhoPhimMoviesState> emit,
+    KhoPhimMoviesQuery query,
+    List<MovieItemEntity> movies,
+  ) {
+    final isLastPage = movies.isEmpty || movies.length < query.limit;
+
+    emit(state.copyWith(
+      status: KhoPhimMoviesStateStatus.success,
+      movies: [...state.movies, ...movies],
+      categorySlug: query.categorySlug,
+      countrySlug: query.countrySlug,
+      langSlug: query.lang,
+      yearSlug: query.year,
+      isEnd: isLastPage,
+      page: isLastPage ? state.page : state.page + 1,
+      isLoadingMore: false,
+      loadMoreFailed: false,
+    ));
+  }
+
+  void _emitInitialError(Emitter<KhoPhimMoviesState> emit) {
+    if (state.movies.isNotEmpty) return;
+    emit(state.copyWith(status: KhoPhimMoviesStateStatus.error));
   }
 }

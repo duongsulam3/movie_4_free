@@ -5,11 +5,11 @@ import 'package:smoth_movie_app/common/widgets/list_movie_item_widget.dart';
 import 'package:smoth_movie_app/common/widgets/movie_item_skeleton_loading.dart';
 import 'package:smoth_movie_app/common/router/app_router.dart';
 import 'package:smoth_movie_app/common/router/params/movie_detail_param_model.dart';
-import 'package:smoth_movie_app/common/utils/helper/helper.dart';
 import 'package:smoth_movie_app/common/utils/secret/app_secret.dart';
 
 import '../../../../common/utils/enum/kho_phim/kho_phim_movies_state_status.dart';
-import '../../../movies/presentation/screens/widgets/load_more_container.dart';
+import '../../../movies/presentation/screens/infinite_gridview_widget.dart';
+import '../../../movies/presentation/screens/widgets/category_feed_footer.dart';
 import '../../../movies/presentation/screens/widgets/movies_gridview_builder.dart';
 import '../../../movies/presentation/screens/widgets/movies_silver_gridview_builder.dart';
 import '../bloc/kho_phim_movies/kho_phim_movies_bloc.dart';
@@ -32,10 +32,10 @@ class InfiniteGridViewMovies extends StatefulWidget {
   final int limit;
 
   @override
-  State<InfiniteGridViewMovies> createState() => _InfiniteGridViewMoviesState();
+  State<InfiniteGridViewMovies> createState() => InfiniteGridViewMoviesState();
 }
 
-class _InfiniteGridViewMoviesState extends State<InfiniteGridViewMovies> {
+class InfiniteGridViewMoviesState extends State<InfiniteGridViewMovies> {
   @override
   void initState() {
     super.initState();
@@ -55,15 +55,43 @@ class _InfiniteGridViewMoviesState extends State<InfiniteGridViewMovies> {
     }
   }
 
+  void handleScrollEnd(ScrollMetrics metrics) {
+    if (!InfiniteGridView.isNearScrollEnd(metrics)) return;
+    _tryLoadMore();
+  }
+
+  KhoPhimMoviesQuery _moviesQuery() {
+    return KhoPhimMoviesQuery(
+      countrySlug: widget.countrySlug,
+      lang: widget.languageSlug,
+      categorySlug: widget.categorySlug,
+      year: widget.yearSlug,
+      limit: widget.limit,
+    );
+  }
+
   void _loadMovies() {
-    // Trigger fetch only on first mount or when filters change.
-    context.read<KhoPhimMoviesBloc>().add(GetKhoPhimMoviesEvent(
-          countrySlug: widget.countrySlug,
-          lang: widget.languageSlug,
-          categorySlug: widget.categorySlug,
-          year: widget.yearSlug,
-          limit: widget.limit,
-        ));
+    context
+        .read<KhoPhimMoviesBloc>()
+        .add(KhoPhimMoviesEvent.getMovies(_moviesQuery()));
+  }
+
+  void _tryLoadMore() {
+    if (!mounted) return;
+
+    final bloc = context.read<KhoPhimMoviesBloc>();
+    final state = bloc.state;
+    if (state.isEnd || state.isLoadingMore) return;
+
+    bloc.add(KhoPhimMoviesEvent.loadMore(_moviesQuery()));
+  }
+
+  bool _footerBuildWhen(
+      KhoPhimMoviesState previous, KhoPhimMoviesState current) {
+    return previous.isEnd != current.isEnd ||
+        previous.isLoadingMore != current.isLoadingMore ||
+        previous.loadMoreFailed != current.loadMoreFailed ||
+        previous.movies.length != current.movies.length;
   }
 
   @override
@@ -83,45 +111,43 @@ class _InfiniteGridViewMoviesState extends State<InfiniteGridViewMovies> {
           default:
             if (state.isEnd && state.movies.isEmpty) {
               return const KhoPhimNoMoreMovie();
-            } else {
-              return CustomScrollView(
-                shrinkWrap: true,
-                primary: false,
-                slivers: [
-                  MoviesSilverGridviewBuilder(
-                    itemCount: state.movies.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final movie = state.movies[index];
-                      return ListMovieItemWidget(
-                        movieUrl: AppSecret.imageUrl + movie.posterUrl,
-                        movieName: movie.name,
-                        onTap: () => Navigator.of(context).pushNamed(
-                          AppRouter.movieDetail,
-                          arguments: MovieDetailParamModel(movie: movie),
-                        ),
+            }
+            return CustomScrollView(
+              shrinkWrap: true,
+              primary: false,
+              slivers: [
+                // Gridview of movies
+                MoviesSilverGridviewBuilder(
+                  itemCount: state.movies.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final movie = state.movies[index];
+                    return ListMovieItemWidget(
+                      movieUrl: AppSecret.imageUrl + movie.posterUrl,
+                      movieName: movie.name,
+                      onTap: () => Navigator.of(context).pushNamed(
+                        AppRouter.movieDetail,
+                        arguments: MovieDetailParamModel(movie: movie),
+                      ),
+                    );
+                  },
+                ),
+
+                // Footer
+                SliverToBoxAdapter(
+                  child: BlocBuilder<KhoPhimMoviesBloc, KhoPhimMoviesState>(
+                    buildWhen: _footerBuildWhen,
+                    builder: (context, footerState) {
+                      return CategoryFeedFooter(
+                        isEnd: footerState.isEnd,
+                        isLoadingMore: footerState.isLoadingMore,
+                        loadMoreFailed: footerState.loadMoreFailed,
+                        onRetry: _tryLoadMore,
                       );
                     },
                   ),
-                  SliverList(
-                    delegate: SliverChildListDelegate([
-                      state.isEnd
-                          ? const SizedBox()
-                          : GestureDetector(
-                              onTap: () => Helper.loadKhoPhimMovies(
-                                context,
-                                widget.countrySlug,
-                                widget.languageSlug,
-                                widget.categorySlug,
-                                widget.yearSlug,
-                                widget.limit,
-                              ),
-                              child: const LoadMoreContainer(),
-                            )
-                    ]),
-                  ),
-                ],
-              );
-            }
+                ),
+              ],
+            );
         }
       },
     );
