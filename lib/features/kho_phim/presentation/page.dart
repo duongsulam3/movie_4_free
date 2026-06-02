@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_supper_app_core/core.dart';
 import 'package:smoth_movie_app/common/screens/error_page.dart';
 import 'package:smoth_movie_app/common/screens/loading_page.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_sized_box.dart';
@@ -8,6 +8,7 @@ import 'package:smoth_movie_app/common/utils/enum/kho_phim/page_status.dart';
 import 'bloc/categories/category_list_bloc.dart';
 import 'bloc/countries/countries_bloc.dart';
 import 'bloc/kho_phim/kho_phim_page_bloc.dart';
+import 'bloc/kho_phim_filter/kho_phim_filter_bloc.dart';
 import 'widget/kho_phim_categories_widget.dart';
 import 'widget/kho_phim_countries_widget.dart';
 import 'widget/kho_phim_infinite_gridview_widget.dart';
@@ -25,11 +26,6 @@ class KhoPhimPage extends StatefulWidget {
 class _KhoPhimPageState extends State<KhoPhimPage> {
   final ScrollController _scrollController = ScrollController();
   final GlobalKey<InfiniteGridViewMoviesState> _gridKey = GlobalKey();
-
-  String categorySlug = '';
-  String countrySlug = '';
-  String yearSlug = '';
-  String languageSlug = '';
 
   @override
   void initState() {
@@ -59,7 +55,6 @@ class _KhoPhimPageState extends State<KhoPhimPage> {
 
   @override
   Widget build(BuildContext context) {
-    final sHeight = MediaQuery.of(context).size.height;
     return BlocBuilder<KhoPhimPageBloc, KhoPhimPageState>(
       buildWhen: (p, c) => p.status != c.status,
       builder: (context, state) {
@@ -71,76 +66,104 @@ class _KhoPhimPageState extends State<KhoPhimPage> {
           case KhoPhimPageStatus.error:
             return const ErrorPage();
           case KhoPhimPageStatus.success:
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: NotificationListener<ScrollNotification>(
-                onNotification: _onScrollNotification,
-                child: SingleChildScrollView(
-                  controller: _scrollController,
-                  child: Column(
-                    spacing: sHeight / (sHeight / 20),
-                    children: [
-                      const TitleAndSearchIcon(),
-                      KhoPhimCountries(
-                        countries: state.countries,
-                        onSelected: (value) {
-                          if (countrySlug == value) return;
-                          Future.delayed(Duration.zero, () {
-                            setState(() {
-                              countrySlug = value;
-                            });
-                          });
-                        },
-                      ),
-                      KhoPhimCategoriesWidget(
-                        categories: state.categories,
-                        onSelected: (value) {
-                          if (categorySlug == value) return;
-                          Future.delayed(Duration.zero, () {
-                            setState(() {
-                              categorySlug = value;
-                            });
-                          });
-                        },
-                      ),
-                      KhoPhimYearsWidget(
-                        years: state.years,
-                        onSelected: (value) {
-                          if (yearSlug == value) return;
-                          Future.delayed(Duration.zero, () {
-                            setState(() {
-                              yearSlug = value;
-                            });
-                          });
-                        },
-                      ),
-                      KhoPhimLanguageSubWidget(
-                        langs: state.langs,
-                        onSelected: (value) {
-                          if (languageSlug == value) return;
-                          Future.delayed(Duration.zero, () {
-                            setState(() {
-                              languageSlug = value;
-                            });
-                          });
-                        },
-                      ),
-                      if (countrySlug.isNotEmpty)
-                        InfiniteGridViewMovies(
-                          key: _gridKey,
-                          categorySlug: categorySlug,
-                          countrySlug: countrySlug,
-                          yearSlug: yearSlug,
-                          languageSlug: languageSlug,
-                        ),
-                      const ResponsiveSizedBox(height: 70),
-                    ],
-                  ),
-                ),
-              ),
+            return _KhoPhimSuccessBody(
+              state: state,
+              scrollController: _scrollController,
+              gridKey: _gridKey,
+              onScrollNotification: _onScrollNotification,
             );
         }
       },
+    );
+  }
+}
+
+class _KhoPhimSuccessBody extends StatefulWidget {
+  const _KhoPhimSuccessBody({
+    required this.state,
+    required this.scrollController,
+    required this.gridKey,
+    required this.onScrollNotification,
+  });
+
+  final KhoPhimPageState state;
+  final ScrollController scrollController;
+  final GlobalKey<InfiniteGridViewMoviesState> gridKey;
+  final bool Function(ScrollNotification) onScrollNotification;
+
+  @override
+  State<_KhoPhimSuccessBody> createState() => _KhoPhimSuccessBodyState();
+}
+
+class _KhoPhimSuccessBodyState extends State<_KhoPhimSuccessBody> {
+  @override
+  void initState() {
+    super.initState();
+    _onInitializeFilters();
+  }
+
+  void _onInitializeFilters() {
+    context.read<KhoPhimFilterBloc>().add(
+          KhoPhimFilterEvent.initialize(
+            defaultCountrySlug: widget.state.countries[1].slug,
+          ),
+        );
+  }
+
+  bool _buildWhen(KhoPhimFilterState p, KhoPhimFilterState c) {
+    return p.countrySlug != c.countrySlug ||
+        p.categorySlug != c.categorySlug ||
+        p.yearSlug != c.yearSlug ||
+        p.languageSlug != c.languageSlug;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: NotificationListener<ScrollNotification>(
+        onNotification: widget.onScrollNotification,
+        child: SingleChildScrollView(
+          controller: widget.scrollController,
+          child: Column(
+            spacing: 20.v,
+            children: [
+              // Title and search icon
+              const TitleAndSearchIcon(),
+
+              // Countries filter
+              KhoPhimCountries(countries: widget.state.countries),
+
+              // Categories filter
+              KhoPhimCategoriesWidget(categories: widget.state.categories),
+
+              // Years filter
+              KhoPhimYearsWidget(years: widget.state.years),
+
+              // Language filter
+              KhoPhimLanguageSubWidget(langs: widget.state.langs),
+
+              // Movies gridview
+              BlocBuilder<KhoPhimFilterBloc, KhoPhimFilterState>(
+                buildWhen: _buildWhen,
+                builder: (context, filters) {
+                  if (filters.countrySlug.isEmpty) {
+                    return const SizedBox.shrink();
+                  }
+                  return InfiniteGridViewMovies(
+                    key: widget.gridKey,
+                    categorySlug: filters.categorySlug,
+                    countrySlug: filters.countrySlug,
+                    yearSlug: filters.yearSlug,
+                    languageSlug: filters.languageSlug,
+                  );
+                },
+              ),
+              const ResponsiveSizedBox(height: 70),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

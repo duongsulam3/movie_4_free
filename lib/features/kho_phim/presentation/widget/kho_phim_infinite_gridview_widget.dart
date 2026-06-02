@@ -94,9 +94,21 @@ class InfiniteGridViewMoviesState extends State<InfiniteGridViewMovies> {
         previous.movies.length != current.movies.length;
   }
 
+  bool _moviesBuildWhen(
+    KhoPhimMoviesState previous,
+    KhoPhimMoviesState current,
+  ) {
+    return previous.status != current.status ||
+        previous.movies.length != current.movies.length ||
+        previous.isLoadingMore != current.isLoadingMore ||
+        previous.loadMoreFailed != current.loadMoreFailed ||
+        previous.isEnd != current.isEnd;
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<KhoPhimMoviesBloc, KhoPhimMoviesState>(
+      buildWhen: _moviesBuildWhen,
       builder: (context, state) {
         switch (state.status) {
           case KhoPhimMoviesStateStatus.init:
