@@ -15,6 +15,7 @@ import 'package:smoth_movie_app/features/kho_phim/domain/usecase/get_countries.d
 import 'package:smoth_movie_app/features/kho_phim/domain/usecase/get_kho_phim_movies.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/categories/category_list_bloc.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/countries/countries_bloc.dart';
+import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/kho_phim_filter/kho_phim_filter_bloc.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/kho_phim_movies/kho_phim_movies_bloc.dart';
 import 'package:smoth_movie_app/features/movies/data/repository/movies_sortby_time_repository_impl.dart';
 import 'package:smoth_movie_app/features/movies/data/repository/similar_repository_impl.dart';
@@ -238,6 +239,7 @@ void _initKhoPhimFeature() {
   _initKhoPhimCategoriesDependencies();
   _initKhoPhimCountriesDependencies();
   _initKhoPhimMoviesDependencies();
+  _initKhoPhimFilterDependencies();
 }
 
 void _initKhoPhimCategoriesDependencies() {
@@ -271,6 +273,10 @@ void _initKhoPhimMoviesDependencies() {
   );
   serviceLocator.registerFactory(() => GetKhoPhimMovies(serviceLocator()));
   serviceLocator.registerFactory(() => KhoPhimMoviesBloc(serviceLocator()));
+}
+
+void _initKhoPhimFilterDependencies() {
+  serviceLocator.registerFactory(() => KhoPhimFilterBloc());
 }
 
 // ===== Feature: Recommend Movies =====

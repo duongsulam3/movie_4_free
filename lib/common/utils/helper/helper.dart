@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_small_text.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/categories/category_list_bloc.dart';
-import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/kho_phim_movies/kho_phim_movies_bloc.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/category.dart';
 import 'package:smoth_movie_app/features/movie_detail/domain/entities/country.dart';
 import 'package:smoth_movie_app/features/movie_detail/presentation/bloc/detail_movie/detail_movie_bloc.dart';
@@ -48,23 +47,6 @@ class Helper {
   static void loadAllCategories(BuildContext context) {
     final cateBloc = context.read<CategoryListBloc>();
     cateBloc.add(const GetAllCategories());
-  }
-
-  static void loadKhoPhimMovies(
-    BuildContext context,
-    String countrySlug,
-    String languageSlug,
-    String categorySlug,
-    String yearSlug,
-    int limit,
-  ) {
-    context.read<KhoPhimMoviesBloc>().add(GetKhoPhimMoviesEvent(
-          countrySlug: countrySlug,
-          lang: languageSlug,
-          categorySlug: categorySlug,
-          year: yearSlug,
-          limit: limit,
-        ));
   }
 
   // ===== Feature: Movie Detail =====

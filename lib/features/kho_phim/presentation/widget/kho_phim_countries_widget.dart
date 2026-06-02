@@ -1,55 +1,59 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_sized_box.dart';
 import 'package:smoth_movie_app/features/kho_phim/domain/entity/kho_phim_country_entity.dart';
+import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/kho_phim_filter/kho_phim_filter_bloc.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/widget/categories_item_container.dart';
 
-class KhoPhimCountries extends StatefulWidget {
-  const KhoPhimCountries({super.key, required this.onSelected, required this.countries});
+class KhoPhimCountries extends StatelessWidget {
+  const KhoPhimCountries({super.key, required this.countries});
 
-  final ValueChanged<String> onSelected;
   final List<KhoPhimCountryEntity> countries;
 
-  @override
-  State<KhoPhimCountries> createState() => _KhoPhimCountriesState();
-}
+  void _onCountrySelected(BuildContext context, String slug) {
+    context
+        .read<KhoPhimFilterBloc>()
+        .add(KhoPhimFilterEvent.countrySelected(slug));
+  }
 
-class _KhoPhimCountriesState extends State<KhoPhimCountries> {
-  late int selectedIndex;
+  Widget _onBuildSeperate(BuildContext cxt, int i) {
+    return const ResponsiveSizedBox(width: 10);
+  }
 
-  @override
-  void initState() {
-    selectedIndex = 1;
-    widget.onSelected(widget.countries[selectedIndex].slug);
-    super.initState();
+  Color _getBackgroundColor(bool selected) {
+    return selected ? Colors.grey.withValues(alpha: 0.2) : Colors.transparent;
+  }
+
+  Color _getTextColor(bool selected) {
+    return selected ? Colors.green.withValues(alpha: 0.8) : Colors.white;
   }
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveSizedBox(
-      height: 40,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) => GestureDetector(
-          onTap: () {
-            setState(() {
-              selectedIndex = index;
-              widget.onSelected(widget.countries[selectedIndex].slug);
-            });
-          },
-          child: CategoriesItemContainer(
-            name: widget.countries[index].name,
-            backgroundColor: selectedIndex == index
-                ? Colors.grey.withValues(alpha: 0.2)
-                : Colors.transparent,
-            textColor: selectedIndex == index
-                ? Colors.green.withValues(alpha: 0.8)
-                : Colors.white,
+    return BlocBuilder<KhoPhimFilterBloc, KhoPhimFilterState>(
+      buildWhen: (p, c) => p.countrySlug != c.countrySlug,
+      builder: (context, filterState) {
+        return ResponsiveSizedBox(
+          height: 40,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) {
+              final country = countries[index];
+              final selected = country.slug == filterState.countrySlug;
+              return GestureDetector(
+                onTap: () => _onCountrySelected(context, countries[index].slug),
+                child: CategoriesItemContainer(
+                  name: countries[index].name,
+                  backgroundColor: _getBackgroundColor(selected),
+                  textColor: _getTextColor(selected),
+                ),
+              );
+            },
+            itemCount: countries.length,
+            separatorBuilder: _onBuildSeperate,
           ),
-        ),
-        itemCount: widget.countries.length,
-        separatorBuilder: (BuildContext context, int index) =>
-            const ResponsiveSizedBox(width: 10),
-      ),
+        );
+      },
     );
   }
 }
