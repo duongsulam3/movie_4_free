@@ -1,58 +1,66 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smoth_movie_app/common/widgets/responsive_sized_box.dart';
+import 'package:smoth_movie_app/features/kho_phim/presentation/bloc/kho_phim_filter/kho_phim_filter_bloc.dart';
 import 'package:smoth_movie_app/features/kho_phim/presentation/widget/categories_item_container.dart';
 
-class KhoPhimLanguageSubWidget extends StatefulWidget {
-  const KhoPhimLanguageSubWidget({super.key, required this.onSelected, required this.langs});
+class KhoPhimLanguageSubWidget extends StatelessWidget {
+  const KhoPhimLanguageSubWidget({super.key, required this.langs});
 
-  final ValueChanged<String> onSelected;
   final List<String> langs;
 
-  @override
-  State<KhoPhimLanguageSubWidget> createState() =>
-      _KhoPhimLanguageSubWidgetState();
-}
+  void _onLanguageSelected(BuildContext context, String lang) {
+    context
+        .read<KhoPhimFilterBloc>()
+        .add(KhoPhimFilterEvent.languageSelected(lang));
+  }
 
-class _KhoPhimLanguageSubWidgetState extends State<KhoPhimLanguageSubWidget> {
-  late int selectedIndex;
-  @override
-  void initState() {
-    selectedIndex = 1;
-    widget.onSelected(widget.langs[selectedIndex].toString());
-    super.initState();
+  Widget _onBuildSeperate(BuildContext cxt, int i) {
+    return const ResponsiveSizedBox(width: 10);
+  }
+
+  Color _getBackgroundColor(bool selected) {
+    return selected ? Colors.grey.withValues(alpha: 0.2) : Colors.transparent;
+  }
+
+  Color _getTextColor(bool selected) {
+    return selected ? Colors.green.withValues(alpha: 0.8) : Colors.white;
+  }
+
+  String _getDisplayName(String lang) {
+    return switch (lang) {
+      'vietsub' => 'Vietsub',
+      'thuyet-minh' => 'Thuyết Minh',
+      _ => 'Lồng Tiếng',
+    };
   }
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveSizedBox(
-      height: 40,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        itemCount: widget.langs.length,
-        itemBuilder: (context, index) => GestureDetector(
-          onTap: () {
-            setState(() {
-              selectedIndex = index;
-              widget.onSelected(widget.langs[selectedIndex].toString());
-            });
-          },
-          child: CategoriesItemContainer(
-            name: widget.langs[index] == "vietsub"
-                ? "Vietsub"
-                : widget.langs[index] == "thuyet-minh"
-                    ? "Thuyết Minh"
-                    : "Lồng Tiếng",
-            backgroundColor: selectedIndex == index
-                ? Colors.grey.withValues(alpha: 0.2)
-                : Colors.transparent,
-            textColor: selectedIndex == index
-                ? Colors.green.withValues(alpha: 0.8)
-                : Colors.white,
+    return BlocBuilder<KhoPhimFilterBloc, KhoPhimFilterState>(
+      buildWhen: (p, c) => p.languageSlug != c.languageSlug,
+      builder: (context, filterState) {
+        return ResponsiveSizedBox(
+          height: 40,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) {
+              final lang = langs[index];
+              final selected = lang == filterState.languageSlug;
+              return GestureDetector(
+                onTap: () => _onLanguageSelected(context, lang),
+                child: CategoriesItemContainer(
+                  name: _getDisplayName(lang),
+                  backgroundColor: _getBackgroundColor(selected),
+                  textColor: _getTextColor(selected),
+                ),
+              );
+            },
+            itemCount: langs.length,
+            separatorBuilder: _onBuildSeperate,
           ),
-        ),
-        separatorBuilder: (BuildContext context, int index) =>
-            const ResponsiveSizedBox(width: 10),
-      ),
+        );
+      },
     );
   }
 }

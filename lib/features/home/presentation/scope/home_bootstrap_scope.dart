@@ -5,6 +5,7 @@ import '../../../../common/di/init_dependencies.dart';
 import '../../../kho_phim/presentation/bloc/categories/category_list_bloc.dart';
 import '../../../kho_phim/presentation/bloc/countries/countries_bloc.dart';
 import '../../../kho_phim/presentation/bloc/kho_phim/kho_phim_page_bloc.dart';
+import '../../../kho_phim/presentation/bloc/kho_phim_filter/kho_phim_filter_bloc.dart';
 import '../../../kho_phim/presentation/bloc/kho_phim_movies/kho_phim_movies_bloc.dart';
 import '../../../movies/presentation/bloc/recently_update_movies/recently_update_movies_bloc.dart';
 import '../../../recommend_movies/presentation/bloc/recommend_movies/recommend_movies_bloc.dart';
@@ -45,6 +46,10 @@ class HomeBootstrapScope extends StatelessWidget {
     return serviceLocator();
   }
 
+  KhoPhimFilterBloc _createKhoPhimFilterBloc() {
+    return serviceLocator();
+  }
+
   RecommendMoviesBloc _createRecommendMoviesBloc() {
     return serviceLocator()..add(const GetRecommendMoviesEvent());
   }
@@ -70,6 +75,9 @@ class HomeBootstrapScope extends StatelessWidget {
         ),
         BlocProvider<KhoPhimMoviesBloc>(
           create: (_) => _createKhoPhimMoviesBloc(),
+        ),
+        BlocProvider<KhoPhimFilterBloc>(
+          create: (_) => _createKhoPhimFilterBloc(),
         ),
         BlocProvider<RecommendMoviesBloc>(
           create: (_) => _createRecommendMoviesBloc(),

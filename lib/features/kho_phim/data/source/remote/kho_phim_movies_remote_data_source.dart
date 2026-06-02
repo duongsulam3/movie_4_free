@@ -47,7 +47,9 @@ class KhoPhimMoviesRemoteDataSourceImpl
 
       final parsed = await client.parseJson<List<MovieItemModel>>(() {
         final items = jsonRes["data"]["items"] as List<dynamic>;
-        return items.map((e) => MovieItemModel.fromJson(e)).toList();
+        return List.generate(items.length, (i) {
+          return MovieItemModel.fromJson(items[i]);
+        });
       });
 
       return parsed;
