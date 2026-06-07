@@ -29,11 +29,16 @@ class AnimatedLoading extends StatelessWidget {
       transitionBuilder: transitionBuilder,
       child: isLoading
           ? _LoadingOverlay(
+              key: const ValueKey('animated_loading'),
               color: color,
               indicatorSize: indicatorSize,
               strokeWidth: strokeWidth,
+              child: child,
             )
-          : child,
+          : KeyedSubtree(
+              key: const ValueKey('animated_content'),
+              child: child,
+            ),
     );
   }
 }
@@ -43,21 +48,33 @@ class _LoadingOverlay extends StatelessWidget {
     required this.color,
     required this.indicatorSize,
     required this.strokeWidth,
+    required this.child,
+    super.key,
   });
 
+  final Widget child;
   final Color color;
   final double indicatorSize;
   final double strokeWidth;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: indicatorSize,
-      width: indicatorSize,
-      child: CircularProgressIndicator(
-        strokeWidth: strokeWidth,
-        valueColor: AlwaysStoppedAnimation<Color>(color),
-      ),
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        // invisible child to stabilize animation
+        Opacity(opacity: 0.0, child: child),
+
+        // loading indicator
+        SizedBox(
+          height: indicatorSize,
+          width: indicatorSize,
+          child: CircularProgressIndicator(
+            strokeWidth: strokeWidth,
+            valueColor: AlwaysStoppedAnimation<Color>(color),
+          ),
+        ),
+      ],
     );
   }
 }

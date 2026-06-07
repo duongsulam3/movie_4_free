@@ -34,29 +34,33 @@ class SwipeLoadingButton extends StatelessWidget {
     return ClipRect(
       clipBehavior: Clip.hardEdge,
       child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          // Responsive: width full width of the screen, height = 52 as default
-          minimumSize: Size(
-            width ?? double.infinity, // full width of the screen
-            height,
-          ),
-          backgroundColor: backgroundColor,
-          disabledBackgroundColor: disabledBackgroundColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
-
+        style: _buttonStyle(),
         onPressed: isLoading ? null : onPressed,
         child: AnimatedLoading(
           isLoading: isLoading,
           color: loadingIndicatorColor,
+          indicatorSize: 24,
+          strokeWidth: 1.8,
           transitionBuilder: FadeSwipeUpTransition.transitionBuilder,
           child: _ButtonTitle(
             title: title,
             titleStyle: titleStyle,
           ),
         ),
+      ),
+    );
+  }
+
+  ButtonStyle _buttonStyle() {
+    return ElevatedButton.styleFrom(
+      minimumSize: Size(
+        width ?? double.infinity,
+        height,
+      ),
+      backgroundColor: backgroundColor,
+      disabledBackgroundColor: disabledBackgroundColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
       ),
     );
   }
