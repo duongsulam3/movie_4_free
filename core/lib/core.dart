@@ -29,5 +29,11 @@ export 'responsive/responsive.dart';
 export 'helper/dev_logger.dart';
 export 'helper/debouncer.dart';
 
+/** ANIMATIONS **/
+export 'animations/fade_swipe_up_transition.dart';
+export 'animations/scale_transition.dart';
+export 'animations/swipe_up_animation.dart';
+
 /** COMPONENTS **/
+export 'components/animated_loading/animated_loading.dart';
 export 'components/loading_button/swipe_loading_button.dart';
