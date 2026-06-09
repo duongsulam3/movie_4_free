@@ -60,7 +60,8 @@ class _MoviePlayerWidgetState extends State<MoviePlayerWidget> {
 
   Future<void> _initPlayer(String url) async {
     final requestId = ++_initRequestId;
-    final controller = VideoPlayerController.networkUrl(Uri.parse(url));
+    final uri = Uri.parse(url);
+    final controller = VideoPlayerController.networkUrl(uri);
 
     if (mounted) {
       setState(() {
@@ -79,7 +80,10 @@ class _MoviePlayerWidgetState extends State<MoviePlayerWidget> {
       }
 
       _controller = controller;
-      simpleFlixController = SimpleFlixController(controller: controller);
+      simpleFlixController = SimpleFlixController(
+        controller: controller,
+        autoPlay: true,
+      );
 
       setState(() {
         _isInitializing = false;
@@ -135,7 +139,6 @@ class _MoviePlayerWidgetState extends State<MoviePlayerWidget> {
       case _MoviePlayerViewState.error:
         return _MoviePlayerFallbackPoster(
           posterUrl: widget.posterUrl,
-          isLoading: false,
         );
     }
   }
