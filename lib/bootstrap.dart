@@ -12,20 +12,9 @@ import 'common/di/init_dependencies.dart';
 Future<void> bootstrap() async {
   final Logger logger = const Logger(className: "bootstrap");
 
+  // Run the app within a guarded zone to catch uncaught errors
   await runZonedGuarded(() async {
-    await HiveManager.init();
-
-    // Initialize dependencies
-    await initDependencies();
-
-    // Initialize singleton network service
-    AppService.initialize(baseUrl: AppSecret.baseUrl);
-
-    // Set up HTTP overrides
-    HttpOverrides.global = Helper.myHttpOverrides;
-
-    // Run the app
-    runApp(const MyApp());
+    await initializeApp();
   }, (error, stackTrace) {
     // Handle uncaught errors
     logger.error(
@@ -33,4 +22,22 @@ Future<void> bootstrap() async {
       "Uncaught error: $error\n$stackTrace",
     );
   });
+}
+
+Future<void> initializeApp() async {
+  // Any additional initialization logic can go here
+
+  await HiveManager.init();
+
+  // Initialize dependencies
+  await initDependencies();
+
+  // Initialize singleton network service
+  AppService.initialize(baseUrl: AppSecret.baseUrl);
+
+  // Set up HTTP overrides
+  HttpOverrides.global = Helper.myHttpOverrides;
+
+  // Run the app
+  runApp(const MyApp());
 }
