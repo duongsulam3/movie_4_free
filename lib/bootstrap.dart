@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
+import 'package:flutter_supper_app_core/core.dart';
 
 import 'app.dart';
 import 'common/local/hive_manager.dart';
@@ -10,17 +10,27 @@ import 'common/utils/secret/app_secret.dart';
 import 'common/di/init_dependencies.dart';
 
 Future<void> bootstrap() async {
-  await HiveManager.init();
+  final Logger logger = const Logger(className: "bootstrap");
 
-  // Initialize dependencies
-  await initDependencies();
+  await runZonedGuarded(() async {
+    await HiveManager.init();
 
-  // Initialize singleton network service
-  AppService.initialize(baseUrl: AppSecret.baseUrl);
+    // Initialize dependencies
+    await initDependencies();
 
-  // Set up HTTP overrides
-  HttpOverrides.global = Helper.myHttpOverrides;
+    // Initialize singleton network service
+    AppService.initialize(baseUrl: AppSecret.baseUrl);
 
-  // Run the app
-  runApp(const MyApp());
+    // Set up HTTP overrides
+    HttpOverrides.global = Helper.myHttpOverrides;
+
+    // Run the app
+    runApp(const MyApp());
+  }, (error, stackTrace) {
+    // Handle uncaught errors
+    logger.error(
+      "bootstrap",
+      "Uncaught error: $error\n$stackTrace",
+    );
+  });
 }

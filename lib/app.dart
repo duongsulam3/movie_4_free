@@ -13,16 +13,22 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  // Initialize dependencies
   final AppRouter route = AppRouter();
+
+  // Initialize locale controller
   late final _localeController = serviceLocator<AbstractLocaleController>();
 
   @override
   Widget build(BuildContext context) {
+    /// Responsive builder
     return Sizer(
       builder: (context, orientation, deviceType) {
+        /// Locale builder
         return ListenableBuilder(
           listenable: _localeController,
           builder: (context, _) {
+            /// Main material app
             return MaterialApp(
               title: 'Movies For Free',
               debugShowCheckedModeBanner: false,
