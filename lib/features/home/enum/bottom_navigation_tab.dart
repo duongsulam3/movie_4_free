@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/localization/l10n_extension.dart';
+
 enum HomeBottomNav {
   home,
   khoPhim,
@@ -7,14 +9,15 @@ enum HomeBottomNav {
 }
 
 extension HomeBottomNavExtension on HomeBottomNav {
-  String get title {
+  String getTitle(BuildContext context) {
+    final l = context.l10n;
     switch (this) {
       case HomeBottomNav.home:
-        return "Trang chủ";
+        return l.nav_home;
       case HomeBottomNav.khoPhim:
-        return "Kho phim";
+        return l.nav_kho_phim;
       case HomeBottomNav.profile:
-        return "Profile";
+        return l.nav_profile;
     }
   }
 
