@@ -20,7 +20,7 @@ if [[ $? -eq 0 ]]; then
   echo -e "${GREEN}Flutter localizations generated successfully.${NC}"
   echo -e "   lib/l10n/app_en.arb  ← edit this"
   echo -e "   lib/l10n/app_vi.arb  ← edit this"
-  echo -e "   lib/core/localization/app_localizations*.dart"
+  echo -e "   lib/l10n/localization/app_localizations*.dart"
 else
   echo -e "${RED}Failed to generate Flutter localizations${NC}"
   exit 1

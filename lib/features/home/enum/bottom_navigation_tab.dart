@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/localization/l10n_extension.dart';
+import '../../../l10n/localization/l10n_extension.dart';
 
 enum HomeBottomNav {
   home,

@@ -1,7 +1,6 @@
 import 'package:flutter_supper_app_core/core.dart';
 import 'package:smoth_movie_app/common/di/init_dependencies.dart';
-import 'package:smoth_movie_app/core/locale/locale_controller.dart';
-import 'package:smoth_movie_app/core/localization/app_localizations.dart';
+import 'package:smoth_movie_app/l10n/localization/app_localizations.dart';
 
 import 'common/router/app_router.dart';
 import 'common/utils/theme/theme.dart';
@@ -15,8 +14,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final AppRouter route = AppRouter();
-  late final LocaleController _localeController =
-      serviceLocator<LocaleController>();
+  late final _localeController = serviceLocator<AbstractLocaleController>();
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +27,7 @@ class _MyAppState extends State<MyApp> {
               title: 'Movies For Free',
               debugShowCheckedModeBanner: false,
               locale: _localeController.value,
-              localizationsDelegates:
-                  AppLocalizations.localizationsDelegates,
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocalizations.supportedLocales,
               theme: AppTheme.blackTheme,
               initialRoute: AppRouter.splash,
