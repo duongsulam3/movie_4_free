@@ -7,7 +7,8 @@ import 'package:smoth_movie_app/features/search/domain/usecase/get_search_movies
 
 import '../../fixtures/movie_item_fixtures.dart';
 
-class MockSearchMoviesRepository extends Mock implements SearchMoviesRepository {}
+class MockSearchMoviesRepository extends Mock
+    implements SearchMoviesRepository {}
 
 void main() {
   late MockSearchMoviesRepository repository;

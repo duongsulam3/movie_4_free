@@ -39,18 +39,14 @@ class TabbarSimilarListItem extends StatelessWidget {
                 children: [
                   ResponsiveText(
                     text: movie.name,
-                    fontSize: 16,
                     textOverflow: TextOverflow.ellipsis,
-                    maxLines: 1,
                   ),
                   ResponsiveText(
                     text: "Chất lượng: ${movie.quality}",
-                    fontSize: 16,
                     fontWeight: FontWeight.w400,
                   ),
                   ResponsiveText(
                     text: "Thời lượng: ${movie.time}",
-                    fontSize: 16,
                     fontWeight: FontWeight.w400,
                   ),
                 ],

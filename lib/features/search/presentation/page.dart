@@ -102,10 +102,12 @@ class _SearchPageState extends State<SearchPage> {
               onSuggestionSelected: submitSearch,
               listSearch: widget.listSearch,
               searchHistory: state.history,
-              onDeleteKeyword: (keyword) =>
-                  context.read<SearchHistoryBloc>().add(SearchHistoryEvent.delete(keyword)),
-              onClearHistory: () =>
-                  context.read<SearchHistoryBloc>().add(const SearchHistoryEvent.clearAll()),
+              onDeleteKeyword: (keyword) => context
+                  .read<SearchHistoryBloc>()
+                  .add(SearchHistoryEvent.delete(keyword)),
+              onClearHistory: () => context
+                  .read<SearchHistoryBloc>()
+                  .add(const SearchHistoryEvent.clearAll()),
             );
           },
         );

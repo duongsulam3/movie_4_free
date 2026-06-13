@@ -4,7 +4,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:smoth_movie_app/common/error/failure.dart';
 import 'package:smoth_movie_app/common/utils/enum/search/search_page_status.dart';
-import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_item.dart';
 import 'package:smoth_movie_app/features/search/domain/usecase/get_search_movies.dart';
 import 'package:smoth_movie_app/features/search/domain/usecase/get_search_suggestions.dart';
 import 'package:smoth_movie_app/features/search/presentation/bloc/search_main_bloc/search_bloc.dart';
@@ -46,17 +45,9 @@ void main() {
       expect: () => [
         const SearchState(
           SearchPageStatus.loading,
-          1,
-          '',
-          <MovieItemEntity>[],
-          false,
         ),
         const SearchState(
           SearchPageStatus.error,
-          1,
-          '',
-          <MovieItemEntity>[],
-          false,
         ),
       ],
     );
@@ -76,10 +67,6 @@ void main() {
       expect: () => [
         const SearchState(
           SearchPageStatus.loading,
-          1,
-          '',
-          <MovieItemEntity>[],
-          false,
         ),
         predicate<SearchState>(
           (s) =>
@@ -107,10 +94,6 @@ void main() {
       expect: () => [
         const SearchState(
           SearchPageStatus.loading,
-          1,
-          '',
-          <MovieItemEntity>[],
-          false,
         ),
         predicate<SearchState>(
           (s) =>
@@ -151,10 +134,6 @@ void main() {
       expect: () => [
         const SearchState(
           SearchPageStatus.loading,
-          1,
-          '',
-          <MovieItemEntity>[],
-          false,
         ),
         predicate<SearchState>(
           (s) =>

@@ -85,7 +85,6 @@ class InfiniteGridViewState extends State<InfiniteGridView>
               return const Center(child: Text('Không còn phim'));
             }
             return CustomScrollView(
-              scrollDirection: Axis.vertical,
               shrinkWrap: true,
               primary: widget.primary,
               physics: widget.physics,

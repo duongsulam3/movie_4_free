@@ -63,7 +63,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: ResponsiveText(
                     text: 'IQIYI V8.4.0(726952)',
                     fontSize: 12,
-                    textColor: Colors.grey,
                   ),
                 ),
               ),

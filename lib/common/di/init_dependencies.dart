@@ -1,5 +1,8 @@
+import 'package:flutter_supper_app_core/core.dart';
 import 'package:get_it/get_it.dart';
 import 'package:smoth_movie_app/common/local/hive_manager.dart';
+import 'package:smoth_movie_app/l10n/locale/locale_controller.dart';
+import 'package:smoth_movie_app/l10n/locale/locale_repository.dart';
 import 'package:smoth_movie_app/common/utils/network/app_service.dart';
 import 'package:smoth_movie_app/features/kho_phim/data/repository/categories_repository_impl.dart';
 import 'package:smoth_movie_app/features/kho_phim/data/repository/countries_repository_impl.dart';
@@ -76,6 +79,14 @@ Future<void> initDependencies() async {
 
 void _initCoreDependencies() {
   serviceLocator.registerLazySingleton(() => AppService.shared);
+  serviceLocator.registerLazySingleton<AbstractLocaleRepository>(
+    () => LocaleRepository(settingsBox: HiveManager.settingsBox),
+  );
+  serviceLocator.registerLazySingleton<AbstractLocaleController>(
+    () => LocaleController(
+      repository: serviceLocator<AbstractLocaleRepository>(),
+    ),
+  );
 }
 
 // ===== Feature: Movies =====

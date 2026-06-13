@@ -4,7 +4,6 @@ class TmdbEntity {
   dynamic season;
   // int voteAverage;
   int voteCount;
-  
 
   TmdbEntity({
     this.type,

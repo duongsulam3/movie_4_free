@@ -46,7 +46,6 @@ class MovieDetailPageInit extends StatelessWidget {
             width: 50,
             child: LottieAssetWidget(
               assetString: AppConstants.rippleLoading,
-              isLoop: true,
               renderCache: RenderCache.raster,
             ),
           ),

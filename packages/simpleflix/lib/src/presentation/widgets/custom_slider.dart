@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomSlider extends StatelessWidget {
-  const CustomSlider({
-    super.key,
-    required this.value,
-    required this.onChanged,
-  });
+  const CustomSlider({super.key, required this.value, required this.onChanged});
 
   final double value;
   final ValueChanged<double> onChanged;
