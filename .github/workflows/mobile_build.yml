@@ -30,22 +30,21 @@ jobs:
           cache: true
 
       - name: Generate Files & Delete Conflicting Outputs
-        run: dart run build_runner build -d --delete-conflicting-outputs
+        run: make build
 
       - name: Decrypt Key
         shell: bash
         env:
           ENCRYPTION_KEY: ${{ secrets.ENV_DECRYPT_KEY }}
-        run: bash script/prepare.sh decrypt <<< "$ENCRYPTION_KEY"
+        run: make decrypt_env <<< "$ENCRYPTION_KEY"
+        # run: bash script/prepare.sh decrypt <<< "$ENCRYPTION_KEY"
 
       - name: Clean and Fetch Dependencies
-        run: |
-          flutter clean
-          flutter pub get
+        run: make remove_clean 
 
       - name: Build APK
         # Build release để không cần cấu hình keystore
-        run: flutter build apk --release
+        run: make build_apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
@@ -67,22 +66,21 @@ jobs:
           cache: true
 
       - name: Generate Files & Delete Conflicting Outputs
-        run: dart run build_runner build -d --delete-conflicting-outputs
+        run: make build
 
       - name: Decrypt Key
         shell: bash
         env:
           ENCRYPTION_KEY: ${{ secrets.ENV_DECRYPT_KEY }}
-        run: bash script/prepare.sh decrypt <<< "$ENCRYPTION_KEY"
+        run: make decrypt_env <<< "$ENCRYPTION_KEY"
+        # run: bash script/prepare.sh decrypt <<< "$ENCRYPTION_KEY"
 
       - name: Clean and Fetch Dependencies
-        run: |
-          flutter pub get
-          cd ios && pod install && cd ..
+        run: make remove_clean
 
       - name: Build iOS Frameworks
         # Chỉ build ra cấu trúc app, không thực hiện ký danh
-        run: flutter build ios --release --no-codesign
+        run: make build_ipa
 
       - name: Package "Fake" IPA
         # Đây là cách cậu đã làm, dùng để lưu trữ hoặc cài máy Jailbreak
@@ -95,7 +93,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ios-unsigned-ipa
-          # path: release.ipa
           path: Flutter-Unsigned.ipa
 
   # --- JOB ĐẨY FILE VÀO RELEASES ---
@@ -112,8 +109,8 @@ jobs:
         uses: actions/checkout@v4
 
       # Xem thử cấu trúc thư mục để debug nếu cần (Có thể xóa bước này sau)
-      - name: Display structure of downloaded files
-        run: ls -R
+      # - name: Display structure of downloaded files
+      #   run: ls -R
 
       # Tải file APK đã build từ job trước xuống
       - name: Download Android Artifact
