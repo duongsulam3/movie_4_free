@@ -37,10 +37,9 @@ jobs:
         env:
           ENCRYPTION_KEY: ${{ secrets.ENV_DECRYPT_KEY }}
         run: make decrypt_env <<< "$ENCRYPTION_KEY"
-        # run: bash script/prepare.sh decrypt <<< "$ENCRYPTION_KEY"
 
-      - name: Clean and Fetch Dependencies
-        run: make clean && make get
+      - name: Clean, Generate localization and Fetch Dependencies
+        run: make clean && make init
 
       - name: Build APK
         # Build release để không cần cấu hình keystore
@@ -73,10 +72,9 @@ jobs:
         env:
           ENCRYPTION_KEY: ${{ secrets.ENV_DECRYPT_KEY }}
         run: make decrypt_env <<< "$ENCRYPTION_KEY"
-        # run: bash script/prepare.sh decrypt <<< "$ENCRYPTION_KEY"
 
-      - name: Clean and Fetch Dependencies
-        run: make clean && make get
+      - name: Clean, Generate localization and Fetch Dependencies
+        run: make clean && make init
 
       - name: Build iOS Frameworks
         # Chỉ build ra cấu trúc app, không thực hiện ký danh
