@@ -135,9 +135,9 @@ build_apk:
 # ============================================================
 
 build_ipa:
-	@echo "📦 Building IPA..."
-	@$(FLUTTER) build ipa --release --no-codesign
-	@echo "✅ IPA build completed"
+	@echo "📦 Building iOS app (unsigned)..."
+	@$(FLUTTER) build ios --release --no-codesign
+	@echo "✅ iOS app build completed"
 
 # ============================================================
 # Encrypt/Decrypt ENV
