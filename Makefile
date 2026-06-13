@@ -136,7 +136,7 @@ build_apk:
 
 build_ipa:
 	@echo "📦 Building IPA..."
-	@bash scripts/build_ipa.sh
+	@$(FLUTTER) build ipa --release --no-codesign
 	@echo "✅ IPA build completed"
 
 # ============================================================
