@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'animation/swipe_up_animation.dart';
+import '../../animations/fade_swipe_up_transition.dart';
+import '../animated_loading/animated_loading.dart';
 
 class SwipeLoadingButton extends StatelessWidget {
   final bool isLoading;
@@ -12,7 +13,7 @@ class SwipeLoadingButton extends StatelessWidget {
   // OPTIONAL CONTRUCTORS
   final VoidCallback? onPressed;
   final double? width;
-  final double? height;
+  final double height;
   final TextStyle? titleStyle;
 
   const SwipeLoadingButton({
@@ -24,76 +25,42 @@ class SwipeLoadingButton extends StatelessWidget {
     this.loadingIndicatorColor = Colors.black,
     this.onPressed,
     this.width,
-    this.height,
+    this.height = 52,
     this.titleStyle,
   });
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.sizeOf(context).width;
     return ClipRect(
       clipBehavior: Clip.hardEdge,
       child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          // Responsive: width = 85% screen width, height = 52 as default
-          minimumSize: Size(
-            width ?? screenWidth * 0.85,
-            height ?? 52,
-          ),
-          backgroundColor: backgroundColor,
-          disabledBackgroundColor: disabledBackgroundColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
-
-        // Disable button when loading
+        style: _buttonStyle(),
         onPressed: isLoading ? null : onPressed,
-
-        // AnimatedSwitcher: Chuyển trực Y
-        child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 300),
-          switchInCurve: Curves.easeOutCubic,
-          switchOutCurve: Curves.easeInCubic,
-
-          // Transition Animation with FadeTransition
-          transitionBuilder: (child, animation) => FadeTransition(
-            opacity: animation,
-
-            // Custom Swipe animation theo kiến trúc dịch chuyển trục Y
-            child: SwipeUpAnimation.transitionBuilder(child, animation),
+        child: AnimatedLoading(
+          isLoading: isLoading,
+          color: loadingIndicatorColor,
+          indicatorSize: 24,
+          strokeWidth: 1.8,
+          transitionBuilder: FadeSwipeUpTransition.transitionBuilder,
+          child: _ButtonTitle(
+            title: title,
+            titleStyle: titleStyle,
           ),
-
-          // BẮT BUỘC: Phải có ValueKey khác nhau để AnimatedSwitcher nhận biết và kích hoạt Animation
-          child: isLoading
-
-              // Loading Widget
-              ? _LoadingIndicator(loadingColor: loadingIndicatorColor)
-
-              // Title Widget
-              : _ButtonTitle(
-                  title: title,
-                  titleStyle: titleStyle,
-                ),
         ),
       ),
     );
   }
-}
 
-class _LoadingIndicator extends StatelessWidget {
-  final Color loadingColor;
-  const _LoadingIndicator({required this.loadingColor});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      key: ValueKey('button_loading_indicator'),
-      width: 24,
-      height: 24,
-      child: CircularProgressIndicator(
-        strokeWidth: 2.5,
-        valueColor: AlwaysStoppedAnimation<Color>(loadingColor),
+  ButtonStyle _buttonStyle() {
+    return ElevatedButton.styleFrom(
+      minimumSize: Size(
+        width ?? double.infinity,
+        height,
+      ),
+      backgroundColor: backgroundColor,
+      disabledBackgroundColor: disabledBackgroundColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
       ),
     );
   }
@@ -109,7 +76,6 @@ class _ButtonTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      key: const ValueKey('button_title_text'),
       style: titleStyle ??
           const TextStyle(
             fontSize: 16,

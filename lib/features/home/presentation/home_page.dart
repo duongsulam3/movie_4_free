@@ -38,8 +38,6 @@ class _HomePageState extends State<HomePage>
   late final List<ScrollController> scrollControllers;
   late final List<TabItem> tabs;
   late final List<PageItem> pages;
-  late final List<BottomNavigationBarItem> navs;
-
   // Prevent duplicate emits when the same top tab is re-selected.
   int _lastHandledTabIndex = 0;
 
@@ -57,7 +55,6 @@ class _HomePageState extends State<HomePage>
     _initializeControllers();
     _initializeTopTabs();
     _initializeShellPages();
-    _initializeBottomNavItems();
   }
 
   void _initializeTopTabs() {
@@ -80,11 +77,11 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-  void _initializeBottomNavItems() {
-    navs = List.generate(
+  List<BottomNavigationBarItem> _bottomNavItems(BuildContext context) {
+    return List.generate(
       HomeBottomNav.values.length,
       (i) => BottomNavigationBarItem(
-        label: HomeBottomNav.values[i].title,
+        label: HomeBottomNav.values[i].getTitle(context),
         icon: HomeBottomNav.values[i].icon,
       ),
     );
@@ -177,7 +174,7 @@ class _HomePageState extends State<HomePage>
 
   Widget _buildBottomNavigationOverlay() {
     return CustomBottomNavigationBar(
-      items: navs,
+      items: _bottomNavItems(context),
       onItemSelected: _onChangeBottomNav,
       currentIndex: context.watch<HomeShellCubit>().state.currentBottomIndex,
       height: bottomNavHeight.v,

@@ -20,7 +20,6 @@ class MovieDetailBlocBuilderEpisodeName extends StatelessWidget {
         text: movie.movieInfo.episodeTotal == "1"
             ? AppConstants.phimLeMotTap
             : state.passingEpisode,
-        fontSize: 16,
       ),
     );
   }

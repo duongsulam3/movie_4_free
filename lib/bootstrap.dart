@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
+import 'package:flutter_supper_app_core/core.dart';
 
 import 'app.dart';
 import 'common/local/hive_manager.dart';
@@ -10,6 +10,23 @@ import 'common/utils/secret/app_secret.dart';
 import 'common/di/init_dependencies.dart';
 
 Future<void> bootstrap() async {
+  final Logger logger = const Logger(className: "bootstrap");
+
+  // Run the app within a guarded zone to catch uncaught errors
+  await runZonedGuarded(() async {
+    await initializeApp();
+  }, (error, stackTrace) {
+    // Handle uncaught errors
+    logger.error(
+      "bootstrap",
+      "Uncaught error: $error\n$stackTrace",
+    );
+  });
+}
+
+Future<void> initializeApp() async {
+  // Any additional initialization logic can go here
+
   await HiveManager.init();
 
   // Initialize dependencies

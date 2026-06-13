@@ -52,7 +52,6 @@ class _HomeMainContentState extends State<HomeMainContent> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       controller: widget.scrollController,
-      scrollDirection: Axis.vertical,
       child: Column(
         spacing: 10.v,
         children: [

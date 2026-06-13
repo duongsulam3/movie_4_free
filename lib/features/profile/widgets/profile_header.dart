@@ -23,7 +23,6 @@ class ProfileHeader extends StatelessWidget {
               children: [
                 ResponsiveText(
                   text: 'Đăng nhập/ Đăng ký',
-                  fontSize: 16,
                   textColor: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),

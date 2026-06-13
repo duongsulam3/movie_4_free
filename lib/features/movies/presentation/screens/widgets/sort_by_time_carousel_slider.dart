@@ -28,7 +28,6 @@ class SortByTimeCarouselSlider extends StatelessWidget {
           options: CarouselOptions(
             height: sHeight / (sHeight / 400),
             viewportFraction: 1,
-            scrollDirection: Axis.horizontal,
             autoPlay: true,
             autoPlayInterval: const Duration(seconds: 10),
             autoPlayAnimationDuration: const Duration(seconds: 3),
@@ -39,7 +38,6 @@ class SortByTimeCarouselSlider extends StatelessWidget {
           bottom: sHeight / (sHeight / 10),
           right: sWidth / (sWidth / 10),
           child: IgnorePointer(
-            ignoring: true,
             child: Container(
               height: sHeight / (sHeight / 50),
               width: sWidth / (sWidth / 50),

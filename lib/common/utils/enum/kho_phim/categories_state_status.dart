@@ -1,1 +1,1 @@
-enum CategoriesStateStatus { init, loading,  error, success } 
+enum CategoriesStateStatus { init, loading, error, success }

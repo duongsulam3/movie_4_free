@@ -14,7 +14,6 @@ class NestedScrollViewDetailMovieWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return NestedScrollView(
-      scrollDirection: Axis.vertical,
       physics: const AlwaysScrollableScrollPhysics(),
       headerSliverBuilder: (context, value) => [
         SliverToBoxAdapter(child: movieDescriptionWidget),

@@ -15,7 +15,6 @@ class LogoAndWidget extends StatelessWidget {
         spacing: 10.v,
         children: [
           const Expanded(
-            flex: 1,
             child: ResponsiveAssetImage(path: AppConstants.appLogo),
           ),
           const TextFieldChangeHint(),

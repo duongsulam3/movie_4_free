@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:simpleflix/src/ui/base/platform_agnostic_widget.dart';
 
-class AdaptiveLoadingIndicator extends PlatformAgnosticWidget<CircularProgressIndicator, CupertinoActivityIndicator> {
+class AdaptiveLoadingIndicator
+    extends
+        PlatformAgnosticWidget<
+          CircularProgressIndicator,
+          CupertinoActivityIndicator
+        > {
   const AdaptiveLoadingIndicator({super.key});
 
   // Cấu hình chung cho cả 2 nền tảng
