@@ -50,7 +50,6 @@ class MovieDescription extends StatelessWidget {
           ),
           ResponsiveText(
             text: movieOriginalName,
-            fontSize: 16,
             maxLines: 3,
           ),
           episodesBlocBuilder,

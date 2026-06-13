@@ -33,7 +33,6 @@ class ResponsiveText extends StatelessWidget {
         color: textColor,
         shadows: [
           const Shadow(
-            color: Colors.black,
             offset: Offset(1, 1),
           ),
         ],

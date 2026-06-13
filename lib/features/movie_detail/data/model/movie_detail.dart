@@ -16,8 +16,9 @@ class MovieDetailModel extends MovieDetailEntity {
       status: json["status"],
       msg: json["msg"],
       movieInfo: MovieInfoModel.fromJson(json["movie"]),
-      episodes:
-          (json["episodes"] as List).map((e) => EpisodesModel.fromJson(e)).toList(),
+      episodes: (json["episodes"] as List)
+          .map((e) => EpisodesModel.fromJson(e))
+          .toList(),
     );
   }
 

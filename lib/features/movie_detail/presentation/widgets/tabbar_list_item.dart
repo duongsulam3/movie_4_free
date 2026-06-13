@@ -83,7 +83,6 @@ class _EpisodePlayingOverlay extends StatelessWidget {
             text: 'Đang chiếu',
             textColor: Colors.white,
             fontSize: 14,
-            fontWeight: FontWeight.w600,
           ),
         ),
       ),

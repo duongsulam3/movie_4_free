@@ -30,7 +30,6 @@ class WatchingMovieItem extends StatelessWidget {
             child: ResponsiveText(
               text: "Đang xem",
               textColor: Colors.white,
-              fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
           ),

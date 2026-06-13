@@ -7,7 +7,6 @@ class KhoPhimNoMoreMovie extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Icon(
           Icons.play_disabled_rounded,

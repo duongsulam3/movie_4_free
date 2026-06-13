@@ -71,7 +71,6 @@ class SearchMovieRemoteDatasourceImpl implements SearchMovieRemoteDataSource {
       final res = await SearchGETAPI.apiSearchGETMovies(
         client: client,
         query: query,
-        page: 1,
         limit: limit,
       );
 

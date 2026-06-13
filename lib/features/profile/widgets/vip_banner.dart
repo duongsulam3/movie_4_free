@@ -59,7 +59,6 @@ class VipBanner extends StatelessWidget {
                     ResponsiveSizedBox(width: 4),
                     ResponsiveText(
                       text: 'Đăng Ký VIP',
-                      fontSize: 16,
                       textColor: Colors.black87,
                       fontWeight: FontWeight.bold,
                     ),

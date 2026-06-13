@@ -25,8 +25,6 @@ class _SwipeLoadingButtonDemoState extends State<SwipeLoadingButtonDemo> {
         isLoading: _isLoading,
         title: 'Test Swipe Loading',
         onPressed: _onPressed,
-        backgroundColor: Colors.white,
-        disabledBackgroundColor: Colors.white,
         loadingIndicatorColor: Colors.red,
         titleStyle: const TextStyle(
           fontSize: 16,

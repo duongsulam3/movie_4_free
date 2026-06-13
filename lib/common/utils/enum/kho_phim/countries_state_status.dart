@@ -1,1 +1,1 @@
-enum CountriesStateStatus { init, loading,  error, success } 
+enum CountriesStateStatus { init, loading, error, success }

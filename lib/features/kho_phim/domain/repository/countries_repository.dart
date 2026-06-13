@@ -4,4 +4,4 @@ import 'package:smoth_movie_app/features/kho_phim/domain/entity/kho_phim_country
 
 abstract interface class CountriesRepository {
   Future<Either<Failure, List<KhoPhimCountryEntity>>> getCountries();
-} 
+}

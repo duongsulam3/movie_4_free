@@ -22,9 +22,7 @@ class SearchItemContent extends StatelessWidget {
       children: [
         ResponsiveText(
           text: movie.name,
-          fontSize: 16,
           textOverflow: TextOverflow.ellipsis,
-          maxLines: 1,
         ),
         ResponsiveText(
           text:

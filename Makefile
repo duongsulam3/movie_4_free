@@ -11,7 +11,6 @@ endif
 .PHONY: all clean build test run usecase help colors colors_delete build_ipa init
 
 # Default command
-# Default command
 help:
 	@echo "📱 Available Commands"
 	@echo "🧹 Clean & Setup:"
@@ -63,10 +62,10 @@ remove_clean:
 	@cd ios && pod install --repo-update
 
 # Fix warnings automatically
-fix-warnings:
+fix:
 	@echo "🔧 Fixing warnings..."
 	@bash scripts/fix_warnings.sh
-	@echo "✅ Warnings fixed!"
+	@echo "✅ Warnings fixed"
 
 
 # ============================================================
@@ -79,7 +78,7 @@ clean_android:
 	@rm -rf build/app 2>/dev/null || true
 	@$(FLUTTER) clean
 	@$(FLUTTER) pub get
-	@echo "✅ Android clean completed!"
+	@echo "✅ Android clean completed"
 
 # Clean with Gradle (requires Java)
 clean_android_gradle:
@@ -92,15 +91,21 @@ check_ci:
 	@$(FLUTTER) analyze --fatal-infos --fatal-warnings
 	./scripts/check_functions.sh --changed-from=develop
 
-usecase: 
-	@echo "🚀 Generating usecase with Mason..."
-	@cd mason_lib && mason make usecases --on-conflict append -o ../
-	@echo "✅ Usecase generation completed with auto TODO processing!"
+### USE CASE GENERATION (MASON) =========================================
+### =====================================================================
+# usecase: 
+# 	@echo "🚀 Generating usecase with Mason..."
+# 	@cd mason_lib && mason make usecases --on-conflict append -o ../
+# 	@echo "✅ Usecase generation completed with auto TODO processing!"
+### =====================================================================
 
-feature:
-	@echo "🚀 Generating feature with Mason..."
-	@cd mason_lib && mason make feature --on-conflict append -o ../
-	@echo "✅ Feature generation completed with auto TODO processing!"
+### FEATURE GENERATION (MASON) ==========================================
+### =====================================================================
+# feature:
+# 	@echo "🚀 Generating feature with Mason..."
+# 	@cd mason_lib && mason make feature --on-conflict append -o ../
+# 	@echo "✅ Feature generation completed with auto TODO processing!"
+### =====================================================================
 
 open_organizer:
 	@echo "📂 Opening Xcode Organizer..."

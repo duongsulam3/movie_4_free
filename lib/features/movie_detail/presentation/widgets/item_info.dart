@@ -26,17 +26,13 @@ class ItemInfo extends StatelessWidget {
           Expanded(
             child: ResponsiveText(
               text: movieName,
-              fontSize: 16,
               textOverflow: TextOverflow.ellipsis,
-              maxLines: 1,
             ),
           ),
           Expanded(
             child: ResponsiveText(
               text: "Chất lượng: $movieQuality",
-              fontSize: 16,
               fontWeight: FontWeight.w400,
-              maxLines: 1,
             ),
           ),
           Expanded(
@@ -44,17 +40,13 @@ class ItemInfo extends StatelessWidget {
               text: episodeName.contains("Tập") || episodeName.contains("tập")
                   ? episodeName
                   : "Tập $episodeName",
-              fontSize: 16,
               fontWeight: FontWeight.w400,
-              maxLines: 1,
             ),
           ),
           Expanded(
             child: ResponsiveText(
               text: "Thời lượng: $episodeTime",
-              fontSize: 16,
               fontWeight: FontWeight.w400,
-              maxLines: 1,
             ),
           ),
         ],

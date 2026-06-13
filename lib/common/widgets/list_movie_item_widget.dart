@@ -42,7 +42,6 @@ class ListMovieItemWidget extends StatelessWidget {
               text: movieName,
               maxLines: 2,
               fontSize: 12,
-              textColor: Colors.grey,
             ),
           ),
         ],

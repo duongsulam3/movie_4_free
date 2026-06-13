@@ -31,5 +31,4 @@ class TmdbModel extends TmdbEntity {
   //   data["vote_count"] = voteCount;
   //   return data;
   // }
-
 }

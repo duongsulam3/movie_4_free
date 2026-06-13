@@ -11,7 +11,6 @@ class NoMoreMoviesForSearchWidget extends StatelessWidget {
     return const Center(
       child: ResponsiveText(
         text: "Hết phim rồi!!",
-        fontSize: 16,
       ),
     );
   }

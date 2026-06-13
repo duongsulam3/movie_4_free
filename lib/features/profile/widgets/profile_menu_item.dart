@@ -35,7 +35,6 @@ class ProfileMenuItem extends StatelessWidget {
           Expanded(
             child: ResponsiveText(
               text: label,
-              fontSize: 16,
               textColor: Colors.white.withValues(alpha: 0.9),
               fontWeight: FontWeight.w400,
             ),
