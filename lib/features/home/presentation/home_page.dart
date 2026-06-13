@@ -3,20 +3,13 @@ import 'package:flutter_supper_app_core/core.dart';
 
 import '../../../common/entity/page_item.dart';
 import '../../../common/entity/tab_item.dart';
-import '../../../common/widgets/custom_appbar_widget.dart';
-import '../../kho_phim/presentation/page.dart';
-import '../../profile/page.dart';
 import '../enum/home_category.dart';
-import '../enum/bottom_navigation_tab.dart';
 import '../enum/home_shell_page.dart';
-import '../home_main/page.dart';
-import '../home_main/tabs/categories_tab.dart';
-import '../home_main/tabs/home_main_content.dart';
 import 'bloc/home_shell/home_shell_cubit.dart';
-import 'bloc/home_shell/home_shell_state.dart';
-import 'widgets/custom_bottom_navigation_bar.dart';
-import 'widgets/home_tab_bar.dart';
-import 'widgets/logo_and_widget.dart';
+import 'widgets/home_bottom_nav_overlay.dart';
+import 'widgets/home_shell_page_content.dart';
+import 'widgets/home_shell_scaffold.dart';
+import 'widgets/home_top_tab_content.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -27,18 +20,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
-  // Layout constants.
-  static const appBarHeight = 90.0;
-  static const tabBarHeight = 30.0;
-  static const bottomNavHeight = 56.0;
   static final int _tabCount = HomeCategoryTab.values.length;
 
-  // Controllers and static view models.
   late final TabController tabController;
   late final List<ScrollController> scrollControllers;
   late final List<TabItem> tabs;
   late final List<PageItem> pages;
-  // Prevent duplicate emits when the same top tab is re-selected.
   int _lastHandledTabIndex = 0;
 
   @override
@@ -46,10 +33,6 @@ class _HomePageState extends State<HomePage>
     super.initState();
     _initializeHomeView();
   }
-
-  // ----------------------------
-  // Initialization
-  // ----------------------------
 
   void _initializeHomeView() {
     _initializeControllers();
@@ -62,7 +45,12 @@ class _HomePageState extends State<HomePage>
       final category = HomeCategoryTab.values[i];
       return TabItem(
         title: category.tabLabel,
-        widget: _buildTopTabContent(index: i, category: category),
+        widget: HomeTopTabContent(
+          index: i,
+          category: category,
+          scrollController: scrollControllers[i],
+          tabController: tabController,
+        ),
       );
     });
   }
@@ -72,17 +60,11 @@ class _HomePageState extends State<HomePage>
       HomeShellPage.values.length,
       (i) => PageItem(
         hasAppBar: HomeShellPage.values[i].hasAppBar,
-        widget: _buildShellPageContent(HomeShellPage.values[i]),
-      ),
-    );
-  }
-
-  List<BottomNavigationBarItem> _bottomNavItems(BuildContext context) {
-    return List.generate(
-      HomeBottomNav.values.length,
-      (i) => BottomNavigationBarItem(
-        label: HomeBottomNav.values[i].getTitle(context),
-        icon: HomeBottomNav.values[i].icon,
+        widget: HomeShellPageContent(
+          page: HomeShellPage.values[i],
+          tabs: tabs,
+          tabController: tabController,
+        ),
       ),
     );
   }
@@ -101,10 +83,6 @@ class _HomePageState extends State<HomePage>
     tabController.dispose();
   }
 
-  // ----------------------------
-  // Event handlers
-  // ----------------------------
-
   void _handleTopTabChange() {
     if (tabController.index == _lastHandledTabIndex) return;
     _lastHandledTabIndex = tabController.index;
@@ -113,82 +91,6 @@ class _HomePageState extends State<HomePage>
 
   void _onChangeBottomNav(int index) {
     context.read<HomeShellCubit>().changeBottomIndex(index);
-  }
-
-  // ----------------------------
-  // Builders
-  // ----------------------------
-
-  Widget _buildTopTabContent({
-    required int index,
-    required HomeCategoryTab category,
-  }) {
-    if (category == HomeCategoryTab.home) {
-      return HomeMainContent(
-        scrollController: scrollControllers[index],
-        tabController: tabController,
-      );
-    }
-    return BlocBuilder<HomeShellCubit, HomeShellState>(
-      buildWhen: (p, c) => p.initializedTopTabs != c.initializedTopTabs,
-      builder: (context, state) {
-        if (!state.isTopTabInitialized(index)) {
-          return const SizedBox.shrink();
-        }
-        return CategoriesTab(
-          scrollController: scrollControllers[index],
-          path: category.slug,
-        );
-      },
-    );
-  }
-
-  Widget _buildShellPageContent(HomeShellPage page) {
-    switch (page) {
-      case HomeShellPage.home:
-        return HomeMain(tabs: tabs, tabController: tabController);
-      case HomeShellPage.khoPhim:
-        return const KhoPhimPage();
-      case HomeShellPage.profile:
-        return const ProfilePage();
-    }
-  }
-
-  PreferredSizeWidget? _buildAppBar(PageItem currentPage) {
-    if (currentPage.hasAppBar == false) return null;
-    return CustomAppbarWidget(
-      scrollControllers: scrollControllers,
-      tabController: tabController,
-      appBarHeight: appBarHeight,
-      backgroundColor: Colors.black,
-      titleWidget: const LogoAndWidget(),
-      appBarBottomWidget: PreferredSize(
-        preferredSize: const Size.fromHeight(tabBarHeight),
-        child: HomeTabBar(
-          tabs: tabs,
-          tabController: tabController,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBottomNavigationOverlay() {
-    return CustomBottomNavigationBar(
-      items: _bottomNavItems(context),
-      onItemSelected: _onChangeBottomNav,
-      currentIndex: context.watch<HomeShellCubit>().state.currentBottomIndex,
-      height: bottomNavHeight.v,
-      iconColor: Colors.red.withValues(alpha: 0.8),
-    );
-  }
-
-  Widget _buildBody(int currentBottomIndex) {
-    // Keep pages alive to preserve scroll positions and nested bloc states.
-    return IndexedStack(
-      index: currentBottomIndex,
-      sizing: StackFit.expand,
-      children: List.generate(pages.length, (i) => pages[i].widget),
-    );
   }
 
   @override
@@ -208,25 +110,21 @@ class _HomePageState extends State<HomePage>
         child: Stack(
           children: [
             Positioned.fill(
-              child: BlocSelector<HomeShellCubit, HomeShellState, int>(
-                selector: (state) => state.currentBottomIndex,
-                builder: (context, currentBottomIndex) {
-                  final currentPage = pages[currentBottomIndex];
-                  return Scaffold(
-                    extendBodyBehindAppBar: true,
-                    appBar: _buildAppBar(currentPage),
-                    body: _buildBody(currentBottomIndex),
-                  );
-                },
+              child: HomeShellScaffold(
+                pages: pages,
+                tabs: tabs,
+                tabController: tabController,
+                scrollControllers: scrollControllers,
               ),
             ),
-            // Keep bottom navigation on a stable overlay layer to preserve animation state.
             Positioned(
               left: 20,
               right: 20,
               bottom: 20,
-              child: _buildBottomNavigationOverlay(),
-            )
+              child: HomeBottomNavOverlay(
+                onItemSelected: _onChangeBottomNav,
+              ),
+            ),
           ],
         ),
       ),

@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_supper_app_core/core.dart';
 
 import '../../../../common/router/app_router.dart';
 import '../../../../common/router/params/movie_detail_param_model.dart';
@@ -67,61 +67,65 @@ class InfiniteGridViewState extends State<InfiniteGridView>
         previous.movies.length != current.movies.length;
   }
 
+  Widget _buildContent(MoviesState state) {
+    switch (state.status) {
+      case MoviesStateStatus.init:
+        return MoviesGridBuilder(
+          itemCount: widget.itemCount,
+          itemBuilder: (_, i) => const MovieItemSkeletonLoading(),
+        );
+      case MoviesStateStatus.error:
+        return const ErrorPage();
+      default:
+        if (state.movies.isEmpty) {
+          return const Center(child: Text('Không còn phim'));
+        }
+        return CustomScrollView(
+          shrinkWrap: true,
+          primary: widget.primary,
+          physics: widget.physics,
+          slivers: [
+            MoviesSilverGridviewBuilder(
+              itemCount: state.movies.length,
+              itemBuilder: (BuildContext context, int index) {
+                final movie = state.movies[index];
+                return ListMovieItemWidget(
+                  movieUrl: AppSecret.imageUrl + movie.posterUrl,
+                  movieName: movie.name,
+                  onTap: () => Navigator.of(context).pushNamed(
+                    AppRouter.movieDetail,
+                    arguments: MovieDetailParamModel(movie: movie),
+                  ),
+                );
+              },
+            ),
+            SliverToBoxAdapter(
+              child: BlocBuilder<MoviesBloc, MoviesState>(
+                buildWhen: _footerBuildWhen,
+                builder: (context, footerState) {
+                  return CategoryFeedFooter(
+                    isEnd: footerState.isEnd,
+                    isLoadingMore: footerState.isLoadingMore,
+                    loadMoreFailed: footerState.loadMoreFailed,
+                    onRetry: _tryLoadMore,
+                  );
+                },
+              ),
+            ),
+          ],
+        );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return BlocBuilder<MoviesBloc, MoviesState>(
       builder: (_, state) {
-        switch (state.status) {
-          case MoviesStateStatus.init:
-            return MoviesGridBuilder(
-              itemCount: widget.itemCount,
-              itemBuilder: (_, i) => const MovieItemSkeletonLoading(),
-            );
-          case MoviesStateStatus.error:
-            return const ErrorPage();
-          default:
-            if (state.movies.isEmpty) {
-              return const Center(child: Text('Không còn phim'));
-            }
-            return CustomScrollView(
-              shrinkWrap: true,
-              primary: widget.primary,
-              physics: widget.physics,
-              slivers: [
-                // Movie feed
-                MoviesSilverGridviewBuilder(
-                  itemCount: state.movies.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final movie = state.movies[index];
-                    return ListMovieItemWidget(
-                      movieUrl: AppSecret.imageUrl + movie.posterUrl,
-                      movieName: movie.name,
-                      onTap: () => Navigator.of(context).pushNamed(
-                        AppRouter.movieDetail,
-                        arguments: MovieDetailParamModel(movie: movie),
-                      ),
-                    );
-                  },
-                ),
-
-                // Footer
-                SliverToBoxAdapter(
-                  child: BlocBuilder<MoviesBloc, MoviesState>(
-                    buildWhen: _footerBuildWhen,
-                    builder: (context, footerState) {
-                      return CategoryFeedFooter(
-                        isEnd: footerState.isEnd,
-                        isLoadingMore: footerState.isLoadingMore,
-                        loadMoreFailed: footerState.loadMoreFailed,
-                        onRetry: _tryLoadMore,
-                      );
-                    },
-                  ),
-                ),
-              ],
-            );
-        }
+        return AnimatedStateSwitcher(
+          switchKey: state.status,
+          child: _buildContent(state),
+        );
       },
     );
   }

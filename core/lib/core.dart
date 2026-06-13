@@ -31,6 +31,7 @@ export 'helper/debouncer.dart';
 
 /** ANIMATIONS **/
 export 'animations/fade_swipe_up_transition.dart';
+export 'animations/fade_transition.dart';
 export 'animations/scale_transition.dart';
 export 'animations/swipe_up_animation.dart';
 
@@ -40,4 +41,5 @@ export 'locale/abstract_locale_repository.dart';
 
 /** COMPONENTS **/
 export 'components/animated_loading/animated_loading.dart';
+export 'components/animated_state_switcher/animated_state_switcher.dart';
 export 'components/loading_button/swipe_loading_button.dart';
