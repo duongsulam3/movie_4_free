@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../common/widgets/animated_state_switcher.dart';
 import '../../enum/home_category.dart';
 import '../../home_main/tabs/categories_tab.dart';
 import '../../home_main/tabs/home_main_content.dart';
@@ -32,12 +33,15 @@ class HomeTopTabContent extends StatelessWidget {
     return BlocBuilder<HomeShellCubit, HomeShellState>(
       buildWhen: (p, c) => p.initializedTopTabs != c.initializedTopTabs,
       builder: (context, state) {
-        if (!state.isTopTabInitialized(index)) {
-          return const SizedBox.shrink();
-        }
-        return CategoriesTab(
-          scrollController: scrollController,
-          path: category.slug,
+        final isInitialized = state.isTopTabInitialized(index);
+        return AnimatedStateSwitcher(
+          switchKey: isInitialized,
+          child: isInitialized
+              ? CategoriesTab(
+                  scrollController: scrollController,
+                  path: category.slug,
+                )
+              : const SizedBox.shrink(),
         );
       },
     );
