@@ -1,19 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:smoth_movie_app/features/movies/domain/entities/movies_page/movie_item.dart';
-import 'package:smoth_movie_app/features/movies/presentation/screens/widgets/sort_by_time_carousel_slider_item.dart';
+import 'package:flutter_supper_app_core/core.dart';
+
+import '../../../domain/entities/movies_page/movie_item.dart';
+import 'sort_by_time_carousel_slider_item.dart';
 
 class SortByTimeCarouselSlider extends StatelessWidget {
-  const SortByTimeCarouselSlider({
-    super.key,
-    required this.sHeight,
-    required this.items,
-    required this.sWidth,
-  });
+  const SortByTimeCarouselSlider({super.key, required this.items});
 
-  final double sHeight;
-  final double sWidth;
   final List<MovieItemEntity> items;
 
   @override
@@ -22,25 +16,25 @@ class SortByTimeCarouselSlider extends StatelessWidget {
       children: [
         CarouselSlider.builder(
           itemCount: items.length,
-          itemBuilder: (context, i, pageViewIndex) {
-            return SortByTimeCarouselSliderItem(item: items[i]);
-          },
           options: CarouselOptions(
-            height: sHeight / (sHeight / 400),
+            height: 400.v,
             viewportFraction: 1,
             autoPlay: true,
             autoPlayInterval: const Duration(seconds: 10),
             autoPlayAnimationDuration: const Duration(seconds: 3),
             autoPlayCurve: Curves.fastEaseInToSlowEaseOut,
           ),
+          itemBuilder: (context, i, pageViewIndex) {
+            return SortByTimeCarouselSliderItem(item: items[i]);
+          },
         ),
         Positioned(
-          bottom: sHeight / (sHeight / 10),
-          right: sWidth / (sWidth / 10),
+          bottom: 10.v,
+          right: 10.h,
           child: IgnorePointer(
             child: Container(
-              height: sHeight / (sHeight / 50),
-              width: sWidth / (sWidth / 50),
+              height: 50.v,
+              width: 50.h,
               decoration: const BoxDecoration(
                 color: Colors.green,
                 shape: BoxShape.circle,
