@@ -1,12 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_supper_app_core/core.dart';
 
 import '../../../../common/router/app_router.dart';
 import '../../../../common/router/params/movie_detail_param_model.dart';
 import '../../../../common/screens/error_page.dart';
 import '../../../../common/utils/enum/movies_state_status.dart';
 import '../../../../common/utils/secret/app_secret.dart';
-import '../../../../common/widgets/animated_state_switcher.dart';
 import '../../../../common/widgets/list_movie_item_widget.dart';
 import '../../../../common/widgets/movie_item_skeleton_loading.dart';
 import '../bloc/movies/movies_bloc.dart';

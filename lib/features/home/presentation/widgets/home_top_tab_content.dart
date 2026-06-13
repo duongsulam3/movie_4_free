@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_supper_app_core/core.dart';
 
-import '../../../../common/widgets/animated_state_switcher.dart';
 import '../../enum/home_category.dart';
 import '../../home_main/tabs/categories_tab.dart';
 import '../../home_main/tabs/home_main_content.dart';

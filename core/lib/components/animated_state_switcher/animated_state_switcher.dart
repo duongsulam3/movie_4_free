@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../animations/fade_transition.dart';
+
 /// Fades between children whenever [switchKey] changes.
 ///
 /// Wrap the output of a `switch` on status/case with this widget so each case
@@ -12,6 +14,7 @@ class AnimatedStateSwitcher extends StatelessWidget {
     this.duration = const Duration(milliseconds: 300),
     this.switchInCurve = Curves.easeOut,
     this.switchOutCurve = Curves.easeIn,
+    this.transitionBuilder = FadeTransitionAnimation.transitionBuilder,
   });
 
   final Object switchKey;
@@ -19,6 +22,7 @@ class AnimatedStateSwitcher extends StatelessWidget {
   final Duration duration;
   final Curve switchInCurve;
   final Curve switchOutCurve;
+  final AnimatedSwitcherTransitionBuilder transitionBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +30,7 @@ class AnimatedStateSwitcher extends StatelessWidget {
       duration: duration,
       switchInCurve: switchInCurve,
       switchOutCurve: switchOutCurve,
-      transitionBuilder: (child, animation) {
-        return FadeTransition(opacity: animation, child: child);
-      },
+      transitionBuilder: transitionBuilder,
       child: KeyedSubtree(
         key: ValueKey<Object>(switchKey),
         child: child,

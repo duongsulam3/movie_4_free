@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_supper_app_core/core.dart';
-import 'package:smoth_movie_app/common/widgets/animated_state_switcher.dart';
 
 import '../../../../common/screens/error_page.dart';
 import '../../../../common/utils/enum/movies_sortby_time/movies_sortby_time_status.dart';
