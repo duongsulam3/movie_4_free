@@ -64,21 +64,25 @@ class SimpleFlixController {
       controller.setLooping(true);
     }
 
-    // Nếu autoPlay được bật, chúng ta sẽ tự động play sau khi khởi tạo xong
-    if (autoPlay && !controller.value.isPlaying) {
-      controller.play();
-    }
+    // Client có thể đã initialize VideoPlayerController trước khi tạo SimpleFlixController.
+    // Gọi initialize() lần nữa sẽ tạo native player mới và reset isPlaying -> UI lệch trạng thái.
+    _initializeFuture = _bootstrapPlayer();
+  }
 
-    // Kích hoạt khởi tạo tại tầng Controller ngay khi Object được tạo ra
-    _initializeFuture = controller.initialize().then((_) {
-      if (autoPlay && !controller.value.isPlaying) {
-        controller.play();
-      }
-      // Bắt đầu đếm ngược ẩn controls ngay sau khi khởi tạo xong nếu đang autoPlay
-      if (autoPlay) {
-        _startHideTimer();
-      }
-    });
+  Future<void> _bootstrapPlayer() async {
+    if (!controller.value.isInitialized) {
+      await controller.initialize();
+    }
+    await _startPlaybackIfNeeded();
+  }
+
+  Future<void> _startPlaybackIfNeeded() async {
+    if (autoPlay && !controller.value.isPlaying) {
+      await controller.play();
+    }
+    if (autoPlay) {
+      _startHideTimer();
+    }
   }
 
   void _startHideTimer() {
