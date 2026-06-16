@@ -16,8 +16,8 @@ class BlocBuilderMoviesSortByTime extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MoviesSortByTimeBloc, MoviesSortByTimeState>(
       builder: (context, state) {
-        return AnimatedStateSwitcher(
-          switchKey: state.status,
+        return AnimationStateSwitcher(
+          valueKey: state.status,
           child: _buildContent(state),
         );
       },
