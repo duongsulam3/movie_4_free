@@ -33,8 +33,8 @@ class HomeTopTabContent extends StatelessWidget {
       buildWhen: (p, c) => p.initializedTopTabs != c.initializedTopTabs,
       builder: (context, state) {
         final isInitialized = state.isTopTabInitialized(index);
-        return AnimatedStateSwitcher(
-          switchKey: isInitialized,
+        return AnimationStateSwitcher(
+          valueKey: isInitialized,
           child: isInitialized
               ? CategoriesTab(
                   scrollController: scrollController,

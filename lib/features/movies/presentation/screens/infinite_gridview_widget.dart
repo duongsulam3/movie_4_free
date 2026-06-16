@@ -122,8 +122,8 @@ class InfiniteGridViewState extends State<InfiniteGridView>
     super.build(context);
     return BlocBuilder<MoviesBloc, MoviesState>(
       builder: (_, state) {
-        return AnimatedStateSwitcher(
-          switchKey: state.status,
+        return AnimationStateSwitcher(
+          valueKey: state.status,
           child: _buildContent(state),
         );
       },
