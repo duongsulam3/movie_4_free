@@ -162,5 +162,6 @@ lib/common/utils/secret/app_secret.dart
 **/*.g.dart
 **/*.freezed.dart
 **/*.gen.dart
+
 # Per-locale AppLocalizations (flutter gen-l10n) — run `make init` after ARB edits
 lib/l10n/localization/app_localizations_*.dart
